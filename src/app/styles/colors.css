@@ -6,10 +6,6 @@
 	--color-brand-dark: oklch(46.205% 0.17901 260.3);
 	--color-brand-light: oklch(76.192% 0.10756 259.05);
 	--color-brand-subtle: oklch(91.431% 0.03708 258.37);
-	--color-primary-50: #ecf2fe;
-	--color-primary-100: #c3d8fb;
-	--color-primary-800: #214785;
-	--color-primary-900: #193665;
 
 	/* Accent - Generan: bg-accent, text-accent, etc. */
 	--color-accent: oklch(78.582% 0.11902 175.12);
@@ -19,7 +15,6 @@
 	/* SISTEMA DE GRISES PARA UI */
 
 	/* Backgrounds principales */
-	--color-surface: oklch(100% 0 none); /* bg-surface */
 	--color-surface-dark: oklch(11.237% 0.00871 242.17); /* Modo oscuro */
 
 	--color-elevated: oklch(97.547% 0.00453 258.32); /* bg-elevated (cards, modals) */
@@ -59,7 +54,6 @@
 
 	/* TIPOGRAFÍAS */
 
-	--font-code: 'Fira Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
 
 	/* ESPACIADO PERSONALIZADO */
 
