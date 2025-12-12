@@ -40,27 +40,10 @@ const { description, title, img_preview } = Astro.props;
 	</head>
 
 	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
-		<div class="fixed inset-0 z-[-2] bg-gray-50 dark:bg-gray-950 background-pattern"></div>
 		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
 			<slot />
 			<Footer />
 		</div>
-	</body><style>
-		/*Background Layout*/
-		.background-pattern {
-			background: var(--portfolio-gradient);
-		}
-
-		.background-pattern::before {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background-image: url('/background/polygon-luminary.svg');
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			filter: blur(2px);
-		}
-	</style>
+	</body>
 </html>
