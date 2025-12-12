@@ -1,8 +1,23 @@
 ---
+/**
+ * Header Widget Component
+ * Main navigation header with responsive design
+ * FSD Layer: Widgets > Header > UI
+ *
+ * Architecture: Composes smaller UI components following FSD
+ * - BrandLogo: Left section with logo
+ * - DesktopNav: Center navigation (md and above)
+ * - MobileNav: Right section with mobile menu
+ * - Features: ThemeToggle, LanguagePicker
+ */
+
 import { ThemeToggle } from '@features/theme-toggle';
 import { LanguagePicker } from '@features/language-picker';
-import MenuIcon from '@assets/icons/MenuIcon.astro';
+import { LinkButton } from '@shared/ui';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import BrandLogo from './BrandLogo.astro';
+import DesktopNav from './DesktopNav.astro';
+import MobileNav from './MobileNav.astro';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
@@ -29,106 +44,73 @@ const navItems = [
 		url: 'mailto:sandovaldavid2201@gmail.com',
 	},
 ];
+
+const homeUrl = getLocalizedPath(lang, '/');
 ---
 
-<header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-center py-3 px-4">
-	<!-- Desktop/Tablet Nav -->
-	<nav
-		class="hidden md:flex px-4 py-2 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200 justify-center items-center gap-1"
-	>
-		{
-			navItems.map(link => (
-				<a
-					class="relative block px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500"
-					aria-label={link.label}
-					href={link.url}
-				>
-					{link.title}
-				</a>
-			))
-		}
-		<ThemeToggle />
-		<LanguagePicker currentLang={lang} />
-	</nav>
-
-	<!-- Mobile Nav -->
-	<nav
-		class="flex md:hidden w-full max-w-screen-sm items-center justify-between px-4 py-2 rounded-full"
-	>
-		<ThemeToggle />
-		<button
-			id="mobile-menu-btn"
-			class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		>
-			<MenuIcon class="size-7" />
-		</button>
-	</nav>
-	<div
-		id="mobile-menu"
-		class="fixed top-0 left-0 w-full h-full bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 z-10 flex-col items-center justify-center gap-6 text-lg font-medium text-gray-800 dark:text-gray-100 hidden transition-all"
-	>
-		{
-			navItems.map(link => (
-				<a
-					class="block px-4 py-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700 transition"
-					aria-label={link.label}
-					href={link.url}
-					onclick="document.getElementById('mobile-menu').classList.add('hidden')"
-				>
-					{link.title}
-				</a>
-			))
-		}
-		<div class="flex justify-center items-center gap-4">
-			<LanguagePicker currentLang={lang} class="ml-4" />
+<header class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100">
+	<div class="flex items-center justify-between px-4 py-4 md:px-8 max-w-7xl mx-auto w-full">
+		<!-- Left: Brand Logo -->
+		<div class="shrink-0">
+			<BrandLogo href={homeUrl} />
 		</div>
 
-		<button
-			id="mobile-menu-close"
-			class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="size-7"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M6 18L18 6M6 6l12 12"></path></svg
-			>
-		</button>
+		<!-- Center: Desktop Navigation -->
+		<div class="flex-1 flex justify-center">
+			<DesktopNav {lang} {navItems} />
+		</div>
+
+		<!-- Right: Actions (Desktop) -->
+		<div class="hidden md:flex items-center gap-4 shrink-0">
+			<LinkButton href="/resume.pdf" target="_blank" variant="primary">
+				Resume
+			</LinkButton>
+			<ThemeToggle />
+			<LanguagePicker currentLang={lang} />
+		</div>
+
+		<!-- Mobile Menu Button -->
+		<div class="flex md:hidden items-center gap-3 shrink-0">
+			<ThemeToggle />
+			<MobileNav {navItems} />
+		</div>
 	</div>
 </header>
 
 <script>
-	// Desktop/Tablet nav highlight
+	// Active link highlighting with Intersection Observer
 	const sections = document.querySelectorAll('section');
-	const navItems = document.querySelectorAll('header nav a');
-	const callback = (entries: IntersectionObserverEntry[]) => {
+	const navLinks = document.querySelectorAll('header nav a[aria-label]');
+
+	const observerCallback = (entries: IntersectionObserverEntry[]) => {
 		entries.forEach((entry: IntersectionObserverEntry) => {
 			if (entry.isIntersecting) {
-				navItems.forEach(item => {
-					if (item.getAttribute('aria-label') == entry.target.id) {
-						item.classList.add('text-blue-500');
+				navLinks.forEach(link => {
+					const linkLabel = link.getAttribute('aria-label');
+					const sectionId = entry.target.id;
+
+					if (linkLabel === sectionId) {
+						link.classList.add('active', 'text-primary-600');
 					} else {
-						item.classList.remove('text-blue-500');
+						link.classList.remove('active', 'text-primary-600');
 					}
 				});
 			}
 		});
 	};
-	const observer = new IntersectionObserver(callback, {
+
+	const observer = new IntersectionObserver(observerCallback, {
 		root: null,
-		rootMargin: '0px',
-		threshold: 0.3,
+		rootMargin: '-30% 0px -70% 0px',
+		threshold: 0,
 	});
+
 	sections.forEach(section => {
 		observer.observe(section);
 	});
-	document.onvisibilitychange = () => {
+
+	// Handle visibility changes
+	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'hidden') {
 			observer.disconnect();
 		} else {
@@ -136,82 +118,49 @@ const navItems = [
 				observer.observe(section);
 			});
 		}
-	};
-
-	// Mobile menu logic
-	const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-	const mobileMenu = document.getElementById('mobile-menu');
-	const mobileMenuClose = document.getElementById('mobile-menu-close');
-	if (mobileMenuBtn && mobileMenu) {
-		mobileMenuBtn.addEventListener('click', e => {
-			e.stopPropagation();
-			mobileMenu.classList.remove('hidden');
-			mobileMenu.classList.add('flex');
-		});
-	}
-	if (mobileMenuClose && mobileMenu) {
-		mobileMenuClose.addEventListener('click', e => {
-			e.stopPropagation();
-			mobileMenu.classList.add('hidden');
-			mobileMenu.classList.remove('flex');
-		});
-	}
-	// Cerrar menú al hacer click fuera
-	document.addEventListener('click', e => {
-		if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-			const target = e.target;
-			if (
-				target instanceof Node &&
-				!mobileMenu.contains(target) &&
-				target !== mobileMenuBtn
-			) {
-				mobileMenu.classList.add('hidden');
-				mobileMenu.classList.remove('flex');
-			}
-		}
 	});
 </script>
 
 <style>
-	nav {
-		animation: nav-shadown 1s linear both;
+	.navbar-header {
+		animation: navbar-shadow 1s linear both;
 		animation-timeline: scroll();
 		animation-range: 0 100px;
 	}
 
-	@keyframes nav-shadown {
+	@keyframes navbar-shadow {
 		0% {
 			background: transparent;
 			backdrop-filter: none;
 			box-shadow: none;
 		}
 		to {
-			background: rgba(255, 255, 255, 0.7);
-			backdrop-filter: blur(12px);
+			background: rgba(248, 250, 252, 0.78);
+			backdrop-filter: blur(14px);
 			box-shadow:
-				0 4px 6px -1px rgb(0 0 0 / 0.1),
-				0 2px 4px -2px rgb(0 0 0 / 0.1);
+				0 8px 24px -6px rgb(0 0 0 / 0.12),
+				0 6px 12px -6px rgb(0 0 0 / 0.14);
 		}
 	}
 
-	:global(.dark) nav {
-		animation: nav-shadown-dark 1s linear both;
+	:global(.dark) .navbar-header {
+		animation: navbar-shadow-dark 1s linear both;
 		animation-timeline: scroll();
 		animation-range: 0 100px;
 	}
 
-	@keyframes nav-shadown-dark {
+	@keyframes navbar-shadow-dark {
 		0% {
 			background: transparent;
 			backdrop-filter: none;
 			box-shadow: none;
 		}
 		to {
-			background: rgba(17, 24, 39, 0.8);
-			backdrop-filter: blur(12px);
+			background: rgba(15, 23, 42, 0.88);
+			backdrop-filter: blur(14px);
 			box-shadow:
-				0 4px 6px -1px rgb(0 0 0 / 0.3),
-				0 2px 4px -2px rgb(0 0 0 / 0.3);
+				0 8px 24px -6px rgb(0 0 0 / 0.45),
+				0 6px 12px -6px rgb(0 0 0 / 0.35);
 		}
 	}
 </style>
