@@ -1,0 +1,127 @@
+---
+import { LinkButton } from '@shared/ui';
+import MenuIcon from '@assets/icons/MenuIcon.astro';
+
+interface Props {
+	navItems: Array<{
+		title: string;
+		label: string;
+		url: string;
+	}>;
+}
+
+const { navItems } = Astro.props;
+---
+
+<nav class="flex md:hidden w-full items-center justify-between">
+	<button
+		id="mobile-menu-btn"
+		class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors hover:bg-neutral-800/60"
+		aria-label="Toggle menu"
+		aria-expanded="false"
+	>
+		<MenuIcon class="size-6" />
+	</button>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div
+	id="mobile-menu"
+	class="fixed top-0 left-0 w-full h-full bg-neutral-50/90 dark:bg-neutral-900/95 z-50 hidden flex-col items-center justify-center gap-6 text-lg font-medium text-neutral-900 dark:text-neutral-100 transition-all"
+>
+	<!-- Close Button -->
+	<button
+		id="mobile-menu-close"
+		class="absolute top-4 right-4 p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+		aria-label="Close menu"
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="size-7"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M6 18L18 6M6 6l12 12"
+			></path>
+		</svg>
+	</button>
+
+	<!-- Navigation Items -->
+	{
+		navItems.map(link => (
+			<a
+				class="block px-4 py-3 rounded-lg transition-colors text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-200 hover:bg-neutral-200/70 dark:hover:bg-neutral-800"
+				aria-label={link.label}
+				href={link.url}
+				data-close-menu="true"
+			>
+				{link.title}
+			</a>
+		))
+	}
+
+	<!-- Resume CTA in Mobile -->
+	<div class="mt-4">
+		<LinkButton href="/resume.pdf" target="_blank" variant="primary">
+			Resume
+		</LinkButton>
+	</div>
+</div>
+
+<script>
+	// Mobile menu interaction
+	const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+	const mobileMenu = document.getElementById('mobile-menu');
+	const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+	if (mobileMenuBtn && mobileMenu) {
+		// Open menu
+		mobileMenuBtn.addEventListener('click', e => {
+			e.stopPropagation();
+			mobileMenu.classList.remove('hidden');
+			mobileMenu.classList.add('flex');
+			mobileMenuBtn.setAttribute('aria-expanded', 'true');
+		});
+	}
+
+	if (mobileMenuClose && mobileMenu) {
+		// Close button
+		mobileMenuClose.addEventListener('click', e => {
+			e.stopPropagation();
+			mobileMenu.classList.add('hidden');
+			mobileMenu.classList.remove('flex');
+			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+		});
+	}
+
+	// Close menu on nav item click
+	document.addEventListener('click', e => {
+		const target = e.target as HTMLElement;
+		if (target.getAttribute('data-close-menu') === 'true') {
+			mobileMenu?.classList.add('hidden');
+			mobileMenu?.classList.remove('flex');
+			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+		}
+	});
+
+	// Close menu on outside click
+	document.addEventListener('click', e => {
+		if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+			const target = e.target;
+			if (
+				target instanceof Node &&
+				!mobileMenu.contains(target) &&
+				target !== mobileMenuBtn
+			) {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('flex');
+				mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+			}
+		}
+	});
+</script>
