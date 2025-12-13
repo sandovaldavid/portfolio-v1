@@ -1,0 +1,79 @@
+---
+import { TAGS } from '@entities/technology';
+
+/**
+ * TechStack Widget - Infinite scrolling carousel of technologies
+ * Displays key technologies used in the portfolio with smooth animation
+ */
+
+// Select main technologies for the carousel
+const selectedTechs = [
+	TAGS.NEXTJS,
+	TAGS.REACT,
+	TAGS.ASTRO,
+	TAGS.TAILWIND,
+	TAGS.PYTHON,
+	TAGS.DJANGO,
+	TAGS.POSTGRESQL,
+	TAGS.MYSQL,
+	TAGS.EXPRESS,
+	TAGS.JAVASCRIPT,
+	TAGS.CLOUDINARY,
+	TAGS.SANITY,
+	TAGS.CHARTJS,
+	TAGS.BOOTSTRAP,
+];
+
+const duplicatedTechs = [...selectedTechs, ...selectedTechs];
+---
+
+<div class="font-sans w-full overflow-hidden py-6 md:py-8">
+	<div class="relative w-full flex justify-center items-center">
+		<div
+			class="flex gap-3 md:gap-4 animate-scroll-infinite will-change-transform"
+			style="width: fit-content;"
+		>
+			{
+				duplicatedTechs.map((tech, idx) => (
+					<div
+						title={tech.name}
+						class="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 rounded-full bg-neutral-800/80 border border-neutral-700/80 text-neutral-300 text-xs md:text-sm font-medium whitespace-nowrap shrink-0 transition-all duration-300 backdrop-blur-sm hover:bg-neutral-800 hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/20 hover:-translate-y-1 cursor-default"
+					>
+						<tech.icon class="w-5 h-5 md:w-6 md:h-6 shrink-0" />
+						<span>{tech.name}</span>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<style>
+	@keyframes scrollInfinite {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	@layer utilities {
+		.animate-scroll-infinite {
+			animation: scrollInfinite 40s linear infinite;
+		}
+
+		.animate-scroll-infinite:hover {
+			animation-play-state: paused;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.animate-scroll-infinite {
+			width: auto !important;
+			flex-wrap: wrap;
+			justify-content: center;
+			animation: none;
+		}
+	}
+</style>

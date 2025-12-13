@@ -7,6 +7,7 @@ import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import { Header } from '@widgets/header';
 import { Footer } from '@widgets/footer';
+import { TechStack } from '@widgets/tech-stack';
 import { SectionContainer, TitleSection } from '@/shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
@@ -80,6 +81,14 @@ const t = useTranslations(lang);
 							{t('title.about-me')}
 						</TitleSection>
 						<slot name="about-me" />
+					</SectionContainer>
+
+					<SectionContainer id="technologies">
+						<TitleSection>
+							<CodeIcon class="size-12" />
+							{t('title.technologies')}
+						</TitleSection>
+						<TechStack />
 					</SectionContainer>
 				</div>
 			</main>
