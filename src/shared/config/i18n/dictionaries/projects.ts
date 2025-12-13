@@ -4,11 +4,14 @@ export const projectsTranslations = {
 	[Language.ENGLISH]: {
 		'projects.code-button': 'Code',
 		'projects.preview-button': 'Preview',
+		'projects.category.machine-learning': 'Machine Learning · Thesis Project',
+		'projects.category.fullstack': 'Full-Stack Development',
+		'projects.category.enterprise': 'Enterprise Software',
 
-		// // TechShop
-		// 'projects.techshop.title': 'TechShop',
-		// 'projects.techshop.description':
-		// 	'ByteShop E-Commerce offers features advanced product filters, a dynamic shopping cart, secure authentication, a wishlist, dark mode and an intuitive user dashboard. Content is managed via Sanity CMS and the deployment on Vercel ensures top performance and effortless scalability.',
+		// TechShop
+		'projects.techshop.title': 'TechShop',
+		'projects.techshop.description':
+			'ByteShop E-Commerce offers features advanced product filters, a dynamic shopping cart, secure authentication, a wishlist, dark mode and an intuitive user dashboard. Content is managed via Sanity CMS and the deployment on Vercel ensures top performance and effortless scalability.',
 
 		// Buona Vita Nutrición
 		'projects.buona-vita.title': 'Buona Vita Nutrición',
@@ -25,10 +28,10 @@ export const projectsTranslations = {
 		'projects.doguito.description':
 			'Doguito Petshop Admin is a web-based administrative system that enables full CRUD management of clients, products, and pets, featuring form validation and real-time notifications. The responsive interface supports dynamic inventory updates and client–pet associations. The backend provides a RESTful API via JSON Server, and the frontend is deployed on Vercel for reliability and scalability.',
 
-		// // Mail
-		// 'projects.mail.title': 'Mail',
-		// 'projects.mail.description':
-		// 	'This project implements a single-page email client (SPA) using Django for the backend and JavaScript, HTML, and CSS for the frontend. The main goal is to provide a functional and user-friendly interface for managing emails with key features such as sending, receiving, archiving, and replying to emails.',
+		// Mail
+		'projects.mail.title': 'Mail',
+		'projects.mail.description':
+			'This project implements a single-page email client (SPA) using Django for the backend and JavaScript, HTML, and CSS for the frontend. The main goal is to provide a functional and user-friendly interface for managing emails with key features such as sending, receiving, archiving, and replying to emails.',
 
 		// Wiki
 		'projects.wiki.title': 'Wiki',
@@ -78,11 +81,14 @@ export const projectsTranslations = {
 	[Language.SPANISH]: {
 		'projects.code-button': 'Código',
 		'projects.preview-button': 'Vista previa',
+		'projects.category.machine-learning': 'Machine Learning · Proyecto de Tesis',
+		'projects.category.fullstack': 'Desarrollo Full-Stack',
+		'projects.category.enterprise': 'Software Empresarial',
 
-		// // TechShop
-		// 'projects.techshop.title': 'TechShop',
-		// 'projects.techshop.description':
-		// 	'TechShop E-Commerce ofrece una experiencia de compra ágil y totalmente responsiva. Incluye filtros avanzados, carrito de compras dinámico, autenticación segura, lista de deseos, modo oscuro y un panel de usuario intuitivo. La gestión de contenido se realiza con Sanity CMS.',
+		// TechShop
+		'projects.techshop.title': 'TechShop',
+		'projects.techshop.description':
+			'TechShop E-Commerce ofrece una experiencia de compra ágil y totalmente responsiva. Incluye filtros avanzados, carrito de compras dinámico, autenticación segura, lista de deseos, modo oscuro y un panel de usuario intuitivo. La gestión de contenido se realiza con Sanity CMS.',
 
 		// Buona Vita Nutrición
 		'projects.buona-vita.title': 'Buona Vita Nutrición',
@@ -99,10 +105,10 @@ export const projectsTranslations = {
 		'projects.doguito.description':
 			'Doguito Petshop Admin es un sistema administrativo web que permite gestionar clientes, productos y mascotas mediante operaciones CRUD, con validación de formularios y notificaciones en tiempo real. Su interfaz responsiva ofrece un inventario dinámico y la asociación cliente–mascota. El backend expone una API RESTful sobre JSON Server y el frontend está desplegado en Vercel para asegurar alta disponibilidad y escalabilidad.',
 
-		// // Mail
-		// 'projects.mail.title': 'Mail',
-		// 'projects.mail.description':
-		// 	'Este proyecto implementa un cliente de correo electrónico de una sola página (SPA) con Django como backend y JavaScript, HTML y CSS como frontend. El objetivo principal es proporcionar una interfaz funcional e intuitiva para la gestión de correos electrónicos, con funciones clave como enviar, recibir, archivar y responder correos.',
+		// Mail
+		'projects.mail.title': 'Mail',
+		'projects.mail.description':
+			'Este proyecto implementa un cliente de correo electrónico de una sola página (SPA) con Django como backend y JavaScript, HTML y CSS como frontend. El objetivo principal es proporcionar una interfaz funcional e intuitiva para la gestión de correos electrónicos, con funciones clave como enviar, recibir, archivar y responder correos.',
 
 		// Wiki
 		'projects.wiki.title': 'Wiki',
