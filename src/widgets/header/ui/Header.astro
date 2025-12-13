@@ -41,7 +41,7 @@ const navItems = [
 	{
 		title: t('nav.contact'),
 		label: 'contacto',
-		url: 'mailto:sandovaldavid2201@gmail.com',
+		url: getLocalizedPath(lang, '/#contact'),
 	},
 ];
 
@@ -49,7 +49,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 ---
 
 <header
-	class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100"
+	class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100 backdrop-blur-md bg-neutral-50/80 dark:bg-neutral-900/80 border-b border-neutral-200/50 dark:border-neutral-800/50"
 >
 	<div class="flex items-center justify-between px-4 py-4 md:px-8 max-w-7xl mx-auto w-full">
 		<!-- Left: Brand Logo -->
@@ -72,7 +72,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 		<!-- Mobile Menu Button -->
 		<div class="flex md:hidden items-center gap-3 shrink-0">
 			<ThemeToggle />
-			<MobileNav {navItems} />
+			<MobileNav {navItems} {lang} />
 		</div>
 	</div>
 </header>
