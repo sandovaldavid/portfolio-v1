@@ -1,7 +1,6 @@
 ---
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
-import StarIcon from '@assets/icons/Star.astro';
 import Layout from '@app/layouts/Layout.astro';
 import { Experience } from '@widgets/experience';
 import { SectionContainer } from '@shared/ui';
@@ -9,7 +8,6 @@ import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import { Projects } from '@widgets/projects';
 import { TitleSection } from '@shared/ui';
 import { AboutMe } from '@widgets/about-me';
-import { Badges } from '@widgets/badges';
 import { Hero } from '@widgets/hero';
 ---
 
@@ -19,8 +17,8 @@ import { Hero } from '@widgets/hero';
 	img_preview="/projects/portfolio.webp"
 >
 	<main class="px-4 sm:px-6 lg:px-8">
-		<div class="max-w-4xl pt-16 pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 flex flex-col justify-around">
-			<SectionContainer class="mb-4">
+		<div class="max-w-4xl flex flex-col justify-around">
+			<SectionContainer>
 				<Hero />
 			</SectionContainer>
 		</div>
