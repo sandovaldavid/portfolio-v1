@@ -6,25 +6,65 @@ const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 const personalImageAlt = 'Juan David';
+
+const focusAreas = [
+	t('about-me.focus1'),
+	t('about-me.focus2'),
+	t('about-me.focus3'),
+	t('about-me.focus4'),
+	t('about-me.focus5'),
+	t('about-me.focus6'),
+];
 ---
 
-<article
-	class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row"
->
-	<div
-		class="[&>p]:mb-4 [&>p>strong]:text-yellow-500 dark:[&>p>strong]:text-yellow-100 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty order-2 md:order-1"
+<div class="space-y-8">
+	<!-- First Card: Text Content and Profile Image -->
+	<article
+		class="rounded-3xl bg-neutral-800/80 border border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-950/50"
 	>
-		<p set:html={t('about-me.paragraph1')} />
-		<p set:html={t('about-me.paragraph2')} />
-		<p set:html={t('about-me.paragraph3')} />
-	</div>
+		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
+			<!-- Text Content -->
+			<div
+				class="flex-1 space-y-4 [&>p]:text-neutral-300 [&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
+			>
+				<p set:html={t('about-me.paragraph1')} />
+				<p set:html={t('about-me.paragraph2')} />
+				<p set:html={t('about-me.paragraph3')} />
+			</div>
 
-	<img
-		width="200"
-		height="200"
-		src="/profile/perfil.webp"
-		alt={personalImageAlt}
-		class="order-1 object-cover w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 p-1 md:order-2 rotate-3 lg:p-2 aspect-square rounded-2xl bg-black/20 dark:bg-yellow-500/5 ring-1 ring-black/70 dark:ring-white/20"
-		style="object-position: 50% 50%"
-	/>
-</article>
+			<!-- Profile Image -->
+			<div class="shrink-0">
+				<img
+					width="240"
+					height="240"
+					src="/profile/perfil.webp"
+					alt={personalImageAlt}
+					class="w-56 h-56 object-cover aspect-square rounded-2xl ring-2 ring-primary-500/40 shadow-lg shadow-primary-500/20"
+					style="object-position: 50% 50%"
+				/>
+			</div>
+		</div>
+	</article>
+
+	<!-- Second Card: Currently Focused On -->
+	<article
+		class="rounded-3xl bg-neutral-800/80 border border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-950/50"
+	>
+		<h3 class="text-2xl font-bold text-neutral-50 mb-6 md:mb-8">
+			{t('about-me.currently-focused')}
+		</h3>
+		<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+			{
+				focusAreas.map((area, idx) => (
+					<li
+						class="flex items-start gap-3 transition-all duration-300"
+						style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
+					>
+						<span class="shrink-0 w-2 h-2 rounded-full bg-primary-400 mt-2" />
+						<span class="text-neutral-300 text-base leading-relaxed">{area}</span>
+					</li>
+				))
+			}
+		</ul>
+	</article>
+</div>
