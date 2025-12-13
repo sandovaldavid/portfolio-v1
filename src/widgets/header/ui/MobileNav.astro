@@ -1,6 +1,8 @@
 ---
 import { LinkButton } from '@shared/ui';
+import { LanguagePicker } from '@features/language-picker';
 import MenuIcon from '@assets/icons/MenuIcon.astro';
+import type { Language } from '@shared/config/i18n';
 
 interface Props {
 	navItems: Array<{
@@ -8,9 +10,10 @@ interface Props {
 		label: string;
 		url: string;
 	}>;
+	lang: Language;
 }
 
-const { navItems } = Astro.props;
+const { navItems, lang } = Astro.props;
 ---
 
 <nav class="flex md:hidden w-full items-center justify-between">
@@ -27,46 +30,61 @@ const { navItems } = Astro.props;
 <!-- Mobile Menu Overlay -->
 <div
 	id="mobile-menu"
-	class="fixed top-0 left-0 w-full h-full bg-neutral-50/90 dark:bg-neutral-900/95 z-50 hidden flex-col items-center justify-center gap-6 text-lg font-medium text-neutral-900 dark:text-neutral-100 transition-all"
+	class="fixed inset-0 w-full h-screen bg-neutral-50/95 dark:bg-neutral-900/95 backdrop-blur-lg z-50 hidden items-center justify-center transition-all duration-300"
 >
-	<!-- Close Button -->
-	<button
-		id="mobile-menu-close"
-		class="absolute top-4 right-4 p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-		aria-label="Close menu"
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			class="size-7"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
+	<div class="flex flex-col items-center justify-center gap-6 w-full max-w-sm px-6">
+		<!-- Close Button -->
+		<button
+			id="mobile-menu-close"
+			class="absolute top-6 right-6 p-2 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors"
+			aria-label="Close menu"
 		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M6 18L18 6M6 6l12 12"></path>
-		</svg>
-	</button>
-
-	<!-- Navigation Items -->
-	{
-		navItems.map(link => (
-			<a
-				class="block px-4 py-3 rounded-lg transition-colors text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-200 hover:bg-neutral-200/70 dark:hover:bg-neutral-800"
-				aria-label={link.label}
-				href={link.url}
-				data-close-menu="true"
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-6 h-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
 			>
-				{link.title}
-			</a>
-		))
-	}
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"
+				></path>
+			</svg>
+		</button>
 
-	<!-- Resume CTA in Mobile -->
-	<div class="mt-4">
-		<LinkButton href="/resume.pdf" target="_blank" variant="primary"> Resume </LinkButton>
+		<!-- Navigation Items -->
+		<nav
+			class="flex flex-col items-center gap-3 w-full"
+			role="navigation"
+		>
+			{
+				navItems.map(link => (
+					<a
+						class="w-full text-center px-6 py-3.5 rounded-xl text-lg font-medium transition-all duration-200 text-neutral-900 dark:text-neutral-100 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 hover:scale-105"
+						aria-label={link.label}
+						href={link.url}
+						data-close-menu="true"
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+
+		<!-- Actions: Resume + LanguagePicker -->
+		<div class="flex flex-col items-center gap-4 mt-6 w-full">
+			<LinkButton
+				href="/resume.pdf"
+				target="_blank"
+				variant="primary"
+			>
+				Resume
+			</LinkButton>
+			<LanguagePicker currentLang={lang} />
+		</div>
 	</div>
 </div>
 
