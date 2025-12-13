@@ -15,13 +15,33 @@ export function useTranslations(locale: Language) {
 	 * @returns Traducción correspondiente o la clave si no existe traducción.
 	 */
 	return function t(key: TranslationKey): string {
-		const translation = translations[locale]?.[key];
+		const value = translations[locale]?.[key];
 
-		if (!translation) {
+		if (!value) {
 			console.warn(`Missing translation: ${key} for locale: ${locale}`);
-			return key;
+			return key as string;
 		}
 
-		return translation;
+		// Algunas entradas pueden ser arrays (por ejemplo, listas). Tomamos el primer elemento.
+		if (Array.isArray(value)) {
+			return (value[0] ?? key) as string;
+		}
+
+		return value as string;
+	};
+}
+
+/**
+ * Retorna traducciones preservando arrays cuando la clave corresponde a una lista.
+ * Útil para descripciones en bullet points, tecnologías, etc.
+ */
+export function useTranslationsList(locale: Language) {
+	return function tList(key: TranslationKey): string | string[] {
+		const value = translations[locale]?.[key];
+		if (!value) {
+			console.warn(`Missing translation: ${key} for locale: ${locale}`);
+			return key as string;
+		}
+		return Array.isArray(value) ? [...value] : (value as string);
 	};
 }

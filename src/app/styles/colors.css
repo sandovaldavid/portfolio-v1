@@ -6,10 +6,6 @@
 	--color-brand-dark: oklch(46.205% 0.17901 260.3);
 	--color-brand-light: oklch(76.192% 0.10756 259.05);
 	--color-brand-subtle: oklch(91.431% 0.03708 258.37);
-	--color-primary-50: #ecf2fe;
-	--color-primary-100: #c3d8fb;
-	--color-primary-800: #214785;
-	--color-primary-900: #193665;
 
 	/* Accent - Generan: bg-accent, text-accent, etc. */
 	--color-accent: oklch(78.582% 0.11902 175.12);
@@ -19,7 +15,6 @@
 	/* SISTEMA DE GRISES PARA UI */
 
 	/* Backgrounds principales */
-	--color-surface: oklch(100% 0 none); /* bg-surface */
 	--color-surface-dark: oklch(11.237% 0.00871 242.17); /* Modo oscuro */
 
 	--color-elevated: oklch(97.547% 0.00453 258.32); /* bg-elevated (cards, modals) */
@@ -50,24 +45,14 @@
 	/* COLORES SEMÁNTICOS */
 
 	--color-success: oklch(78.582% 0.11902 175.12);
-	--color-success-light: oklch(94.355% 0.03263 179.95);
-	--color-success-dark: oklch(49.16% 0.08296 173.77);
 
 	--color-warning: oklch(83.988% 0.1598 89.194);
-	--color-warning-light: oklch(95.526% 0.04982 92.165);
-	--color-warning-dark: oklch(52.368% 0.10488 86.931);
 
 	--color-danger: oklch(66.805% 0.1852 23.559);
-	--color-danger-light: oklch(96.833% 0.01405 17.399);
-	--color-danger-dark: oklch(45.879% 0.18052 28.337);
 
 	--color-info: oklch(62.005% 0.18129 259.39);
-	--color-info-light: oklch(95.219% 0.02 257.47);
-	--color-info-dark: oklch(37.504% 0.14118 260.28);
 
 	/* TIPOGRAFÍAS */
-
-	--font-code: 'Fira Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
 
 	/* ESPACIADO PERSONALIZADO */
 
@@ -102,32 +87,6 @@
 	/* Easing personalizado */
 	--ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 	--ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* VARIABLES CSS REGULARES (no generan clases) */
-
-:root {
-	/* Variables para uso en CSS personalizado */
-	--portfolio-gradient: linear-gradient(
-		145deg,
-		var(--color-primary-50) 50%,
-		var(--color-primary-100) 95%
-	);
-	--code-highlight: var(--color-brand-subtle);
-	--selection-bg: var(--color-brand-light);
-
-	/* Variables para modo oscuro que cambian automáticamente */
-	--surface: light-dark(var(--color-surface), var(--color-surface-dark));
-	--foreground: light-dark(var(--color-foreground), var(--color-foreground-dark));
-}
-
-/* Modo oscuro automático con light-dark() */
-@media (prefers-color-scheme: dark) {
-	:root {
-		color-scheme: dark;
-		--surface: var(--color-surface-dark);
-		--foreground: var(--color-foreground-dark);
-	}
 }
 
 /* Modo oscuro manual*/

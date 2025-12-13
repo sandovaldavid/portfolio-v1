@@ -1,0 +1,132 @@
+---
+import { LinkButton } from '@shared/ui';
+import { LanguagePicker } from '@features/language-picker';
+import MenuIcon from '@assets/icons/MenuIcon.astro';
+import type { Language } from '@shared/config/i18n';
+
+interface Props {
+	navItems: Array<{
+		title: string;
+		label: string;
+		url: string;
+	}>;
+	lang: Language;
+}
+
+const { navItems, lang } = Astro.props;
+---
+
+<nav class="flex md:hidden w-full items-center justify-between">
+	<button
+		id="mobile-menu-btn"
+		class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors hover:bg-neutral-800/60"
+		aria-label="Toggle menu"
+		aria-expanded="false"
+	>
+		<MenuIcon class="size-6" />
+	</button>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div
+	id="mobile-menu"
+	class="fixed inset-0 w-full h-screen bg-neutral-50/95 dark:bg-neutral-900/95 backdrop-blur-lg z-50 hidden items-center justify-center transition-all duration-300"
+>
+	<div class="flex flex-col items-center justify-center gap-6 w-full max-w-sm px-6">
+		<!-- Close Button -->
+		<button
+			id="mobile-menu-close"
+			class="absolute top-6 right-6 p-2 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors"
+			aria-label="Close menu"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-6 h-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+		</button>
+
+		<!-- Navigation Items -->
+		<nav class="flex flex-col items-center gap-3 w-full" role="navigation">
+			{
+				navItems.map(link => (
+					<a
+						class="w-full text-center px-6 py-3.5 rounded-xl text-lg font-medium transition-all duration-200 text-neutral-900 dark:text-neutral-100 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 hover:scale-105"
+						aria-label={link.label}
+						href={link.url}
+						data-close-menu="true"
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+
+		<!-- Actions: Resume + LanguagePicker -->
+		<div class="flex flex-col items-center gap-4 mt-6 w-full">
+			<LinkButton href="/resume.pdf" target="_blank" variant="primary"> Resume </LinkButton>
+			<LanguagePicker currentLang={lang} />
+		</div>
+	</div>
+</div>
+
+<script>
+	// Mobile menu interaction
+	const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+	const mobileMenu = document.getElementById('mobile-menu');
+	const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+	if (mobileMenuBtn && mobileMenu) {
+		// Open menu
+		mobileMenuBtn.addEventListener('click', e => {
+			e.stopPropagation();
+			mobileMenu.classList.remove('hidden');
+			mobileMenu.classList.add('flex');
+			mobileMenuBtn.setAttribute('aria-expanded', 'true');
+		});
+	}
+
+	if (mobileMenuClose && mobileMenu) {
+		// Close button
+		mobileMenuClose.addEventListener('click', e => {
+			e.stopPropagation();
+			mobileMenu.classList.add('hidden');
+			mobileMenu.classList.remove('flex');
+			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+		});
+	}
+
+	// Close menu on nav item click
+	document.addEventListener('click', e => {
+		const target = e.target as HTMLElement;
+		if (target.getAttribute('data-close-menu') === 'true') {
+			mobileMenu?.classList.add('hidden');
+			mobileMenu?.classList.remove('flex');
+			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+		}
+	});
+
+	// Close menu on outside click
+	document.addEventListener('click', e => {
+		if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+			const target = e.target;
+			if (
+				target instanceof Node &&
+				!mobileMenu.contains(target) &&
+				target !== mobileMenuBtn
+			) {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('flex');
+				mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+			}
+		}
+	});
+</script>

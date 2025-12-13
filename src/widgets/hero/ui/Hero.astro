@@ -1,47 +1,61 @@
 ---
-import { getLangFromUrl, useTranslations, interpolate } from '@shared/lib/i18n';
-import LinkedInIcon from '@assets/social-networks/LinkedIn.astro';
-import MailIcon from '@assets/icons/Mail.astro';
-import { Avatar, SocialPill } from '@shared/ui';
-import GitHubIcon from '@assets/technologies/GitHub.astro';
+import { getLangFromUrl, getLocalizedPath, useTranslations } from '@shared/lib/i18n';
+import CodeIcon from '@assets/icons/Code.astro';
+import BrainIcon from '@assets/icons/Brain.astro';
+import PaletteIcon from '@assets/icons/Palette.astro';
 import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 
-// Prepare avatar alt text with i18n
-const avatarAltTemplate = t('avatar.alt');
-const avatarAlt = interpolate(avatarAltTemplate, {
-	name: 'Juan David Sandoval Salvador',
-});
+const specializations = [
+	{ label: 'Java/Spring', icon: CodeIcon },
+	{ label: 'Angular/React', icon: PaletteIcon },
+	{ label: 'Data Science/AI', icon: BrainIcon },
+];
 ---
 
-<div class="w-full max-w-3xl">
-	<div class="flex flex-col sm:flex-row gap-4 mb-6 items-center">
-		<Avatar src="/profile/perfil.webp" alt={avatarAlt} size="responsive" />
-		<h1
-			class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-800 dark:text-white text-center sm:text-left"
+<div class="w-full h-dvh hero-gradient flex flex-col items-center justify-center gap-6 md:gap-8">
+	<div class="max-w-4xl px-4 flex flex-col items-center gap-6 md:gap-8">
+		<h2
+			class="text-5xl sm:text-7xl lg:text-8xl font-bold text-center opacity-20 text-neutral-50 tracking-tight leading-none"
+			style="animation: var(--animate-fade-in); animation-delay: 0ms;"
 		>
-			{t('hero.intro')}
-		</h1>
+			{t('hero.title')}
+		</h2>
+
+		<p
+			class="text-lg sm:text-xl text-center text-neutral-400 tracking-wide font-medium"
+			style="animation: var(--animate-fade-in); animation-delay: 150ms;"
+		>
+			{t('hero.subtitle')}
+		</p>
+
+		<div
+			class="flex flex-wrap justify-center gap-3 sm:gap-4 mt-2 sm:mt-4"
+			style="animation: var(--animate-fade-in); animation-delay: 300ms;"
+		>
+			{
+				specializations.map(spec => (
+					<div class="rounded-full bg-neutral-700 border border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
+						<spec.icon class="size-4 sm:size-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
+						<span class="text-sm sm:text-base text-neutral-50 font-medium">
+							{spec.label}
+						</span>
+					</div>
+				))
+			}
+		</div>
+
+		{/* CTA Button */}
+		<div class="mt-6 sm:mt-8">
+			<a
+				href={getLocalizedPath(lang, '/#experience')}
+				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-neutral-50 text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
+			>
+				{t('hero.cta.view-work')}
+			</a>
+		</div>
 	</div>
-	<p
-		class="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-800 dark:[&>strong]:text-yellow-200 [&>strong]:text-yellow-500 [&>strong]:font-semibold dark:text-gray-300 text-center sm:text-left"
-		set:html={t('hero.description')}
-	/>
-	<nav class="flex flex-wrap justify-center md:justify-start gap-4 mt-8">
-		<SocialPill href="mailto:devsandoval.me@gmail.com">
-			<MailIcon class="size-4" />
-			Contáctame
-		</SocialPill>
-		<SocialPill href="https://www.linkedin.com/in/devsandoval/">
-			<LinkedInIcon class="size-4" />
-			LinkedIn
-		</SocialPill>
-		<SocialPill href="https://github.com/dev-sandoval">
-			<GitHubIcon class="size-4" />
-			GitHub
-		</SocialPill>
-	</nav>
 </div>

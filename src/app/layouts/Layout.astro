@@ -2,8 +2,15 @@
 import Analytics from '@vercel/analytics/astro';
 import '@app/styles/global.css';
 import '@fontsource-variable/onest';
+import BriefCaseIcon from '@assets/icons/Briefcase.astro';
+import CodeIcon from '@assets/icons/Code.astro';
+import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import { Header } from '@widgets/header';
 import { Footer } from '@widgets/footer';
+import { TechStack } from '@widgets/tech-stack';
+import { SectionContainer, TitleSection } from '@/shared/ui';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
 
 interface Props {
 	title: string;
@@ -11,6 +18,9 @@ interface Props {
 	img_preview: string;
 }
 const { description, title, img_preview } = Astro.props;
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -40,27 +50,47 @@ const { description, title, img_preview } = Astro.props;
 	</head>
 
 	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
-		<div class="fixed inset-0 z-[-2] bg-gray-50 dark:bg-gray-950 background-pattern"></div>
-		<div class="flex flex-col justify-center items-center w-full">
+		<div class="flex flex-col justify-center items-center w-dvw">
 			<Header />
-			<slot />
+			<main>
+				<div class="flex flex-col justify-around">
+					<slot name="hero" />
+				</div>
+				<div class="flex flex-col gap-10 md:gap-16 xl:gap-24">
+					<SectionContainer id="experience">
+						<TitleSection>
+							<BriefCaseIcon class="size-12" />
+							{t('title.experience')}
+						</TitleSection>
+						<slot name="experience" />
+					</SectionContainer>
+
+					<SectionContainer id="projects">
+						<TitleSection>
+							<CodeIcon class="size-12" />
+							{t('title.projects')}
+						</TitleSection>
+						<slot name="projects" />
+					</SectionContainer>
+
+					<SectionContainer id="about-me">
+						<TitleSection>
+							<ProfileCheckIcon class="size-12" />
+							{t('title.about-me')}
+						</TitleSection>
+						<slot name="about-me" />
+					</SectionContainer>
+
+					<SectionContainer id="technologies">
+						<TitleSection>
+							<CodeIcon class="size-12" />
+							{t('title.technologies')}
+						</TitleSection>
+						<TechStack />
+					</SectionContainer>
+				</div>
+			</main>
 			<Footer />
 		</div>
-	</body><style>
-		/*Background Layout*/
-		.background-pattern {
-			background: var(--portfolio-gradient);
-		}
-
-		.background-pattern::before {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background-image: url('/background/polygon-luminary.svg');
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			filter: blur(2px);
-		}
-	</style>
+	</body>
 </html>

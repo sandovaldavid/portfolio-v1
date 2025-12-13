@@ -16,4 +16,8 @@ export interface ProjectItem {
 	image: string;
 	/** Technologies used in the project */
 	tags: Technology[];
+	/** Optional: emphasizes project in UI */
+	featured?: boolean;
+	/** Optional: category label (i18n key or plain) */
+	category?: string;
 }

@@ -1,33 +1,84 @@
 ---
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import MailIcon from '@assets/icons/Mail.astro';
+import LinkedInIcon from '@assets/social-networks/LinkedIn.astro';
+import GitHubIcon from '@assets/technologies/GitHub.astro';
+import LinkHubIcon from '@assets/social-networks/LinkHub.astro';
+import CodeIcon from '@/assets/icons/Code.astro';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
 
 const currentYear = new Date().getFullYear();
+
+const socialLinks = [
+	{
+		name: 'GitHub',
+		href: 'https://github.com/dev-sandoval',
+		icon: GitHubIcon,
+	},
+	{
+		name: 'LinkedIn',
+		href: 'https://www.linkedin.com/in/juan-david-sandoval-salvador/',
+		icon: LinkedInIcon,
+	},
+	{
+		name: 'Email',
+		href: 'mailto:sandovaldavid2201@gmail.com',
+		icon: MailIcon,
+	},
+	{
+		name: 'Link Hub',
+		href: 'https://linksdevs.social',
+		icon: LinkHubIcon,
+	},
+];
 ---
 
-<footer
-	class="opacity-80 px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 mx-auto mb-4 sm:mb-6 flex justify-center"
->
-	<div
-		class="rounded-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 py-4"
-	>
-		<span class="text-sm sm:text-center text-zinc-800/90 dark:text-zinc-200/90"
-			>© {currentYear}
-			<a href="https://github.com/dev-sandoval" class="hover:underline">David Sandoval</a>. {
-				t('footer.rights')
-			}
-		</span>
-		<ul
-			class="flex flex-wrap items-center justify-center mt-3 text-sm font-medium dark:text-white/90 sm:mt-0"
+<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full max-w-7xl mx-auto" id="contact">
+	<!-- CTA Section -->
+	<div class="text-center space-y-6 mb-12">
+		<h1 class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-100">
+			{t('footer.title')}
+		</h1>
+		<h2 class="text-base sm:text-lg md:text-xl font-semibold text-neutral-400 px-4">
+			{t('footer.subtitle')}
+		</h2>
+		<a
+			href="mailto:sandovaldavid2201@gmail.com"
+			class="inline-flex items-center gap-2 px-6 sm:px-8 py-3 bg-primary-500 text-white rounded-full font-medium hover:bg-primary-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
 		>
-			<a href={getLocalizedPath(lang, '/#about-me')} class="hover:underline me-4 md:me-6"
-				>{t('footer.about')}</a
-			>
-			<a id="contacto" href="mailto:sandovaldavid2201@gmail.com" class="hover:underline"
-				>{t('footer.contact')}</a
-			>
-		</ul>
+			<MailIcon class="w-5 h-5" />
+			{t('footer.cta')}
+		</a>
+	</div>
+
+	<!-- Social Links -->
+	<div class="flex justify-center gap-4 sm:gap-6 mb-12 flex-wrap">
+		{
+			socialLinks.map(({ name, href, icon: Icon }) => (
+				<a
+					href={href}
+					target="_blank"
+					rel="noopener noreferrer"
+					title={name}
+					class="text-neutral-400 hover:text-primary-500 transition-colors duration-300 p-2"
+				>
+					<Icon class="w-6 h-6" />
+				</a>
+			))
+		}
+	</div>
+
+	<!-- Bottom Bar -->
+	<div
+		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-800 font-mono text-xs sm:text-sm text-neutral-500 text-center md:text-left"
+	>
+		<p>© {currentYear} Juan David Sandoval. {t('footer.rights')}.</p>
+		<p class="flex items-center gap-2">
+			{t('footer.built-with')}
+			<CodeIcon class="w-4 h-4 text-primary-500" />
+			<span class="text-neutral-600">v2.0.0</span>
+		</p>
 	</div>
 </footer>

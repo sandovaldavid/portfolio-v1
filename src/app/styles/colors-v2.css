@@ -1,0 +1,93 @@
+@import '@fontsource/geist-sans';
+@import '@fontsource/geist-mono';
+
+@theme {
+	--font-sans: 'Geist Sans', 'Inter', system-ui, sans-serif;
+	--font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+	--font-code: 'Fira Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
+
+	--color-primary-50: #eff6ff;
+	--color-primary-100: #dbeafe;
+	--color-primary-200: #bfdbfe;
+	--color-primary-300: #93c5fd;
+	--color-primary-400: #60a5fa;
+	--color-primary-500: #3c82f1;
+	--color-primary-600: #2563eb;
+	--color-primary-700: #1d4ed8;
+	--color-primary-800: #1e40af;
+	--color-primary-900: #1e3a8a;
+	--color-primary-950: #172554;
+
+	--color-neutral-50: #f8fafc;
+	--color-neutral-100: #f1f5f9;
+	--color-neutral-200: #e2e8f0;
+	--color-neutral-300: #cbd5e1;
+	--color-neutral-400: #94a3b8;
+	--color-neutral-500: #64748b;
+	--color-neutral-600: #475569;
+	--color-neutral-700: #334155;
+	--color-neutral-800: #1e293b;
+	--color-neutral-900: #0f172a;
+	--color-neutral-950: #020617;
+
+	--color-success-500: #10b981;
+	--color-success-900: #064e3b;
+
+	--color-warning-500: #f59e0b;
+	--color-warning-900: #78350f;
+
+	--color-error-500: #ef4444;
+	--color-error-900: #7f1d1d;
+
+	--color-background: var(--color-neutral-900);
+	--color-surface: var(--color-neutral-800);
+	--color-surface-highlight: var(--color-neutral-700);
+
+	--color-text-main: var(--color-neutral-50);
+	--color-text-body: var(--color-neutral-300);
+	--color-text-muted: var(--color-neutral-400);
+
+	--color-border-subtle: var(--color-neutral-800);
+	--color-border-strong: var(--color-neutral-700);
+
+	/* Animaciones Standard */
+	--animate-fade-in: fade-in 0.4s ease-out forwards;
+	--animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}
+
+:root {
+	color-scheme: dark;
+}
+
+body {
+	background-color: var(--color-background);
+	color: var(--color-text-body);
+	-webkit-font-smoothing: antialiased;
+}
+
+.hero-gradient {
+	background: radial-gradient(
+		circle at 50% 0%,
+		rgba(60, 130, 241, 0.15) 0%,
+		rgba(15, 23, 42, 0) 50%
+	);
+}
