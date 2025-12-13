@@ -7,6 +7,14 @@ interface Props {
 const { class: className, id } = Astro.props;
 ---
 
-<section {id} class:list={['w-full container min-h-dvh', 'flex flex-col justify-center items-center', className]}>
+<section
+	{id}
+	class:list={[
+		'w-full container',
+		'flex flex-col justify-center items-center',
+		'scroll-margin-top-20',
+		className,
+	]}
+>
 	<slot />
 </section>
