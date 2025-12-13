@@ -52,11 +52,9 @@ const t = useTranslations(lang);
 	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
 		<div class="flex flex-col justify-center items-center w-dvw">
 			<Header />
-			<main class="px-4 sm:px-6 lg:px-8">
+			<main>
 				<div class="flex flex-col justify-around">
-					<SectionContainer>
-						<slot name="hero" />
-					</SectionContainer>
+					<slot name="hero" />
 				</div>
 				<div class="flex flex-col gap-10 md:gap-16 xl:gap-24">
 					<SectionContainer id="experience">
