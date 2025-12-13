@@ -85,31 +85,29 @@ const t = useTranslations(lang);
 						<slot name="hero" />
 					</SectionContainer>
 				</div>
-				<div class="space-y-16 md:space-y-20 lg:space-y-24">
-					<SectionContainer id="experience">
-						<TitleSection>
-							<BriefCaseIcon class="size-8" />
-							{t('title.experience')}
-						</TitleSection>
-						<slot name="experience" />
-					</SectionContainer>
+				<SectionContainer id="experience">
+					<TitleSection>
+						<BriefCaseIcon class="size-12" />
+						{t('title.experience')}
+					</TitleSection>
+					<slot name="experience" />
+				</SectionContainer>
 
-					<SectionContainer id="projects">
-						<TitleSection>
-							<CodeIcon class="size-7" />
-							{t('title.projects')}
-						</TitleSection>
-						<slot name="projects" />
-					</SectionContainer>
+				<SectionContainer id="projects">
+					<TitleSection>
+						<CodeIcon class="size-7" />
+						{t('title.projects')}
+					</TitleSection>
+					<slot name="projects" />
+				</SectionContainer>
 
-					<SectionContainer id="about-me">
-						<TitleSection>
-							<ProfileCheckIcon class="size-8" />
-							{t('title.about-me')}
-						</TitleSection>
-						<slot name="about-me" />
-					</SectionContainer>
-				</div>
+				<SectionContainer id="about-me">
+					<TitleSection>
+						<ProfileCheckIcon class="size-8" />
+						{t('title.about-me')}
+					</TitleSection>
+					<slot name="about-me" />
+				</SectionContainer>
 			</main>
 			<Footer />
 		</div>
