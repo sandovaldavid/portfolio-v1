@@ -2,8 +2,14 @@
 import Analytics from '@vercel/analytics/astro';
 import '@app/styles/global.css';
 import '@fontsource-variable/onest';
+import BriefCaseIcon from '@assets/icons/Briefcase.astro';
+import CodeIcon from '@assets/icons/Code.astro';
+import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import { Header } from '@widgets/header';
 import { Footer } from '@widgets/footer';
+import { SectionContainer, TitleSection } from '@/shared/ui';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
 
 interface Props {
 	title: string;
@@ -11,21 +17,52 @@ interface Props {
 	img_preview: string;
 }
 const { description, title, img_preview } = Astro.props;
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content={description} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={img_preview} />
-		<meta property="og:url" content="https://devsandoval.me" />
-		<meta property="og:type" content="website" />
+		<meta
+			name="viewport"
+			content="width=device-width"
+		/>
+		<meta
+			name="description"
+			content={description}
+		/>
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="/favicon.svg"
+		/>
+		<meta
+			name="generator"
+			content={Astro.generator}
+		/>
+		<meta
+			property="og:title"
+			content={title}
+		/>
+		<meta
+			property="og:description"
+			content={description}
+		/>
+		<meta
+			property="og:image"
+			content={img_preview}
+		/>
+		<meta
+			property="og:url"
+			content="https://devsandoval.me"
+		/>
+		<meta
+			property="og:type"
+			content="website"
+		/>
 		<title>{title}</title>
 		<script is:inline>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -42,7 +79,38 @@ const { description, title, img_preview } = Astro.props;
 	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
 		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
-			<slot />
+			<main class="px-4 sm:px-6 lg:px-8">
+				<div class="flex flex-col justify-around">
+					<SectionContainer>
+						<slot name="hero" />
+					</SectionContainer>
+				</div>
+				<div class="space-y-16 md:space-y-20 lg:space-y-24">
+					<SectionContainer id="experience">
+						<TitleSection>
+							<BriefCaseIcon class="size-8" />
+							{t('title.experience')}
+						</TitleSection>
+						<slot name="experience" />
+					</SectionContainer>
+
+					<SectionContainer id="projects">
+						<TitleSection>
+							<CodeIcon class="size-7" />
+							{t('title.projects')}
+						</TitleSection>
+						<slot name="projects" />
+					</SectionContainer>
+
+					<SectionContainer id="about-me">
+						<TitleSection>
+							<ProfileCheckIcon class="size-8" />
+							{t('title.about-me')}
+						</TitleSection>
+						<slot name="about-me" />
+					</SectionContainer>
+				</div>
+			</main>
 			<Footer />
 		</div>
 	</body>
