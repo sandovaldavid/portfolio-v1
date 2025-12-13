@@ -1,20 +1,78 @@
 ---
 import { getProjectsData, ProjectCard } from '@/entities/project';
 import { getLangFromUrl, useTranslations } from '@/shared/lib/i18n';
+import type { ProjectItem } from '@/entities/project';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
 const PROJECTS = getProjectsData(t);
+const primaryProjects: ProjectItem[] = [
+	...PROJECTS.filter(project => project.featured),
+	...PROJECTS.filter(project => !project.featured),
+].slice(0, 2);
+
+const secondaryProjects: ProjectItem[] = PROJECTS.filter(
+	project => !primaryProjects.includes(project)
+).slice(0, 2);
+
+const primaryTop = primaryProjects[0] ?? PROJECTS[0];
+const primaryBottom = primaryProjects[1] ?? PROJECTS[1] ?? PROJECTS[0];
+const secondaryTop = secondaryProjects[0] ?? PROJECTS.find(p => !primaryProjects.includes(p));
+const secondaryBottom =
+	secondaryProjects[1] ?? PROJECTS.find(p => !primaryProjects.includes(p) && p !== secondaryTop);
 ---
 
-<div class="flex flex-col gap-y-16">
-	{
-		PROJECTS.map(project => (
-			<ProjectCard
-				project={project}
-				codeButtonText={t('projects.code-button')}
-				previewButtonText={t('projects.preview-button')}
-			/>
-		))
-	}
-</div>
+<section class="font-sans">
+	<div
+		class="grid grid-cols-1 gap-6 md:grid-cols-3 md:grid-rows-[minmax(420px,auto)_minmax(300px,auto)] items-stretch"
+	>
+		{
+			primaryTop && (
+				<div class="md:col-span-2 md:row-start-1 md:row-end-2 min-h-[420px] h-full">
+					<ProjectCard
+						project={primaryTop}
+						variant="primary"
+						codeButtonText={t('projects.code-button')}
+						previewButtonText={t('projects.preview-button')}
+					/>
+				</div>
+			)
+		}
+		{
+			secondaryTop && (
+				<div class="md:col-span-1 md:row-start-1 md:row-end-2 min-h-[420px] h-full">
+					<ProjectCard
+						project={secondaryTop}
+						variant="secondary"
+						codeButtonText={t('projects.code-button')}
+						previewButtonText={t('projects.preview-button')}
+					/>
+				</div>
+			)
+		}
+		{
+			secondaryBottom && (
+				<div class="md:col-span-1 md:row-start-2 md:row-end-3 min-h-[300px] h-full">
+					<ProjectCard
+						project={secondaryBottom}
+						variant="secondary"
+						codeButtonText={t('projects.code-button')}
+						previewButtonText={t('projects.preview-button')}
+					/>
+				</div>
+			)
+		}
+		{
+			primaryBottom && (
+				<div class="md:col-span-2 md:row-start-2 md:row-end-3 min-h-[300px] h-full">
+					<ProjectCard
+						project={primaryBottom}
+						variant="primary"
+						codeButtonText={t('projects.code-button')}
+						previewButtonText={t('projects.preview-button')}
+					/>
+				</div>
+			)
+		}
+	</div>
+</section>
