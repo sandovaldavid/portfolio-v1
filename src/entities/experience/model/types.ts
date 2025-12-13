@@ -8,8 +8,10 @@ export interface ExperienceItem {
 	title: string;
 	/** Company or organization name */
 	company: string;
-	/** Detailed description of responsibilities and achievements */
-	description: string;
+	/** Detailed description of responsibilities and achievements - array of bullet points */
+	description: string[];
+	/** Technologies, languages, and tools used */
+	technologies: string[];
 	/** Optional link to company website or project */
 	link?: string;
 }
