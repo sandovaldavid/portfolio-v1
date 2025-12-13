@@ -2,57 +2,107 @@ import { Language } from '../languages';
 
 export const experienceTranslations = {
 	[Language.ENGLISH]: {
-		'experience.technical-support.date': 'Jun 2024 - Oct 2024',
-		'experience.technical-support.title': 'Technical Support',
-		'experience.technical-support.description':
-			'I provided technical support for maintenance and configuration of technological infrastructure, ensuring the operation of systems and equipment in an institutional environment. I developed skills in diagnosing and resolving incidents, optimization of technological processes, and attention to requirements, contributing to operational efficiency. My experience strengthened my ability to address technical challenges and improve systems management, key skills in development and IT environments.',
-		'experience.technical-support.company': 'Provincial Municipality of Piura',
+		'experience.learn-more': 'Learn more',
 		'experience.chirasoft.date': 'May 2025 – Jul 2025',
 		'experience.chirasoft.title': 'Fullstack Developer Freelance',
-		'experience.chirasoft.description':
-			'I migrated an educational institutional site from WordPress to Angular, improving its performance, maintainability, and user experience. I contributed to the comprehensive development of an e-commerce platform, from frontend to backend business logic.',
+		'experience.chirasoft.description': [
+			'Migrated an educational institutional site from WordPress to Angular, improving performance, maintainability, and user experience',
+			'Contributed to the comprehensive development of an e-commerce platform, from frontend to backend business logic',
+			'Implemented responsive design patterns and optimized component architecture for scalability',
+		],
 		'experience.chirasoft.company': 'Chirasoft',
+		'experience.chirasoft.technologies': ['Angular', 'TypeScript', 'WordPress', 'E-commerce', 'Responsive Design'],
+		'experience.technical-support.date': 'Jun 2024 - Oct 2024',
+		'experience.technical-support.title': 'Technical Support',
+		'experience.technical-support.description': [
+			'Provided technical support for maintenance and configuration of technological infrastructure',
+			'Diagnosed and resolved incidents, optimizing technological processes in institutional environment',
+			'Strengthened ability to address technical challenges and improve systems management',
+		],
+		'experience.technical-support.company': 'Provincial Municipality of Piura',
+		'experience.technical-support.technologies': ['System Administration', 'Infrastructure', 'Troubleshooting', 'Network Configuration'],
 		'experience.harvardx.date': 'May 2024 – May 2025',
 		'experience.harvardx.title': 'Full Stack Developer (CS50W)',
-		'experience.harvardx.description':
-			'I implemented complete projects using Django, JavaScript, and Bootstrap, including an auction platform and an AJAX-based email system. Focused on responsive design, user authentication, and dynamic navigation.',
+		'experience.harvardx.description': [
+			'Implemented complete projects using Django, JavaScript, and Bootstrap',
+			'Built an auction platform with user authentication and real-time bidding',
+			'Developed an AJAX-based email system for asynchronous communication',
+			'Focused on responsive design, user authentication, and dynamic navigation patterns',
+		],
 		'experience.harvardx.company': 'HarvardX',
+		'experience.harvardx.technologies': ['Django', 'Python', 'JavaScript', 'Bootstrap', 'SQL', 'AJAX', 'Authentication'],
 		'experience.alura.date': 'Apr. 2022 – Dec. 2022',
 		'experience.alura.title': 'Junior Web Developer',
-		'experience.alura.description':
-			'I built interactive web applications, including games, online stores, and landing pages using HTML5, CSS3, and JavaScript. Participated in coding challenges applying good UI/UX practices.',
+		'experience.alura.description': [
+			'Built interactive web applications including games, online stores, and landing pages',
+			'Developed with HTML5, CSS3, and JavaScript for cross-browser compatibility',
+			'Participated in coding challenges applying UI/UX best practices',
+			'Collaborated with peers on real-world projects to enhance problem-solving skills',
+		],
 		'experience.alura.company': 'Alura Latam (ONE Program)',
+		'experience.alura.technologies': ['HTML5', 'CSS3', 'JavaScript', 'UI/UX', 'Web Design', 'Git'],
 		'experience.data-science.date': 'Feb 2024 – Jun 2024',
 		'experience.data-science.title': 'Data Science Trainee',
-		'experience.data-science.description':
-			'I participated in an intensive Data Science training program focused on real-world projects and the application of modern analysis and visualization tools. Developed skills in statistics, exploratory data analysis, data cleaning, and transformation with Python. Worked with libraries like Pandas, Matplotlib, and Scikit-learn to build regression and classification models. Implemented interactive notebooks in Jupyter and developed data-driven solutions for real-world problems. Learned fundamental concepts of Machine Learning, data pipelines, and model evaluation.',
+		'experience.data-science.description': [
+			'Participated in intensive Data Science training focused on real-world projects',
+			'Developed skills in statistics, exploratory data analysis, data cleaning, and transformation with Python',
+			'Built regression and classification models using Pandas, Matplotlib, and Scikit-learn',
+			'Implemented interactive Jupyter notebooks and developed data-driven solutions for real-world problems',
+			'Learned fundamental concepts of Machine Learning, data pipelines, and model evaluation',
+		],
 		'experience.data-science.company': 'Alura LATAM / Oracle Next Education',
+		'experience.data-science.technologies': ['Python', 'Pandas', 'Scikit-learn', 'Matplotlib', 'Jupyter', 'Machine Learning', 'Statistics'],
 	},
 	[Language.SPANISH]: {
-		'experience.technical-support.date': 'Jun 2024 - Oct 2024',
-		'experience.technical-support.title': 'Soporte Técnico',
-		'experience.technical-support.description':
-			'Brindé soporte técnico para mantenimiento y configuración de infraestructura tecnológica, asegurando el funcionamiento de sistemas y equipos en un entorno institucional. Desarrollé habilidades en diagnóstico y resolución de incidentes, optimización de procesos tecnológicos y atención de requerimientos, contribuyendo a la eficiencia operativa. Mi experiencia fortaleció mi capacidad para abordar desafíos técnicos y mejorar la gestión de sistemas, habilidades clave en entornos de desarrollo y TI.',
-		'experience.technical-support.company': 'Municipalidad Provincial de Piura',
+		'experience.learn-more': 'Saber más',
 		'experience.chirasoft.date': 'May 2025 – Jul 2025',
 		'experience.chirasoft.title': 'Desarrollador Fullstack Freelance',
-		'experience.chirasoft.description':
-			'Realicé la migración de un sitio institucional educativo de WordPress a Angular, mejorando su rendimiento, mantenibilidad y experiencia de usuario. Contribuí al desarrollo integral de una plataforma de comercio electrónico, desde el frontend hasta la lógica de negocio en el backend.',
+		'experience.chirasoft.description': [
+			'Realicé la migración de un sitio institucional educativo de WordPress a Angular, mejorando su rendimiento, mantenibilidad y experiencia de usuario',
+			'Contribuí al desarrollo integral de una plataforma de comercio electrónico, desde el frontend hasta la lógica de negocio en el backend',
+			'Implementé patrones de diseño responsivo y optimicé la arquitectura de componentes para escalabilidad',
+		],
 		'experience.chirasoft.company': 'Chirasoft',
+		'experience.chirasoft.technologies': ['Angular', 'TypeScript', 'WordPress', 'E-commerce', 'Diseño Responsivo'],
+		'experience.technical-support.date': 'Jun 2024 - Oct 2024',
+		'experience.technical-support.title': 'Soporte Técnico',
+		'experience.technical-support.description': [
+			'Brindé soporte técnico para mantenimiento y configuración de infraestructura tecnológica',
+			'Realicé diagnóstico y resolución de incidentes, optimizando procesos tecnológicos en entorno institucional',
+			'Fortalecí mi capacidad para abordar desafíos técnicos y mejorar la gestión de sistemas',
+		],
+		'experience.technical-support.company': 'Municipalidad Provincial de Piura',
+		'experience.technical-support.technologies': ['Administración de Sistemas', 'Infraestructura', 'Solución de Problemas', 'Configuración de Red'],
 		'experience.harvardx.date': 'May 2024 – May 2025',
 		'experience.harvardx.title': 'Desarrollador Full Stack (CS50W)',
-		'experience.harvardx.description':
-			'Implementé proyectos completos utilizando Django, JavaScript y Bootstrap, incluyendo una plataforma de subastas y un sistema de correo electrónico basado en AJAX. Enfocado en diseño responsivo, autenticación de usuarios y navegación dinámica.',
+		'experience.harvardx.description': [
+			'Implementé proyectos completos utilizando Django, JavaScript y Bootstrap',
+			'Construí una plataforma de subastas con autenticación de usuarios y pujas en tiempo real',
+			'Desarrollé un sistema de correo electrónico basado en AJAX para comunicación asincrónica',
+			'Enfocado en diseño responsivo, autenticación de usuarios y patrones de navegación dinámica',
+		],
 		'experience.harvardx.company': 'HarvardX',
+		'experience.harvardx.technologies': ['Django', 'Python', 'JavaScript', 'Bootstrap', 'SQL', 'AJAX', 'Autenticación'],
 		'experience.alura.date': 'Abr. 2022 – Dic. 2022',
 		'experience.alura.title': 'Desarrollador Web Junior',
-		'experience.alura.description':
-			'Construí aplicaciones web interactivas, incluyendo juegos, tiendas en línea y páginas de aterrizaje utilizando HTML5, CSS3 y JavaScript. Participé en desafíos de codificación aplicando buenas prácticas de UI/UX.',
+		'experience.alura.description': [
+			'Construí aplicaciones web interactivas incluyendo juegos, tiendas en línea y páginas de aterrizaje',
+			'Desarrollé con HTML5, CSS3 y JavaScript para compatibilidad entre navegadores',
+			'Participé en desafíos de codificación aplicando buenas prácticas de UI/UX',
+			'Colaboré con compañeros en proyectos del mundo real para mejorar habilidades de resolución de problemas',
+		],
 		'experience.alura.company': 'Alura Latam (ONE Program)',
+		'experience.alura.technologies': ['HTML5', 'CSS3', 'JavaScript', 'UI/UX', 'Diseño Web', 'Git'],
 		'experience.data-science.date': 'Feb 2024 – Jun 2024',
 		'experience.data-science.title': 'Practicante de Ciencia de Datos',
-		'experience.data-science.description':
-			'Participé en un intensivo programa de capacitación en Ciencia de Datos enfocado en proyectos del mundo real y la aplicación de herramientas modernas de análisis y visualización. Desarrollé habilidades en estadísticas, análisis exploratorio de datos, limpieza y transformación de datos con Python. Trabajé con bibliotecas como Pandas, Matplotlib y Scikit-learn para construir modelos de regresión y clasificación. Implementé cuadernos interactivos en Jupyter y desarrollé soluciones basadas en datos para problemas del mundo real. Aprendí conceptos fundamentales de Machine Learning, tuberías de datos y evaluación de modelos.',
+		'experience.data-science.description': [
+			'Participé en un programa intensivo de capacitación en Ciencia de Datos enfocado en proyectos del mundo real',
+			'Desarrollé habilidades en estadísticas, análisis exploratorio de datos, limpieza y transformación de datos con Python',
+			'Construí modelos de regresión y clasificación utilizando Pandas, Matplotlib y Scikit-learn',
+			'Implementé cuadernos interactivos en Jupyter y desarrollé soluciones basadas en datos para problemas del mundo real',
+			'Aprendí conceptos fundamentales de Machine Learning, tuberías de datos y evaluación de modelos',
+		],
 		'experience.data-science.company': 'Alura LATAM / Oracle Next Education',
+		'experience.data-science.technologies': ['Python', 'Pandas', 'Scikit-learn', 'Matplotlib', 'Jupyter', 'Machine Learning', 'Estadística'],
 	},
 } as const;

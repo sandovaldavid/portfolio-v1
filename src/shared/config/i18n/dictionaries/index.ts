@@ -9,6 +9,7 @@ import { badgesTranslations } from './badges';
 import { footerTranslations } from './footer';
 import { themeTranslations } from './theme';
 import { notFoundTranslations } from './not-found';
+import { titleSectionsTranslations } from './title-sections';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -28,6 +29,7 @@ function combineTranslations(lang: Language): Record<string, string> {
 		...footerTranslations[lang],
 		...themeTranslations[lang],
 		...notFoundTranslations[lang],
+		...titleSectionsTranslations[lang],
 	};
 }
 
