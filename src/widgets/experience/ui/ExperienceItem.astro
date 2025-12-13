@@ -6,12 +6,14 @@ import { Language } from '@shared/config/i18n';
 interface Props {
 	title: string;
 	date: string;
-	description: string[];
-	technologies: string[];
+	description: string | string[];
+	technologies: string | string[];
 	link?: string;
 	company?: string;
 }
 const { title, date, description, technologies, link } = Astro.props;
+const descriptionItems = Array.isArray(description) ? description : [description];
+const technologyItems = Array.isArray(technologies) ? technologies : [technologies];
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
@@ -29,7 +31,7 @@ const t = useTranslations(lang);
 	<!-- Bullet Points Description -->
 	<ul class="space-y-2 list-disc list-inside text-neutral-300 leading-relaxed">
 		{
-			description.map((point, idx) => (
+			descriptionItems.map((point, idx) => (
 				<li
 					class="ml-2 text-base transition-all duration-300"
 					style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
@@ -42,12 +44,12 @@ const t = useTranslations(lang);
 
 	<!-- Technologies Tags -->
 	{
-		technologies && technologies.length > 0 && (
+		technologyItems && technologyItems.length > 0 && (
 			<div
 				class="flex flex-wrap gap-2 pt-2 justify-start"
 				style="animation: var(--animate-slide-up); animation-delay: 150ms;"
 			>
-				{technologies.map(tech => (
+				{technologyItems.map(tech => (
 					<span class="px-3 py-1.5 rounded-full bg-primary-500/15 text-primary-300 text-sm font-medium border border-primary-500/40 hover:border-primary-400/60 hover:bg-primary-500/25 transition-all duration-300">
 						{tech}
 					</span>
