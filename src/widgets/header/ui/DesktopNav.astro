@@ -11,8 +11,10 @@ interface Props {
 const { navItems } = Astro.props;
 ---
 
-
-<nav class="hidden md:flex items-center justify-center gap-8 font-sans" aria-label="Main navigation">
+<nav
+	class="hidden md:flex items-center justify-center gap-8 font-sans"
+	aria-label="Main navigation"
+>
 	{
 		navItems.map(link => (
 			<a
@@ -34,7 +36,7 @@ const { navItems } = Astro.props;
 		left: 50%;
 		width: 0;
 		height: 2px;
-			background-color: currentColor;
+		background-color: currentColor;
 		transition: all 0.3s ease;
 		transform: translateX(-50%);
 	}

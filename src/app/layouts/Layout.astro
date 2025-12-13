@@ -26,43 +26,15 @@ const t = useTranslations(lang);
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width"
-		/>
-		<meta
-			name="description"
-			content={description}
-		/>
-		<link
-			rel="icon"
-			type="image/svg+xml"
-			href="/favicon.svg"
-		/>
-		<meta
-			name="generator"
-			content={Astro.generator}
-		/>
-		<meta
-			property="og:title"
-			content={title}
-		/>
-		<meta
-			property="og:description"
-			content={description}
-		/>
-		<meta
-			property="og:image"
-			content={img_preview}
-		/>
-		<meta
-			property="og:url"
-			content="https://devsandoval.me"
-		/>
-		<meta
-			property="og:type"
-			content="website"
-		/>
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={img_preview} />
+		<meta property="og:url" content="https://devsandoval.me" />
+		<meta property="og:type" content="website" />
 		<title>{title}</title>
 		<script is:inline>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -85,30 +57,30 @@ const t = useTranslations(lang);
 						<slot name="hero" />
 					</SectionContainer>
 				</div>
-				<div class='flex flex-col gap-10 md:gap-16 xl:gap-24'>
+				<div class="flex flex-col gap-10 md:gap-16 xl:gap-24">
 					<SectionContainer id="experience">
-					<TitleSection>
-						<BriefCaseIcon class="size-12" />
-						{t('title.experience')}
-					</TitleSection>
-					<slot name="experience" />
-				</SectionContainer>
+						<TitleSection>
+							<BriefCaseIcon class="size-12" />
+							{t('title.experience')}
+						</TitleSection>
+						<slot name="experience" />
+					</SectionContainer>
 
-				<SectionContainer id="projects">
-					<TitleSection>
-						<CodeIcon class="size-12" />
-						{t('title.projects')}
-					</TitleSection>
-					<slot name="projects" />
-				</SectionContainer>
+					<SectionContainer id="projects">
+						<TitleSection>
+							<CodeIcon class="size-12" />
+							{t('title.projects')}
+						</TitleSection>
+						<slot name="projects" />
+					</SectionContainer>
 
-				<SectionContainer id="about-me">
-					<TitleSection>
-						<ProfileCheckIcon class="size-12" />
-						{t('title.about-me')}
-					</TitleSection>
-					<slot name="about-me" />
-				</SectionContainer>
+					<SectionContainer id="about-me">
+						<TitleSection>
+							<ProfileCheckIcon class="size-12" />
+							{t('title.about-me')}
+						</TitleSection>
+						<slot name="about-me" />
+					</SectionContainer>
 				</div>
 			</main>
 			<Footer />

@@ -37,7 +37,7 @@ const specializations = [
 			style="animation: var(--animate-fade-in); animation-delay: 300ms;"
 		>
 			{
-				specializations.map((spec) => (
+				specializations.map(spec => (
 					<div class="rounded-full bg-neutral-700 border border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
 						<spec.icon class="size-4 sm:size-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
 						<span class="text-sm sm:text-base text-neutral-50 font-medium">
@@ -49,12 +49,10 @@ const specializations = [
 		</div>
 
 		{/* CTA Button */}
-		<div
-			class="mt-6 sm:mt-8"
-		>
+		<div class="mt-6 sm:mt-8">
 			<a
 				href={getLocalizedPath(lang, '/#experience')}
-				class='relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-neutral-50 text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10'
+				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-neutral-50 text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
 			>
 				{t('hero.cta.view-work')}
 			</a>

@@ -48,7 +48,9 @@ const navItems = [
 const homeUrl = getLocalizedPath(lang, '/');
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100">
+<header
+	class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100"
+>
 	<div class="flex items-center justify-between px-4 py-4 md:px-8 max-w-7xl mx-auto w-full">
 		<!-- Left: Brand Logo -->
 		<div class="shrink-0">
@@ -62,9 +64,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 
 		<!-- Right: Actions (Desktop) -->
 		<div class="hidden md:flex items-center gap-4 shrink-0">
-			<LinkButton href="/resume.pdf" target="_blank" variant="primary">
-				Resume
-			</LinkButton>
+			<LinkButton href="/resume.pdf" target="_blank" variant="primary"> Resume </LinkButton>
 			<ThemeToggle />
 			<LanguagePicker currentLang={lang} />
 		</div>

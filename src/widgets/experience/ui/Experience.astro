@@ -10,6 +10,7 @@ const t = useTranslations(lang);
 
 const EXPERIENCE = getExperienceData(t);
 ---
+
 <section class="font-sans">
 	<div class="grid grid-cols-1 md:grid-cols-5 gap-8">
 		<!-- Left: Vertical Tabs -->
@@ -34,7 +35,11 @@ const EXPERIENCE = getExperienceData(t);
 							<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-500 rounded-l-lg hidden data-[active=true]:block" />
 							<div class="flex flex-col">
 								<span class="font-semibold">{exp.company ?? exp.title}</span>
-								{exp.company && <span class="text-neutral-500 text-xs md:text-sm">{exp.title}</span>}
+								{exp.company && (
+									<span class="text-neutral-500 text-xs md:text-sm">
+										{exp.title}
+									</span>
+								)}
 							</div>
 						</button>
 					))
@@ -68,21 +73,21 @@ const EXPERIENCE = getExperienceData(t);
 			const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
 			const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
 
-function updatePanelAnimations(index) {
-			panels.forEach((panel, i) => {
-				panel.dataset.active = String(i === index);
-			});
-		}
-		function activateTab(index, opts = { focus: false }) {
-			tabs.forEach((tab, i) => {
-				const selected = i === index;
-				tab.setAttribute('aria-selected', String(selected));
-				tab.tabIndex = selected ? 0 : -1;
-				tab.dataset.active = String(selected);
-				const panel = panels[i];
-				if (panel) panel.hidden = !selected;
-			});
-			updatePanelAnimations(index);
+			function updatePanelAnimations(index) {
+				panels.forEach((panel, i) => {
+					panel.dataset.active = String(i === index);
+				});
+			}
+			function activateTab(index, opts = { focus: false }) {
+				tabs.forEach((tab, i) => {
+					const selected = i === index;
+					tab.setAttribute('aria-selected', String(selected));
+					tab.tabIndex = selected ? 0 : -1;
+					tab.dataset.active = String(selected);
+					const panel = panels[i];
+					if (panel) panel.hidden = !selected;
+				});
+				updatePanelAnimations(index);
 				if (opts.focus) {
 					if (typeof tabs[index]?.focus === 'function') {
 						try {
@@ -96,21 +101,29 @@ function updatePanelAnimations(index) {
 
 			tabs.forEach((tab, i) => {
 				tab.addEventListener('click', () => activateTab(i, { focus: false }));
-				tab.addEventListener('keydown', (e) => {
+				tab.addEventListener('keydown', e => {
 					const key = e.key;
 					let next = i;
 					if (key === 'ArrowDown' || key === 'ArrowRight') next = (i + 1) % tabs.length;
-					else if (key === 'ArrowUp' || key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+					else if (key === 'ArrowUp' || key === 'ArrowLeft')
+						next = (i - 1 + tabs.length) % tabs.length;
 					else if (key === 'Home') next = 0;
 					else if (key === 'End') next = tabs.length - 1;
 					else if (key === 'Enter' || key === ' ') activateTab(i, { focus: true });
-					if (next !== i && ['ArrowDown','ArrowRight','ArrowUp','ArrowLeft','Home','End'].includes(key)) {
+					if (
+						next !== i &&
+						['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft', 'Home', 'End'].includes(
+							key
+						)
+					) {
 						e.preventDefault();
 						tabs[next].focus({ preventScroll: true });
 					}
 				});
 			});
 			// Set initial active state without focusing (prevents scroll jump)
-			activateTab(0, { focus: false });		updatePanelAnimations(0);		}
+			activateTab(0, { focus: false });
+			updatePanelAnimations(0);
+		}
 	</script>
 </section>
