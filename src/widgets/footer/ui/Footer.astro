@@ -35,18 +35,18 @@ const socialLinks = [
 ];
 ---
 
-<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full">
+<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full max-w-7xl mx-auto" id="contact">
 	<!-- CTA Section -->
 	<div class="text-center space-y-6 mb-12">
-		<h1 class="text-3xl md:text-5xl font-bold text-neutral-100">
+		<h1 class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-100">
 			{t('footer.title')}
 		</h1>
-		<h2 class="text-lg md:text-xl font-semibold text-neutral-400">
+		<h2 class="text-base sm:text-lg md:text-xl font-semibold text-neutral-400 px-4">
 			{t('footer.subtitle')}
 		</h2>
 		<a
 			href="mailto:sandovaldavid2201@gmail.com"
-			class="inline-flex items-center gap-2 px-8 py-3 bg-primary-500 text-white rounded-full font-medium hover:bg-primary-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
+			class="inline-flex items-center gap-2 px-6 sm:px-8 py-3 bg-primary-500 text-white rounded-full font-medium hover:bg-primary-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
 		>
 			<MailIcon class="w-5 h-5" />
 			{t('footer.cta')}
@@ -54,7 +54,7 @@ const socialLinks = [
 	</div>
 
 	<!-- Social Links -->
-	<div class="flex justify-center gap-6 mb-12">
+	<div class="flex justify-center gap-4 sm:gap-6 mb-12 flex-wrap">
 		{
 			socialLinks.map(({ name, href, icon: Icon }) => (
 				<a
@@ -62,7 +62,7 @@ const socialLinks = [
 					target="_blank"
 					rel="noopener noreferrer"
 					title={name}
-					class="text-neutral-400 hover:text-primary-500 transition-colors duration-300"
+					class="text-neutral-400 hover:text-primary-500 transition-colors duration-300 p-2"
 				>
 					<Icon class="w-6 h-6" />
 				</a>
@@ -72,7 +72,7 @@ const socialLinks = [
 
 	<!-- Bottom Bar -->
 	<div
-		class="flex flex-col md:flex-row items-center justify-between gap-4 p-8 border-t border-neutral-800 font-mono text-sm text-neutral-500"
+		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-800 font-mono text-xs sm:text-sm text-neutral-500 text-center md:text-left"
 	>
 		<p>© {currentYear} Juan David Sandoval. {t('footer.rights')}.</p>
 		<p class="flex items-center gap-2">
