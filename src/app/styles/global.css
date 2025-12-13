@@ -5,7 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {
-	@apply scroll-smooth scroll-pt-10;
+	@apply scroll-smooth scroll-pt-24;
 	scrollbar-width: thin;
 	scrollbar-color: var(--color-brand) var(--color-muted);
 }
