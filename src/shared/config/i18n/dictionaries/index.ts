@@ -15,9 +15,9 @@ import { titleSectionsTranslations } from './title-sections';
  * Combina todos los diccionarios de traducción en un solo objeto.
  *
  * @param {Language} lang - Idioma para el que se combinan las traducciones.
- * @returns {Record<string, string>} Diccionario combinado de traducciones para el idioma dado.
+ * @returns {Record<string, string | readonly string[]>} Diccionario combinado de traducciones para el idioma dado.
  */
-function combineTranslations(lang: Language): Record<string, string> {
+function combineTranslations(lang: Language): Record<string, string | readonly string[]> {
 	return {
 		...navigationTranslations[lang],
 		...heroTranslations[lang],
