@@ -11,7 +11,7 @@ interface Props {
 	link?: string;
 	company?: string;
 }
-const { title, date, description, technologies, link, company } = Astro.props;
+const { title, date, description, technologies, link } = Astro.props;
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
