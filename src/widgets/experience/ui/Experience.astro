@@ -43,7 +43,7 @@ const EXPERIENCE = getExperienceData(t);
 		</div>
 
 		<!-- Right: Detail Panel -->
-		<div class="md:col-span-3">
+		<div class="md:col-span-3 min-h-[520px]">
 			{
 				EXPERIENCE.map((exp, idx) => (
 					<div
@@ -51,7 +51,8 @@ const EXPERIENCE = getExperienceData(t);
 						id={`exp-panel-${idx}`}
 						aria-labelledby={`exp-tab-${idx}`}
 						hidden={idx !== 0}
-						class="transition-opacity duration-200"
+						class="transition-all duration-300 ease-out data-[active=true]:animate-in data-[active=true]:fade-in data-[active=true]:slide-up"
+						data-active={idx === 0}
 					>
 						<ExperienceItem {...exp} />
 					</div>
@@ -67,15 +68,21 @@ const EXPERIENCE = getExperienceData(t);
 			const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
 			const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
 
-			function activateTab(index, opts = { focus: false }) {
-				tabs.forEach((tab, i) => {
-					const selected = i === index;
-					tab.setAttribute('aria-selected', String(selected));
-					tab.tabIndex = selected ? 0 : -1;
-					tab.dataset.active = String(selected);
-					const panel = panels[i];
-					if (panel) panel.hidden = !selected;
-				});
+function updatePanelAnimations(index) {
+			panels.forEach((panel, i) => {
+				panel.dataset.active = String(i === index);
+			});
+		}
+		function activateTab(index, opts = { focus: false }) {
+			tabs.forEach((tab, i) => {
+				const selected = i === index;
+				tab.setAttribute('aria-selected', String(selected));
+				tab.tabIndex = selected ? 0 : -1;
+				tab.dataset.active = String(selected);
+				const panel = panels[i];
+				if (panel) panel.hidden = !selected;
+			});
+			updatePanelAnimations(index);
 				if (opts.focus) {
 					if (typeof tabs[index]?.focus === 'function') {
 						try {
@@ -104,7 +111,6 @@ const EXPERIENCE = getExperienceData(t);
 				});
 			});
 			// Set initial active state without focusing (prevents scroll jump)
-			activateTab(0, { focus: false });
-		}
+			activateTab(0, { focus: false });		updatePanelAnimations(0);		}
 	</script>
 </section>

@@ -18,7 +18,7 @@ const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 ---
 
-<div class="flex flex-col gap-5 p-6 rounded-2xl bg-neutral-800 border border-neutral-700 text-neutral-300 shadow-lg shadow-neutral-950/50">
+<div class="flex flex-col gap-5 p-6 rounded-2xl bg-neutral-800/80 border border-neutral-700/80 text-neutral-300 shadow-lg shadow-neutral-950/50 backdrop-blur-sm transition-all duration-300">
 	<div class="space-y-2">
 		<h3 class="text-neutral-50 font-bold text-3xl">{title}</h3>
 		<time class="block text-primary-400 text-xl font-medium">{date}</time>
@@ -27,8 +27,8 @@ const t = useTranslations(lang);
 	<!-- Bullet Points Description -->
 	<ul class="space-y-2 list-disc list-inside text-neutral-300 leading-relaxed">
 		{
-			description.map((point) => (
-				<li class="ml-2 text-base">
+			description.map((point, idx) => (
+				<li class="ml-2 text-base transition-all duration-300" style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}>
 					{point}
 				</li>
 			))
@@ -38,9 +38,9 @@ const t = useTranslations(lang);
 	<!-- Technologies Tags -->
 	{
 		technologies && technologies.length > 0 && (
-			<div class="flex flex-wrap gap-2 pt-2 justify-center">
+			<div class="flex flex-wrap gap-2 pt-2 justify-start" style="animation: var(--animate-slide-up); animation-delay: 150ms;">
 				{technologies.map((tech) => (
-					<span class="px-3 py-1 rounded-full bg-primary-500/20 text-primary-300 text-sm font-medium border border-primary-500/40 hover:bg-primary-500/30 transition-colors">
+					<span class="px-3 py-1.5 rounded-full bg-primary-500/15 text-primary-300 text-sm font-medium border border-primary-500/40 hover:border-primary-400/60 hover:bg-primary-500/25 transition-all duration-300">
 						{tech}
 					</span>
 				))}
