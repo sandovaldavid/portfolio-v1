@@ -24,11 +24,29 @@ const selectedTechs = [
 	TAGS.BOOTSTRAP,
 ];
 
+// For mobile: show only first 6 technologies in a clean grid
+const mobileTechs = selectedTechs.slice(0, 6);
 const duplicatedTechs = [...selectedTechs, ...selectedTechs];
 ---
 
 <div class="font-sans w-full overflow-hidden py-6 md:py-8">
-	<div class="relative w-full flex justify-center items-center">
+	<!-- Mobile: Static grid with 6 technologies -->
+	<div class="md:hidden grid grid-cols-2 gap-3 max-w-sm mx-auto">
+		{
+			mobileTechs.map(tech => (
+				<div
+					title={tech.name}
+					class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-neutral-800/80 border border-neutral-700/80 text-neutral-300 text-xs font-medium whitespace-nowrap justify-center shrink-0 transition-all duration-300 backdrop-blur-sm"
+				>
+					<tech.icon class="w-5 h-5 shrink-0" />
+					<span>{tech.name}</span>
+				</div>
+			))
+		}
+	</div>
+
+	<!-- Desktop: Infinite scrolling carousel -->
+	<div class="hidden md:flex relative w-full justify-center items-center">
 		<div
 			class="flex gap-3 md:gap-4 animate-scroll-infinite will-change-transform"
 			style="width: fit-content;"
@@ -65,15 +83,6 @@ const duplicatedTechs = [...selectedTechs, ...selectedTechs];
 
 		.animate-scroll-infinite:hover {
 			animation-play-state: paused;
-		}
-	}
-
-	@media (max-width: 768px) {
-		.animate-scroll-infinite {
-			width: auto !important;
-			flex-wrap: wrap;
-			justify-content: center;
-			animation: none;
 		}
 	}
 </style>
