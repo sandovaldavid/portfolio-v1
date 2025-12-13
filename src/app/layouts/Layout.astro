@@ -85,7 +85,8 @@ const t = useTranslations(lang);
 						<slot name="hero" />
 					</SectionContainer>
 				</div>
-				<SectionContainer id="experience">
+				<div class='flex flex-col gap-10 md:gap-16 xl:gap-24'>
+					<SectionContainer id="experience">
 					<TitleSection>
 						<BriefCaseIcon class="size-12" />
 						{t('title.experience')}
@@ -95,7 +96,7 @@ const t = useTranslations(lang);
 
 				<SectionContainer id="projects">
 					<TitleSection>
-						<CodeIcon class="size-7" />
+						<CodeIcon class="size-12" />
 						{t('title.projects')}
 					</TitleSection>
 					<slot name="projects" />
@@ -103,11 +104,12 @@ const t = useTranslations(lang);
 
 				<SectionContainer id="about-me">
 					<TitleSection>
-						<ProfileCheckIcon class="size-8" />
+						<ProfileCheckIcon class="size-12" />
 						{t('title.about-me')}
 					</TitleSection>
 					<slot name="about-me" />
 				</SectionContainer>
+				</div>
 			</main>
 			<Footer />
 		</div>
