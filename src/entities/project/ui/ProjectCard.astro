@@ -75,7 +75,13 @@ const isPrimary = variant === 'primary';
 				{
 					tags.map(tag => (
 						<li>
-							<TechPill label={tag.name} icon={tag.icon} size="sm" variant="card" class={tag.class} />
+							<TechPill
+								label={tag.name}
+								icon={tag.icon}
+								size="sm"
+								variant="card"
+								class={tag.class}
+							/>
 						</li>
 					))
 				}
