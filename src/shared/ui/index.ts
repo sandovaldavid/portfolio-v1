@@ -6,3 +6,4 @@ export { LinkInline } from './link-inline';
 export { SectionContainer } from './section-container';
 export { SocialPill } from './social-pill';
 export { TitleSection } from './title-section';
+export { TechPill } from './tech-pill';

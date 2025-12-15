@@ -1,0 +1,54 @@
+---
+interface Props {
+	label: string;
+	icon?: any; // Astro component for optional icon
+	href?: string; // Optional link for the pill
+	size?: 'sm' | 'md';
+	variant?: 'card' | 'stack';
+	class?: string;
+}
+const {
+	label,
+	icon: Icon,
+	href,
+	size = 'md',
+	variant = 'card',
+	class: additionalClasses = '',
+} = Astro.props as Props;
+
+// Base classes
+const baseClasses =
+	'inline-flex items-center rounded-full border border-neutral-300 dark:border-neutral-800/50 ' +
+	additionalClasses;
+
+// Variant-specific classes
+const cardClasses = 'px-3 py-1 transition-colors duration-200';
+const stackClasses =
+	'flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 border border-neutral-200/80 dark:border-neutral-700/80  text-neutral-900 dark:text-neutral-300 text-xs md:text-sm font-medium whitespace-nowrap shrink-0 transition-all duration-300 backdrop-blur-sm hover:bg-neutral-300 hover:dark:bg-neutral-800 hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/20 hover:-translate-y-1 cursor-default';
+
+// Text size classes
+const cardTextClasses = size === 'sm' ? 'text-xs' : 'text-sm';
+const stackTextClasses = 'text-sm md:text-base';
+
+// Icon size classes
+const cardIconClasses = 'mr-1 h-4 w-4';
+const stackIconClasses = 'mr-1 w-5 h-5 md:w-6 md:h-6';
+
+// Apply variant classes
+const containerClasses = `${baseClasses} ${variant === 'stack' ? stackClasses : cardClasses} ${variant === 'stack' ? stackTextClasses : cardTextClasses}`;
+const iconClasses = variant === 'stack' ? stackIconClasses : cardIconClasses;
+---
+
+{
+	href ? (
+		<a href={href} class={containerClasses} rel="noopener noreferrer" target="_blank">
+			{Icon && <Icon class={iconClasses} />}
+			<span>{label}</span>
+		</a>
+	) : (
+		<span class={containerClasses}>
+			{Icon && <Icon class={iconClasses} />}
+			<span>{label}</span>
+		</span>
+	)
+}
