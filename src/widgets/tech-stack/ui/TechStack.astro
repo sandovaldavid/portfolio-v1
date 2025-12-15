@@ -1,5 +1,6 @@
 ---
 import { TAGS } from '@entities/technology';
+import { TechPill } from '@shared/ui';
 
 /**
  * TechStack Widget - Infinite scrolling carousel of technologies
@@ -34,13 +35,7 @@ const duplicatedTechs = [...selectedTechs, ...selectedTechs];
 	<div class="md:hidden grid grid-cols-2 gap-3 max-w-sm mx-auto">
 		{
 			mobileTechs.map(tech => (
-				<div
-					title={tech.name}
-					class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 text-neutral-700 dark:text-neutral-300 text-xs font-medium whitespace-nowrap justify-center shrink-0 transition-all duration-300 backdrop-blur-sm"
-				>
-					<tech.icon class="w-5 h-5 shrink-0" />
-					<span>{tech.name}</span>
-				</div>
+				<TechPill label={tech.name} icon={tech.icon} size="sm" variant="stack" />
 			))
 		}
 	</div>
@@ -53,13 +48,7 @@ const duplicatedTechs = [...selectedTechs, ...selectedTechs];
 		>
 			{
 				duplicatedTechs.map(tech => (
-					<div
-						title={tech.name}
-						class="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 text-neutral-700 dark:text-neutral-300 text-xs md:text-sm font-medium whitespace-nowrap shrink-0 transition-all duration-300 backdrop-blur-sm hover:bg-neutral-300 dark:hover:bg-neutral-800 hover:border-primary-500/40 dark:hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/20 hover:-translate-y-1 cursor-default"
-					>
-						<tech.icon class="w-5 h-5 md:w-6 md:h-6 shrink-0" />
-						<span>{tech.name}</span>
-					</div>
+					<TechPill label={tech.name} icon={tech.icon} variant="stack" />
 				))
 			}
 		</div>

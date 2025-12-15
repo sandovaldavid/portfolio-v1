@@ -1,7 +1,7 @@
 ---
 import GitHubIcon from '@/assets/technologies/GitHub.astro';
 import LinkIcon from '@/assets/icons/Link.astro';
-import { LinkButton } from '@/shared/ui';
+import { LinkButton, TechPill } from '@/shared/ui';
 import type { ProjectItem } from '../model';
 import { Image } from 'astro:assets';
 
@@ -75,10 +75,7 @@ const isPrimary = variant === 'primary';
 				{
 					tags.map(tag => (
 						<li>
-							<span class="flex items-center gap-x-2 rounded-full text-xs bg-neutral-200/80 dark:bg-neutral-800/80 text-neutral-900 dark:text-neutral-100 border border-neutral-300/70 dark:border-neutral-700/70 py-1.5 px-3 transition-colors duration-300 group-hover:border-primary-500/70 dark:group-hover:border-primary-400/70 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-800">
-								<tag.icon class="size-4" />
-								{tag.name}
-							</span>
+							<TechPill label={tag.name} icon={tag.icon} size="sm" variant="card" class={tag.class} />
 						</li>
 					))
 				}
