@@ -1,13 +1,12 @@
 @import 'tailwindcss';
 @import './colors.css';
-@import './colors-v2.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {
 	@apply scroll-smooth scroll-pt-24;
 	scrollbar-width: thin;
-	scrollbar-color: var(--color-brand) var(--color-muted);
+	scrollbar-color: var(--color-primary-500) var(--color-neutral-200);
 }
 
 /* Scroll bar */
@@ -18,28 +17,28 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-	background: var(--color-muted);
+	background: var(--color-neutral-200);
 }
 
 ::-webkit-scrollbar-thumb {
-	background: var(--color-brand);
+	background: var(--color-primary-500);
 	border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--color-brand-dark);
+	background: var(--color-primary-600);
 }
 
 .dark ::-webkit-scrollbar-track {
-	background: var(--color-muted-dark);
+	background: var(--color-neutral-800);
 }
 
 .dark ::-webkit-scrollbar-thumb {
-	background: var(--color-brand-light);
+	background: var(--color-primary-400);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-	background: var(--color-brand);
+	background: var(--color-primary-500);
 }
 
 /* Responsive Containers */
