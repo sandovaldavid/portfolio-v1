@@ -7,23 +7,24 @@
 	@apply rounded-full transition-all duration-300;
 	@apply hover:scale-105;
 	@apply focus:outline-none focus-visible:outline-none;
-	@apply focus-visible:ring focus-visible:ring-brand/50 dark:focus-visible:ring-brand-light/50 focus-visible:ring-offset-2;
+	@apply focus-visible:ring focus-visible:ring-primary-500/50 dark:focus-visible:ring-primary-200 focus-visible:ring-offset-2;
 }
 
 /* Primary variant - Brand style */
 .btn-primary {
 	@apply text-gray-800 dark:text-white;
-	@apply bg-gray-100 dark:bg-gray-800;
-	@apply border border-gray-300 dark:border-gray-600;
-	@apply hover:bg-gray-900 hover:border-gray-700 hover:text-white;
-	@apply active:bg-black;
+	@apply bg-neutral-200 dark:bg-gray-800;
+	@apply border border-neutral-300 dark:border-gray-600;
+	@apply hover:bg-neutral-300 dark:hover:bg-gray-900 hover:border-neutral-400 dark:hover:border-gray-700;
+	@apply dark:hover:text-white;
+	@apply active:bg-neutral-400 dark:active:bg-black;
 }
 
 /* Secondary variant - Muted with brand accent */
 .btn-secondary {
-	@apply text-foreground dark:text-foreground-dark;
-	@apply bg-muted dark:bg-muted-dark;
-	@apply border-2 border-border dark:border-border-dark;
-	@apply hover:border-brand dark:hover:border-brand-light;
-	@apply hover:bg-elevated dark:hover:bg-elevated-dark;
+	@apply text-neutral-900 dark:text-neutral-100;
+	@apply bg-neutral-100 dark:bg-neutral-800;
+	@apply border-2 border-neutral-300 dark:border-neutral-700;
+	@apply hover:border-primary-500 dark:hover:border-primary-400;
+	@apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
 }

@@ -20,12 +20,12 @@ const focusAreas = [
 <div class="space-y-8">
 	<!-- First Card: Text Content and Profile Image -->
 	<article
-		class="rounded-3xl bg-neutral-800/80 border border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-950/50"
+		class="rounded-3xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50"
 	>
 		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
 			<!-- Text Content -->
 			<div
-				class="flex-1 space-y-4 [&>p]:text-neutral-300 [&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
+				class="flex-1 space-y-4 [&>p]:text-neutral-700 dark:[&>p]:text-neutral-300 [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
 			>
 				<p set:html={t('about-me.paragraph1')} />
 				<p set:html={t('about-me.paragraph2')} />
@@ -48,9 +48,9 @@ const focusAreas = [
 
 	<!-- Second Card: Currently Focused On -->
 	<article
-		class="rounded-3xl bg-neutral-800/80 border border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-950/50"
+		class="rounded-3xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50"
 	>
-		<h3 class="text-2xl font-bold text-neutral-50 mb-6 md:mb-8">
+		<h3 class="text-2xl font-bold text-neutral-900 dark:text-neutral-50 mb-6 md:mb-8">
 			{t('about-me.currently-focused')}
 		</h3>
 		<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
@@ -60,8 +60,10 @@ const focusAreas = [
 						class="flex items-start gap-3 transition-all duration-300"
 						style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
 					>
-						<span class="shrink-0 w-2 h-2 rounded-full bg-primary-400 mt-2" />
-						<span class="text-neutral-300 text-base leading-relaxed">{area}</span>
+						<span class="shrink-0 w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400 mt-2" />
+						<span class="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed">
+							{area}
+						</span>
 					</li>
 				))
 			}

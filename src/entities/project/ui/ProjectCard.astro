@@ -20,8 +20,8 @@ const isPrimary = variant === 'primary';
 <article class="font-sans group h-full" style={`animation: var(--animate-fade-in);`}>
 	<div
 		class={isPrimary
-			? 'relative h-full overflow-hidden rounded-2xl border border-neutral-700/80 bg-neutral-900/90 shadow-[0_18px_50px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/60'
-			: 'relative h-full overflow-hidden rounded-xl border border-neutral-700/80 bg-neutral-900/90 shadow-[0_14px_32px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/50'}
+			? 'relative h-full overflow-hidden rounded-2xl border border-neutral-300/80 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900/90 shadow-[0_18px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_18px_50px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/60'
+			: 'relative h-full overflow-hidden rounded-xl border border-neutral-300/80 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900/90 shadow-[0_14px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_14px_32px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/50'}
 	>
 		<Image
 			src={image}
@@ -33,16 +33,17 @@ const isPrimary = variant === 'primary';
 			alt={`${title} project image`}
 		/>
 		<div
-			class="absolute inset-0 bg-linear-to-b from-neutral-900/20 via-neutral-900/75 to-neutral-900/90"
+			class="absolute inset-0 bg-linear-to-b from-white/30 via-white/85 to-white/95 dark:from-neutral-900/20 dark:via-neutral-900/75 dark:to-neutral-900/90"
 		>
 		</div>
 		<div
-			class="absolute inset-x-0 top-0 flex items-center gap-2 border-b border-neutral-800/80 bg-neutral-900/70 px-4 py-3 backdrop-blur"
+			class="absolute inset-x-0 top-0 flex items-center gap-2 border-b border-neutral-300/80 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/70 px-4 py-3 backdrop-blur"
 		>
 			<span class="size-2.5 rounded-full bg-primary-500/80" aria-hidden="true"></span>
 			<span class="size-2.5 rounded-full bg-primary-400/70" aria-hidden="true"></span>
 			<span class="size-2.5 rounded-full bg-neutral-500/70" aria-hidden="true"></span>
-			<span class="ml-auto text-xs uppercase tracking-[0.18em] text-neutral-400"
+			<span
+				class="ml-auto text-xs uppercase tracking-[0.18em] text-neutral-600 dark:text-neutral-400"
 				>{isPrimary ? 'Feature' : 'Project'}</span
 			>
 		</div>
@@ -54,25 +55,27 @@ const isPrimary = variant === 'primary';
 		>
 			{
 				category && (
-					<p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary-400">
+					<p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary-500 dark:text-primary-400">
 						{category}
 					</p>
 				)
 			}
 			<h3
 				class={isPrimary
-					? 'text-neutral-50 text-2xl font-bold'
-					: 'text-neutral-50 text-xl font-semibold'}
+					? 'text-neutral-900 dark:text-neutral-50 text-2xl font-bold'
+					: 'text-neutral-900 dark:text-neutral-50 text-xl font-semibold'}
 			>
 				{title}
 			</h3>
-			<p class="text-sm text-neutral-300 leading-relaxed line-clamp-3">{description}</p>
+			<p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed line-clamp-3">
+				{description}
+			</p>
 
 			<ul class="flex flex-row flex-wrap gap-2 pt-1">
 				{
 					tags.map(tag => (
 						<li>
-							<span class="flex items-center gap-x-2 rounded-full text-xs bg-neutral-800/80 text-neutral-100 border border-neutral-700/70 py-1.5 px-3 transition-colors duration-300 group-hover:border-primary-400/70 group-hover:bg-neutral-800">
+							<span class="flex items-center gap-x-2 rounded-full text-xs bg-neutral-200/80 dark:bg-neutral-800/80 text-neutral-900 dark:text-neutral-100 border border-neutral-300/70 dark:border-neutral-700/70 py-1.5 px-3 transition-colors duration-300 group-hover:border-primary-500/70 dark:group-hover:border-primary-400/70 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-800">
 								<tag.icon class="size-4" />
 								{tag.name}
 							</span>

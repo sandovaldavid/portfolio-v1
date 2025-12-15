@@ -42,7 +42,7 @@ export const TAGS: TechnologyTags = {
 	},
 	BOOTSTRAP: {
 		name: 'Bootstrap',
-		class: 'bg-purple-500 text-white',
+		class: 'text-purple-500',
 		icon: BootstrapIcon,
 	},
 	JAVASCRIPT: {

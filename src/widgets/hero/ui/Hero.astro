@@ -19,14 +19,14 @@ const specializations = [
 <div class="w-full h-dvh hero-gradient flex flex-col items-center justify-center gap-6 md:gap-8">
 	<div class="max-w-4xl px-4 flex flex-col items-center gap-6 md:gap-8">
 		<h2
-			class="text-5xl sm:text-7xl lg:text-8xl font-bold text-center opacity-20 text-neutral-50 tracking-tight leading-none"
+			class="text-5xl sm:text-7xl lg:text-8xl font-bold text-center opacity-20 text-neutral-900 dark:text-neutral-50 tracking-tight leading-none"
 			style="animation: var(--animate-fade-in); animation-delay: 0ms;"
 		>
 			{t('hero.title')}
 		</h2>
 
 		<p
-			class="text-lg sm:text-xl text-center text-neutral-400 tracking-wide font-medium"
+			class="text-lg sm:text-xl text-center text-neutral-600 dark:text-neutral-400 tracking-wide font-medium"
 			style="animation: var(--animate-fade-in); animation-delay: 150ms;"
 		>
 			{t('hero.subtitle')}
@@ -38,9 +38,9 @@ const specializations = [
 		>
 			{
 				specializations.map(spec => (
-					<div class="rounded-full bg-neutral-700 border border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
+					<div class="rounded-full bg-neutral-200 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
 						<spec.icon class="size-4 sm:size-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
-						<span class="text-sm sm:text-base text-neutral-50 font-medium">
+						<span class="text-sm sm:text-base text-neutral-900 dark:text-neutral-50 font-medium">
 							{spec.label}
 						</span>
 					</div>
@@ -52,7 +52,7 @@ const specializations = [
 		<div class="mt-6 sm:mt-8">
 			<a
 				href={getLocalizedPath(lang, '/#experience')}
-				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-neutral-50 text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
+				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-white text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] dark:shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
 			>
 				{t('hero.cta.view-work')}
 			</a>
