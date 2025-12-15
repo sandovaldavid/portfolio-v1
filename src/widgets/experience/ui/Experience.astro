@@ -20,7 +20,7 @@ const EXPERIENCE = getExperienceData(tList);
 				id="experience-tablist"
 				role="tablist"
 				aria-label="Experience tabs"
-				class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible bg-neutral-900 p-4 rounded-2xl"
+				class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible bg-neutral-100 dark:bg-neutral-900 p-4 rounded-2xl"
 			>
 				{
 					EXPERIENCE.map((exp, idx) => (
@@ -31,13 +31,13 @@ const EXPERIENCE = getExperienceData(tList);
 							aria-selected={idx === 0 ? 'true' : 'false'}
 							tabindex={idx === 0 ? 0 : -1}
 							data-index={idx}
-							class="relative px-4 py-3 rounded-lg text-left whitespace-nowrap md:whitespace-normal data-[active=true]:border-l-4 text-neutral-400 hover:text-neutral-300 hover:bg-neutral-800 transition-colors duration-200 data-[active=true]:bg-neutral-800 data-[active=true]:text-neutral-50 data-[active=true]:border-l-primary-500"
+							class="relative px-4 py-3 rounded-lg text-left whitespace-nowrap md:whitespace-normal data-[active=true]:border-l-4 text-neutral-600 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200 data-[active=true]:bg-neutral-200 dark:data-[active=true]:bg-neutral-800 data-[active=true]:text-neutral-900 dark:data-[active=true]:text-neutral-50 data-[active=true]:border-l-primary-500"
 						>
 							<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-500 rounded-l-lg hidden data-[active=true]:block" />
 							<div class="flex flex-col">
 								<span class="font-semibold">{exp.company ?? exp.title}</span>
 								{exp.company && (
-									<span class="text-neutral-500 text-xs md:text-sm">
+									<span class="text-neutral-500 dark:text-neutral-500 text-xs md:text-sm">
 										{exp.title}
 									</span>
 								)}

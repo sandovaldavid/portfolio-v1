@@ -35,13 +35,17 @@ const socialLinks = [
 ];
 ---
 
-<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 max-w-7xl" id="contact">
+<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full" id="contact">
 	<!-- CTA Section -->
 	<div class="text-center space-y-6 mb-12">
-		<h1 class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-100">
+		<h1
+			class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100"
+		>
 			{t('footer.title')}
 		</h1>
-		<h2 class="text-base sm:text-lg md:text-xl font-semibold text-neutral-400 px-4">
+		<h2
+			class="text-base sm:text-lg md:text-xl font-semibold text-neutral-600 dark:text-neutral-400 px-4"
+		>
 			{t('footer.subtitle')}
 		</h2>
 		<a
@@ -62,7 +66,7 @@ const socialLinks = [
 					target="_blank"
 					rel="noopener noreferrer"
 					title={name}
-					class="text-neutral-400 hover:text-primary-500 transition-colors duration-300 p-2"
+					class="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-500 transition-colors duration-300 p-2"
 				>
 					<Icon class="w-6 h-6" />
 				</a>
@@ -72,13 +76,13 @@ const socialLinks = [
 
 	<!-- Bottom Bar -->
 	<div
-		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-800 font-mono text-xs sm:text-sm text-neutral-500 text-center md:text-left"
+		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-300 dark:border-neutral-800 font-mono text-xs sm:text-sm text-neutral-600 dark:text-neutral-500 text-center md:text-left"
 	>
 		<p>© {currentYear} Juan David Sandoval. {t('footer.rights')}.</p>
 		<p class="flex items-center gap-2">
 			{t('footer.built-with')}
 			<CodeIcon class="w-4 h-4 text-primary-500" />
-			<span class="text-neutral-600">v2.0.0</span>
+			<span class="text-neutral-500 dark:text-neutral-600">v2.0.0</span>
 		</p>
 	</div>
 </footer>

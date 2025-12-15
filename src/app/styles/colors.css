@@ -1,99 +1,139 @@
+@import '@fontsource/geist-sans';
+@import '@fontsource/geist-mono';
+
 @theme {
-	/* COLORES PRINCIPALES DEL BRAND */
+	--font-sans: 'Geist Sans', 'Inter', system-ui, sans-serif;
+	--font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+	--font-code: 'Fira Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
 
-	/* Brand Colors - Generan: bg-brand, text-brand, border-brand, etc. */
-	--color-brand: oklch(62.005% 0.18129 259.39);
-	--color-brand-dark: oklch(46.205% 0.17901 260.3);
-	--color-brand-light: oklch(76.192% 0.10756 259.05);
-	--color-brand-subtle: oklch(91.431% 0.03708 258.37);
+	--color-primary-50: #eff6ff;
+	--color-primary-100: #dbeafe;
+	--color-primary-200: #bfdbfe;
+	--color-primary-300: #93c5fd;
+	--color-primary-400: #60a5fa;
+	--color-primary-500: #3c82f1;
+	--color-primary-600: #2563eb;
+	--color-primary-700: #1d4ed8;
+	--color-primary-800: #1e40af;
+	--color-primary-900: #1e3a8a;
+	--color-primary-950: #172554;
 
-	/* Accent - Generan: bg-accent, text-accent, etc. */
-	--color-accent: oklch(78.582% 0.11902 175.12);
-	--color-accent-dark: oklch(61.462% 0.10618 173.49);
-	--color-accent-light: oklch(86.059% 0.0804 177.92);
+	--color-neutral-50: #f8fafc;
+	--color-neutral-100: #f1f5f9;
+	--color-neutral-200: #e2e8f0;
+	--color-neutral-300: #cbd5e1;
+	--color-neutral-400: #94a3b8;
+	--color-neutral-500: #64748b;
+	--color-neutral-600: #475569;
+	--color-neutral-700: #334155;
+	--color-neutral-800: #1e293b;
+	--color-neutral-900: #0f172a;
+	--color-neutral-950: #020617;
 
-	/* SISTEMA DE GRISES PARA UI */
+	--color-success-500: #10b981;
+	--color-success-900: #064e3b;
 
-	/* Backgrounds principales */
-	--color-surface-dark: oklch(11.237% 0.00871 242.17); /* Modo oscuro */
+	--color-warning-500: #f59e0b;
+	--color-warning-900: #78350f;
 
-	--color-elevated: oklch(97.547% 0.00453 258.32); /* bg-elevated (cards, modals) */
-	--color-elevated-dark: oklch(18.161% 0.02023 261.95);
+	--color-error-500: #ef4444;
+	--color-error-900: #7f1d1d;
 
-	--color-muted: oklch(93.859% 0.01206 259.82); /* bg-muted (secciones sutiles) */
-	--color-muted-dark: oklch(23.062% 0.03156 262.53);
+	/* Light mode colors */
+	--color-background-light: var(--color-neutral-50);
+	--color-surface-light: var(--color-neutral-100);
+	--color-surface-highlight-light: var(--color-neutral-200);
 
-	/* Borders */
-	--color-border: oklch(84.952% 0.03163 263.49); /* border-border */
-	--color-border-dark: oklch(32.514% 0.05235 261.65);
+	--color-text-main-light: var(--color-neutral-900);
+	--color-text-body-light: var(--color-neutral-700);
+	--color-text-muted-light: var(--color-neutral-600);
 
-	--color-outline: oklch(93.859% 0.01206 259.82); /* border-outline (más sutil) */
-	--color-outline-dark: oklch(26.405% 0.03682 261.78);
+	--color-border-subtle-light: var(--color-neutral-200);
+	--color-border-strong-light: var(--color-neutral-300);
 
-	/* SISTEMA TIPOGRÁFICO */
+	/* Dark mode colors */
+	--color-background-dark: var(--color-neutral-900);
+	--color-surface-dark: var(--color-neutral-800);
+	--color-surface-highlight-dark: var(--color-neutral-700);
 
-	/* Textos principales */
-	--color-foreground: oklch(23.062% 0.03156 262.53); /* text-foreground */
-	--color-foreground-dark: oklch(91.28% 0 0);
+	--color-text-main-dark: var(--color-neutral-50);
+	--color-text-body-dark: var(--color-neutral-300);
+	--color-text-muted-dark: var(--color-neutral-400);
 
-	--color-secondary: oklch(50.72% 0.02688 258.37); /* text-secondary */
-	--color-secondary-dark: oklch(74.791% 0.0182 256.3);
+	--color-border-subtle-dark: var(--color-neutral-800);
+	--color-border-strong-dark: var(--color-neutral-700);
 
-	--color-tertiary: oklch(68.927% 0.02356 256.76); /* text-tertiary */
-	--color-tertiary-dark: oklch(56.65% 0.03085 260.28);
+	/* Semantic tokens with light-dark() */
+	--color-background: light-dark(var(--color-background-light), var(--color-background-dark));
+	--color-surface: light-dark(var(--color-surface-light), var(--color-surface-dark));
+	--color-surface-highlight: light-dark(
+		var(--color-surface-highlight-light),
+		var(--color-surface-highlight-dark)
+	);
 
-	/* COLORES SEMÁNTICOS */
+	--color-text-main: light-dark(var(--color-text-main-light), var(--color-text-main-dark));
+	--color-text-body: light-dark(var(--color-text-body-light), var(--color-text-body-dark));
+	--color-text-muted: light-dark(var(--color-text-muted-light), var(--color-text-muted-dark));
 
-	--color-success: oklch(78.582% 0.11902 175.12);
+	--color-border-subtle: light-dark(
+		var(--color-border-subtle-light),
+		var(--color-border-subtle-dark)
+	);
+	--color-border-strong: light-dark(
+		var(--color-border-strong-light),
+		var(--color-border-strong-dark)
+	);
 
-	--color-warning: oklch(83.988% 0.1598 89.194);
+	/* Animaciones Standard */
+	--animate-fade-in: fade-in 0.4s ease-out forwards;
+	--animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
-	--color-danger: oklch(66.805% 0.1852 23.559);
-
-	--color-info: oklch(62.005% 0.18129 259.39);
-
-	/* TIPOGRAFÍAS */
-
-	/* ESPACIADO PERSONALIZADO */
-
-	/* Spacing personalizado - Generan: p-section, m-section, etc. */
-	--spacing-section: 4rem;
-	--spacing-card: 1.5rem;
-	--spacing-element: 0.75rem;
-
-	/* CONTAINERS */
-
-	/* Container sizes - Generan: max-w-prose, max-w-content, etc. */
-	--container-prose: 65ch;
-	--container-content: 80rem;
-
-	/* EFECTOS Y ANIMACIONES */
-
-	/* Shadows personalizadas */
-	--shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-	--shadow-medium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-	--shadow-strong: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-
-	/* Border radius personalizados */
-	--radius-card: 0.75rem;
-	--radius-button: 0.5rem;
-	--radius-full: 9999px;
-
-	/* Durations para animaciones */
-	--animate-fast: 150ms;
-	--animate-normal: 300ms;
-	--animate-slow: 500ms;
-
-	/* Easing personalizado */
-	--ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
-/* Modo oscuro manual*/
-.dark {
-	--portfolio-gradient: linear-gradient(
-		115deg,
-		var(--color-primary-900) 50%,
-		var(--color-primary-800) 95%
+:root {
+	color-scheme: light dark;
+}
+
+:root.dark {
+	color-scheme: dark;
+}
+
+body {
+	background-color: var(--color-background);
+	color: var(--color-text-body);
+	-webkit-font-smoothing: antialiased;
+}
+
+.hero-gradient {
+	background: radial-gradient(
+		circle at 50% 0%,
+		rgba(60, 130, 241, 0.08) 0%,
+		rgba(248, 250, 252, 0) 50%
+	);
+}
+
+:root.dark .hero-gradient {
+	background: radial-gradient(
+		circle at 50% 0%,
+		rgba(60, 130, 241, 0.15) 0%,
+		rgba(15, 23, 42, 0) 50%
 	);
 }

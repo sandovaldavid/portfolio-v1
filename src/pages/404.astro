@@ -33,7 +33,7 @@ const t = useTranslations(lang);
 	</head>
 
 	<body
-		class="min-h-screen flex items-center justify-center bg-surface dark:bg-surface-dark text-foreground dark:text-foreground-dark"
+		class="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50"
 	>
 		<main class="w-full px-4 py-16">
 			<SectionContainer>
@@ -45,7 +45,7 @@ const t = useTranslations(lang);
 							aria-hidden="true"
 						>
 							<span
-								class="inline-block bg-linear-to-br from-brand-dark via-brand to-accent dark:from-brand-light dark:via-accent-light dark:to-info bg-clip-text text-transparent"
+								class="inline-block bg-linear-to-br from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-500 dark:to-primary-600 bg-clip-text text-transparent"
 							>
 								404
 							</span>
@@ -53,19 +53,19 @@ const t = useTranslations(lang);
 
 						<!-- Decorative elements -->
 						<div
-							class="absolute inset-0 -z-10 blur-3xl opacity-20 dark:opacity-30"
+							class="absolute inset-0 -z-10 blur-3xl opacity-10 dark:opacity-30"
 							aria-hidden="true"
 						>
 							<div
-								class="absolute top-1/4 left-1/4 w-32 h-32 md:w-48 md:h-48 bg-brand dark:bg-brand-light rounded-full animate-blob"
+								class="absolute top-1/4 left-1/4 w-32 h-32 md:w-48 md:h-48 bg-primary-500 dark:bg-primary-400 rounded-full animate-blob"
 							>
 							</div>
 							<div
-								class="absolute top-1/3 right-1/4 w-32 h-32 md:w-48 md:h-48 bg-accent dark:bg-accent-light rounded-full animate-blob animation-delay-2000"
+								class="absolute top-1/3 right-1/4 w-32 h-32 md:w-48 md:h-48 bg-primary-600 dark:bg-primary-500 rounded-full animate-blob animation-delay-2000"
 							>
 							</div>
 							<div
-								class="absolute bottom-1/4 left-1/3 w-32 h-32 md:w-48 md:h-48 bg-info dark:bg-info-light rounded-full animate-blob animation-delay-4000"
+								class="absolute bottom-1/4 left-1/3 w-32 h-32 md:w-48 md:h-48 bg-primary-400 dark:bg-primary-600 rounded-full animate-blob animation-delay-4000"
 							>
 							</div>
 						</div>
@@ -74,12 +74,12 @@ const t = useTranslations(lang);
 					<!-- Error Message -->
 					<div class="space-y-4">
 						<h1
-							class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-foreground-dark"
+							class="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-neutral-50"
 						>
 							{t('not-found.heading')}
 						</h1>
 						<p
-							class="text-lg md:text-xl text-secondary dark:text-secondary-dark max-w-2xl mx-auto"
+							class="text-lg md:text-xl text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto"
 						>
 							{t('not-found.message')}
 						</p>
@@ -99,15 +99,15 @@ const t = useTranslations(lang);
 					<div class="pt-8">
 						<div class="flex items-start justify-center gap-2 max-w-2xl mx-auto">
 							<QuoteLeft
-								class="size-5 shrink-0 text-brand dark:text-brand-light opacity-60 mt-0.5"
+								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
 							/>
 							<p
-								class="text-base text-secondary dark:text-secondary-dark italic leading-relaxed"
+								class="text-base text-neutral-700 dark:text-neutral-300 italic leading-relaxed"
 							>
 								{t('not-found.quote')}
 							</p>
 							<QuoteRight
-								class="size-5 shrink-0 text-brand dark:text-brand-light opacity-60 mt-0.5"
+								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
 							/>
 						</div>
 					</div>
