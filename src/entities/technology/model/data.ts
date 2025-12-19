@@ -17,6 +17,9 @@ import SQLiteIcon from '@assets/technologies/SQLite.astro';
 import SanityIcon from '@assets/technologies/Sanity.astro';
 import ChartJsIcon from '@assets/technologies/ChartJs.astro';
 import AstroIcon from '@assets/technologies/AstroIcon.astro';
+import TypescriptIcon from '@assets/technologies/TypeScript.astro';
+import AngularIcon from '@assets/technologies/Angular.astro';
+import RxJSIcon from '@assets/technologies/RXJS.astro';
 
 import type { TechnologyTags } from './types';
 
@@ -119,5 +122,20 @@ export const TAGS: TechnologyTags = {
 		name: 'Astro',
 		class: 'bg-black text-white',
 		icon: AstroIcon,
+	},
+	TYPESCRIPT: {
+		name: 'TypeScript',
+		class: 'bg-blue-500 text-white',
+		icon: TypescriptIcon,
+	},
+	ANGULAR: {
+		name: 'Angular',
+		class: 'bg-red-200 text-white',
+		icon: AngularIcon,
+	},
+	RXJS: {
+		name: 'RxJS',
+		class: 'bg-red-200 text-white',
+		icon: RxJSIcon,
 	},
 } as const;
