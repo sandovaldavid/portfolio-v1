@@ -15,11 +15,11 @@ export function getExperienceData(t: (key: string) => string | string[]): Experi
 			technologies: t('experience.chirasoft.technologies') as string[],
 		},
 		{
-			date: t('experience.technical-support.date') as string,
-			title: t('experience.technical-support.title') as string,
-			description: t('experience.technical-support.description') as string[],
-			company: t('experience.technical-support.company') as string,
-			technologies: t('experience.technical-support.technologies') as string[],
+			date: t('experience.programador-ti.date') as string,
+			title: t('experience.programador-ti.title') as string,
+			description: t('experience.programador-ti.description') as string[],
+			company: t('experience.programador-ti.company') as string,
+			technologies: t('experience.programador-ti.technologies') as string[],
 		},
 	];
 }
