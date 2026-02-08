@@ -1,0 +1,95 @@
+---
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
+import CodeIcon from '@assets/icons/Code.astro';
+import BrainIcon from '@assets/icons/Brain.astro';
+import LinkIcon from '@assets/icons/Link.astro';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const t = useTranslations(lang);
+
+const visionItems = [
+	{
+		icon: CodeIcon,
+		title: t('vision.leetcode.title'),
+		description: t('vision.leetcode.description'),
+		link: t('vision.leetcode.link'),
+	},
+	{
+		icon: LinkIcon,
+		title: t('vision.writing.title'),
+		description: t('vision.writing.description'),
+		link: t('vision.writing.link'),
+	},
+	{
+		icon: BrainIcon,
+		title: t('vision.lab.title'),
+		description: t('vision.lab.description'),
+		link: t('vision.lab.link'),
+	},
+];
+---
+
+<section class="space-y-6">
+	<div>
+		<p class="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
+			{t('vision.subtitle')}
+		</p>
+	</div>
+
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+		{
+			visionItems.map((item, idx) => (
+				<article
+					class="group rounded-2xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 backdrop-blur-sm p-6 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50 hover:border-primary-500/50 dark:hover:border-primary-400/50 transition-all duration-300"
+					style={`animation: var(--animate-slide-up); animation-delay: ${idx * 100}ms;`}
+				>
+					<div class="flex items-start gap-4 mb-4">
+						<div class="shrink-0 w-10 h-10 rounded-lg bg-primary-500/10 dark:bg-primary-400/10 flex items-center justify-center group-hover:bg-primary-500/20 dark:group-hover:bg-primary-400/20 transition-colors">
+							<item.icon class="w-5 h-5 text-primary-500 dark:text-primary-400" />
+						</div>
+						<div class="flex-1">
+							<h3 class="text-lg font-bold text-neutral-900 dark:text-neutral-50 mb-2">
+								{item.title}
+							</h3>
+						</div>
+					</div>
+
+					<p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
+						{item.description}
+					</p>
+
+					{item.link === '#' ? (
+						<span class="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 dark:text-neutral-500 italic">
+							<span class="w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
+							{t('vision.coming-soon')}
+						</span>
+					) : (
+						<a
+							href={item.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex items-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+						>
+							{t('vision.view-project')}
+							<svg
+								class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M13 7l5 5m0 0l-5 5m5-5H6"
+								/>
+							</svg>
+						</a>
+					)}
+				</article>
+			))
+		}
+	</div>
+</section>
