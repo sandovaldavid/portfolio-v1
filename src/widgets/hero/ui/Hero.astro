@@ -10,9 +10,9 @@ const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 
 const specializations = [
-	{ label: 'Java/Spring', icon: CodeIcon },
-	{ label: 'Angular/React', icon: PaletteIcon },
-	{ label: 'Data Science/AI', icon: BrainIcon },
+	{ label: '.NET 8 (Clean)', icon: CodeIcon },
+	{ label: 'Angular 19 (Signals)', icon: PaletteIcon },
+	{ label: 'LSTM Research', icon: BrainIcon },
 ];
 ---
 
@@ -30,6 +30,13 @@ const specializations = [
 			style="animation: var(--animate-fade-in); animation-delay: 150ms;"
 		>
 			{t('hero.subtitle')}
+		</p>
+
+		<p
+			class="text-sm sm:text-base text-center text-neutral-500 dark:text-neutral-500 italic"
+			style="animation: var(--animate-fade-in); animation-delay: 200ms;"
+		>
+			{t('hero.credential')}
 		</p>
 
 		<div
