@@ -10,6 +10,8 @@ import { footerTranslations } from './footer';
 import { themeTranslations } from './theme';
 import { notFoundTranslations } from './not-found';
 import { titleSectionsTranslations } from './title-sections';
+import { researchTranslations } from './research';
+import { visionTranslations } from './vision';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -30,6 +32,8 @@ function combineTranslations(lang: Language): Record<string, string | readonly s
 		...themeTranslations[lang],
 		...notFoundTranslations[lang],
 		...titleSectionsTranslations[lang],
+		...researchTranslations[lang],
+		...visionTranslations[lang],
 	};
 }
 
