@@ -22,6 +22,17 @@ const handleUpper = siteConfig.handle.toUpperCase();
 	data-prepare={t('splash.prepare')}
 	class="fixed inset-0 w-screen h-screen bg-[#07090e] z-[9999] flex flex-col items-center justify-center font-mono text-primary-500 overflow-hidden select-none"
 >
+	<!-- Blocking inline script to prevent Flash of Uninitialized Splash Screen (FOSS) -->
+	<script is:inline>
+		try {
+			if (sessionStorage.getItem('pf_booted') === 'true') {
+				document.getElementById('splash-screen').style.display = 'none';
+			} else {
+				document.body.style.overflow = 'hidden';
+			}
+		} catch (e) {}
+	</script>
+
 	<!-- CRT scanlines grid overlay -->
 	<div class="crt-overlay pointer-events-none absolute inset-0 z-10 opacity-[0.15]"></div>
 
@@ -52,70 +63,53 @@ const handleUpper = siteConfig.handle.toUpperCase();
 </div>
 
 <script>
-	let isBooted = false;
-	try {
-		isBooted = sessionStorage.getItem('pf_booted') === 'true';
-	} catch {
-		/* ignore */
-	}
-
 	const splash = document.getElementById('splash-screen');
 
-	if (isBooted) {
-		if (splash) {
-			splash.style.display = 'none';
-		}
-	} else {
-		// Prevent body scroll while splash screen is active
-		document.body.style.overflow = 'hidden';
-
+	// Only execute boot scripts if the splash screen is active and visible
+	if (splash && splash.style.display !== 'none') {
 		const bootOutput = document.getElementById('boot-output');
 		const bootActions = document.getElementById('boot-actions');
 		const bootBtn = document.getElementById('boot-btn');
 
-		if (splash) {
-			const name = splash.getAttribute('data-name') || '';
-			const initializing = splash.getAttribute('data-initializing') || '';
-			const loadingStack = splash.getAttribute('data-loading-stack') || '';
-			const connectingGithub = splash.getAttribute('data-connecting-github') || '';
-			const readyPlayer = splash.getAttribute('data-ready-player') || '';
-			const welcome = splash.getAttribute('data-welcome') || '';
-			const prepare = splash.getAttribute('data-prepare') || '';
+		const name = splash.getAttribute('data-name') || '';
+		const initializing = splash.getAttribute('data-initializing') || '';
+		const loadingStack = splash.getAttribute('data-loading-stack') || '';
+		const connectingGithub = splash.getAttribute('data-connecting-github') || '';
+		const readyPlayer = splash.getAttribute('data-ready-player') || '';
+		const welcome = splash.getAttribute('data-welcome') || '';
+		const prepare = splash.getAttribute('data-prepare') || '';
 
-			const lines = [
-				{ text: initializing, delay: 100, color: 'text-primary-500' },
-				{ text: loadingStack, delay: 450, color: 'text-neutral-400' },
-				{ text: connectingGithub, delay: 800, color: 'text-neutral-400' },
-				{ text: `${readyPlayer}${name}`, delay: 1150, color: 'text-[#00ff88] font-bold' },
-				{ text: welcome, delay: 1550, color: 'text-white' },
-				{ text: prepare, delay: 2050, color: 'text-white' }
-			];
+		const lines = [
+			{ text: initializing, delay: 100, color: 'text-primary-500' },
+			{ text: loadingStack, delay: 450, color: 'text-neutral-400' },
+			{ text: connectingGithub, delay: 800, color: 'text-neutral-400' },
+			{ text: `${readyPlayer}${name}`, delay: 1150, color: 'text-[#00ff88] font-bold' },
+			{ text: welcome, delay: 1550, color: 'text-white' },
+			{ text: prepare, delay: 2050, color: 'text-white' }
+		];
 
-			// Play boot lines
-			lines.forEach((line) => {
-				setTimeout(() => {
-					if (!bootOutput) return;
-					const p = document.createElement('p');
-					p.className = `${line.color} transition-all duration-300`;
-					p.innerHTML = line.text;
-					bootOutput.appendChild(p);
-					bootOutput.scrollTop = bootOutput.scrollHeight;
-				}, line.delay);
-			});
-
-			// Reveal start button
+		// Play boot lines
+		lines.forEach((line) => {
 			setTimeout(() => {
-				if (bootActions) {
-					bootActions.classList.remove('opacity-0');
-					bootActions.classList.add('opacity-100');
-				}
-			}, 2550);
-		}
+				if (!bootOutput) return;
+				const p = document.createElement('p');
+				p.className = `${line.color} transition-all duration-300`;
+				p.innerHTML = line.text;
+				bootOutput.appendChild(p);
+				bootOutput.scrollTop = bootOutput.scrollHeight;
+			}, line.delay);
+		});
+
+		// Reveal start button
+		setTimeout(() => {
+			if (bootActions) {
+				bootActions.classList.remove('opacity-0');
+				bootActions.classList.add('opacity-100');
+			}
+		}, 2550);
 
 		// Dismiss function
 		const dismissSplash = () => {
-			if (!splash) return;
-
 			// Play CRT power-off animation
 			splash.classList.add('dismissing');
 
