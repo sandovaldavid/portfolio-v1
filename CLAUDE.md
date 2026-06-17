@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal portfolio website built with Astro, TypeScript, and Tailwind CSS. Live at <https://devsandoval.me>
+Personal portfolio website built with Astro, TypeScript, and Tailwind CSS. Live at <https://sandovaldavid.com>
 
 **Tech Stack:**
 
@@ -149,7 +149,7 @@ const { title, description } = Astro.props;
 1. Type checking runs automatically in `bun run build` via `astro check`
 2. Production builds go to `dist/`
 3. Deployment: Automatic via GitHub Actions → GitHub Pages
-4. Site URL: <https://devsandoval.me>
+4. Site URL: <https://sandovaldavid.com>
 
 ## Key Patterns
 

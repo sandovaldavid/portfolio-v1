@@ -426,10 +426,10 @@ export function kebabToTitle(kebabCase: string): string {
 export const SITE_CONFIG = {
   NAME: 'David Sandoval Portfolio',
   DESCRIPTION: 'Full-stack developer portfolio showcasing projects and skills',
-  URL: 'https://devsandoval.me',
+  URL: 'https://sandovaldavid.com',
   AUTHOR: {
     NAME: 'Juan David Sandoval Salvador',
-    EMAIL: 'contact@devsandoval.me',
+    EMAIL: 'contact@sandovaldavid.com',
     GITHUB: 'sandovaldavid',
     LINKEDIN: 'sandovaldavid'
   }

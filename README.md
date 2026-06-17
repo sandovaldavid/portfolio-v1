@@ -1,6 +1,6 @@
 <!-- Banner -->
 <p align="center">
-  <img src="https://devsandoval.me/projects/portfolio.webp" alt="Banner DevSandoval Portfolio">
+  <img src="https://sandovaldavid.com/projects/portfolio.webp" alt="Banner DevSandoval Portfolio">
 </p>
 
 <h1 align="center">DevSandoval - Portfolio Personal</h1>
@@ -22,8 +22,8 @@
 Puedes explorar mi portafolio desplegado y ver la solución en acción directamente aquí:
 
 <p align="center">
-  <a href="https://devsandoval.me" target="_blank">
-    <img src="https://img.shields.io/badge/Ver_Portfolio_en_Vivo-devsandoval.me-brightgreen?style=for-the-badge&logo=rocket" alt="Ver Demo en Vivo">
+  <a href="https://sandovaldavid.com" target="_blank">
+    <img src="https://img.shields.io/badge/Ver_Portfolio_en_Vivo-sandovaldavid.com-brightgreen?style=for-the-badge&logo=rocket" alt="Ver Demo en Vivo">
   </a>
 </p>
 
@@ -52,7 +52,7 @@ Este portafolio es una aplicación web estática construida con tecnologías mod
 ## 📸 Vistazo Rápido
 
 <p align="center">
-  <img src="https://devsandoval.me/projects/portfolio.webp" alt="Vista del Portfolio DevSandoval" width="80%">
+  <img src="https://sandovaldavid.com/projects/portfolio.webp" alt="Vista del Portfolio DevSandoval" width="80%">
 </p>
 
 ## 🛠️ Stack Tecnológico
@@ -187,11 +187,11 @@ Soy **DevSandoval** (Juan David Sandoval Salvador), Ingeniero Informático. Mi f
 Si buscas un desarrollador que entiende tanto el código como tus objetivos de negocio, me encantaría conocer tu proyecto.
 
 <p align="left">
-  <a href="https://devsandoval.me" target="_blank">
-    <img src="https://img.shields.io/badge/Portafolio_Web-DevSandoval.me-8b5cf6?style=for-the-badge&logo=rocket" alt="Ver mi Portafolio Web">
+  <a href="https://sandovaldavid.com" target="_blank">
+    <img src="https://img.shields.io/badge/Portafolio_Web-sandovaldavid.com-8b5cf6?style=for-the-badge&logo=rocket" alt="Ver mi Portafolio Web">
   </a>
-  <a href="mailto:devsandoval.me@gmail.com" target="_blank">
-    <img src="https://img.shields.io/badge/Email-devsandoval.me@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Enviar Email">
+  <a href="mailto:hello@sandovaldavid.com" target="_blank">
+    <img src="https://img.shields.io/badge/Email-hello@sandovaldavid.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Enviar Email">
   </a>
 </p>
 

@@ -4,7 +4,7 @@
 
 This is a personal portfolio website built with Astro, TypeScript, and Tailwind CSS. The project showcases development skills, experiences, and projects of Juan David Sandoval Salvador. The site is designed to be modern, clean, and responsive with both light and dark mode support.
 
-**Live site**: https://devsandoval.me
+**Live site**: https://sandovaldavid.com
 
 ## Architecture Guidelines - Feature-Sliced Design (FSD)
 

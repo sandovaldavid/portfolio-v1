@@ -91,7 +91,7 @@ export const routes = [
 ```typescript
 // src/app/config/constants.ts
 export const APP_CONFIG = {
-  SITE_URL: 'https://devsandoval.me',
+  SITE_URL: 'https://sandovaldavid.com',
   SITE_NAME: 'David Sandoval Portfolio',
   DEFAULT_LOCALE: 'en',
   SUPPORTED_LOCALES: ['en', 'es']
