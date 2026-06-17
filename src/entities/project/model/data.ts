@@ -9,7 +9,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 		{
 			title: t('projects.campus-map.title'),
 			description: t('projects.campus-map.description'),
-			link: 'https://mapa-unp.devsandoval.me',
+			link: 'https://mapa-unp.sandovaldavid.com',
 			github: 'https://github.com/dev-sandoval/unp-campus-map',
 			image: '/projects/project-08-campus-map.png',
 			tags: [TAGS.TAILWIND, TAGS.CLOUDINARY, TAGS.NEXTJS, TAGS.JAVASCRIPT, TAGS.MYSQL],
@@ -46,7 +46,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 		{
 			title: t('projects.auctions.title'),
 			description: t('projects.auctions.description'),
-			link: 'https://auctions.devsandoval.me',
+			link: 'https://auctions.sandovaldavid.com',
 			github: 'https://github.com/sandovaldavid/project-02-auctions',
 			image: '/projects/project-02-auctions.webp',
 			tags: [TAGS.DJANGO, TAGS.PYTHON, TAGS.BOOTSTRAP, TAGS.JAVASCRIPT, TAGS.POSTGRESQL],

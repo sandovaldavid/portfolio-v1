@@ -4,6 +4,7 @@ export const projectsTranslations = {
 	[Language.ENGLISH]: {
 		'projects.code-button': 'Code',
 		'projects.preview-button': 'Preview',
+		'projects.view-all': 'View All Projects',
 		'projects.category.machine-learning': 'Machine Learning · Thesis Project',
 		'projects.category.fullstack': 'Full-Stack Development',
 		'projects.category.enterprise': 'Enterprise Software',
@@ -36,6 +37,7 @@ export const projectsTranslations = {
 	[Language.SPANISH]: {
 		'projects.code-button': 'Código',
 		'projects.preview-button': 'Vista previa',
+		'projects.view-all': 'Ver Todos los Proyectos',
 		'projects.category.machine-learning': 'Machine Learning · Proyecto de Tesis',
 		'projects.category.fullstack': 'Desarrollo Full-Stack',
 		'projects.category.enterprise': 'Software Empresarial',

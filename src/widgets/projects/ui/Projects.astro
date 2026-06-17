@@ -1,78 +1,48 @@
 ---
 import { getProjectsData, ProjectCard } from '@/entities/project';
-import { getLangFromUrl, useTranslations } from '@/shared/lib/i18n';
-import type { ProjectItem } from '@/entities/project';
+import { getLangFromUrl, getLocalizedPath, useTranslations } from '@/shared/lib/i18n';
+
+interface Props {
+	showAll?: boolean;
+}
+const { showAll = false } = Astro.props;
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
 const PROJECTS = getProjectsData(t);
-const primaryProjects: ProjectItem[] = [
-	...PROJECTS.filter(project => project.featured),
-	...PROJECTS.filter(project => !project.featured),
-].slice(0, 2);
 
-const secondaryProjects: ProjectItem[] = PROJECTS.filter(
-	project => !primaryProjects.includes(project)
-).slice(0, 2);
-
-const primaryTop = primaryProjects[0] ?? PROJECTS[0];
-const primaryBottom = primaryProjects[1] ?? PROJECTS[1] ?? PROJECTS[0];
-const secondaryTop = secondaryProjects[0] ?? PROJECTS.find(p => !primaryProjects.includes(p));
-const secondaryBottom =
-	secondaryProjects[1] ?? PROJECTS.find(p => !primaryProjects.includes(p) && p !== secondaryTop);
+// Sort so featured come first, then slice if we are on home page
+const projectsToDisplay = showAll
+	? PROJECTS
+	: PROJECTS.filter(project => project.featured).slice(0, 2);
 ---
 
-<section class="font-sans">
-	<div
-		class="grid grid-cols-1 gap-6 md:grid-cols-3 md:grid-rows-[minmax(420px,auto)_minmax(300px,auto)] items-stretch"
-	>
+<section class="font-sans w-full">
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-stretch">
 		{
-			primaryTop && (
-				<div class="md:col-span-2 md:row-start-1 md:row-end-2 min-h-[420px] h-full">
+			projectsToDisplay.map(project => (
+				<div class="h-full">
 					<ProjectCard
-						project={primaryTop}
-						variant="primary"
-						codeButtonText={t('projects.code-button')}
-						previewButtonText={t('projects.preview-button')}
-					/>
-				</div>
-			)
-		}
-		{
-			secondaryTop && (
-				<div class="md:col-span-1 md:row-start-1 md:row-end-2 min-h-[420px] h-full">
-					<ProjectCard
-						project={secondaryTop}
+						project={project}
 						variant="secondary"
 						codeButtonText={t('projects.code-button')}
 						previewButtonText={t('projects.preview-button')}
 					/>
 				</div>
-			)
-		}
-		{
-			secondaryBottom && (
-				<div class="md:col-span-1 md:row-start-2 md:row-end-3 min-h-[300px] h-full">
-					<ProjectCard
-						project={secondaryBottom}
-						variant="secondary"
-						codeButtonText={t('projects.code-button')}
-						previewButtonText={t('projects.preview-button')}
-					/>
-				</div>
-			)
-		}
-		{
-			primaryBottom && (
-				<div class="md:col-span-2 md:row-start-2 md:row-end-3 min-h-[300px] h-full">
-					<ProjectCard
-						project={primaryBottom}
-						variant="primary"
-						codeButtonText={t('projects.code-button')}
-						previewButtonText={t('projects.preview-button')}
-					/>
-				</div>
-			)
+			))
 		}
 	</div>
+
+	{
+		!showAll && (
+			<div class="w-full flex justify-center mt-12">
+				<a
+					href={getLocalizedPath(lang, '/projects')}
+					class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+				>
+					{t('projects.view-all')}
+				</a>
+			</div>
+		)
+	}
 </section>

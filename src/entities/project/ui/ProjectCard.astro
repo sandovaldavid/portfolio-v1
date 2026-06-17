@@ -17,11 +17,11 @@ const { image, title, description, tags, link, github, category } = project;
 const isPrimary = variant === 'primary';
 ---
 
-<article class="font-sans group h-full" style={`animation: var(--animate-fade-in);`}>
+<article class="font-mono group h-full" style={`animation: var(--animate-fade-in);`}>
 	<div
 		class={isPrimary
-			? 'relative h-full overflow-hidden rounded-2xl border border-neutral-300/80 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900/90 shadow-[0_18px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_18px_50px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/60'
-			: 'relative h-full overflow-hidden rounded-xl border border-neutral-300/80 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900/90 shadow-[0_14px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_14px_32px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:border-primary-500/50'}
+			? 'relative h-full overflow-hidden rounded-none border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100 will-change-transform group-hover:-translate-x-[2px] group-hover:-translate-y-[2px] group-hover:shadow-[6px_6px_0px_0px_var(--color-border-strong)]'
+			: 'relative h-full overflow-hidden rounded-none border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-[3px_3px_0px_0px_var(--color-border-strong)] transition-all duration-100 will-change-transform group-hover:-translate-x-[2px] group-hover:-translate-y-[2px] group-hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)]'}
 	>
 		<Image
 			src={image}
@@ -33,17 +33,17 @@ const isPrimary = variant === 'primary';
 			alt={`${title} project image`}
 		/>
 		<div
-			class="absolute inset-0 bg-linear-to-b from-white/30 via-white/85 to-white/95 dark:from-neutral-900/20 dark:via-neutral-900/75 dark:to-neutral-900/90"
+			class="absolute inset-0 bg-linear-to-b from-transparent via-background/80 to-background"
 		>
 		</div>
 		<div
-			class="absolute inset-x-0 top-0 flex items-center gap-2 border-b border-neutral-300/80 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/70 px-4 py-3 backdrop-blur"
+			class="absolute inset-x-0 top-0 flex items-center gap-2 border-b-2 border-black dark:border-white bg-white/90 dark:bg-neutral-900 px-4 py-3"
 		>
-			<span class="size-2.5 rounded-full bg-primary-500/80" aria-hidden="true"></span>
-			<span class="size-2.5 rounded-full bg-primary-400/70" aria-hidden="true"></span>
-			<span class="size-2.5 rounded-full bg-neutral-500/70" aria-hidden="true"></span>
+			<span class="size-3 border border-black dark:border-white bg-red-500" aria-hidden="true"></span>
+			<span class="size-3 border border-black dark:border-white bg-yellow-500" aria-hidden="true"></span>
+			<span class="size-3 border border-black dark:border-white bg-green-500" aria-hidden="true"></span>
 			<span
-				class="ml-auto text-xs uppercase tracking-[0.18em] text-neutral-600 dark:text-neutral-400"
+				class="ml-auto font-retro-tag text-[9px] uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-bold"
 				>{isPrimary ? 'Feature' : 'Project'}</span
 			>
 		</div>
@@ -55,15 +55,15 @@ const isPrimary = variant === 'primary';
 		>
 			{
 				category && (
-					<p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary-500 dark:text-primary-400">
+					<p class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
 						{category}
 					</p>
 				)
 			}
 			<h3
 				class={isPrimary
-					? 'text-neutral-900 dark:text-neutral-50 text-2xl font-bold'
-					: 'text-neutral-900 dark:text-neutral-50 text-xl font-semibold'}
+					? 'text-neutral-900 dark:text-neutral-50 text-3xl font-bold font-pixel-clean tracking-wide'
+					: 'text-neutral-900 dark:text-neutral-50 text-2xl font-bold font-pixel-clean tracking-wide'}
 			>
 				{title}
 			</h3>
