@@ -27,4 +27,6 @@ pnpm-debug.log*
 # Python cache files
 __pycache__/
 *.py[cod]
-*$py.class
+*$py.class# Testing & audit artifacts
+*.png
+lighthouse_report.*
