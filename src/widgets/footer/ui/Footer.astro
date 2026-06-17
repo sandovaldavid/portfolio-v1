@@ -24,7 +24,7 @@ const socialLinks = [
 	},
 	{
 		name: 'Email',
-		href: 'mailto:contact@devsandoval.me',
+		href: 'mailto:hello@sandovaldavid.com',
 		icon: MailIcon,
 	},
 	{
@@ -35,30 +35,32 @@ const socialLinks = [
 ];
 ---
 
-<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full" id="contact">
+<footer class="mt-28 px-4 sm:px-6 lg:px-8 pb-8 w-full border-t-2 border-border-strong pt-20" id="contact">
 	<!-- CTA Section -->
-	<div class="text-center space-y-6 mb-12">
-		<h1
-			class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100"
+	<div class="text-center space-y-4 mb-10 max-w-2xl mx-auto">
+		<h2
+			class="text-4xl sm:text-5xl md:text-6xl font-bold font-pixel-clean uppercase tracking-wider text-text-main"
 		>
 			{t('footer.title')}
-		</h1>
-		<h2
-			class="text-base sm:text-lg md:text-xl font-semibold text-neutral-600 dark:text-neutral-400 px-4"
+		</h2>
+		<p
+			class="text-xs sm:text-sm font-mono uppercase text-text-muted tracking-wide"
 		>
 			{t('footer.subtitle')}
-		</h2>
-		<a
-			href="mailto:sandovaldavid2201@gmail.com"
-			class="inline-flex items-center gap-2 px-6 sm:px-8 py-3 bg-primary-500 text-white rounded-full font-medium hover:bg-primary-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
-		>
-			<MailIcon class="w-5 h-5" />
-			{t('footer.cta')}
-		</a>
+		</p>
+		<div class="pt-4">
+			<a
+				href="mailto:hello@sandovaldavid.com"
+				class="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white font-mono text-sm font-bold uppercase tracking-wider shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--color-border-strong)] transition-all duration-100"
+			>
+				<MailIcon class="w-5 h-5" />
+				{t('footer.cta')}
+			</a>
+		</div>
 	</div>
 
 	<!-- Social Links -->
-	<div class="flex justify-center gap-4 sm:gap-6 mb-12 flex-wrap">
+	<div class="flex justify-center gap-4 sm:gap-5 mb-14 flex-wrap">
 		{
 			socialLinks.map(({ name, href, icon: Icon }) => (
 				<a
@@ -66,7 +68,7 @@ const socialLinks = [
 					target="_blank"
 					rel="noopener noreferrer"
 					title={name}
-					class="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-500 transition-colors duration-300 p-2"
+					class="flex items-center justify-center p-3.5 bg-surface border-2 border-black dark:border-white text-text-main shadow-[2.5px_2.5px_0px_var(--color-border-strong)] hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] hover:shadow-[4px_4px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--color-border-strong)] transition-all duration-100"
 				>
 					<Icon class="w-6 h-6" />
 				</a>
