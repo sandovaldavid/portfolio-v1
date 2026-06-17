@@ -2,6 +2,11 @@
 import { LinkButton } from '@shared/ui';
 import { LanguagePicker } from '@features/language-picker';
 import MenuIcon from '@assets/icons/MenuIcon.astro';
+import BriefcaseIcon from '@assets/icons/Briefcase.astro';
+import BrainIcon from '@assets/icons/Brain.astro';
+import CodeIcon from '@assets/icons/Code.astro';
+import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
+import SystemIcon from '@assets/icons/System.astro';
 import type { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
@@ -10,6 +15,7 @@ interface Props {
 		title: string;
 		label: string;
 		url: string;
+		icon: string;
 	}>;
 	lang: Language;
 }
@@ -60,12 +66,17 @@ const { navItems, lang } = Astro.props;
 			{
 				navItems.map(link => (
 					<a
-						class="w-full text-center px-6 py-3 rounded-none text-base font-bold uppercase tracking-wider font-mono text-text-main hover:text-primary-500 hover:bg-surface-highlight border-2 border-transparent hover:border-border-strong transition-all duration-100"
+						class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-none text-base font-bold uppercase tracking-wider font-mono text-text-main hover:text-primary-500 hover:bg-surface-highlight border-2 border-transparent hover:border-border-strong transition-all duration-100"
 						aria-label={link.label}
 						href={link.url}
 						data-close-menu="true"
 					>
-						{link.title}
+						{link.icon === 'experience' && <BriefcaseIcon class="size-5" />}
+						{link.icon === 'research' && <BrainIcon class="size-5" />}
+						{link.icon === 'projects' && <CodeIcon class="size-5" />}
+						{link.icon === 'about-me' && <ProfileCheckIcon class="size-5" />}
+						{link.icon === 'technologies' && <SystemIcon class="size-5" />}
+						<span>{link.title}</span>
 					</a>
 				))
 			}

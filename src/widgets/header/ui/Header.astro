@@ -26,26 +26,31 @@ const navItems = [
 	{
 		title: t('nav.experience'),
 		label: 'experience',
+		icon: 'experience',
 		url: getLocalizedPath(lang, '/#experience'),
 	},
 	{
 		title: t('nav.research'),
 		label: 'research',
+		icon: 'research',
 		url: getLocalizedPath(lang, '/#research'),
 	},
 	{
 		title: t('nav.projects'),
 		label: 'projects',
+		icon: 'projects',
 		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
 		title: t('nav.about'),
 		label: 'about-me',
+		icon: 'about-me',
 		url: getLocalizedPath(lang, '/#about-me'),
 	},
 	{
 		title: t('nav.stack'),
 		label: 'technologies',
+		icon: 'technologies',
 		url: getLocalizedPath(lang, '/#technologies'),
 	},
 ];
@@ -89,7 +94,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 
 <script>
 	// Active link highlighting with Intersection Observer
-	const sections = document.querySelectorAll('section');
+	const sections = document.querySelectorAll('section[id]');
 	const navLinks = document.querySelectorAll('header nav a[aria-label]');
 
 	const observerCallback = (entries: IntersectionObserverEntry[]) => {
