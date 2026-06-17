@@ -11,6 +11,7 @@ import { Footer } from '@widgets/footer';
 import { TechStack } from '@widgets/tech-stack';
 import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { ContactSidebar } from '@widgets/contact-sidebar';
+import { CLITerminal } from '@features/cli-terminal';
 import { SectionContainer, TitleSection } from '@/shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
@@ -115,6 +116,7 @@ const t = useTranslations(lang);
 			</main>
 			<Footer />
 			<RecruiterHUD />
+			<CLITerminal />
 			<ContactSidebar />
 		</div>
 	</body>

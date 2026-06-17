@@ -42,7 +42,10 @@ export const siteConfig = {
 	},
 
 	// ─── Resume ──────────────────────────────────────────────────
-	resumeUrl: '/David_Sandoval_Salvador-resume.pdf',
+	resume: {
+		en: 'https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_EN.pdf',
+		es: 'https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_ES.pdf',
+	},
 } as const;
 
 /** Shorthand getters for the most-used values */

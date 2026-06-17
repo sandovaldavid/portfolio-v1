@@ -70,7 +70,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 		<!-- Right: Actions (Desktop) -->
 		<div class="hidden md:flex items-center justify-end gap-4 shrink-0 md:w-72">
 			<LinkButton
-				href={siteConfig.resumeUrl}
+				href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es}
 				target="_blank"
 				variant="primary"
 				class="font-mono text-xs uppercase tracking-wider px-3.5 py-1.5"

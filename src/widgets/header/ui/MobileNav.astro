@@ -73,7 +73,7 @@ const { navItems, lang } = Astro.props;
 
 		<!-- Actions: Resume + LanguagePicker -->
 		<div class="flex flex-col items-center gap-4 mt-6 w-full">
-			<LinkButton href={siteConfig.resumeUrl} target="_blank" variant="primary"> Resume </LinkButton>
+			<LinkButton href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es} target="_blank" variant="primary"> Resume </LinkButton>
 			<LanguagePicker currentLang={lang} />
 		</div>
 	</div>

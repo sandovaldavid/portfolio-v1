@@ -21,8 +21,11 @@ const cheatsTitle = lang === 'en' ? 'SYSTEM CHEATS' : 'TRUCOS DEL SISTEMA';
 const cheatMatrix = lang === 'en' ? 'TOGGLE MATRIX RAIN' : 'LLUVIA MATRIX';
 const cheatStats = lang === 'en' ? 'UNLEASH SECRET STATS' : 'REVELAR STATS SECRETOS';
 const cheatAutopilot = lang === 'en' ? 'AUTOPILOT TOUR' : 'TOUR AUTOMÁTICO';
+const cheatShortcuts = lang === 'en' ? 'KEYBOARD SHORTCUTS' : 'ATAJOS DE TECLADO';
+const cheatGithub = lang === 'en' ? 'LIVE GITHUB STATS' : 'STATS GITHUB EN VIVO';
 
 const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
+const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS EN VIVO';
 ---
 
 <div class="fixed bottom-6 right-6 z-50 font-mono">
@@ -91,7 +94,7 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 			<div class="grid grid-cols-2 gap-2">
 				<!-- Get Resume -->
 				<a
-					href={siteConfig.resumeUrl}
+					href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es}
 					target="_blank"
 					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-text-main font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
 				>
@@ -136,6 +139,27 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 					<span>{cheatAutopilot}</span>
 					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: TOUR ]</span>
 				</button>
+
+				<!-- Divider -->
+				<div class="border-t border-dashed border-border-subtle/40 my-0.5"></div>
+
+				<!-- Keyboard Shortcuts -->
+				<button
+					id="hud-cheat-shortcuts"
+					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
+				>
+					<span>{cheatShortcuts}</span>
+					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: ? ]</span>
+				</button>
+
+				<!-- Live GitHub Stats -->
+				<button
+					id="hud-cheat-github"
+					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
+				>
+					<span>{cheatGithub}</span>
+					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: GITHUB ]</span>
+				</button>
 			</div>
 		</div>
 
@@ -161,6 +185,14 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 				</div>
 			</div>
 		</div>
+
+		<!-- GitHub Live Stats Panel (Collapsible) -->
+		<div id="hud-github-panel" class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
+			<span class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">{ghStatsTitle}</span>
+			<div id="hud-github-content" class="text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10 space-y-1.5 text-text-muted">
+				<span class="animate-pulse">{lang === 'en' ? 'Loading data…' : 'Cargando datos…'}</span>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -174,7 +206,11 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 	const cheatMatrixBtn = document.getElementById('hud-cheat-matrix');
 	const cheatStatsBtn = document.getElementById('hud-cheat-stats');
 	const cheatAutopilotBtn = document.getElementById('hud-cheat-autopilot');
+	const cheatShortcutsBtn = document.getElementById('hud-cheat-shortcuts');
+	const cheatGithubBtn = document.getElementById('hud-cheat-github');
 	const secretStatsPanel = document.getElementById('hud-secret-stats-panel');
+	const githubPanel = document.getElementById('hud-github-panel');
+	const githubContent = document.getElementById('hud-github-content');
 
 	// Mascot bubble hint toggle
 	if (hint) {
@@ -326,6 +362,64 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 			secretStatsPanel?.classList.add('hidden');
 			secretStatsPanel?.classList.remove('flex');
 			cheatStatsBtn.classList.remove('text-primary-500', 'border-primary-500/70');
+		}
+	});
+
+	// Cheat Code 4: Open keyboard shortcuts modal (from CLITerminal)
+	cheatShortcutsBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		panel?.classList.add('hidden');
+		panel?.classList.remove('flex');
+		toggleBtn?.setAttribute('aria-expanded', 'false');
+		const openFn = (window as unknown as Record<string, (() => void) | undefined>).__openShortcutsModal;
+		openFn?.();
+	});
+
+	// Cheat Code 5: Live GitHub Stats
+	cheatGithubBtn?.addEventListener('click', async (e) => {
+		e.stopPropagation();
+		const isHidden = githubPanel?.classList.contains('hidden');
+		if (isHidden) {
+			githubPanel?.classList.remove('hidden');
+			githubPanel?.classList.add('flex');
+			cheatGithubBtn.classList.add('text-primary-500', 'border-primary-500/70');
+
+			// Fetch only once
+			if (githubContent && !githubContent.dataset.loaded) {
+				const ghApi = (window as unknown as Record<string, { fetch?: () => Promise<Record<string, unknown> | null> }>).__portfolioGitHub;
+				const stats = await ghApi?.fetch?.();
+				githubContent.dataset.loaded = 'true';
+				if (stats) {
+					githubContent.innerHTML = `
+						<div class="flex justify-between border-b border-border-subtle/40 pb-1">
+							<span class="text-text-muted uppercase">REPOS:</span>
+							<span class="text-text-main font-bold">${stats.public_repos}</span>
+						</div>
+						<div class="flex justify-between border-b border-border-subtle/40 pb-1">
+							<span class="text-text-muted uppercase">STARS:</span>
+							<span class="text-text-main font-bold">${stats.totalStars}</span>
+						</div>
+						<div class="flex justify-between border-b border-border-subtle/40 pb-1">
+							<span class="text-text-muted uppercase">FORKS:</span>
+							<span class="text-text-main font-bold">${stats.totalForks}</span>
+						</div>
+						<div class="flex justify-between border-b border-border-subtle/40 pb-1">
+							<span class="text-text-muted uppercase">FOLLOWERS:</span>
+							<span class="text-text-main font-bold">${stats.followers}</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-text-muted uppercase">TOP LANGS:</span>
+							<span class="text-text-main font-bold">${(stats.topLangs as string[]).join(', ')}</span>
+						</div>
+					`;
+				} else {
+					githubContent.innerHTML = '<span class="text-red-400">API unavailable</span>';
+				}
+			}
+		} else {
+			githubPanel?.classList.add('hidden');
+			githubPanel?.classList.remove('flex');
+			cheatGithubBtn.classList.remove('text-primary-500', 'border-primary-500/70');
 		}
 	});
 
