@@ -164,6 +164,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					placeholder={cliPlaceholder}
 					autocomplete="off"
 					spellcheck="false"
+					aria-label={isEn ? "Terminal command input" : "Entrada de comandos de la terminal"}
 				/>
 				<span class="text-[10px] text-white/20 uppercase tracking-widest hidden sm:block"
 					>{cliTabHint}</span
