@@ -15,6 +15,7 @@ export const aboutMeTranslations = {
 		'about-me.focus4': 'High-availability system optimization',
 		'about-me.focus5': 'Deep Learning applied to software eng.',
 		'about-me.focus6': 'Open source contributions',
+		'about-me.profile.title': 'PROFESSIONAL PROFILE',
 		'about-me.atena.title': 'CURRENT ROLE @ ATENA',
 		'about-me.atena.summary':
 			'I currently work as a Software Developer at <strong>Atena</strong>, leading frontend development for core products using Angular. I focus on optimizing performance, engineering scalable UI architectures, and integrating robust backend services.',
@@ -35,6 +36,7 @@ export const aboutMeTranslations = {
 		'about-me.focus4': 'Optimización de sistemas de alta disponibilidad',
 		'about-me.focus5': 'Deep Learning aplicado a ingeniería de software',
 		'about-me.focus6': 'Contribuciones de código abierto',
+		'about-me.profile.title': 'PERFIL PROFESIONAL',
 		'about-me.atena.title': 'TRABAJO ACTUAL EN ATENA',
 		'about-me.atena.summary':
 			'Actualmente trabajo como Desarrollador de Software en <strong>Atena</strong>, liderando el desarrollo frontend de productos clave usando Angular. Me enfoco en optimizar el rendimiento, diseñar arquitecturas de interfaz escalables y coordinar integraciones con servicios backend.',
