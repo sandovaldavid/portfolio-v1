@@ -9,11 +9,11 @@ export const aboutMeTranslations = {
 		'about-me.paragraph3':
 			'I aspire to continue pushing the boundaries of both enterprise software development and AI-driven repository analysis, contributing to tools and methodologies that help teams build better software.',
 		'about-me.currently-focused': 'Currently focused on:',
-		'about-me.focus1': 'Building AI-powered applications',
-		'about-me.focus2': 'Cloud-native architectures',
-		'about-me.focus3': 'Performance optimization',
-		'about-me.focus4': 'Developer experience & tooling',
-		'about-me.focus5': 'Technical leadership & mentoring',
+		'about-me.focus1': 'BiLSTM for OSS abandonment prediction',
+		'about-me.focus2': 'Mining Software Repositories (MSR)',
+		'about-me.focus3': 'Enterprise .NET 8 & Angular 19',
+		'about-me.focus4': 'High-availability system optimization',
+		'about-me.focus5': 'Deep Learning applied to software eng.',
 		'about-me.focus6': 'Open source contributions',
 		'about-me.atena.title': 'CURRENT ROLE @ ATENA',
 		'about-me.atena.summary':
@@ -29,11 +29,11 @@ export const aboutMeTranslations = {
 		'about-me.paragraph3':
 			'Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.',
 		'about-me.currently-focused': 'Enfocado actualmente en:',
-		'about-me.focus1': 'Construir aplicaciones potenciadas por IA',
-		'about-me.focus2': 'Arquitecturas nativas de la nube',
-		'about-me.focus3': 'Optimización de rendimiento',
-		'about-me.focus4': 'Experiencia de desarrollador y herramientas',
-		'about-me.focus5': 'Liderazgo técnico y mentoría',
+		'about-me.focus1': 'BiLSTM para predicción de abandono OSS',
+		'about-me.focus2': 'Minería de Repositorios de Software (MSR)',
+		'about-me.focus3': 'Empresarial .NET 8 & Angular 19',
+		'about-me.focus4': 'Optimización de sistemas de alta disponibilidad',
+		'about-me.focus5': 'Deep Learning aplicado a ingeniería de software',
 		'about-me.focus6': 'Contribuciones de código abierto',
 		'about-me.atena.title': 'TRABAJO ACTUAL EN ATENA',
 		'about-me.atena.summary':

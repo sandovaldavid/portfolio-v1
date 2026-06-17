@@ -11,8 +11,8 @@ export const heroTranslations = {
 		'hero.cta.download-resume': 'Download Resume',
 		'hero.cta.view-research': 'View Research',
 		'hero.title': 'Engineering Scalable Systems',
-		'hero.subtitle': 'Software Engineer | B.S. Computer Engineering',
-		'hero.credential': 'Currently optimizing high-availability systems at Atena (Remote)',
+		'hero.subtitle': 'Software Engineer · BiLSTM/OSS Researcher · B.S. Computer Engineering',
+		'hero.credential': 'Currently @ Atena (Remote) · Researching OSS abandonment prediction w/ BiLSTM',
 	},
 	[Language.SPANISH]: {
 		'hero.available': 'Disponible para trabajar',
@@ -24,8 +24,7 @@ export const heroTranslations = {
 		'hero.cta.download-resume': 'Descargar CV',
 		'hero.cta.view-research': 'Ver Investigación',
 		'hero.title': 'Ingeniería de Sistemas Escalables',
-		'hero.subtitle': 'Ingeniero de Software | B.S. Ingeniería Informática',
-		'hero.credential':
-			'Actualmente optimizando sistemas de alta disponibilidad en Atena (Remoto)',
+		'hero.subtitle': 'Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática',
+		'hero.credential': 'Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM',
 	},
 } as const;
