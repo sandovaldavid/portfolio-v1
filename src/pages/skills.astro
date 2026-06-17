@@ -1,0 +1,112 @@
+---
+import Layout from '@app/layouts/Layout.astro';
+import { TAGS } from '@entities/technology';
+import { TechPill, SectionContainer } from '@/shared/ui';
+import { getLocalizedPath } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
+
+const lang = Language.SPANISH;
+
+const frontendTechs = [
+	TAGS.TYPESCRIPT,
+	TAGS.ANGULAR,
+	TAGS.RXJS,
+	TAGS.NEXTJS,
+	TAGS.REACT,
+	TAGS.ASTRO,
+	TAGS.TAILWIND,
+	TAGS.JAVASCRIPT,
+	TAGS.CSS,
+	TAGS.HTML,
+	TAGS.BOOTSTRAP,
+].filter(Boolean);
+
+const backendTechs = [
+	TAGS.JAVA,
+	TAGS.PYTHON,
+	TAGS.DJANGO,
+	TAGS.EXPRESS,
+	TAGS.POSTGRESQL,
+	TAGS.MYSQL,
+	TAGS.SQLITE,
+].filter(Boolean);
+
+const toolsTechs = [
+	TAGS.CLOUDINARY,
+	TAGS.SANITY,
+	TAGS.CHARTJS,
+	TAGS.MARKDOWN,
+].filter(Boolean);
+---
+
+<Layout
+	title="Habilidades y Tecnologías - David Sandoval"
+	description="Explora el inventario completo de lenguajes, frameworks, librerías y herramientas utilizadas por David Sandoval."
+	img_preview="/projects/portfolio.webp"
+	isHome={false}
+>
+	<SectionContainer id="all-skills" class="w-full max-w-5xl px-4 flex flex-col gap-8">
+		<div class="text-center space-y-3 mb-4">
+			<h2 class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide">
+				Inventario de Habilidades
+			</h2>
+			<p class="text-text-muted font-mono text-sm uppercase">
+				[ Carga de Habilidades: 100% Completado // Personaje de Clase Ingeniero de Sistemas ]
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2">
+			<!-- Frontend Spells Card -->
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+					[ FRONTEND SPELLS ]
+				</h3>
+				<div class="flex flex-wrap gap-2.5">
+					{
+						frontendTechs.map(tech => (
+							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
+						))
+					}
+				</div>
+			</article>
+
+			<!-- Backend Runes Card -->
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+					[ BACKEND RUNES ]
+				</h3>
+				<div class="flex flex-wrap gap-2.5">
+					{
+						backendTechs.map(tech => (
+							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
+						))
+					}
+				</div>
+			</article>
+
+			<!-- Tools & Utility Card -->
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+					[ UTILITIES & ITEMS ]
+				</h3>
+				<div class="flex flex-wrap gap-2.5">
+					{
+						toolsTechs.map(tech => (
+							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
+						))
+					}
+				</div>
+			</article>
+		</div>
+
+		<!-- Back Button -->
+		<div class="w-full flex justify-center mt-8">
+			<a
+				href={getLocalizedPath(lang, '/')}
+				class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+			>
+				[ RETORNAR AL INICIO ]
+			</a>
+		</div>
+	</SectionContainer>
+</Layout>

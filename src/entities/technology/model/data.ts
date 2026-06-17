@@ -20,6 +20,7 @@ import AstroIcon from '@assets/technologies/AstroIcon.astro';
 import TypescriptIcon from '@assets/technologies/TypeScript.astro';
 import AngularIcon from '@assets/technologies/Angular.astro';
 import RxJSIcon from '@assets/technologies/RXJS.astro';
+import JavaIcon from '@assets/technologies/Java.astro';
 
 import type { TechnologyTags } from './types';
 
@@ -28,6 +29,11 @@ import type { TechnologyTags } from './types';
  * Contains all available technologies used in projects
  */
 export const TAGS: TechnologyTags = {
+	JAVA: {
+		name: 'Java',
+		class: 'bg-red-600 text-white',
+		icon: JavaIcon,
+	},
 	PYTHON: {
 		name: 'Python',
 		class: 'bg-blue-500 text-white',
