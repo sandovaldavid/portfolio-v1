@@ -4,15 +4,15 @@ export const navigationTranslations = {
 	[Language.ENGLISH]: {
 		'nav.experience': 'Experience',
 		'nav.projects': 'Projects',
-		'nav.badges': 'Badges',
 		'nav.about': 'About me',
-		'nav.contact': 'Contact',
+		'nav.stack': 'Stack',
+		'nav.research': 'Research',
 	},
 	[Language.SPANISH]: {
 		'nav.experience': 'Experiencia',
 		'nav.projects': 'Proyectos',
-		'nav.badges': 'Insignias',
 		'nav.about': 'Sobre mí',
-		'nav.contact': 'Contacto',
+		'nav.stack': 'Stack',
+		'nav.research': 'Investigación',
 	},
 } as const;
