@@ -25,13 +25,8 @@ const t = useTranslations(lang);
 const navItems = [
 	{
 		title: t('nav.experience'),
-		label: 'experiencia',
+		label: 'experience',
 		url: getLocalizedPath(lang, '/#experience'),
-	},
-	{
-		title: t('nav.projects'),
-		label: 'proyectos',
-		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
 		title: t('nav.research'),
@@ -39,14 +34,19 @@ const navItems = [
 		url: getLocalizedPath(lang, '/#research'),
 	},
 	{
-		title: t('nav.stack'),
-		label: 'technologies',
-		url: getLocalizedPath(lang, '/#technologies'),
+		title: t('nav.projects'),
+		label: 'projects',
+		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
 		title: t('nav.about'),
-		label: 'sobre-mi',
+		label: 'about-me',
 		url: getLocalizedPath(lang, '/#about-me'),
+	},
+	{
+		title: t('nav.stack'),
+		label: 'technologies',
+		url: getLocalizedPath(lang, '/#technologies'),
 	},
 ];
 
