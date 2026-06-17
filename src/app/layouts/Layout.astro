@@ -10,6 +10,7 @@ import StarIcon from '@assets/icons/Star.astro';
 import { Header } from '@widgets/header';
 import { Footer } from '@widgets/footer';
 import { TechStack } from '@widgets/tech-stack';
+import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { SectionContainer, TitleSection } from '@/shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
@@ -18,97 +19,105 @@ interface Props {
 	title: string;
 	description: string;
 	img_preview: string;
+	isHome?: boolean;
 }
-const { description, title, img_preview } = Astro.props;
+const { description, title, img_preview, isHome = true } = Astro.props;
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={langCode}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+		<link rel="canonical" href={new URL(Astro.url.pathname, 'https://sandovaldavid.com').toString()} />
 		<meta name="generator" content={Astro.generator} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={img_preview} />
-		<meta property="og:url" content="https://devsandoval.me" />
+		<meta property="og:url" content={new URL(Astro.url.pathname, 'https://sandovaldavid.com').toString()} />
 		<meta property="og:type" content="website" />
 		<title>{title}</title>
 		<script is:inline>
-			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-			document.documentElement.classList.toggle(
-				'dark',
-				localStorage.theme === 'dark' ||
-					(!('theme' in localStorage) &&
-						window.matchMedia('(prefers-color-scheme: dark)').matches)
-			);
+			// Force dark mode for high-contrast unified retro palette
+			document.documentElement.classList.add('dark');
 		</script>
 		<Analytics />
 	</head>
 
-	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
-		<div class="flex flex-col justify-center items-center">
+	<body class="bg-background text-text-body flex flex-col min-h-screen">
+		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
-			<main>
-				<div class="flex flex-col justify-around">
-					<slot name="hero" />
-				</div>
-				<div class="flex flex-col gap-10 md:gap-16 xl:gap-24">
-					<SectionContainer id="experience">
-						<TitleSection>
-							<BriefCaseIcon class="size-12" />
-							{t('title.experience')}
-						</TitleSection>
-						<slot name="experience" />
-					</SectionContainer>
+			<main class="w-full min-h-screen flex flex-col items-center">
+				{isHome ? (
+					<div class="pt-[4.5rem]">
+						<div class="flex flex-col justify-around max-h-[calc(100dvh-4.5rem)]">
+							<slot name="hero" />
+						</div>
+						<div class="flex flex-col">
+							<SectionContainer id="experience" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<BriefCaseIcon class="size-12" />
+									{t('title.experience')}
+								</TitleSection>
+								<slot name="experience" />
+							</SectionContainer>
+							<SectionContainer id="research" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<BrainIcon class="size-12" />
+									{t('title.research')}
+								</TitleSection>
+								<slot name="research" />
+							</SectionContainer>
 
-					<SectionContainer id="research">
-						<TitleSection>
-							<BrainIcon class="size-12" />
-							{t('title.research')}
-						</TitleSection>
-						<slot name="research" />
-					</SectionContainer>
+							<SectionContainer id="vision" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<StarIcon class="size-12" />
+									{t('title.vision')}
+								</TitleSection>
+								<slot name="vision" />
+							</SectionContainer>
 
-					<SectionContainer id="vision">
-						<TitleSection>
-							<StarIcon class="size-12" />
-							{t('title.vision')}
-						</TitleSection>
-						<slot name="vision" />
-					</SectionContainer>
+							<SectionContainer id="projects" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<CodeIcon class="size-12" />
+									{t('title.projects')}
+								</TitleSection>
+								<slot name="projects" />
+							</SectionContainer>
 
-					<SectionContainer id="projects">
-						<TitleSection>
-							<CodeIcon class="size-12" />
-							{t('title.projects')}
-						</TitleSection>
-						<slot name="projects" />
-					</SectionContainer>
+							<SectionContainer id="about-me" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<ProfileCheckIcon class="size-12" />
+									{t('title.about-me')}
+								</TitleSection>
+								<slot name="about-me" />
+							</SectionContainer>
 
-					<SectionContainer id="about-me">
-						<TitleSection>
-							<ProfileCheckIcon class="size-12" />
-							{t('title.about-me')}
-						</TitleSection>
-						<slot name="about-me" />
-					</SectionContainer>
-
-					<SectionContainer id="technologies">
-						<TitleSection>
-							<CodeIcon class="size-12" />
-							{t('title.technologies')}
-						</TitleSection>
-						<TechStack />
-					</SectionContainer>
-				</div>
+							<SectionContainer id="technologies" class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6">
+								<TitleSection className="mb-0">
+									<CodeIcon class="size-12" />
+									{t('title.technologies')}
+								</TitleSection>
+								<TechStack />
+							</SectionContainer>
+						</div>
+					</div>
+				) : (
+					<div class="pt-28 pb-16 w-full flex flex-col items-center">
+						<slot />
+					</div>
+				)}
 			</main>
 			<Footer />
+			<RecruiterHUD />
 		</div>
 	</body>
 </html>

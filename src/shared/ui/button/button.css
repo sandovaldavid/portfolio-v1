@@ -3,28 +3,32 @@
 /* Base button styles shared by all variants */
 .btn-base {
 	@apply inline-flex items-center justify-center gap-2;
-	@apply px-4 py-1 text-base font-medium;
-	@apply rounded-full transition-all duration-300;
-	@apply hover:scale-105;
+	@apply px-4 py-2 text-sm font-bold uppercase tracking-wider;
+	@apply rounded-none border-2 border-black dark:border-white;
+	@apply transition-all duration-100;
 	@apply focus:outline-none focus-visible:outline-none;
-	@apply focus-visible:ring focus-visible:ring-primary-500/50 dark:focus-visible:ring-primary-200 focus-visible:ring-offset-2;
+	@apply focus-visible:ring-2 focus-visible:ring-primary-500;
+	
+	/* Retro 3D offset shadow */
+	box-shadow: 3px 3px 0px 0px var(--color-border-strong);
 }
 
-/* Primary variant - Brand style */
+.btn-base:hover {
+	@apply -translate-x-[2px] -translate-y-[2px];
+	box-shadow: 5px 5px 0px 0px var(--color-border-strong);
+}
+
+.btn-base:active {
+	@apply translate-x-[1px] translate-y-[1px];
+	box-shadow: 1px 1px 0px 0px var(--color-border-strong);
+}
+
+/* Primary variant - Neon Brand style */
 .btn-primary {
-	@apply text-gray-800 dark:text-white;
-	@apply bg-neutral-200 dark:bg-gray-800;
-	@apply border border-neutral-300 dark:border-gray-600;
-	@apply hover:bg-neutral-300 dark:hover:bg-gray-900 hover:border-neutral-400 dark:hover:border-gray-700;
-	@apply dark:hover:text-white;
-	@apply active:bg-neutral-400 dark:active:bg-black;
+	@apply text-white dark:text-black bg-primary-500 hover:bg-primary-400 dark:hover:bg-primary-300;
 }
 
-/* Secondary variant - Muted with brand accent */
+/* Secondary variant - High-contrast style */
 .btn-secondary {
-	@apply text-neutral-900 dark:text-neutral-100;
-	@apply bg-neutral-100 dark:bg-neutral-800;
-	@apply border-2 border-neutral-300 dark:border-neutral-700;
-	@apply hover:border-primary-500 dark:hover:border-primary-400;
-	@apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
+	@apply text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800;
 }

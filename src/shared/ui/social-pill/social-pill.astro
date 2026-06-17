@@ -15,17 +15,17 @@ const { href, target = '_blank', class: className } = Astro.props;
 	role="link"
 	class:list={[
 		'inline-flex items-center justify-center gap-x-2',
-		'py-1 px-2 md:py-2 md:px-4',
-		'text-xs md:text-base',
-		'bg-neutral-100/90 dark:bg-white/50',
-		'border border-neutral-300/50 dark:border-white/10',
-		'rounded-full',
-		'transition-all duration-200',
-		'hover:bg-neutral-200/80 dark:hover:bg-white/40',
-		'hover:border-neutral-400/80 dark:hover:border-white/80',
+		'py-1.5 px-3 md:py-2 md:px-4',
+		'text-xs md:text-sm font-semibold uppercase tracking-wider',
+		'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100',
+		'border-2 border-black dark:border-white',
+		'rounded-none',
+		'transition-all duration-100',
+		'hover:-translate-x-[2px] hover:-translate-y-[2px]',
+		'hover:bg-neutral-200 dark:hover:bg-neutral-700',
+		'active:translate-x-[1px] active:translate-y-[1px]',
+		'shadow-[2px_2px_0px_0px_var(--color-border-strong)] hover:shadow-[4px_4px_0px_0px_var(--color-border-strong)] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]',
 		'focus:outline-none focus-visible:outline-none',
-		'focus-visible:ring focus-visible:ring-primary-500/50 dark:focus-visible:ring-white/50 focus-visible:ring-offset-2',
-		'active:bg-neutral-300/80 dark:active:bg-white/20',
 		className,
 	]}
 >
