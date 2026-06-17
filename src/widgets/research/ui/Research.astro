@@ -20,6 +20,13 @@ const labels = {
 	keywords: isEN ? 'KEYWORDS' : 'PALABRAS CLAVE',
 	institution: isEN ? 'INSTITUTION' : 'INSTITUCIÓN',
 };
+
+const metrics = [
+	{ prefix: 'ACC', text: t('research.thesis.metrics.accuracy') },
+	{ prefix: 'F1', text: t('research.thesis.metrics.f1') },
+	{ prefix: 'AUC', text: t('research.thesis.metrics.auc') },
+	{ prefix: 'LOSS', text: t('research.thesis.metrics.loss') },
+];
 ---
 
 <section class="w-full h-full flex items-center justify-center px-4 py-6">
@@ -92,18 +99,13 @@ const labels = {
 					▸ {labels.metrics}
 				</h4>
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-					{[
-						{ key: 'research.thesis.metrics.accuracy', prefix: 'ACC' },
-						{ key: 'research.thesis.metrics.f1', prefix: 'F1' },
-						{ key: 'research.thesis.metrics.auc', prefix: 'AUC' },
-						{ key: 'research.thesis.metrics.loss', prefix: 'LOSS' },
-					].map(({ key, prefix }) => (
+					{metrics.map(({ prefix, text }) => (
 						<div class="flex items-start gap-2">
 							<span class="shrink-0 font-pixel-clean text-[9px] font-bold bg-primary-500 text-white dark:text-black px-1.5 py-0.5 mt-0.5 uppercase">
 								{prefix}
 							</span>
 							<span class="text-xs sm:text-sm text-text-main leading-snug">
-								{t(key as Parameters<typeof t>[0])}
+								{text}
 							</span>
 						</div>
 					))}
