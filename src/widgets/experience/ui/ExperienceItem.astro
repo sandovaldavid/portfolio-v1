@@ -11,7 +11,7 @@ interface Props {
 	link?: string;
 	company?: string;
 }
-const { title, date, description, technologies, link } = Astro.props;
+const { title, date, description, technologies, link, company } = Astro.props;
 const descriptionItems = Array.isArray(description) ? description : [description];
 const technologyItems = Array.isArray(technologies) ? technologies : [technologies];
 
@@ -24,21 +24,22 @@ const t = useTranslations(lang);
 	class="flex flex-col gap-5 p-6 rounded-none bg-surface border-2 border-border-strong text-text-body shadow-[3px_3px_0px_0px_var(--color-border-strong)] transition-all duration-100"
 >
 	<div class="space-y-2">
-		<h3 class="text-text-main font-bold text-4xl tracking-wide font-pixel-clean">{title}</h3>
-		<time class="block text-primary-500 dark:text-primary-400 text-xl font-medium">{date}</time>
+		<h3 class="text-text-main font-bold text-3xl sm:text-4xl tracking-wide font-pixel-clean">
+			{title}{company && <> <span class="text-primary-500">@</span> {company}</>}
+		</h3>
+		<time class="block text-primary-500 dark:text-primary-400 text-lg font-bold font-gaming-mono uppercase tracking-wider">{date}</time>
 	</div>
 
 	<!-- Bullet Points Description -->
-	<ul
-		class="space-y-2 list-disc list-inside text-neutral-700 dark:text-neutral-300 leading-relaxed"
-	>
+	<ul class="space-y-3 text-neutral-700 dark:text-neutral-300 leading-relaxed">
 		{
 			descriptionItems.map((point, idx) => (
 				<li
-					class="ml-2 text-base transition-all duration-300"
+					class="flex items-start gap-2.5 text-base transition-all duration-300"
 					style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
 				>
-					{point}
+					<span class="text-primary-500 shrink-0 mt-1.5 text-xs font-bold font-gaming-mono">▸</span>
+					<span class="leading-relaxed">{point}</span>
 				</li>
 			))
 		}
