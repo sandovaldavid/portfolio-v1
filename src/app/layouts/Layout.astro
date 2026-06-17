@@ -12,6 +12,7 @@ import { TechStack } from '@widgets/tech-stack';
 import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { ContactSidebar } from '@widgets/contact-sidebar';
 import { CLITerminal } from '@features/cli-terminal';
+import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@/shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
@@ -192,6 +193,7 @@ const websiteSchema = {
 			<RecruiterHUD />
 			<CLITerminal />
 			<ContactSidebar />
+			{isHome && <SplashScreen />}
 		</div>
 	</body>
 </html>
