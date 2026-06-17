@@ -3,6 +3,25 @@ import { Language } from '../languages';
 export const experienceTranslations = {
 	[Language.ENGLISH]: {
 		'experience.learn-more': 'Learn more',
+		'experience.atena.date': 'Present - Remote',
+		'experience.atena.title': 'Junior Full-Stack Developer',
+		'experience.atena.description': [
+			'Implemented migration of critical modules to Angular 19 Signals, reducing Event Loop load by eliminating Zone.js dependency in data visualization components',
+			'Developed and documented 3 new REST APIs using .NET 8 and Clean Architecture, ensuring >80% unit test coverage and facilitating system scalability',
+			'Reduced frontend Bundle Size by [X]% through implementation of Standalone Components and Lazy Loading, optimizing Time to Interactive (TTI) for low-latency connections',
+		],
+		'experience.atena.company': 'Atena',
+		'experience.atena.technologies': [
+			'.NET 8',
+			'Clean Architecture',
+			'CQRS',
+			'Angular 19',
+			'Signals',
+			'Zoneless',
+			'Standalone Components',
+			'Lazy Loading',
+			'Unit Testing',
+		],
 		'experience.chirasoft.date': 'May 2025 – Jul 2025',
 		'experience.chirasoft.title': 'Fullstack Developer Freelance',
 		'experience.chirasoft.description': [
@@ -40,6 +59,25 @@ export const experienceTranslations = {
 	},
 	[Language.SPANISH]: {
 		'experience.learn-more': 'Saber más',
+		'experience.atena.date': 'Presente - Remoto',
+		'experience.atena.title': 'Desarrollador Full-Stack Junior',
+		'experience.atena.description': [
+			'Implementé la migración de módulos críticos a Angular 19 Signals, reduciendo la carga del Event Loop al eliminar la dependencia de Zone.js en componentes de visualización de datos',
+			'Desarrollé y documenté 3 nuevas APIs REST usando .NET 8 y Clean Architecture, garantizando una cobertura de pruebas unitarias del >80% y facilitando la escalabilidad del sistema',
+			'Reduje el Bundle Size del frontend en un [X]% mediante la implementación de Standalone Components y Lazy Loading, optimizando el Time to Interactive (TTI) para usuarios en conexiones de baja latencia',
+		],
+		'experience.atena.company': 'Atena',
+		'experience.atena.technologies': [
+			'.NET 8',
+			'Clean Architecture',
+			'CQRS',
+			'Angular 19',
+			'Signals',
+			'Zoneless',
+			'Standalone Components',
+			'Lazy Loading',
+			'Pruebas Unitarias',
+		],
 		'experience.chirasoft.date': 'May 2025 – Jul 2025',
 		'experience.chirasoft.title': 'Desarrollador Fullstack Freelance',
 		'experience.chirasoft.description': [

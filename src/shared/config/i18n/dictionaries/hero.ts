@@ -8,8 +8,11 @@ export const heroTranslations = {
 			'<strong>Computer Engineer</strong> graduated from the <strong>National University of Piura</strong> with training in <strong>web development</strong> and <strong>frontend</strong> certification from <strong>Alura Latam</strong> (ONE EDUCATION).',
 		'hero.cta.contact': 'Contact me',
 		'hero.cta.view-work': 'View Selected Work',
+		'hero.cta.download-resume': 'Download Resume',
+		'hero.cta.view-research': 'View Research',
 		'hero.title': 'Building Software',
-		'hero.subtitle': 'Software Engineer | B.S. Computer Engineering',
+		'hero.subtitle': 'Software Engineer (Enterprise .NET/Angular) | AI Researcher (LSTM)',
+		'hero.credential': 'Currently optimizing high-availability systems at Atena (Remote)',
 	},
 	[Language.SPANISH]: {
 		'hero.available': 'Disponible para trabajar',
@@ -18,7 +21,12 @@ export const heroTranslations = {
 			'<strong>Ingeniero Informático</strong> egresado de la <strong>Universidad Nacional de Piura</strong> con formación en <strong>desarrollo web</strong> y certificación en <strong>frontend</strong> por <strong>Alura Latam</strong> (ONE EDUCATION).',
 		'hero.cta.contact': 'Contáctame',
 		'hero.cta.view-work': 'Ver mi Trabajo',
+		'hero.cta.download-resume': 'Descargar CV',
+		'hero.cta.view-research': 'Ver Investigación',
 		'hero.title': 'Construyendo Software',
-		'hero.subtitle': 'Ingeniero de Software | B.S. Ingeniería Informática',
+		'hero.subtitle':
+			'Ingeniero de Software (Empresarial .NET/Angular) | Investigador IA (LSTM)',
+		'hero.credential':
+			'Actualmente optimizando sistemas de alta disponibilidad en Atena (Remoto)',
 	},
 } as const;
