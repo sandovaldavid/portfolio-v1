@@ -1,138 +1,76 @@
 ---
-import { getLangFromUrl, useTranslations, useTranslationsList, getLocalizedPath } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import BrainIcon from '@assets/icons/Brain.astro';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
-const tList = useTranslationsList(lang);
 
-const keywords = tList('research.thesis.keywords') as string[];
 
 const isEN = lang === Language.ENGLISH;
-const labels = {
-	problem: isEN ? 'PROBLEM STATEMENT' : 'PLANTEAMIENTO DEL PROBLEMA',
-	hypothesis: isEN ? 'RESEARCH HYPOTHESIS' : 'HIPÓTESIS DE INVESTIGACIÓN',
-	approach: isEN ? 'METHODOLOGY' : 'METODOLOGÍA',
-	dataset: isEN ? 'DATASET' : 'CONJUNTO DE DATOS',
-	metrics: isEN ? 'EVALUATION METRICS' : 'MÉTRICAS DE EVALUACIÓN',
-	keywords: isEN ? 'KEYWORDS' : 'PALABRAS CLAVE',
-	institution: isEN ? 'INSTITUTION' : 'INSTITUCIÓN',
-};
 
-const metrics = [
-	{ prefix: 'ACC', text: t('research.thesis.metrics.accuracy') },
-	{ prefix: 'F1', text: t('research.thesis.metrics.f1') },
-	{ prefix: 'AUC', text: t('research.thesis.metrics.auc') },
-	{ prefix: 'LOSS', text: t('research.thesis.metrics.loss') },
-];
+const summary = isEN
+	? 'Applying Bidirectional LSTM neural networks to detect OSS repository abandonment risk from GitHub activity time series — commits, issues, PRs, and contributor patterns — and benchmarked against traditional ML baselines.'
+	: 'Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.';
+
+const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'GitHub API'];
+
 ---
 
 <section class="w-full h-full flex items-center justify-center px-4 py-6">
-	<article class="w-full max-w-4xl border-2 border-black dark:border-white bg-surface shadow-[6px_6px_0px_0px_var(--color-border-strong)] font-mono overflow-hidden">
+	<article class="w-full max-w-3xl border-2 border-black dark:border-white bg-surface shadow-[6px_6px_0px_0px_var(--color-border-strong)] font-mono overflow-hidden">
 
 		<!-- Header Bar -->
-		<div class="border-b-2 border-black dark:border-white bg-primary-500 px-6 py-3 flex items-center justify-between gap-4">
-			<div class="flex items-center gap-3">
-				<BrainIcon class="w-5 h-5 text-white dark:text-black shrink-0" />
+		<div class="border-b-2 border-black dark:border-white bg-primary-500 px-5 py-3.5 flex items-start justify-between gap-4">
+			<div class="flex items-start gap-3">
+				<BrainIcon class="w-5 h-5 text-white dark:text-black shrink-0 mt-0.5" />
 				<div>
-					<p class="font-retro-tag text-[9px] uppercase tracking-widest text-white/80 dark:text-black/70 leading-none">
+					<p class="font-retro-tag text-xs uppercase tracking-widest text-white/80 dark:text-black/70 leading-none">
 						{t('research.thesis.institution')} · {t('research.thesis.label')}
 					</p>
-					<h3 class="font-pixel-clean text-sm sm:text-base font-bold text-white dark:text-black uppercase leading-tight mt-0.5">
+					<h3 class="font-pixel-clean text-base sm:text-lg font-bold text-white dark:text-black uppercase leading-tight mt-1">
 						{t('research.thesis.title')}
 					</h3>
 				</div>
 			</div>
-			<span class="shrink-0 font-retro-tag text-[9px] bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2 py-1 font-bold uppercase tracking-widest animate-pulse whitespace-nowrap">
+			<span class="shrink-0 font-retro-tag text-[10px] bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2.5 py-1 font-bold uppercase tracking-widest animate-pulse whitespace-nowrap">
 				{t('research.thesis.status')}
 			</span>
 		</div>
 
 		<!-- Body -->
-		<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+		<div class="px-5 py-5 space-y-5">
 
-			<!-- Problem -->
-			<div class="md:col-span-2 border border-border-subtle p-4 bg-neutral-50 dark:bg-black/20">
-				<h4 class="font-retro-tag text-[9px] font-bold text-primary-500 uppercase tracking-widest mb-2">
-					▸ {labels.problem}
-				</h4>
-				<p class="text-xs sm:text-sm leading-relaxed text-text-main">
-					{t('research.thesis.problem')}
-				</p>
-			</div>
+			<!-- Summary -->
+			<p class="text-sm sm:text-base leading-relaxed text-text-main">
+				{summary}
+			</p>
 
-			<!-- Hypothesis -->
-			<div class="md:col-span-2 border border-primary-500/40 p-4 bg-primary-500/5">
-				<h4 class="font-retro-tag text-[9px] font-bold text-primary-500 uppercase tracking-widest mb-2">
-					▸ {labels.hypothesis}
-				</h4>
-				<p class="text-xs sm:text-sm leading-relaxed italic text-text-main">
-					"{t('research.thesis.hypothesis')}"
-				</p>
-			</div>
-
-			<!-- Methodology -->
-			<div class="border border-border-subtle p-4 bg-neutral-50 dark:bg-black/20">
-				<h4 class="font-retro-tag text-[9px] font-bold text-primary-500 uppercase tracking-widest mb-2">
-					▸ {labels.approach}
-				</h4>
-				<p class="text-xs sm:text-sm leading-relaxed text-text-main">
-					{t('research.thesis.approach')}
-				</p>
-			</div>
-
-			<!-- Dataset -->
-			<div class="border border-border-subtle p-4 bg-neutral-50 dark:bg-black/20">
-				<h4 class="font-retro-tag text-[9px] font-bold text-primary-500 uppercase tracking-widest mb-2">
-					▸ {labels.dataset}
-				</h4>
-				<p class="text-xs sm:text-sm leading-relaxed text-text-main">
-					{t('research.thesis.dataset')}
-				</p>
-			</div>
-
-			<!-- Metrics -->
-			<div class="md:col-span-2 border border-border-subtle p-4 bg-neutral-50 dark:bg-black/20">
-				<h4 class="font-retro-tag text-[9px] font-bold text-primary-500 uppercase tracking-widest mb-3">
-					▸ {labels.metrics}
-				</h4>
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-					{metrics.map(({ prefix, text }) => (
-						<div class="flex items-start gap-2">
-							<span class="shrink-0 font-pixel-clean text-[9px] font-bold bg-primary-500 text-white dark:text-black px-1.5 py-0.5 mt-0.5 uppercase">
-								{prefix}
-							</span>
-							<span class="text-xs sm:text-sm text-text-main leading-snug">
-								{text}
-							</span>
-						</div>
-					))}
-				</div>
-			</div>
-
-			<!-- Keywords -->
-			<div class="md:col-span-2 border-t-2 border-dashed border-border-subtle pt-4">
-				<h4 class="font-retro-tag text-[9px] font-bold text-text-muted uppercase tracking-widest mb-2">
-					{labels.keywords}
+			<!-- Tech stack -->
+			<div>
+				<h4 class="font-retro-tag text-xs font-bold text-primary-500 uppercase tracking-widest mb-2.5">
+					▸ {isEN ? 'TECH STACK' : 'TECNOLOGÍAS'}
 				</h4>
 				<div class="flex flex-wrap gap-2">
-					{keywords.map(keyword => (
-						<span class="font-retro-tag text-[10px] uppercase tracking-wider border border-primary-500/50 text-primary-500 dark:text-primary-400 px-2.5 py-1 hover:bg-primary-500/10 transition-colors">
-							{keyword}
+					{techStack.map(tag => (
+						<span class="font-retro-tag text-xs uppercase tracking-wider border-2 border-primary-500 text-primary-500 dark:text-primary-400 px-3 py-1 font-bold bg-primary-500/5">
+							{tag}
 						</span>
 					))}
 				</div>
 			</div>
-			<!-- CTA: Full Research Page -->
-			<div class="md:col-span-2 border-t-2 border-dashed border-border-subtle pt-4 flex items-center justify-between gap-4">
-				<p class="font-retro-tag text-[9px] text-text-muted uppercase tracking-wider">
-					{isEN ? '[ SUMMARY VIEW — Full methodology, architecture & pipeline available ]' : '[ VISTA RESUMIDA — Metodología, arquitectura y pipeline completos disponibles ]'}
+
+			<!-- CTA -->
+			<div class="border-t-2 border-dashed border-border-subtle pt-4 flex items-center justify-between gap-4">
+				<p class="text-xs text-text-muted leading-snug">
+					{isEN
+						? 'Full methodology, architecture & pipeline on the research page.'
+						: 'Metodología completa, arquitectura y pipeline en la página de investigación.'}
 				</p>
 				<a
 					href={getLocalizedPath(lang, '/research')}
-					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-[10px] font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-xs font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap"
 				>
 					{isEN ? '▸ FULL RESEARCH' : '▸ VER COMPLETO'}
 				</a>

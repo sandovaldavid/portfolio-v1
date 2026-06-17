@@ -107,6 +107,10 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	data-lang={langCode}
 	data-section-names={JSON.stringify(navSectionNames)}
 	data-resume-url={resumeUrl}
+	data-github-user={siteConfig.social.githubUsername}
+	data-email={siteConfig.email}
+	data-linkedin={siteConfig.social.linkedinUsername}
+	data-site-url={siteConfig.url}
 ></div>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -144,7 +148,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 			<!-- Output area -->
 			<div
 				id="cli-output"
-				class="h-72 overflow-y-auto p-4 space-y-0.5"
+				class="h-96 overflow-y-auto p-4 space-y-0.5"
 				aria-live="polite"
 				aria-relevant="additions"
 			></div>
@@ -394,6 +398,10 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	const resumeUrl =
 		i18nEl?.dataset.resumeUrl ??
 		'https://github.com/sandovaldavid/resume/releases/latest';
+	const GITHUB_USER = i18nEl?.dataset.githubUser ?? 'sandovaldavid';
+	const CONTACT_EMAIL = i18nEl?.dataset.email ?? 'hello@sandovaldavid.com';
+	const CONTACT_LINKEDIN = i18nEl?.dataset.linkedin ?? 'jdavidsandoval';
+	const SITE_URL = i18nEl?.dataset.siteUrl ?? 'sandovaldavid.com';
 
 	// ── Element refs ─────────────────────────────────────────────────────
 	const cliOverlay = document.getElementById('cli-overlay')!;
@@ -551,9 +559,9 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 		if (githubCache) return githubCache;
 		try {
 			const [uRes, rRes] = await Promise.all([
-				fetch('https://api.github.com/users/sandovaldavid'),
+				fetch(`https://api.github.com/users/${GITHUB_USER}`),
 				fetch(
-					'https://api.github.com/users/sandovaldavid/repos?per_page=100&sort=updated',
+					`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
 				),
 			]);
 			if (!uRes.ok) throw new Error('rate limit');
@@ -831,7 +839,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				}
 				printBlank();
 				printLine(
-					'┌─ GITHUB LIVE STATS ─── github.com/sandovaldavid ┐',
+					`┌─ GITHUB LIVE STATS ─── github.com/${GITHUB_USER} ┐`,
 					'info',
 				);
 				printLine(
@@ -873,10 +881,10 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					'┌─ CONTACT INFO ──────────────────────────────────┐',
 					'info',
 				);
-				printLine('│  📧 hello@sandovaldavid.com', 'output');
-				printLine('│  💼 linkedin.com/in/jdavidsandoval', 'output');
-				printLine('│  🐙 github.com/sandovaldavid', 'output');
-				printLine('│  🌐 sandovaldavid.com', 'output');
+				printLine(`│  📧 ${CONTACT_EMAIL}`, 'output');
+				printLine(`│  💼 linkedin.com/in/${CONTACT_LINKEDIN}`, 'output');
+				printLine(`│  🐙 github.com/${GITHUB_USER}`, 'output');
+				printLine(`│  🌐 ${SITE_URL}`, 'output');
 				printLine(
 					'└─────────────────────────────────────────────────┘',
 					'info',
@@ -959,6 +967,48 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				setTimeout(closeCLI, 400);
 				break;
 
+			case 'about':
+				printBlank();
+				printLine(
+					isEn
+						? '┌─ ABOUT DAVID SANDOVAL ─────────────────────────┐'
+						: '┌─ SOBRE DAVID SANDOVAL ─────────────────────────┐',
+					'info',
+				);
+				printLine(
+					isEn
+						? '│  Software Engineer & BiLSTM/ML Researcher'
+						: '│  Ingeniero de Software & Investigador BiLSTM/ML',
+					'output',
+				);
+				printLine(
+					isEn
+						? '│  Currently at Atena — full-stack .NET 8 + Angular 19'
+						: '│  Actualmente en Atena — .NET 8 + Angular 19 full-stack',
+					'output',
+				);
+				printLine(
+					isEn
+						? '│  Thesis: Predicting OSS repository abandonment'
+						: '│  Tesis: Predicción de abandono de repos OSS',
+					'output',
+				);
+				printLine(
+					'│         using BiLSTM neural networks (UNP)',
+					'output',
+				);
+				printLine(
+					isEn
+						? `│  <span class="text-[#00ff88]">▶ Open to new opportunities</span>`
+						: `│  <span class="text-[#00ff88]">▶ Disponible para nuevas oportunidades</span>`,
+					'output',
+				);
+				printLine(
+					'└─────────────────────────────────────────────────┘',
+					'info',
+				);
+				break;
+
 			case 'sudo':
 				printLine(
 					isEn ? '🚫 Access denied. Nice try though.' : '🚫 Acceso denegado. Buen intento.',
@@ -1038,6 +1088,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 			const cmds = [
 				'help',
 				'whoami',
+				'about',
 				'ls',
 				'goto ',
 				'github',
@@ -1046,7 +1097,11 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				'matrix',
 				'open resume',
 				'clear',
+				'vim',
+				'nvim',
+				'sudo',
 				'exit',
+				':q',
 			];
 			const match = cmds.find(
 				(c) => c.startsWith(cliInput.value) && c !== cliInput.value,
