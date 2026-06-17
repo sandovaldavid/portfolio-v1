@@ -9,7 +9,33 @@ const { href = '/', class: className = '' } = Astro.props;
 
 <a
 	{href}
-	class={`font-mono text-lg font-semibold text-primary-600 hover:text-primary-500 dark:text-primary-200 transition-colors whitespace-nowrap tracking-wide ${className}`}
+	class={`font-pixel-clean text-2xl font-bold text-primary-500 hover:text-primary-400 transition-colors whitespace-nowrap flex items-center ${className}`}
 >
-	&lt;devsandoval/&gt;
+	<span class="logo-typing">&lt;sandovaldavid/&gt;</span>
 </a>
+
+<style>
+	.logo-typing {
+		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+		border-right: 3px solid currentColor;
+		width: 0;
+		animation:
+			typing 10s steps(16) infinite,
+			blink-caret 0.75s step-end infinite;
+	}
+
+	@keyframes typing {
+		0% { width: 0 }
+		30% { width: 17ch }  /* Finish typing at 30% */
+		80% { width: 17ch }  /* Hold typed state until 80% */
+		90% { width: 0 }     /* Erase by 90% */
+		100% { width: 0 }    /* Pause empty until loop restart */
+	}
+
+	@keyframes blink-caret {
+		from, to { border-color: transparent }
+		50% { border-color: currentColor }
+	}
+</style>

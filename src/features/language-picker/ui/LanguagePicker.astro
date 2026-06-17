@@ -27,21 +27,19 @@ const getLanguagePath = (targetLang: string): string => {
 };
 ---
 
-<div
-	class="flex items-center space-x-1 border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden"
->
+<div class="flex items-center gap-2 font-mono">
 	{
-		AVAILABLE_LANGUAGES.map(lang => {
+		AVAILABLE_LANGUAGES.map((lang) => {
 			const isActive = currentLang === lang;
 			const path = isActive ? '#' : getLanguagePath(lang);
 
 			return (
 				<a
 					href={path}
-					class={`px-2 py-1 text-sm font-medium transition-colors ${
+					class={`px-2.5 py-1 text-xs font-bold transition-all duration-100 uppercase tracking-wider border-2 border-black dark:border-white ${
 						isActive
-							? 'bg-blue-500 text-white'
-							: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+							? 'bg-primary-500 text-white dark:text-black shadow-[1px_1px_0px_0px_var(--color-border-strong)] translate-x-[1.5px] translate-y-[1.5px] cursor-default pointer-events-none'
+							: 'bg-surface text-text-main shadow-[2.5px_2.5px_0px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3.5px_3.5px_0px_0px_var(--color-border-strong)] active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]'
 					}`}
 					aria-current={isActive ? 'page' : undefined}
 				>
