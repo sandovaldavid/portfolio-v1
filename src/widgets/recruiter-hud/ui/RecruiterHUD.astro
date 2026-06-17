@@ -1,0 +1,386 @@
+---
+import { getLangFromUrl } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+
+// Translations for HUD
+const hudTitle = lang === 'en' ? 'RECRUITER HUD v1.0' : 'HUD RECLUTADOR v1.0';
+const activeQuest = lang === 'en' ? 'ACTIVE QUEST:' : 'MISIÓN ACTIVA:';
+const questName = lang === 'en' ? 'RECRUIT THE ARCHITECT' : 'RECLUTAR AL ARQUITECTO';
+const questGoal = lang === 'en' ? 'Goal: Hire David Sandoval' : 'Meta: Contratar a David Sandoval';
+const questReward = lang === 'en' ? 'Reward: +999 Clean Code, Architect Lvl 99' : 'Recompensa: +999 Código Limpio, Arquitecto Lvl 99';
+
+const btnEmail = lang === 'en' ? 'SEND EMAIL' : 'ENVIAR EMAIL';
+const btnResume = lang === 'en' ? 'GET RESUME' : 'DESCARGAR CV';
+const btnCopy = lang === 'en' ? 'COPY EMAIL' : 'COPIAR EMAIL';
+
+const cheatsTitle = lang === 'en' ? 'SYSTEM CHEATS' : 'TRUCOS DEL SISTEMA';
+const cheatMatrix = lang === 'en' ? 'TOGGLE MATRIX RAIN' : 'LLUVIA MATRIX';
+const cheatStats = lang === 'en' ? 'UNLEASH SECRET STATS' : 'REVELAR STATS SECRETOS';
+const cheatAutopilot = lang === 'en' ? 'AUTOPILOT TOUR' : 'TOUR AUTOMÁTICO';
+
+const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
+---
+
+<div class="fixed bottom-6 right-6 z-50 font-mono">
+	<!-- Mini Mascot Speech Bubble (Initial Hint) -->
+	<div
+		id="hud-hint"
+		class="absolute bottom-16 right-0 bg-surface border-2 border-black dark:border-white p-3 shadow-[2.5px_2.5px_0px_var(--color-border-strong)] text-xs font-bold uppercase tracking-wide text-text-main whitespace-nowrap opacity-0 pointer-events-none translate-y-2 transition-all duration-300 flex items-center gap-2"
+	>
+		<span class="w-2.5 h-2.5 bg-primary-500 animate-ping rounded-none shrink-0"></span>
+		<span>[!] CLICK HERE FOR RECRUITER CHEATS & LINKS</span>
+	</div>
+
+	<!-- Toggle Button -->
+	<button
+		id="hud-toggle-btn"
+		class="flex items-center gap-2.5 px-4 py-3 bg-primary-500 hover:bg-primary-400 dark:bg-primary-500 dark:hover:bg-primary-400 text-white dark:text-black border-2 border-black dark:border-white font-bold uppercase tracking-wider shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4.5px_4.5px_0px_var(--color-border-strong)] active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-[1px_1px_0px_var(--color-border-strong)] transition-all cursor-pointer"
+		aria-label="Toggle Recruiter HUD"
+		aria-expanded="false"
+	>
+		<span class="text-base font-pixel-clean">[ P1 HUD ]</span>
+		<!-- Simple retro layout icon -->
+		<svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 3m0-3a2 2 0 110 3m-9 8h10M3 12h10m-9 4h10m9-4h.01M21 16h.01M21 12h.01" />
+		</svg>
+	</button>
+
+	<!-- Main HUD Panel -->
+	<div
+		id="hud-panel"
+		class="absolute bottom-16 right-0 w-[330px] sm:w-[350px] bg-surface border-2 border-black dark:border-white p-5 shadow-[6px_6px_0px_var(--color-border-strong)] hidden flex-col gap-4 transition-all duration-200"
+	>
+		<!-- Panel Header -->
+		<div class="flex items-center justify-between border-b-2 border-dashed border-border-subtle pb-2.5">
+			<span class="font-pixel-clean text-xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+				{hudTitle}
+			</span>
+			<button
+				id="hud-close-btn"
+				class="px-1.5 py-0.5 bg-neutral-100 hover:bg-red-500 hover:text-white dark:bg-neutral-800 dark:hover:bg-red-500 dark:hover:text-black border border-black dark:border-white text-xs font-bold transition-colors cursor-pointer"
+			>
+				X
+			</button>
+		</div>
+
+		<!-- Quest Card -->
+		<div class="border-2 border-black dark:border-white bg-black/10 dark:bg-black/35 p-3 flex flex-col gap-1 text-xs">
+			<div class="flex justify-between items-center text-primary-500 dark:text-primary-400 font-bold tracking-wide">
+				<span>{activeQuest}</span>
+				<span class="animate-pulse bg-emerald-500/20 text-emerald-400 px-1 py-0.5 text-[9px] border border-emerald-500/40 font-semibold">[ IN PROGRESS ]</span>
+			</div>
+			<span class="font-bold text-text-main text-sm">{questName}</span>
+			<span class="text-text-muted mt-1">{questGoal}</span>
+			<span class="text-[10px] text-emerald-500 dark:text-emerald-400 mt-1 font-semibold">{questReward}</span>
+		</div>
+
+		<!-- Action Buttons Toolkit -->
+		<div class="flex flex-col gap-2">
+			<!-- Send Email -->
+			<a
+				href="mailto:hello@sandovaldavid.com?subject=Opportunity%20at%20our%20Company"
+				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black hover:bg-primary-400 dark:hover:bg-primary-300 font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
+			>
+				{btnEmail}
+			</a>
+
+			<div class="grid grid-cols-2 gap-2">
+				<!-- Get Resume -->
+				<a
+					href="/David_Sandoval_Salvador-resume.pdf"
+					target="_blank"
+					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-text-main font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
+				>
+					{btnResume}
+				</a>
+				<!-- Copy Email Button -->
+				<button
+					id="hud-copy-btn"
+					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-text-main font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer relative"
+				>
+					{btnCopy}
+				</button>
+			</div>
+		</div>
+
+		<!-- Secret Cheats Section -->
+		<div class="flex flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
+			<span class="text-[10px] font-bold text-text-muted uppercase tracking-widest">{cheatsTitle}</span>
+			
+			<div class="flex flex-col gap-2">
+				<button
+					id="hud-cheat-matrix"
+					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
+				>
+					<span>{cheatMatrix}</span>
+					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: MATRIX ]</span>
+				</button>
+				
+				<button
+					id="hud-cheat-stats"
+					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
+				>
+					<span>{cheatStats}</span>
+					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: STATUS ]</span>
+				</button>
+
+				<button
+					id="hud-cheat-autopilot"
+					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
+				>
+					<span>{cheatAutopilot}</span>
+					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: TOUR ]</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Secret Status Panel (Collapsible) -->
+		<div id="hud-secret-stats-panel" class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
+			<span class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">{secStatsTitle}</span>
+			<div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10">
+				<div class="flex justify-between border-b border-border-subtle/50 pb-1">
+					<span class="text-text-muted uppercase">COFFEE:</span>
+					<span class="text-text-main font-bold">99 / 99</span>
+				</div>
+				<div class="flex justify-between border-b border-border-subtle/50 pb-1">
+					<span class="text-text-muted uppercase">BUG SENSE:</span>
+					<span class="text-text-main font-bold">95%</span>
+				</div>
+				<div class="flex justify-between border-b border-border-subtle/50 pb-1">
+					<span class="text-text-muted uppercase">GIT COMMITS:</span>
+					<span class="text-text-main font-bold">Lvl 99</span>
+				</div>
+				<div class="flex justify-between border-b border-border-subtle/50 pb-1">
+					<span class="text-text-muted uppercase">IMPOSTER SYND.:</span>
+					<span class="text-text-main font-bold">0% RESIST</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	// Interactive scripts for RecruiterHUD
+	const toggleBtn = document.getElementById('hud-toggle-btn');
+	const panel = document.getElementById('hud-panel');
+	const closeBtn = document.getElementById('hud-close-btn');
+	const hint = document.getElementById('hud-hint');
+	const copyBtn = document.getElementById('hud-copy-btn');
+	const cheatMatrixBtn = document.getElementById('hud-cheat-matrix');
+	const cheatStatsBtn = document.getElementById('hud-cheat-stats');
+	const cheatAutopilotBtn = document.getElementById('hud-cheat-autopilot');
+	const secretStatsPanel = document.getElementById('hud-secret-stats-panel');
+
+	// Mascot bubble hint toggle
+	if (hint) {
+		// Show hint after 3 seconds
+		setTimeout(() => {
+			if (panel && panel.classList.contains('hidden')) {
+				hint.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+			}
+		}, 3000);
+
+		// Hide hint after 10 seconds or on hover
+		setTimeout(() => {
+			hint.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+		}, 10000);
+
+		toggleBtn?.addEventListener('mouseenter', () => {
+			hint.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+		});
+	}
+
+	// Open/Close panel
+	toggleBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isHidden = panel?.classList.contains('hidden');
+		if (isHidden) {
+			panel?.classList.remove('hidden');
+			panel?.classList.add('flex');
+			toggleBtn.setAttribute('aria-expanded', 'true');
+			hint?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+		} else {
+			panel?.classList.add('hidden');
+			panel?.classList.remove('flex');
+			toggleBtn.setAttribute('aria-expanded', 'false');
+		}
+	});
+
+	closeBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		panel?.classList.add('hidden');
+		panel?.classList.remove('flex');
+		toggleBtn?.setAttribute('aria-expanded', 'false');
+	});
+
+	// Close on click outside
+	document.addEventListener('click', (e) => {
+		if (panel && !panel.classList.contains('hidden')) {
+			const target = e.target as HTMLElement;
+			if (!panel.contains(target) && target !== toggleBtn && !toggleBtn?.contains(target)) {
+				panel.classList.add('hidden');
+				panel.classList.remove('flex');
+				toggleBtn?.setAttribute('aria-expanded', 'false');
+			}
+		}
+	});
+
+	// Copy email to clipboard with floating feedback effect
+	copyBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const email = 'hello@sandovaldavid.com';
+		navigator.clipboard.writeText(email).then(() => {
+			// Floating retro notification
+			const floatText = document.createElement('span');
+			floatText.innerText = '+100 XP / COPIED!';
+			floatText.className = 'absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-2 py-0.5 border border-black text-[9px] font-bold uppercase tracking-widest whitespace-nowrap animate-float-fade';
+			floatText.style.animation = 'float-up-fade 1.2s ease-out forwards';
+			
+			copyBtn.appendChild(floatText);
+			
+			setTimeout(() => {
+				floatText.remove();
+			}, 1200);
+		});
+	});
+
+	// Cheat Code 1: Matrix Digital Rain (Cyber cian color)
+	let canvas: HTMLCanvasElement | null = null;
+	let animationFrameId: number | null = null;
+	
+	cheatMatrixBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		if (canvas) {
+			// Remove canvas
+			canvas.remove();
+			canvas = null;
+			if (animationFrameId) cancelAnimationFrame(animationFrameId);
+			cheatMatrixBtn.classList.remove('text-primary-500', 'border-primary-500/70');
+			return;
+		}
+
+		cheatMatrixBtn.classList.add('text-primary-500', 'border-primary-500/70');
+		
+		canvas = document.createElement('canvas');
+		canvas.className = 'fixed inset-0 w-full h-full pointer-events-none z-10 opacity-15';
+		document.body.appendChild(canvas);
+
+		const ctx = canvas.getContext('2d')!;
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		// Matrix characters
+		const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>/{}[]=-+*';
+		const fontSize = 14;
+		const columns = canvas.width / fontSize;
+
+		const rainDrops: number[] = [];
+		for (let x = 0; x < columns; x++) {
+			rainDrops[x] = 1;
+		}
+
+		const draw = () => {
+			ctx.fillStyle = 'rgba(2, 4, 8, 0.05)'; // slight background fade
+			ctx.fillRect(0, 0, canvas!.width, canvas!.height);
+
+			ctx.fillStyle = '#00b0ff'; // Neon blue/cian matrix
+			ctx.font = fontSize + 'px monospace';
+
+			for (let i = 0; i < rainDrops.length; i++) {
+				const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+				ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+				if (rainDrops[i] * fontSize > canvas!.height && Math.random() > 0.975) {
+					rainDrops[i] = 0;
+				}
+				rainDrops[i]++;
+			}
+			animationFrameId = requestAnimationFrame(draw);
+		};
+
+		draw();
+
+		// Handle resize
+		window.addEventListener('resize', () => {
+			if (canvas) {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+		});
+	});
+
+	// Cheat Code 2: Unleash Secret Stats
+	cheatStatsBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isHidden = secretStatsPanel?.classList.contains('hidden');
+		if (isHidden) {
+			secretStatsPanel?.classList.remove('hidden');
+			secretStatsPanel?.classList.add('flex');
+			cheatStatsBtn.classList.add('text-primary-500', 'border-primary-500/70');
+		} else {
+			secretStatsPanel?.classList.add('hidden');
+			secretStatsPanel?.classList.remove('flex');
+			cheatStatsBtn.classList.remove('text-primary-500', 'border-primary-500/70');
+		}
+	});
+
+	// Cheat Code 3: Autopilot Tour
+	cheatAutopilotBtn?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		panel?.classList.add('hidden');
+		panel?.classList.remove('flex');
+		toggleBtn?.setAttribute('aria-expanded', 'false');
+
+		const sections = ['#experience', '#projects', '#about-me', '#technologies'];
+		let index = 0;
+
+		const runTour = () => {
+			if (index < sections.length) {
+				const selector = sections[index];
+				const el = document.querySelector(selector);
+				if (el) {
+					el.scrollIntoView({ behavior: 'smooth' });
+					
+					// Floating indicator bubble
+					const popup = document.createElement('div');
+					popup.className = 'fixed top-[15%] left-1/2 -translate-x-1/2 bg-primary-500 text-white dark:text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs animate-pulse';
+					popup.innerText = `AUTOPILOT: EXPLORING ${selector.slice(1).toUpperCase()}`;
+					document.body.appendChild(popup);
+
+					setTimeout(() => {
+						popup.remove();
+						index++;
+						runTour();
+					}, 2500);
+				}
+			} else {
+				// Scroll back to top
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				const popup = document.createElement('div');
+				popup.className = 'fixed top-[15%] left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs';
+				popup.innerText = 'TOUR COMPLETE! PLAYER 1 READY!';
+				document.body.appendChild(popup);
+				setTimeout(() => popup.remove(), 3000);
+			}
+		};
+
+		runTour();
+	});
+</script>
+
+<style>
+	/* Animación para el texto flotante de copiar */
+	@keyframes float-up-fade {
+		0% {
+			transform: translate(-50%, 0);
+			opacity: 1;
+		}
+		100% {
+			transform: translate(-50%, -30px);
+			opacity: 0;
+		}
+	}
+</style>
