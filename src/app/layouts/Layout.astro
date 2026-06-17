@@ -13,6 +13,7 @@ import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { SectionContainer, TitleSection } from '@/shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+import { siteConfig } from '@shared/config/site.config';
 
 interface Props {
 	title: string;
@@ -36,13 +37,17 @@ const t = useTranslations(lang);
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-		<link rel="canonical" href={new URL(Astro.url.pathname, 'https://sandovaldavid.com').toString()} />
+		<link rel="canonical" href={new URL(Astro.url.pathname, siteConfig.url).toString()} />
 		<meta name="generator" content={Astro.generator} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={img_preview} />
-		<meta property="og:url" content={new URL(Astro.url.pathname, 'https://sandovaldavid.com').toString()} />
+		<meta property="og:image" content={new URL(img_preview, siteConfig.url).toString()} />
+		<meta property="og:url" content={new URL(Astro.url.pathname, siteConfig.url).toString()} />
 		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content={siteConfig.twitterCard} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={new URL(img_preview, siteConfig.url).toString()} />
 		<title>{title}</title>
 		<script is:inline>
 			// Force dark mode for high-contrast unified retro palette

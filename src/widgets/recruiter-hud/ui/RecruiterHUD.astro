@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+import { siteConfig } from '@shared/config/site.config';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
@@ -81,7 +82,7 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 		<div class="flex flex-col gap-2">
 			<!-- Send Email -->
 			<a
-				href="mailto:hello@sandovaldavid.com?subject=Opportunity%20at%20our%20Company"
+				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
 				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black hover:bg-primary-400 dark:hover:bg-primary-300 font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
 			>
 				{btnEmail}
@@ -90,7 +91,7 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 			<div class="grid grid-cols-2 gap-2">
 				<!-- Get Resume -->
 				<a
-					href="/David_Sandoval_Salvador-resume.pdf"
+					href={siteConfig.resumeUrl}
 					target="_blank"
 					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-text-main font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
 				>
@@ -99,6 +100,7 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 				<!-- Copy Email Button -->
 				<button
 					id="hud-copy-btn"
+					data-email={siteConfig.email}
 					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-text-main font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer relative"
 				>
 					{btnCopy}
@@ -231,7 +233,7 @@ const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 	// Copy email to clipboard with floating feedback effect
 	copyBtn?.addEventListener('click', (e) => {
 		e.stopPropagation();
-		const email = 'hello@sandovaldavid.com';
+		const email = document.getElementById('hud-copy-btn')?.dataset.email ?? '';
 		navigator.clipboard.writeText(email).then(() => {
 			// Floating retro notification
 			const floatText = document.createElement('span');

@@ -14,6 +14,7 @@
 import { LanguagePicker } from '@features/language-picker';
 import { LinkButton } from '@shared/ui';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { siteConfig } from '@shared/config/site.config';
 import BrandLogo from './BrandLogo.astro';
 import DesktopNav from './DesktopNav.astro';
 import MobileNav from './MobileNav.astro';
@@ -69,7 +70,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 		<!-- Right: Actions (Desktop) -->
 		<div class="hidden md:flex items-center justify-end gap-4 shrink-0 md:w-72">
 			<LinkButton
-				href="/David_Sandoval_Salvador-resume.pdf"
+				href={siteConfig.resumeUrl}
 				target="_blank"
 				variant="primary"
 				class="font-mono text-xs uppercase tracking-wider px-3.5 py-1.5"
