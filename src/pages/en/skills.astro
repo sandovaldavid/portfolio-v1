@@ -1,7 +1,7 @@
 ---
 import Layout from '@app/layouts/Layout.astro';
 import { TAGS } from '@entities/technology';
-import { TechPill, SectionContainer } from '@/shared/ui';
+import { SectionContainer } from '@/shared/ui';
 import { getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
@@ -22,6 +22,7 @@ const frontendTechs = [
 ].filter(Boolean);
 
 const backendTechs = [
+	TAGS.CSHARP,
 	TAGS.JAVA,
 	TAGS.PYTHON,
 	TAGS.DJANGO,
@@ -37,6 +38,32 @@ const toolsTechs = [
 	TAGS.CHARTJS,
 	TAGS.MARKDOWN,
 ].filter(Boolean);
+
+const skillLevels: Record<string, { level: number; label: string }> = {
+	'TypeScript': { level: 90, label: 'EXP' },
+	'Angular': { level: 95, label: 'MST' },
+	'RxJS': { level: 85, label: 'EXP' },
+	'Next.js': { level: 75, label: 'ADV' },
+	'React': { level: 70, label: 'PRO' },
+	'Astro': { level: 80, label: 'ADV' },
+	'Tailwind': { level: 90, label: 'EXP' },
+	'JavaScript': { level: 95, label: 'MST' },
+	'CSS': { level: 90, label: 'EXP' },
+	'HTML': { level: 95, label: 'MST' },
+	'Bootstrap': { level: 75, label: 'ADV' },
+	'C# / .NET': { level: 90, label: 'EXP' },
+	'Java': { level: 80, label: 'ADV' },
+	'Python': { level: 85, label: 'EXP' },
+	'Django': { level: 80, label: 'ADV' },
+	'Express': { level: 75, label: 'ADV' },
+	'PostgreSQL': { level: 85, label: 'EXP' },
+	'MySQL': { level: 80, label: 'ADV' },
+	'SQLite': { level: 75, label: 'ADV' },
+	'Cloudinary': { level: 80, label: 'ADV' },
+	'Sanity': { level: 70, label: 'PRO' },
+	'Chart.js': { level: 80, label: 'ADV' },
+	'Markdown': { level: 90, label: 'EXP' },
+};
 ---
 
 <Layout
@@ -57,43 +84,115 @@ const toolsTechs = [
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2">
 			<!-- Frontend Spells Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4">
 				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
 					[ FRONTEND SPELLS ]
 				</h3>
-				<div class="flex flex-wrap gap-2.5">
+				<div class="flex flex-col gap-2">
 					{
-						frontendTechs.map(tech => (
-							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
-						))
+						frontendTechs.map(tech => {
+							const stats = skillLevels[tech.name] || { level: 70, label: 'PRO' };
+							const Icon = tech.icon;
+							return (
+								<div class="flex items-center justify-between gap-4 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group">
+									<div class="flex items-center gap-2 select-none">
+										{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
+										<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									</div>
+									<div class="flex items-center gap-3 font-mono text-xs">
+										<span class="tracking-tight hidden sm:inline select-none">
+											{Array.from({ length: 10 }).map((_, i) => {
+												const filled = i < Math.round(stats.level / 10);
+												return (
+													<span class={filled ? "text-primary-500 dark:text-primary-400 font-bold" : "text-neutral-300 dark:text-neutral-800"}>
+														{filled ? '█' : '░'}
+													</span>
+												);
+											})}
+										</span>
+										<span class="font-gaming-mono text-[9px] font-bold px-2 py-0.5 bg-neutral-100 dark:bg-neutral-850 text-text-muted uppercase border border-border-subtle group-hover:border-primary-500/30 group-hover:text-primary-500 transition-colors">
+											{stats.label}
+										</span>
+									</div>
+								</div>
+							);
+						})
 					}
 				</div>
 			</article>
 
 			<!-- Backend Runes Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4">
 				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
 					[ BACKEND RUNES ]
 				</h3>
-				<div class="flex flex-wrap gap-2.5">
+				<div class="flex flex-col gap-2">
 					{
-						backendTechs.map(tech => (
-							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
-						))
+						backendTechs.map(tech => {
+							const stats = skillLevels[tech.name] || { level: 70, label: 'PRO' };
+							const Icon = tech.icon;
+							return (
+								<div class="flex items-center justify-between gap-4 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group">
+									<div class="flex items-center gap-2 select-none">
+										{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
+										<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									</div>
+									<div class="flex items-center gap-3 font-mono text-xs">
+										<span class="tracking-tight hidden sm:inline select-none">
+											{Array.from({ length: 10 }).map((_, i) => {
+												const filled = i < Math.round(stats.level / 10);
+												return (
+													<span class={filled ? "text-primary-500 dark:text-primary-400 font-bold" : "text-neutral-300 dark:text-neutral-800"}>
+														{filled ? '█' : '░'}
+													</span>
+												);
+											})}
+										</span>
+										<span class="font-gaming-mono text-[9px] font-bold px-2 py-0.5 bg-neutral-100 dark:bg-neutral-850 text-text-muted uppercase border border-border-subtle group-hover:border-primary-500/30 group-hover:text-primary-500 transition-colors">
+											{stats.label}
+										</span>
+									</div>
+								</div>
+							);
+						})
 					}
 				</div>
 			</article>
 
 			<!-- Tools & Utility Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
+			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4">
 				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
 					[ UTILITIES & ITEMS ]
 				</h3>
-				<div class="flex flex-wrap gap-2.5">
+				<div class="flex flex-col gap-2">
 					{
-						toolsTechs.map(tech => (
-							<TechPill label={tech.name} icon={tech.icon} variant="stack" size="sm" />
-						))
+						toolsTechs.map(tech => {
+							const stats = skillLevels[tech.name] || { level: 70, label: 'PRO' };
+							const Icon = tech.icon;
+							return (
+								<div class="flex items-center justify-between gap-4 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group">
+									<div class="flex items-center gap-2 select-none">
+										{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
+										<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									</div>
+									<div class="flex items-center gap-3 font-mono text-xs">
+										<span class="tracking-tight hidden sm:inline select-none">
+											{Array.from({ length: 10 }).map((_, i) => {
+												const filled = i < Math.round(stats.level / 10);
+												return (
+													<span class={filled ? "text-primary-500 dark:text-primary-400 font-bold" : "text-neutral-300 dark:text-neutral-800"}>
+														{filled ? '█' : '░'}
+													</span>
+												);
+											})}
+										</span>
+										<span class="font-gaming-mono text-[9px] font-bold px-2 py-0.5 bg-neutral-100 dark:bg-neutral-850 text-text-muted uppercase border border-border-subtle group-hover:border-primary-500/30 group-hover:text-primary-500 transition-colors">
+											{stats.label}
+										</span>
+									</div>
+								</div>
+							);
+						})
 					}
 				</div>
 			</article>
@@ -103,7 +202,7 @@ const toolsTechs = [
 		<div class="w-full flex justify-center mt-8">
 			<a
 				href={getLocalizedPath(lang, '/')}
-				class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
 			>
 				[ RETURN TO HOME ]
 			</a>

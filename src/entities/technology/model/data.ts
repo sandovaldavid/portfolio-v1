@@ -21,6 +21,7 @@ import TypescriptIcon from '@assets/technologies/TypeScript.astro';
 import AngularIcon from '@assets/technologies/Angular.astro';
 import RxJSIcon from '@assets/technologies/RXJS.astro';
 import JavaIcon from '@assets/technologies/Java.astro';
+import CSharpIcon from '@assets/technologies/CSharp.astro';
 
 import type { TechnologyTags } from './types';
 
@@ -143,5 +144,10 @@ export const TAGS: TechnologyTags = {
 		name: 'RxJS',
 		class: 'bg-red-200 text-white',
 		icon: RxJSIcon,
+	},
+	CSHARP: {
+		name: 'C# / .NET',
+		class: 'bg-purple-600 text-white',
+		icon: CSharpIcon,
 	},
 } as const;
