@@ -22,35 +22,109 @@ interface Props {
 	description: string;
 	img_preview: string;
 	isHome?: boolean;
+	article?: boolean;
+	keywords?: string;
 }
-const { description, title, img_preview, isHome = true } = Astro.props;
+const {
+	description,
+	title,
+	img_preview,
+	isHome = true,
+	article = false,
+	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
+} = Astro.props;
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
+const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
+const ogLocale = langCode === 'en' ? 'en_US' : 'es_PE';
+const ogType = article ? 'article' : 'website';
+
+// JSON-LD structured data
+const personSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: siteConfig.fullName,
+	givenName: 'Juan David',
+	familyName: 'Sandoval Salvador',
+	alternateName: siteConfig.handle,
+	url: siteConfig.url,
+	image: `${siteConfig.url}/profile/perfil.webp`,
+	sameAs: [
+		siteConfig.social.github,
+		siteConfig.social.linkedin,
+	],
+	jobTitle: 'Software Engineer',
+	worksFor: { '@type': 'Organization', name: siteConfig.currentCompany },
+	address: { '@type': 'PostalAddress', addressLocality: 'Piura', addressCountry: 'PE' },
+	email: siteConfig.email,
+	knowsAbout: ['.NET 8', 'C#', 'Angular', 'TypeScript', 'BiLSTM', 'Machine Learning', 'Python', 'Django', 'Docker', 'PostgreSQL'],
+};
+const websiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: siteConfig.defaultTitle,
+	url: siteConfig.url,
+	description: siteConfig.defaultDescription,
+	inLanguage: [langCode],
+	author: { '@type': 'Person', name: siteConfig.fullName },
+};
 ---
 
 <!doctype html>
 <html lang={langCode}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Primary meta -->
+		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={siteConfig.fullName} />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href={canonicalUrl} />
+
+		<!-- Favicon & PWA -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="theme-color" content="#0096ff" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="DevSandoval" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={`${siteConfig.name} — Portfolio preview`} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={siteConfig.defaultTitle} />
+		<meta property="og:locale" content={ogLocale} />
+
+		<!-- Twitter / X Card -->
+		<meta name="twitter:card" content={siteConfig.twitterCard} />
+		<meta name="twitter:site" content={`@${siteConfig.handle}`} />
+		<meta name="twitter:creator" content={`@${siteConfig.handle}`} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-		<link rel="canonical" href={new URL(Astro.url.pathname, siteConfig.url).toString()} />
+
+		<!-- Structured Data (JSON-LD) -->
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
 		<meta name="generator" content={Astro.generator} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(img_preview, siteConfig.url).toString()} />
-		<meta property="og:url" content={new URL(Astro.url.pathname, siteConfig.url).toString()} />
-		<meta property="og:type" content="website" />
-		<meta name="twitter:card" content={siteConfig.twitterCard} />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={new URL(img_preview, siteConfig.url).toString()} />
-		<title>{title}</title>
 		<script is:inline>
 			// Force dark mode for high-contrast unified retro palette
 			document.documentElement.classList.add('dark');

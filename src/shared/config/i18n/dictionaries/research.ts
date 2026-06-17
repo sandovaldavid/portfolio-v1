@@ -19,7 +19,7 @@ export const researchTranslations = {
 		'research.thesis.metrics.f1': 'F1-Score on imbalanced abandonment classes',
 		'research.thesis.metrics.auc': 'AUC-ROC for abandonment probability ranking',
 		'research.thesis.metrics.loss': 'Binary Cross-Entropy loss curves for BiLSTM training convergence',
-		'research.thesis.status': 'In Progress — Phase: Model Training & Evaluation',
+		'research.thesis.status': 'In Progress',
 		'research.thesis.institution': 'National University of Piura',
 		'research.thesis.keywords': [
 			'BiLSTM',
@@ -51,7 +51,7 @@ export const researchTranslations = {
 		'research.thesis.metrics.auc': 'AUC-ROC para ranking de probabilidad de abandono',
 		'research.thesis.metrics.loss':
 			'Curvas de Binary Cross-Entropy para convergencia del entrenamiento BiLSTM',
-		'research.thesis.status': 'En Progreso — Fase: Entrenamiento y Evaluación del Modelo',
+		'research.thesis.status': 'En Progreso',
 		'research.thesis.institution': 'Universidad Nacional de Piura',
 		'research.thesis.keywords': [
 			'BiLSTM',
