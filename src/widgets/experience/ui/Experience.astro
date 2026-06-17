@@ -47,21 +47,22 @@ const EXPERIENCE = getExperienceData(tList);
 		</div>
 
 		<!-- Right: Detail Panel -->
-		<div class="md:col-span-3 min-h-[520px]">
-			{
-				EXPERIENCE.map((exp, idx) => (
-					<div
-						role="tabpanel"
-						id={`exp-panel-${idx}`}
-						aria-labelledby={`exp-tab-${idx}`}
-						hidden={idx !== 0}
-						class="transition-all duration-300 ease-out data-[active=true]:animate-in data-[active=true]:fade-in data-[active=true]:slide-up"
-						data-active={idx === 0}
-					>
-						<ExperienceItem {...exp} />
-					</div>
-				))
-			}
+		<div class="md:col-span-3">
+			<div class="relative" style="display:grid;">
+				{
+					EXPERIENCE.map((exp, idx) => (
+						<div
+							role="tabpanel"
+							id={`exp-panel-${idx}`}
+							aria-labelledby={`exp-tab-${idx}`}
+							class={`[grid-area:1/1] transition-opacity duration-300 ${idx === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+							data-active={idx === 0}
+						>
+							<ExperienceItem {...exp} />
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</div>
 
@@ -84,7 +85,15 @@ const EXPERIENCE = getExperienceData(tList);
 					tab.tabIndex = selected ? 0 : -1;
 					tab.dataset.active = String(selected);
 					const panel = panels[i];
-					if (panel) panel.hidden = !selected;
+					if (panel) {
+						if (selected) {
+							panel.classList.remove('opacity-0', 'pointer-events-none');
+							panel.classList.add('opacity-100', 'pointer-events-auto');
+						} else {
+							panel.classList.remove('opacity-100', 'pointer-events-auto');
+							panel.classList.add('opacity-0', 'pointer-events-none');
+						}
+					}
 				});
 				updatePanelAnimations(index);
 				if (opts.focus) {

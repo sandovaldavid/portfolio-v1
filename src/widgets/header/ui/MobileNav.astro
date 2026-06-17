@@ -3,6 +3,7 @@ import { LinkButton } from '@shared/ui';
 import { LanguagePicker } from '@features/language-picker';
 import MenuIcon from '@assets/icons/MenuIcon.astro';
 import type { Language } from '@shared/config/i18n';
+import { siteConfig } from '@shared/config/site.config';
 
 interface Props {
 	navItems: Array<{
@@ -72,7 +73,7 @@ const { navItems, lang } = Astro.props;
 
 		<!-- Actions: Resume + LanguagePicker -->
 		<div class="flex flex-col items-center gap-4 mt-6 w-full">
-			<LinkButton href="/resume.pdf" target="_blank" variant="primary"> Resume </LinkButton>
+			<LinkButton href={siteConfig.resumeUrl} target="_blank" variant="primary"> Resume </LinkButton>
 			<LanguagePicker currentLang={lang} />
 		</div>
 	</div>
