@@ -557,6 +557,14 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	// ── GitHub Stats ──────────────────────────────────────────────────────
 	async function fetchGitHubStats(): Promise<GitHubStats | null> {
 		if (githubCache) return githubCache;
+		// sessionStorage cache — persists across page navigations within same session
+		try {
+			const cached = sessionStorage.getItem('pf_gh_stats');
+			if (cached) {
+				githubCache = JSON.parse(cached) as GitHubStats;
+				return githubCache;
+			}
+		} catch { /* ignore */ }
 		try {
 			const [uRes, rRes] = await Promise.all([
 				fetch(`https://api.github.com/users/${GITHUB_USER}`),
@@ -598,6 +606,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				topLangs,
 				bio: user.bio ?? null,
 			};
+			try { sessionStorage.setItem('pf_gh_stats', JSON.stringify(githubCache)); } catch { /* ignore */ }
 			return githubCache;
 		} catch {
 			return null;
@@ -632,6 +641,14 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				printLine(
 					'┌──────────── PORTFOLIO OS — COMMANDS ────────────┐',
 					'info',
+				);
+				printLine(
+					'│  <span class="text-yellow-400">about</span>             About David Sandoval',
+					'output',
+				);
+				printLine(
+					'│  <span class="text-yellow-400">research</span>          BiLSTM thesis overview',
+					'output',
 				);
 				printLine(
 					'│  <span class="text-yellow-400">whoami</span>            Personal info',
@@ -967,6 +984,54 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				setTimeout(closeCLI, 400);
 				break;
 
+			case 'research':
+				printBlank();
+				printLine(
+					isEn
+						? '┌─ RESEARCH ─── BiLSTM OSS Abandonment ──────────┐'
+						: '┌─ INVESTIGACIÓN ─── Abandono OSS BiLSTM ─────────┐',
+					'info',
+				);
+				printLine(
+					isEn
+						? '│  Thesis: Predicting OSS Repository Abandonment'
+						: '│  Tesis: Predicción de Abandono de Repos OSS',
+					'output',
+				);
+				printLine(
+					'│  Model:  BiLSTM Neural Networks (TensorFlow)',
+					'output',
+				);
+				printLine(
+					isEn
+						? '│  Data:   GitHub API / GH Archive (MSR approach)'
+						: '│  Datos:  GitHub API / GH Archive (enfoque MSR)',
+					'output',
+				);
+				printLine(
+					isEn
+						? '│  Eval:   ACC · F1-Score · AUC-ROC · Loss'
+						: '│  Eval.:  ACC · F1-Score · AUC-ROC · Loss',
+					'output',
+				);
+				printLine(
+					isEn
+						? `│  Status: <span class="text-[#00ff88]">● IN PROGRESS — UNP 2025</span>`
+						: `│  Estado: <span class="text-[#00ff88]">● EN CURSO — UNP 2025</span>`,
+					'output',
+				);
+				printLine(
+					isEn
+						? '│  Full details: sandovaldavid.com/research'
+						: '│  Detalles: sandovaldavid.com/research',
+					'muted',
+				);
+				printLine(
+					'└─────────────────────────────────────────────────┘',
+					'info',
+				);
+				break;
+
 			case 'about':
 				printBlank();
 				printLine(
@@ -1089,6 +1154,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				'help',
 				'whoami',
 				'about',
+				'research',
 				'ls',
 				'goto ',
 				'github',
