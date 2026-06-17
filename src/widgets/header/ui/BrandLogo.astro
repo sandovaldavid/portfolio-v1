@@ -9,33 +9,98 @@ const { href = '/', class: className = '' } = Astro.props;
 
 <a
 	{href}
-	class={`font-pixel-clean text-2xl font-bold text-primary-500 hover:text-primary-400 transition-colors whitespace-nowrap flex items-center ${className}`}
+	class={`brand-logo-link font-pixel-clean text-2xl font-bold text-neutral-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400 transition-colors whitespace-nowrap flex items-center gap-2 group select-none ${className}`}
 >
+	<span class="text-primary-500 prompt-symbol">&gt;</span>
 	<span class="logo-typing">&lt;sandovaldavid/&gt;</span>
 </a>
 
+<script>
+	const logoLinks = document.querySelectorAll('.brand-logo-link');
+	logoLinks.forEach(link => {
+		const typingElement = link.querySelector('.logo-typing') as HTMLElement;
+		if (!typingElement) return;
+
+		link.addEventListener('mouseenter', () => {
+			typingElement.style.animation = 'none';
+			void typingElement.offsetWidth; // Force reflow
+			typingElement.style.animation =
+				'typing-hover 1.2s steps(17) 1 forwards, blink-caret 0.75s step-end infinite, glitch 0.3s steps(2) infinite';
+		});
+
+		link.addEventListener('mouseleave', () => {
+			typingElement.style.animation = 'none';
+			void typingElement.offsetWidth; // Force reflow
+			typingElement.style.animation = 'blink-caret 0.75s step-end infinite';
+		});
+	});
+</script>
+
 <style>
+	.prompt-symbol {
+		display: inline-block;
+		animation: prompt-pulse 2s infinite ease-in-out;
+	}
+
 	.logo-typing {
 		display: inline-block;
 		overflow: hidden;
 		white-space: nowrap;
 		border-right: 3px solid currentColor;
-		width: 0;
+		width: 17ch;
 		animation:
-			typing 10s steps(16) infinite,
+			typing-load 1.5s steps(17) 1 forwards,
 			blink-caret 0.75s step-end infinite;
 	}
 
-	@keyframes typing {
-		0% { width: 0 }
-		30% { width: 17ch }  /* Finish typing at 30% */
-		80% { width: 17ch }  /* Hold typed state until 80% */
-		90% { width: 0 }     /* Erase by 90% */
-		100% { width: 0 }    /* Pause empty until loop restart */
+	@keyframes prompt-pulse {
+		0%, 100% {
+			opacity: 0.6;
+			transform: scale(0.95);
+			text-shadow: 0 0 2px var(--color-primary-500);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.05);
+			text-shadow: 0 0 8px var(--color-primary-400), 0 0 12px var(--color-primary-500);
+		}
+	}
+
+	@keyframes typing-load {
+		from { width: 0 }
+		to { width: 17ch }
+	}
+
+	@keyframes typing-hover {
+		from { width: 0 }
+		to { width: 17ch }
 	}
 
 	@keyframes blink-caret {
 		from, to { border-color: transparent }
 		50% { border-color: currentColor }
+	}
+
+	@keyframes glitch {
+		0% {
+			text-shadow: 1.5px -1px 0 #ff0055, -1.5px 1.2px 0 #00ffaa;
+			transform: translate(0.5px, -0.5px);
+		}
+		25% {
+			text-shadow: -1.5px 1.5px 0 #ff0055, 1.5px -1.2px 0 #00ffaa;
+			transform: translate(-0.5px, 0.5px);
+		}
+		50% {
+			text-shadow: 1.2px 1.5px 0 #ff0055, -1.2px -1.5px 0 #00ffaa;
+			transform: translate(0.5px, 0.5px);
+		}
+		75% {
+			text-shadow: -1.2px -1.2px 0 #ff0055, 1.2px 1.2px 0 #00ffaa;
+			transform: translate(-0.5px, -0.5px);
+		}
+		100% {
+			text-shadow: 1.5px -1px 0 #ff0055, -1.5px 1.2px 0 #00ffaa;
+			transform: translate(0);
+		}
 	}
 </style>
