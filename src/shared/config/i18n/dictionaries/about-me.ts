@@ -9,12 +9,17 @@ export const aboutMeTranslations = {
 		'about-me.paragraph3':
 			'I aspire to continue pushing the boundaries of both enterprise software development and AI-driven repository analysis, contributing to tools and methodologies that help teams build better software.',
 		'about-me.currently-focused': 'Currently focused on:',
-		'about-me.focus1': 'Enterprise .NET 8 architectures (Clean/CQRS)',
-		'about-me.focus2': 'Angular 19 Signals and Zoneless patterns',
-		'about-me.focus3': 'LSTM networks for repository mining',
-		'about-me.focus4': 'High-availability system optimization',
-		'about-me.focus5': 'Predictive code quality analysis',
-		'about-me.focus6': 'Machine learning for software engineering',
+		'about-me.focus1': 'Building AI-powered applications',
+		'about-me.focus2': 'Cloud-native architectures',
+		'about-me.focus3': 'Performance optimization',
+		'about-me.focus4': 'Developer experience & tooling',
+		'about-me.focus5': 'Technical leadership & mentoring',
+		'about-me.focus6': 'Open source contributions',
+		'about-me.atena.title': 'CURRENT ROLE @ ATENA',
+		'about-me.atena.summary':
+			'I currently work as a Software Developer at <strong>Atena</strong>, leading frontend development for core products using Angular. I focus on optimizing performance, engineering scalable UI architectures, and integrating robust backend services.',
+		'about-me.atena.button': 'VIEW WORK DETAILS',
+		'about-me.read-more': 'READ FULL BIOGRAPHY',
 	},
 	[Language.SPANISH]: {
 		'about-me.paragraph1':
@@ -24,11 +29,16 @@ export const aboutMeTranslations = {
 		'about-me.paragraph3':
 			'Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.',
 		'about-me.currently-focused': 'Enfocado actualmente en:',
-		'about-me.focus1': 'Arquitecturas empresariales .NET 8 (Clean/CQRS)',
-		'about-me.focus2': 'Patrones Angular 19 Signals y Zoneless',
-		'about-me.focus3': 'Redes LSTM para minería de repositorios',
-		'about-me.focus4': 'Optimización de sistemas de alta disponibilidad',
-		'about-me.focus5': 'Análisis predictivo de calidad de código',
-		'about-me.focus6': 'Aprendizaje automático para ingeniería de software',
+		'about-me.focus1': 'Construir aplicaciones potenciadas por IA',
+		'about-me.focus2': 'Arquitecturas nativas de la nube',
+		'about-me.focus3': 'Optimización de rendimiento',
+		'about-me.focus4': 'Experiencia de desarrollador y herramientas',
+		'about-me.focus5': 'Liderazgo técnico y mentoría',
+		'about-me.focus6': 'Contribuciones de código abierto',
+		'about-me.atena.title': 'TRABAJO ACTUAL EN ATENA',
+		'about-me.atena.summary':
+			'Actualmente trabajo como Desarrollador de Software en <strong>Atena</strong>, liderando el desarrollo frontend de productos clave usando Angular. Me enfoco en optimizar el rendimiento, diseñar arquitecturas de interfaz escalables y coordinar integraciones con servicios backend.',
+		'about-me.atena.button': 'VER DETALLES DEL TRABAJO',
+		'about-me.read-more': 'VER BIOGRAFÍA COMPLETA',
 	},
 } as const;

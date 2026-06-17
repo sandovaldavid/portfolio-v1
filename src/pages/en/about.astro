@@ -1,0 +1,102 @@
+---
+import Layout from '@app/layouts/Layout.astro';
+import { SectionContainer } from '@/shared/ui';
+import { getLocalizedPath, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
+
+const lang = Language.ENGLISH;
+const t = useTranslations(lang);
+const personalImageAlt = 'Juan David';
+
+const focusAreas = [
+	t('about-me.focus1'),
+	t('about-me.focus2'),
+	t('about-me.focus3'),
+	t('about-me.focus4'),
+	t('about-me.focus5'),
+	t('about-me.focus6'),
+];
+---
+
+<Layout
+	title="About Me - David Sandoval"
+	description="Learn more about the background, professional journey, and motivations of David Sandoval in software engineering."
+	img_preview="/projects/portfolio.webp"
+	isHome={false}
+>
+	<SectionContainer id="about-details" class="w-full max-w-4xl px-4 flex flex-col gap-8">
+		<!-- Page Header -->
+		<div class="text-center space-y-3">
+			<h2 class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide">
+				Full Biography
+			</h2>
+			<p class="text-text-muted font-mono text-sm uppercase">
+				[ USER RECORD: DAVID_S // STATUS: ARCHIVED ]
+			</p>
+		</div>
+
+		<div class="space-y-6">
+			<!-- First Card: Detailed Story and Image -->
+			<article
+				class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+			>
+				<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
+					<!-- Text Content -->
+					<div
+						class="flex-1 space-y-4 [&>p]:text-neutral-700 dark:[&>p]:text-neutral-300 [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty font-mono text-sm leading-relaxed"
+					>
+						<p set:html={t('about-me.paragraph1')} />
+						<p set:html={t('about-me.paragraph2')} />
+						<p set:html={t('about-me.paragraph3')} />
+					</div>
+
+					<!-- Profile Image -->
+					<div class="shrink-0">
+						<img
+							width="240"
+							height="240"
+							src="/profile/perfil.webp"
+							alt={personalImageAlt}
+							class="w-56 h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_var(--color-border-strong)]"
+							style="object-position: 50% 50%"
+						/>
+					</div>
+				</div>
+			</article>
+
+			<!-- Second Card: Focus Areas -->
+			<article
+				class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+			>
+				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-border-subtle pb-2">
+					{t('about-me.currently-focused')}
+				</h3>
+				<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 font-mono text-sm">
+					{
+						focusAreas.map((area, idx) => (
+							<li
+								class="flex items-start gap-3 transition-all duration-300"
+								style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
+							>
+								<span class="shrink-0 w-2.5 h-2.5 rounded-none bg-primary-500 dark:bg-primary-400 mt-1.5" />
+								<span class="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+									{area}
+								</span>
+							</li>
+						))
+					}
+				</ul>
+			</article>
+		</div>
+
+		<!-- Back Button -->
+		<div class="w-full flex justify-center mt-4">
+			<a
+				href={getLocalizedPath(lang, '/')}
+				class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+			>
+				[ RETURN TO HOME ]
+			</a>
+		</div>
+	</SectionContainer>
+</Layout>
