@@ -12,6 +12,7 @@ import { notFoundTranslations } from './not-found';
 import { titleSectionsTranslations } from './title-sections';
 import { researchTranslations } from './research';
 import { visionTranslations } from './vision';
+import { splashScreenTranslations } from './splash-screen';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -34,6 +35,7 @@ function combineTranslations(lang: Language): Record<string, string | readonly s
 		...titleSectionsTranslations[lang],
 		...researchTranslations[lang],
 		...visionTranslations[lang],
+		...splashScreenTranslations[lang],
 	};
 }
 
