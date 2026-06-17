@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations, useTranslationsList } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslations, useTranslationsList, getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import BrainIcon from '@assets/icons/Brain.astro';
 
@@ -124,6 +124,18 @@ const metrics = [
 						</span>
 					))}
 				</div>
+			</div>
+			<!-- CTA: Full Research Page -->
+			<div class="md:col-span-2 border-t-2 border-dashed border-border-subtle pt-4 flex items-center justify-between gap-4">
+				<p class="font-retro-tag text-[9px] text-text-muted uppercase tracking-wider">
+					{isEN ? '[ SUMMARY VIEW — Full methodology, architecture & pipeline available ]' : '[ VISTA RESUMIDA — Metodología, arquitectura y pipeline completos disponibles ]'}
+				</p>
+				<a
+					href={getLocalizedPath(lang, '/research')}
+					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-[10px] font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+				>
+					{isEN ? '▸ FULL RESEARCH' : '▸ VER COMPLETO'}
+				</a>
 			</div>
 
 		</div>
