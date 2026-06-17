@@ -10,8 +10,8 @@ export const heroTranslations = {
 		'hero.cta.view-work': 'View Selected Work',
 		'hero.cta.download-resume': 'Download Resume',
 		'hero.cta.view-research': 'View Research',
-		'hero.title': 'Building Software',
-		'hero.subtitle': 'Software Engineer (Enterprise .NET/Angular) | AI Researcher (LSTM)',
+		'hero.title': 'Engineering Scalable Systems',
+		'hero.subtitle': 'Software Engineer | B.S. Computer Engineering',
 		'hero.credential': 'Currently optimizing high-availability systems at Atena (Remote)',
 	},
 	[Language.SPANISH]: {
@@ -23,9 +23,8 @@ export const heroTranslations = {
 		'hero.cta.view-work': 'Ver mi Trabajo',
 		'hero.cta.download-resume': 'Descargar CV',
 		'hero.cta.view-research': 'Ver Investigación',
-		'hero.title': 'Construyendo Software',
-		'hero.subtitle':
-			'Ingeniero de Software (Empresarial .NET/Angular) | Investigador IA (LSTM)',
+		'hero.title': 'Ingeniería de Sistemas Escalables',
+		'hero.subtitle': 'Ingeniero de Software | B.S. Ingeniería Informática',
 		'hero.credential':
 			'Actualmente optimizando sistemas de alta disponibilidad en Atena (Remoto)',
 	},

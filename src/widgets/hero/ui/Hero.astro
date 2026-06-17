@@ -1,67 +1,111 @@
 ---
 import { getLangFromUrl, getLocalizedPath, useTranslations } from '@shared/lib/i18n';
-import CodeIcon from '@assets/icons/Code.astro';
-import BrainIcon from '@assets/icons/Brain.astro';
-import PaletteIcon from '@assets/icons/Palette.astro';
 import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
-
-const specializations = [
-	{ label: '.NET 8 (Clean)', icon: CodeIcon },
-	{ label: 'Angular 19 (Signals)', icon: PaletteIcon },
-	{ label: 'LSTM Research', icon: BrainIcon },
-];
 ---
 
-<div class="w-full h-dvh hero-gradient flex flex-col items-center justify-center gap-6 md:gap-8">
-	<div class="max-w-4xl px-4 flex flex-col items-center gap-6 md:gap-8">
-		<h2
-			class="text-5xl sm:text-7xl lg:text-8xl font-bold text-center opacity-20 text-neutral-900 dark:text-neutral-50 tracking-tight leading-none"
-			style="animation: var(--animate-fade-in); animation-delay: 0ms;"
-		>
-			{t('hero.title')}
-		</h2>
-
-		<p
-			class="text-lg sm:text-xl text-center text-neutral-600 dark:text-neutral-400 tracking-wide font-medium"
-			style="animation: var(--animate-fade-in); animation-delay: 150ms;"
-		>
-			{t('hero.subtitle')}
-		</p>
-
-		<p
-			class="text-sm sm:text-base text-center text-neutral-500 dark:text-neutral-500 italic"
-			style="animation: var(--animate-fade-in); animation-delay: 200ms;"
-		>
-			{t('hero.credential')}
-		</p>
-
-		<div
-			class="flex flex-wrap justify-center gap-3 sm:gap-4 mt-2 sm:mt-4"
-			style="animation: var(--animate-fade-in); animation-delay: 300ms;"
-		>
-			{
-				specializations.map(spec => (
-					<div class="rounded-full bg-neutral-200 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
-						<spec.icon class="size-4 sm:size-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
-						<span class="text-sm sm:text-base text-neutral-900 dark:text-neutral-50 font-medium">
-							{spec.label}
-						</span>
-					</div>
-				))
-			}
+<div class="w-full min-h-[calc(100dvh-4.5rem)] hero-gradient flex flex-col items-center justify-center  px-4">
+	<div class="w-full max-w-5xl flex flex-col items-center gap-10">
+		<!-- Top header banner -->
+		<div class="w-full text-center border-2 border-dashed border-primary-500/60 p-3 font-retro-tag text-xs sm:text-sm text-primary-400 tracking-widest uppercase animate-pulse">
+			[ SYSTEM STATUS: ACTIVE // PLAYER 1 READY ]
 		</div>
 
-		{/* CTA Button */}
-		<div class="mt-6 sm:mt-8">
+		<!-- Title Name -->
+		<div class="text-center space-y-3">
+			<span 
+				class="font-retro-tag text-[10px] sm:text-xs uppercase tracking-widest text-primary-500 font-bold block"
+				style="animation: var(--animate-fade-in); animation-delay: 0ms;"
+			>
+				{t('hero.title')}
+			</span>
+			<h1
+				class="text-4xl sm:text-6xl lg:text-7xl text-center text-neutral-900 dark:text-white font-pixel tracking-wider leading-none uppercase"
+				style="animation: var(--animate-fade-in); animation-delay: 100ms; text-shadow: 5px 5px 0px var(--color-primary-500);"
+			>
+				David Sandoval
+			</h1>
+		</div>
+
+		<!-- Character Select Dashboard (Enlarged) -->
+		<div class="w-full grid grid-cols-1 md:grid-cols-3 border-2 border-black dark:border-white bg-surface shadow-[8px_8px_0px_0px_var(--color-border-strong)] rounded-none overflow-hidden font-mono mt-2">
+			
+			<!-- Column 1: Avatar Portrait (Enlarged) -->
+			<div class="flex flex-col items-center justify-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-white bg-neutral-100/50 dark:bg-black/20 shrink-0">
+				<div class="relative w-48 h-48 md:w-56 md:h-56 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] overflow-hidden bg-black">
+					<img
+						src="/profile/perfil.webp"
+						alt="David Sandoval character sprite"
+						class="w-full h-full object-cover aspect-square"
+					/>
+					<div class="absolute bottom-0 inset-x-0 bg-primary-500 text-white dark:text-black text-[10px] font-pixel text-center py-1.5 uppercase tracking-widest">
+						P1: DAVID_S
+					</div>
+				</div>
+				<span class="font-retro-tag text-[10px] text-text-muted mt-4 uppercase tracking-wider">LEVEL 5+ ENGINEER</span>
+			</div>
+
+			<!-- Column 2 & 3: Stats Details (Enlarged) -->
+			<div class="col-span-2 p-8 md:p-10 flex flex-col justify-between gap-6 bg-surface">
+				<div class="w-full border-b-2 border-dashed border-border-subtle pb-3 flex justify-between items-center">
+					<span class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-text-main">
+						CHARACTER STATS
+					</span>
+					<span class="font-retro-tag text-[10px] bg-emerald-500 text-black dark:text-black px-2.5 py-1 font-bold animate-pulse uppercase">
+						ONLINE
+					</span>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-base">
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">CLASS:</span>
+						<span class="text-text-main font-semibold">Systems Architect</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">ALIGNMENT:</span>
+						<span class="text-text-main font-semibold">Clean Code</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">SPECIALTIES:</span>
+						<span class="text-text-main font-semibold">Java, Angular, React</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">LOC:</span>
+						<span class="text-text-main font-semibold">Piura, Peru</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">HP / MANA:</span>
+						<span class="text-primary-500 font-bold">99 / 99</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide">SKILL LEVEL:</span>
+						<span class="text-text-main font-semibold">Lvl. 99 (Expert)</span>
+					</div>
+				</div>
+
+				<!-- Stats Progress Bar -->
+				<div class="space-y-2">
+					<div class="flex justify-between text-xs font-bold uppercase tracking-wider text-text-muted">
+						<span>EXPERIENCE POINTS:</span>
+						<span>100% COMPLETE</span>
+					</div>
+					<div class="w-full h-5 border-2 border-black dark:border-white bg-black/10 dark:bg-black/30 p-0.5">
+						<div class="h-full bg-primary-500 w-full animate-pulse"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- CTA Arcade Button -->
+		<div class="mt-4">
 			<a
 				href={getLocalizedPath(lang, '/#experience')}
-				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-white text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] dark:shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
+				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base sm:text-lg px-9 py-4.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[4px_4px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
 			>
-				{t('hero.cta.view-work')}
+				PRESS START // VIEW WORK
 			</a>
 		</div>
 	</div>
