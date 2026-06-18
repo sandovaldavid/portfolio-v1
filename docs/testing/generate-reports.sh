@@ -3,8 +3,6 @@
 # Script to generate testing artifacts (screenshots and Lighthouse reports)
 # Usage: bash docs/testing/generate-reports.sh
 
-set -e
-
 echo "🚀 Portfolio Testing Artifact Generator"
 echo "======================================"
 echo ""
@@ -21,16 +19,17 @@ if [ ! -d "node_modules" ]; then
     bun install
 fi
 
-# Start dev server in background if not running
-if ! lsof -Pi :4321 -sTCP:LISTEN -t >/dev/null; then
-    echo "🔧 Starting dev server..."
-    bun run dev &
-    DEV_PID=$!
-    sleep 3
-    echo "✓ Dev server started (PID: $DEV_PID)"
-else
+# Check if dev server is already running
+DEV_ALREADY_RUNNING=false
+if lsof -Pi :4321 -sTCP:LISTEN -t >/dev/null 2>&1; then
     echo "✓ Dev server already running on :4321"
-    DEV_PID=""
+    DEV_ALREADY_RUNNING=true
+else
+    echo "🔧 Starting dev server..."
+    bun run dev > /dev/null 2>&1 &
+    DEV_PID=$!
+    sleep 4
+    echo "✓ Dev server started (PID: $DEV_PID)"
 fi
 
 echo ""
@@ -60,13 +59,14 @@ echo "     - lighthouse http://localhost:4321 --output=json --output-path=docs/t
 echo "     - lighthouse http://localhost:4321 --output=html --output-path=docs/testing/lighthouse/latest.html"
 echo ""
 
-# Cleanup
-if [ ! -z "$DEV_PID" ]; then
-    echo "Stopping dev server..."
-    kill $DEV_PID 2>/dev/null || true
+echo "✅ Done! Check docs/testing/ for your artifacts."
+echo ""
+
+# Cleanup (only kill if we started it)
+if [ "$DEV_ALREADY_RUNNING" = false ] && [ ! -z "$DEV_PID" ]; then
+    echo "💡 Tip: Dev server is still running. Use Ctrl+C to stop it or run:"
+    echo "   kill $DEV_PID"
 fi
 
-echo ""
-echo "✅ Done! Check docs/testing/ for your artifacts."
 echo ""
 echo "📖 For more information, see: docs/testing/README.md"
