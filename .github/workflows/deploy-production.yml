@@ -43,10 +43,13 @@ jobs:
       - name: Deploy to Vercel Production
         id: deploy
         run: |
-          vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }} > deployment.txt 2>&1
-          URL=$(cat deployment.txt | tail -1)
-          echo "url=$URL" >> $GITHUB_OUTPUT
-          cat deployment.txt
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "Deployment created: $DEPLOYMENT_URL"
+
+      - name: Promote to Production
+        run: |
+          vercel promote ${{ steps.deploy.outputs.deployment_url }} --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Summary
         if: always()
