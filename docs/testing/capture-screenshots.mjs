@@ -111,8 +111,7 @@ async function main() {
 
 	try {
 		browser = await chromium.launch();
-		const context = await browser.createBrowserContext();
-		const page = await context.newPage();
+		const page = await browser.newPage();
 
 		// Disable animations for consistent screenshots
 		await page.addInitScript(() => {
@@ -128,6 +127,7 @@ async function main() {
 			}
 		}
 
+		await page.close();
 		await browser.close();
 
 		console.log('------------|------------|----------------------------\n');
