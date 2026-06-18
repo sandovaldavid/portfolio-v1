@@ -11,7 +11,14 @@
 		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
 		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
 		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
-		"screenshots": "node docs/testing/capture-screenshots.mjs"
+		"screenshots": "node docs/testing/capture-screenshots.mjs",
+		"test": "playwright test",
+		"test:ui": "playwright test --ui",
+		"test:debug": "playwright test --debug",
+		"lighthouse": "lhci autorun",
+		"lighthouse:collect": "lhci collect",
+		"lighthouse:assert": "lhci assert",
+		"bundle:analyze": "node scripts/analyze-bundle.js"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",

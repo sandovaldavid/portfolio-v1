@@ -1,0 +1,185 @@
+name: Publish Test Reports to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["Testing CI - Lighthouse & Playwright"]
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish-reports:
+    name: Publish to GitHub Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: testing-ci.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          path: ./artifacts
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Create reports directory
+        run: |
+          mkdir -p docs/test-reports
+          mkdir -p docs/test-reports/lighthouse
+          mkdir -p docs/test-reports/playwright
+          mkdir -p docs/test-reports/index
+
+      - name: Copy Lighthouse reports
+        run: |
+          if [ -d "artifacts/lighthouse-reports" ]; then
+            cp -r artifacts/lighthouse-reports/* docs/test-reports/lighthouse/
+          fi
+
+      - name: Copy Playwright reports
+        run: |
+          if [ -d "artifacts/playwright-report" ]; then
+            cp -r artifacts/playwright-report/* docs/test-reports/playwright/
+          fi
+
+      - name: Copy test results
+        run: |
+          if [ -f "artifacts/test-results/test-results.json" ]; then
+            cp artifacts/test-results/* docs/test-reports/
+          fi
+
+      - name: Generate index HTML
+        run: |
+          cat > docs/test-reports/index/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Test Reports - Portfolio</title>
+            <style>
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 2rem;
+              }
+              .container {
+                max-width: 1200px;
+                margin: 0 auto;
+              }
+              h1 {
+                color: white;
+                margin-bottom: 2rem;
+                text-align: center;
+              }
+              .reports {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+              }
+              .card {
+                background: white;
+                border-radius: 8px;
+                padding: 2rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s, box-shadow 0.3s;
+              }
+              .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+              }
+              .card h2 {
+                color: #333;
+                margin-bottom: 1rem;
+              }
+              .card p {
+                color: #666;
+                margin-bottom: 1.5rem;
+                line-height: 1.6;
+              }
+              .btn {
+                display: inline-block;
+                background: #667eea;
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background 0.3s;
+              }
+              .btn:hover {
+                background: #764ba2;
+              }
+              .btn.secondary {
+                background: #e0e0e0;
+                color: #333;
+              }
+              .btn.secondary:hover {
+                background: #d0d0d0;
+              }
+              .meta {
+                color: #999;
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Portfolio - Test Reports</h1>
+              <div class="reports">
+                <div class="card">
+                  <h2>Lighthouse Reports</h2>
+                  <p>Performance, accessibility, and best practices audits for all pages.</p>
+                  <div class="meta">Last updated: Check artifacts</div>
+                  <a href="../lighthouse/" class="btn">View Lighthouse Reports</a>
+                </div>
+                <div class="card">
+                  <h2>Playwright Tests</h2>
+                  <p>E2E tests covering functionality, responsiveness, and accessibility.</p>
+                  <div class="meta">Last updated: Check artifacts</div>
+                  <a href="../playwright/" class="btn">View Test Report</a>
+                </div>
+                <div class="card">
+                  <h2>Test Results</h2>
+                  <p>Detailed JSON and JUnit results from Playwright test runs.</p>
+                  <div class="meta">Includes pass/fail metrics and timing data</div>
+                  <a href="../test-results.json" class="btn secondary">View JSON Results</a>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/test-reports'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Create deployment status
+        run: |
+          echo "Test reports published to GitHub Pages"
+          echo "URL: ${{ steps.deployment.outputs.page_url }}"

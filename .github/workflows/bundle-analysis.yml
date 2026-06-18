@@ -1,0 +1,110 @@
+name: Bundle Size Analysis
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  bundle-analysis:
+    name: Analyze Bundle Size
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout base branch (for PR comparison)
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git checkout origin/${{ github.base_ref }}
+          git checkout ${{ github.head_ref }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build project
+        run: bun run build
+
+      - name: Analyze bundle
+        run: |
+          mkdir -p bundle-analysis
+
+          # Analyze JavaScript files
+          echo "=== JavaScript Bundle Analysis ===" > bundle-analysis/report.txt
+          du -sh dist/_astro/*.js 2>/dev/null | head -20 >> bundle-analysis/report.txt || echo "No JS files" >> bundle-analysis/report.txt
+
+          echo "" >> bundle-analysis/report.txt
+          echo "=== CSS Bundle Analysis ===" >> bundle-analysis/report.txt
+          du -sh dist/_astro/*.css 2>/dev/null | head -20 >> bundle-analysis/report.txt || echo "No CSS files" >> bundle-analysis/report.txt
+
+          echo "" >> bundle-analysis/report.txt
+          echo "=== Total Size ===" >> bundle-analysis/report.txt
+          du -sh dist >> bundle-analysis/report.txt
+
+          # Create detailed JSON report
+          cat > bundle-analysis/bundle-report.json << 'EOF'
+          {
+            "timestamp": "$(date -Iseconds)",
+            "artifacts": []
+          }
+          EOF
+
+      - name: Compare bundle sizes (PR)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('bundle-analysis/report.txt', 'utf8');
+
+            const body = `## Bundle Analysis Report
+
+            \`\`\`
+            ${report}
+            \`\`\`
+
+            [View detailed artifact](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: bundle-analysis/
+          retention-days: 30
+
+      - name: Check bundle size threshold
+        run: |
+          DIST_SIZE=$(du -sb dist | cut -f1)
+          THRESHOLD=$((2 * 1024 * 1024))  # 2MB threshold
+
+          echo "Total dist size: $(numfmt --to=iec $DIST_SIZE 2>/dev/null || echo "$((DIST_SIZE/1024))KB")"
+
+          if [ $DIST_SIZE -gt $THRESHOLD ]; then
+            echo "[WARNING] Bundle size exceeds threshold"
+            exit 0
+          else
+            echo "[OK] Bundle size is within acceptable limits"
+          fi

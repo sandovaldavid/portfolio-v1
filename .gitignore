@@ -32,5 +32,17 @@ __pycache__/
 # testing artifacts
 docs/testing/screenshots/
 docs/testing/lighthouse/
+docs/test-reports/
+playwright-report/
+test-results.json
+junit-results.xml
+.lighthouseci/
+bundle-analysis/
 *.png
 !src/assets/**/*.png
+
+# playwright
+.auth/
+
+# lighthouse ci
+.lhci-results/
