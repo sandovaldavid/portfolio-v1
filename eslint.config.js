@@ -4,10 +4,10 @@ import typescriptParser from '@typescript-eslint/parser';
 
 export default [
 	{
-		ignores: ['dist/', '.vercel/', 'node_modules/'],
+		ignores: ['dist/', '.vercel/', 'node_modules/', '**/*.astro'],
 	},
 	{
-		files: ['src/**/*.{js,jsx,ts,tsx,astro}'],
+		files: ['src/**/*.{js,jsx,ts,tsx}'],
 		languageOptions: {
 			parser: typescriptParser,
 			parserOptions: {

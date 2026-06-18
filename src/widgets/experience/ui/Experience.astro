@@ -1,12 +1,11 @@
 ---
 import ExperienceItem from './ExperienceItem.astro';
 import { getExperienceData } from '@entities/experience';
-import { getLangFromUrl, useTranslations, useTranslationsList } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslationsList } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
 const tList = useTranslationsList(lang);
 
 const EXPERIENCE = getExperienceData(tList);

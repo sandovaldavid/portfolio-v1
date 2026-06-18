@@ -9,8 +9,8 @@
 		"astro": "astro",
 		"format": "prettier --write \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
 		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
-		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\"",
-		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\" --fix"
+		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",
