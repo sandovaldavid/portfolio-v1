@@ -223,8 +223,56 @@ Located in `.github/workflows/`:
    - Full validation suite
    - Deploys to Vercel production
 
+## Testing & Quality Assurance
+
+### Screenshots
+
+Store responsive design screenshots in `docs/testing/screenshots/`:
+
+```
+docs/testing/screenshots/
+├── mobile/      # iPhone, Android sizes
+├── tablet/      # iPad, Android tablet sizes
+└── desktop/     # Desktop browser sizes
+```
+
+**Use `/verify` skill** to take automated screenshots:
+
+```bash
+/verify
+```
+
+This will start the dev server, take screenshots across device sizes, and save them to `docs/testing/screenshots/`.
+
+Naming convention: `{device}_{page}[_{variant}].png`
+- Examples: `mobile_home.png`, `tablet_research_fullpage.png`, `desktop_about-me.png`
+
+**Important**: Screenshots are NOT committed to git (see `.gitignore`). They're useful for visual regression testing in PRs.
+
+### Lighthouse Performance Reports
+
+Generate Lighthouse reports with the `/verify` skill:
+
+```bash
+/verify
+```
+
+Reports are saved to `docs/testing/lighthouse/`:
+
+- `latest.json` — Machine-readable (for CI/CD tracking)
+- `latest.html` — Human-readable interactive report
+
+**Target scores**:
+- Performance: ≥ 90
+- Accessibility: ≥ 95
+- Best Practices: ≥ 90
+- SEO: ≥ 90
+
+See `docs/testing/README.md` for detailed testing documentation.
+
 ## Important References
 
 - **FSD Documentation**: `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`
 - **Layer-specific rules**: Each FSD layer has detailed instructions in `.github/instructions/`
 - **Conventional Commits**: https://www.conventionalcommits.org/
+- **Testing Guide**: `docs/testing/README.md` — Screenshots, Lighthouse audits, best practices

@@ -28,3 +28,9 @@ pnpm-debug.log*
 __pycache__/
 *.py[cod]
 *$py.class
+
+# testing artifacts
+docs/testing/screenshots/
+docs/testing/lighthouse/
+*.png
+!src/assets/**/*.png
