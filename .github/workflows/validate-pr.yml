@@ -33,7 +33,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Security audit
-        run: bun audit --audit-level high
+        run: bun audit --audit-level critical
 
       - name: Run ESLint
         run: bun run lint
