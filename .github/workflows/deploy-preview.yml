@@ -33,25 +33,34 @@ jobs:
 
       - name: Run linter
         run: bun run lint
-        continue-on-error: true
 
       - name: Check formatting
         run: bun run format:check
-        continue-on-error: true
 
-      - name: Build project
-        run: bun run build
+      - name: Install Vercel CLI
+        run: bun install -g vercel@latest
 
-      - name: Deploy to Vercel Preview
-        id: deploy
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PRODUCTION: false
-          PREBUILT: true
+
+      - name: Build
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Preview
+        id: deploy
+        run: |
+          PREVIEW_URL=$(vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "Deployed to: $PREVIEW_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'

@@ -3,7 +3,7 @@ name: Deploy to Vercel Production
 on:
   push:
     branches:
-      - main
+      - develop
 
 permissions:
   contents: read
@@ -31,19 +31,30 @@ jobs:
       - name: Check formatting
         run: bun run format:check
 
-      - name: Build project
-        run: bun run build
+      - name: Install Vercel CLI
+        run: bun install -g vercel@latest
 
-      - name: Deploy to Vercel Production
-        id: deploy
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PRODUCTION: true
-          PREBUILT: true
+
+      - name: Build Production
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Production
+        id: deploy
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "✅ Successfully deployed to production: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Summary
         if: always()
@@ -57,13 +68,3 @@ jobs:
           else
             echo "❌ Deployment failed. Please check the logs above." >> $GITHUB_STEP_SUMMARY
           fi
-
-      - name: Slack notification
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: 'Production deployment ${{ job.status }}'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow
-        continue-on-error: true

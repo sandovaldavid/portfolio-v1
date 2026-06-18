@@ -1,6 +1,9 @@
 {
-	"installCommand": "npm install",
-	"buildCommand": "npm run build",
+	"installCommand": "bun install --frozen-lockfile",
+	"buildCommand": "bun run build",
+	"git": {
+		"deploymentEnabled": false
+	},
 	"rewrites": [
 		{
 			"source": "/links",

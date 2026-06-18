@@ -9,17 +9,18 @@
 		"astro": "astro",
 		"format": "prettier --write \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
 		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
-		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\"",
-		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\" --fix"
+		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+		"screenshots": "node docs/testing/capture-screenshots.mjs"
 	},
 	"dependencies": {
-		"@astrojs/check": "0.9.9",
+		"@astrojs/check": "0.9.6",
 		"@fontsource-variable/onest": "^5.2.11",
 		"@fontsource/geist-mono": "^5.2.7",
 		"@fontsource/geist-sans": "^5.2.5",
 		"@tailwindcss/vite": "^4.1.18",
 		"@vercel/analytics": "^1.6.1",
-		"astro": "6.4.7",
+		"astro": "5.17.1",
 		"astro-i18n": "^2.2.4",
 		"astro-robots-txt": "1.0.0",
 		"prettier": "^3.8.1",

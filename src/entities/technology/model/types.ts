@@ -7,7 +7,8 @@ export interface Technology {
 	/** Tailwind CSS classes for styling the tag */
 	class: string;
 	/** Astro icon component for the technology */
-	icon: any; // Astro component type
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	icon: any;
 }
 
 /**

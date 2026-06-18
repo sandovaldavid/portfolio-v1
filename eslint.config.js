@@ -1,41 +1,40 @@
 import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
+import typescript from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
 
 export default [
 	{
-		ignores: ['dist', 'node_modules', '.astro', '*.config.js', '*.config.mjs'],
+		ignores: ['dist/', '.vercel/', 'node_modules/', '**/*.astro'],
 	},
 	{
-		files: ['src/**/*.{ts,tsx,js,jsx}'],
+		files: ['src/**/*.{js,jsx,ts,tsx}'],
 		languageOptions: {
-			ecmaVersion: 'latest',
-			sourceType: 'module',
-			parser: tsParser,
+			parser: typescriptParser,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module',
+			},
 			globals: {
 				console: 'readonly',
+				document: 'readonly',
+				window: 'readonly',
+				localStorage: 'readonly',
 				URL: 'readonly',
 				URLSearchParams: 'readonly',
 			},
 		},
 		plugins: {
-			'@typescript-eslint': tsPlugin,
+			'@typescript-eslint': typescript,
 		},
 		rules: {
 			...js.configs.recommended.rules,
-			...tsPlugin.configs.recommended.rules,
+			...typescript.configs.recommended.rules,
 			'@typescript-eslint/no-explicit-any': 'warn',
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{
 					argsIgnorePattern: '^_',
 					varsIgnorePattern: '^_',
-				},
-			],
-			'no-console': [
-				'warn',
-				{
-					allow: ['warn', 'error'],
 				},
 			],
 			'prefer-const': 'error',
