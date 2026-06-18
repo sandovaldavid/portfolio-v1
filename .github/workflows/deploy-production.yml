@@ -35,22 +35,34 @@ jobs:
         run: bun install -g vercel@latest
 
       - name: Pull Vercel Environment
-        run: vercel pull --yes --team=team_Kni208cT03lJVCIgxVKQcVGt --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Production
-        run: vercel build --prod --team=team_Kni208cT03lJVCIgxVKQcVGt --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Production
         id: deploy
         run: |
-          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --yes --team=team_Kni208cT03lJVCIgxVKQcVGt --token=${{ secrets.VERCEL_TOKEN }})
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
           echo "Deployment URL: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Promote to Production
         run: |
           echo "Promoting to production: ${{ steps.deploy.outputs.deployment_url }}"
-          vercel promote ${{ steps.deploy.outputs.deployment_url }} --yes --team=team_Kni208cT03lJVCIgxVKQcVGt --token=${{ secrets.VERCEL_TOKEN }}
+          vercel promote ${{ steps.deploy.outputs.deployment_url }} --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Summary
         if: always()
