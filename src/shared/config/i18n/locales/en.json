@@ -185,6 +185,9 @@
   },
   "research": {
     "title": "Research Work",
+    "page-title": "Research — BiLSTM OSS Abandonment | David Sandoval",
+    "page-description": "Thesis research: predicting OSS repository abandonment using BiLSTM neural networks. Mining Software Repositories, deep learning, GitHub data.",
+    "back-button": "Back to Portfolio",
     "thesis": {
       "label": "Bachelor Thesis",
       "title": "Predicting the Abandonment State of OSS Repositories using BiLSTM Neural Networks",
@@ -210,7 +213,50 @@
         "Repository Health",
         "Time Series Classification"
       ]
-    }
+    },
+    "labels": {
+      "problem": "PROBLEM STATEMENT",
+      "hypothesis": "RESEARCH HYPOTHESIS",
+      "approach": "METHODOLOGY (MSR)",
+      "dataset": "DATASET",
+      "metrics": "EVALUATION METRICS",
+      "arch": "MODEL ARCHITECTURE",
+      "pipeline": "DATA PIPELINE",
+      "keywords": "KEYWORDS",
+      "status": "CURRENT STATUS",
+      "contact": "INTERESTED? REACH OUT",
+      "engineered-features": "ENGINEERED FEATURES"
+    },
+    "pipeline-steps": [
+      "GitHub API / GH Archive",
+      "Raw Repo Activity Data",
+      "Feature Engineering",
+      "Temporal Sequences",
+      "BiLSTM Training",
+      "Abandonment Classifier"
+    ],
+    "arch-details": [
+      { "label": "Input", "value": "Time-series of repo activity signals (T steps)" },
+      { "label": "Layer 1", "value": "BiLSTM — 128 units forward + backward" },
+      { "label": "Layer 2", "value": "BiLSTM — 64 units with dropout (0.3)" },
+      { "label": "Layer 3", "value": "Dense — 32 units, ReLU activation" },
+      { "label": "Output", "value": "Sigmoid — P(abandoned) ∈ [0,1]" },
+      { "label": "Loss", "value": "Binary Cross-Entropy + class weights" },
+      { "label": "Optimizer", "value": "Adam (lr=1e-3)" }
+    ],
+    "engineered-features": [
+      "Commit frequency (weekly rolling avg)",
+      "Unique contributors per time window",
+      "Open issue aging (days unresolved)",
+      "PR merge rate & close rate",
+      "Days since last commit",
+      "Bus factor estimate",
+      "Issue response time",
+      "Release cadence"
+    ],
+    "current-status": "Actively training BiLSTM models and comparing against ML baselines. Results will be published upon thesis completion.",
+    "contact-cta": "Collaborations, questions or opportunities.",
+    "contact-button": "Contact"
   },
   "vision": {
     "title": "Vision & Impact",

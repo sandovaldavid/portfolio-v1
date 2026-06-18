@@ -13,9 +13,24 @@ interface Props {
 const { lang, backHref = '/#research' } = Astro.props;
 const t = useTranslations(lang);
 const tList = useTranslationsList(lang);
-const isEN = lang === Language.ENGLISH;
 
 const keywords = tList('research.thesis.keywords') as string[];
+const pipelineSteps = tList('research.pipeline-steps') as string[];
+const archDetails = tList('research.arch-details') as any;
+const features = tList('research.engineered-features') as string[];
+
+const labels = {
+	problem:    t('research.labels.problem'),
+	hypothesis: t('research.labels.hypothesis'),
+	approach:   t('research.labels.approach'),
+	dataset:    t('research.labels.dataset'),
+	metrics:    t('research.labels.metrics'),
+	arch:       t('research.labels.arch'),
+	pipeline:   t('research.labels.pipeline'),
+	keywords:   t('research.labels.keywords'),
+	status:     t('research.labels.status'),
+	contact:    t('research.labels.contact'),
+};
 
 const metrics = [
 	{ prefix: 'ACC', text: t('research.thesis.metrics.accuracy') },
@@ -24,67 +39,8 @@ const metrics = [
 	{ prefix: 'LOSS', text: t('research.thesis.metrics.loss') },
 ];
 
-const labels = {
-	problem:    isEN ? 'PROBLEM STATEMENT'     : 'PLANTEAMIENTO DEL PROBLEMA',
-	hypothesis: isEN ? 'RESEARCH HYPOTHESIS'   : 'HIPÓTESIS DE INVESTIGACIÓN',
-	approach:   isEN ? 'METHODOLOGY (MSR)'     : 'METODOLOGÍA (MSR)',
-	dataset:    isEN ? 'DATASET'               : 'CONJUNTO DE DATOS',
-	metrics:    isEN ? 'EVALUATION METRICS'    : 'MÉTRICAS DE EVALUACIÓN',
-	arch:       isEN ? 'MODEL ARCHITECTURE'    : 'ARQUITECTURA DEL MODELO',
-	pipeline:   isEN ? 'DATA PIPELINE'         : 'PIPELINE DE DATOS',
-	keywords:   isEN ? 'KEYWORDS'              : 'PALABRAS CLAVE',
-	status:     isEN ? 'CURRENT STATUS'        : 'ESTADO ACTUAL',
-	contact:    isEN ? 'INTERESTED? REACH OUT' : '¿INTERESADO? CONTÁCTAME',
-};
-
-const pageTitle = isEN
-	? 'Research — BiLSTM OSS Abandonment | David Sandoval'
-	: 'Investigación — BiLSTM Abandono OSS | David Sandoval';
-const pageDesc = isEN
-	? 'Thesis research: predicting OSS repository abandonment using BiLSTM neural networks. Mining Software Repositories, deep learning, GitHub data.'
-	: 'Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.';
-
-const pipelineSteps = isEN
-	? ['GitHub API / GH Archive', 'Raw Repo Activity Data', 'Feature Engineering', 'Temporal Sequences', 'BiLSTM Training', 'Abandonment Classifier']
-	: ['GitHub API / GH Archive', 'Datos Crudos de Actividad', 'Ingeniería de Características', 'Secuencias Temporales', 'Entrenamiento BiLSTM', 'Clasificador de Abandono'];
-
-const archDetails = isEN ? [
-	{ label: 'Input', value: 'Time-series of repo activity signals (T steps)' },
-	{ label: 'Layer 1', value: 'BiLSTM — 128 units forward + backward' },
-	{ label: 'Layer 2', value: 'BiLSTM — 64 units with dropout (0.3)' },
-	{ label: 'Layer 3', value: 'Dense — 32 units, ReLU activation' },
-	{ label: 'Output', value: 'Sigmoid — P(abandoned) ∈ [0,1]' },
-	{ label: 'Loss', value: 'Binary Cross-Entropy + class weights' },
-	{ label: 'Optimizer', value: 'Adam (lr=1e-3)' },
-] : [
-	{ label: 'Entrada', value: 'Serie temporal de señales de actividad del repo (T pasos)' },
-	{ label: 'Capa 1', value: 'BiLSTM — 128 unidades forward + backward' },
-	{ label: 'Capa 2', value: 'BiLSTM — 64 unidades con dropout (0.3)' },
-	{ label: 'Capa 3', value: 'Dense — 32 unidades, activación ReLU' },
-	{ label: 'Salida', value: 'Sigmoid — P(abandonado) ∈ [0,1]' },
-	{ label: 'Pérdida', value: 'Binary Cross-Entropy + pesos de clase' },
-	{ label: 'Optimizador', value: 'Adam (lr=1e-3)' },
-];
-
-const features = isEN ? [
-	'Commit frequency (weekly rolling avg)',
-	'Unique contributors per time window',
-	'Open issue aging (days unresolved)',
-	'PR merge rate & close rate',
-	'Days since last commit',
-	'Bus factor estimate',
-	'Issue response time',
-	'Release cadence',
-] : [
-	'Frecuencia de commits (promedio semanal)',
-	'Contribuidores únicos por ventana temporal',
-	'Antigüedad de issues abiertos (días sin resolver)',
-	'Tasa de merge/cierre de PRs',
-	'Días desde el último commit',
-	'Estimación del bus factor',
-	'Tiempo de respuesta a issues',
-	'Cadencia de releases',
-];
+const pageTitle = t('research.page-title');
+const pageDesc = t('research.page-description');
 ---
 
 <Layout
@@ -101,7 +57,7 @@ const features = isEN ? [
 			class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-text-muted hover:text-primary-500 transition-colors group"
 		>
 			<span class="group-hover:-translate-x-1 transition-transform">◀</span>
-			{isEN ? 'Back to Portfolio' : 'Volver al Portfolio'}
+			{t('research.back-button')}
 		</a>
 
 		<!-- Header -->
@@ -172,7 +128,7 @@ const features = isEN ? [
 				<!-- Feature engineering -->
 				<div class="border-2 border-border-subtle bg-surface p-5">
 					<h2 class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3">
-						▸ {isEN ? 'ENGINEERED FEATURES' : 'CARACTERÍSTICAS INGENIERIZADAS'}
+						▸ {t('research.labels.engineered-features')}
 					</h2>
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
 						{features.map((feat, i) => (
@@ -203,10 +159,10 @@ const features = isEN ? [
 				<div class="border-2 border-border-subtle bg-surface p-5">
 					<h2 class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3">▸ {labels.arch}</h2>
 					<div class="flex flex-col gap-2">
-						{archDetails.map(({ label, value }) => (
+						{archDetails.map((item: any) => (
 							<div class="border border-border-subtle p-2.5 text-sm flex justify-between items-start gap-4">
-								<span class="font-bold text-primary-500 uppercase tracking-wider shrink-0 text-xs sm:text-sm font-gaming-mono">{label}</span>
-								<span class="text-text-main leading-snug text-right">{value}</span>
+								<span class="font-bold text-primary-500 uppercase tracking-wider shrink-0 text-xs sm:text-sm font-gaming-mono">{item.label}</span>
+								<span class="text-text-main leading-snug text-right">{item.value}</span>
 							</div>
 						))}
 					</div>
@@ -235,9 +191,7 @@ const features = isEN ? [
 						<span class="font-gaming-mono text-xs sm:text-sm font-bold text-emerald-500 uppercase">{t('research.thesis.status')}</span>
 					</div>
 					<p class="text-sm text-text-muted leading-relaxed">
-						{isEN
-							? 'Actively training BiLSTM models and comparing against ML baselines. Results will be published upon thesis completion.'
-							: 'Entrenamiento activo de modelos BiLSTM y comparación con baselines de ML. Los resultados se publicarán al completar la tesis.'}
+						{t('research.current-status')}
 					</p>
 				</div>
 
@@ -267,19 +221,17 @@ const features = isEN ? [
 							{labels.contact}
 						</h2>
 						<p class="text-xs text-white/80 dark:text-black/70 leading-snug">
-							{isEN
-								? 'Collaborations, questions or opportunities.'
-								: 'Colaboraciones, preguntas u oportunidades.'}
+							{t('research.contact-cta')}
 						</p>
 					</div>
 				</div>
 				<!-- Right: CTA button -->
 				<a
-					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(isEN ? 'Research Collaboration' : 'Colaboración en Investigación')}`}
+					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(t('research.contact-button'))}`}
 					class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
 				>
 					<span aria-hidden="true">→</span>
-					{isEN ? 'Contact' : 'Contactar'}
+					{t('research.contact-button')}
 				</a>
 			</div>
 		</div>

@@ -185,6 +185,9 @@
   },
   "research": {
     "title": "Investigación",
+    "page-title": "Investigación — BiLSTM Abandono OSS | David Sandoval",
+    "page-description": "Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.",
+    "back-button": "Volver al Portfolio",
     "thesis": {
       "label": "Tesis de Pregrado",
       "title": "Predicción del Estado de Abandono de Repositorios OSS usando Redes Neuronales BiLSTM",
@@ -210,7 +213,50 @@
         "Salud de Repositorios",
         "Clasificación de Series Temporales"
       ]
-    }
+    },
+    "labels": {
+      "problem": "PLANTEAMIENTO DEL PROBLEMA",
+      "hypothesis": "HIPÓTESIS DE INVESTIGACIÓN",
+      "approach": "METODOLOGÍA (MSR)",
+      "dataset": "CONJUNTO DE DATOS",
+      "metrics": "MÉTRICAS DE EVALUACIÓN",
+      "arch": "ARQUITECTURA DEL MODELO",
+      "pipeline": "PIPELINE DE DATOS",
+      "keywords": "PALABRAS CLAVE",
+      "status": "ESTADO ACTUAL",
+      "contact": "¿INTERESADO? CONTÁCTAME",
+      "engineered-features": "CARACTERÍSTICAS INGENIERIZADAS"
+    },
+    "pipeline-steps": [
+      "GitHub API / GH Archive",
+      "Datos Crudos de Actividad",
+      "Ingeniería de Características",
+      "Secuencias Temporales",
+      "Entrenamiento BiLSTM",
+      "Clasificador de Abandono"
+    ],
+    "arch-details": [
+      { "label": "Entrada", "value": "Serie temporal de señales de actividad del repo (T pasos)" },
+      { "label": "Capa 1", "value": "BiLSTM — 128 unidades forward + backward" },
+      { "label": "Capa 2", "value": "BiLSTM — 64 unidades con dropout (0.3)" },
+      { "label": "Capa 3", "value": "Dense — 32 unidades, activación ReLU" },
+      { "label": "Salida", "value": "Sigmoid — P(abandonado) ∈ [0,1]" },
+      { "label": "Pérdida", "value": "Binary Cross-Entropy + pesos de clase" },
+      { "label": "Optimizador", "value": "Adam (lr=1e-3)" }
+    ],
+    "engineered-features": [
+      "Frecuencia de commits (promedio semanal)",
+      "Contribuidores únicos por ventana temporal",
+      "Antigüedad de issues abiertos (días sin resolver)",
+      "Tasa de merge/cierre de PRs",
+      "Días desde el último commit",
+      "Estimación del bus factor",
+      "Tiempo de respuesta a issues",
+      "Cadencia de releases"
+    ],
+    "current-status": "Entrenamiento activo de modelos BiLSTM y comparación con baselines de ML. Los resultados se publicarán al completar la tesis.",
+    "contact-cta": "Colaboraciones, preguntas u oportunidades.",
+    "contact-button": "Contactar"
   },
   "vision": {
     "title": "Visión e Impacto",
