@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 
 const pages = [
   { path: '/', name: 'Home (English)' },
-  { path: '/about-me', name: 'About (English)' },
+  { path: '/about', name: 'About (English)' },
   { path: '/projects', name: 'Projects (English)' },
   { path: '/es/', name: 'Home (Spanish)' },
-  { path: '/es/sobre-mi', name: 'About (Spanish)' },
-  { path: '/es/proyectos', name: 'Projects (Spanish)' },
+  { path: '/es/about', name: 'About (Spanish)' },
+  { path: '/es/projects', name: 'Projects (Spanish)' },
 ];
 
 pages.forEach(({ path, name }) => {
@@ -63,7 +63,10 @@ test.describe('Navigation between pages', () => {
 
       if (href && href !== '#') {
         const response = await page.goto(href || '/');
-        expect(response?.status()).toBeLessThan(400);
+        // response is null when navigating to the same URL — skip those
+        if (response !== null) {
+          expect(response.status()).toBeLessThan(400);
+        }
       }
     }
   });

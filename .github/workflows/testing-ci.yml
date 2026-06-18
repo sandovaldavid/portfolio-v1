@@ -44,18 +44,29 @@ jobs:
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@*
 
-      - name: Run Lighthouse CI
-        run: lhci autorun
+      - name: Collect Lighthouse reports
+        run: lhci collect
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
-      - name: Upload Lighthouse reports
+      - name: Assert Lighthouse thresholds
+        run: lhci assert
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse reports artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-reports
           path: .lighthouseci
           retention-days: 30
+
+      - name: Upload reports to temporary public storage
+        if: always()
+        run: lhci upload
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
   playwright:
     name: Playwright E2E Tests
@@ -100,38 +111,6 @@ jobs:
             junit-results.xml
           retention-days: 30
 
-      - name: Comment PR with test results
-        if: github.event_name == 'pull_request' && always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const testResultsPath = 'test-results.json';
-
-            if (fs.existsSync(testResultsPath)) {
-              const testResults = JSON.parse(fs.readFileSync(testResultsPath, 'utf8'));
-              const passed = testResults.stats.expected;
-              const failed = testResults.stats.unexpected;
-              const skipped = testResults.stats.skipped;
-
-              const body = `### Test Results
-
-              | Metric | Value |
-              |--------|-------|
-              | Passed | ${passed} |
-              | Failed | ${failed} |
-              | Skipped | ${skipped} |
-
-              [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
-
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            }
-
   performance-summary:
     name: Performance Summary
     runs-on: ubuntu-latest
@@ -140,10 +119,18 @@ jobs:
 
     steps:
       - name: Download Lighthouse artifacts
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: lighthouse-reports
           path: ./lighthouse
+
+      - name: Download Playwright test results
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: ./test-results
 
       - name: Generate summary
         run: |
@@ -157,3 +144,63 @@ jobs:
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**For detailed results, check the artifacts above.**" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create or update PR comment with test results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const MARKER = '<!-- test-results-comment -->';
+
+            // Parse Playwright results
+            let pwRow = '| ⚠️ Playwright | Results not available |';
+            const jsonPath = './test-results/test-results.json';
+            if (fs.existsSync(jsonPath)) {
+              const r = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+              const passed = r.stats?.expected ?? 0;
+              const failed = r.stats?.unexpected ?? 0;
+              const skipped = r.stats?.skipped ?? 0;
+              const icon = failed > 0 ? '❌' : '✅';
+              pwRow = `| ${icon} Playwright | ${passed} passed · ${failed} failed · ${skipped} skipped |`;
+            }
+
+            const lhRow = fs.existsSync('./lighthouse')
+              ? '| ✅ Lighthouse | Completed — scores in artifacts |'
+              : '| ⚠️ Lighthouse | Results not available |';
+
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            const body = [
+              MARKER,
+              '### 🧪 Test Results',
+              '',
+              '| | |',
+              '|---|---|',
+              pwRow,
+              lhRow,
+              `| 🔗 Actions Run | [View reports & artifacts](${runUrl}) |`,
+              '',
+              '_Playwright HTML report and Lighthouse results are downloadable from the Actions run linked above._',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(MARKER));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }

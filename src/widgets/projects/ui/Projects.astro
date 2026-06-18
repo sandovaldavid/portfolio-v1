@@ -20,13 +20,14 @@ const projectsToDisplay = showAll
 <section class="font-sans w-full">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-stretch">
 		{
-			projectsToDisplay.map(project => (
+			projectsToDisplay.map((project, i) => (
 				<div class="h-full">
 					<ProjectCard
 						project={project}
 						variant="secondary"
 						codeButtonText={t('projects.code-button')}
 						previewButtonText={t('projects.preview-button')}
+						priority={i < 2}
 					/>
 				</div>
 			))

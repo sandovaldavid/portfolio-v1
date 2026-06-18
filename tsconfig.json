@@ -13,5 +13,6 @@
 			"@styles/*": ["./src/styles/*"],
 			"@app/*": ["./src/app/*"]
 		}
-	}
+	},
+	"exclude": ["tests/", "playwright.config.ts"]
 }

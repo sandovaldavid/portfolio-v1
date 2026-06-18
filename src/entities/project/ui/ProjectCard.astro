@@ -10,9 +10,16 @@ interface Props {
 	codeButtonText: string;
 	previewButtonText: string;
 	variant?: 'primary' | 'secondary';
+	priority?: boolean;
 }
 
-const { project, codeButtonText, previewButtonText, variant = 'secondary' } = Astro.props;
+const {
+	project,
+	codeButtonText,
+	previewButtonText,
+	variant = 'secondary',
+	priority = false,
+} = Astro.props;
 const { image, title, description, tags, link, github, category } = project;
 const isPrimary = variant === 'primary';
 ---
@@ -25,11 +32,12 @@ const isPrimary = variant === 'primary';
 	>
 		<Image
 			src={image}
-			width={isPrimary ? 1400 : 900}
-			height={isPrimary ? 900 : 600}
+			width={isPrimary ? 800 : 600}
+			height={isPrimary ? 500 : 380}
 			class="absolute inset-0 h-full w-full object-cover"
-			decoding="async"
-			loading="lazy"
+			decoding={priority ? 'sync' : 'async'}
+			loading={priority ? 'eager' : 'lazy'}
+			fetchpriority={priority ? 'high' : 'auto'}
 			alt={`${title} project image`}
 		/>
 		<div

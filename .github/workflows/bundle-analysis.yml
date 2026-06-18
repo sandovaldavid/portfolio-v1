@@ -23,12 +23,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout base branch (for PR comparison)
+      - name: Fetch base branch (for PR comparison metadata)
         if: github.event_name == 'pull_request'
-        run: |
-          git fetch origin ${{ github.base_ref }}
-          git checkout origin/${{ github.base_ref }}
-          git checkout ${{ github.head_ref }}
+        run: git fetch origin ${{ github.base_ref }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
