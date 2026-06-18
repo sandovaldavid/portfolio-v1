@@ -25,6 +25,8 @@ bun run build            # Type check + build for production
 bun run preview          # Preview production build
 bun run format           # Format code with Prettier
 bun run format:check     # Check code formatting
+bun run lint             # Run ESLint on TypeScript/JavaScript files
+bun run lint:fix         # Fix ESLint violations automatically
 ```
 
 ## Architecture: Feature-Sliced Design (FSD)
@@ -148,8 +150,11 @@ const { title, description } = Astro.props;
 
 1. Type checking runs automatically in `bun run build` via `astro check`
 2. Production builds go to `dist/`
-3. Deployment: Automatic via GitHub Actions → GitHub Pages
-4. Site URL: <https://devsandoval.me>
+3. **Deployment**: Automatic via GitHub Actions → Vercel
+   - `main` branch → Production (https://devsandoval.me)
+   - `develop` branch & PRs → Preview deployments
+4. **Vercel auto-deployments disabled** (`vercel.json`: `"deploymentEnabled": false`)
+5. Code validation runs on every PR and push (ESLint, Prettier, TypeScript check)
 
 ## Key Patterns
 
@@ -179,8 +184,47 @@ const { title, img_preview } = Astro.props;
 </script>
 ```
 
+## Code Quality & Git Hooks
+
+### Configured Tools
+
+- **ESLint**: TypeScript/JavaScript linting (excludes `.astro` files)
+- **Prettier**: Code formatting (handles all file types including `.astro`)
+- **commitlint**: Validates commit messages against Conventional Commits specification
+- **Husky**: Git hooks for pre-commit validation
+
+### Commit Message Format
+
+All commits must follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>(<optional scope>): <subject>
+
+<optional body>
+<optional footer>
+```
+
+**Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `revert`, `build`, `deps`, `security`, `hotfix`
+
+### GitHub Actions Workflows
+
+Located in `.github/workflows/`:
+
+1. **validate-pr.yml**: Runs on every PR and push
+   - ESLint check
+   - Prettier format check
+   - TypeScript type check (via `astro check`)
+
+2. **deploy-preview.yml**: Runs on develop branch & PRs
+   - Deploys preview to Vercel
+   - Comments PR with preview URL
+
+3. **deploy-production.yml**: Runs on main branch
+   - Full validation suite
+   - Deploys to Vercel production
+
 ## Important References
 
 - **FSD Documentation**: `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`
 - **Layer-specific rules**: Each FSD layer has detailed instructions in `.github/instructions/`
-- **Conventional Commits**: `.github/instructions/conventional-commit.prompt.md`
+- **Conventional Commits**: https://www.conventionalcommits.org/
