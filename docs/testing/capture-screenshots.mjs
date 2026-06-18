@@ -38,14 +38,14 @@ const devices = {
 };
 
 const pages = [
-	// Spanish (default)
-	{ url: '/', name: 'home-es' },
-	{ url: '/sobre-mi', name: 'about-es' },
-	{ url: '/proyectos', name: 'projects-es' },
-	// English
-	{ url: '/en/', name: 'home-en' },
-	{ url: '/en/about-me', name: 'about-en' },
-	{ url: '/en/projects', name: 'projects-en' },
+	// English (default, no prefix)
+	{ url: '/', name: 'home-en' },
+	{ url: '/about-me', name: 'about-en' },
+	{ url: '/projects', name: 'projects-en' },
+	// Spanish (/es prefix)
+	{ url: '/es/', name: 'home-es' },
+	{ url: '/es/sobre-mi', name: 'about-es' },
+	{ url: '/es/proyectos', name: 'projects-es' },
 ];
 
 /**
