@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import type { Technology } from '@entities/technology';
 
 /**
@@ -12,8 +13,8 @@ export interface ProjectItem {
 	link?: string;
 	/** GitHub repository URL (optional) */
 	github?: string;
-	/** Project preview image path */
-	image: string;
+	/** Project preview image — imported asset for Astro optimization */
+	image: ImageMetadata;
 	/** Technologies used in the project */
 	tags: Technology[];
 	/** Optional: emphasizes project in UI */

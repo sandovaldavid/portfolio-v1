@@ -1,6 +1,11 @@
 import { TAGS } from '@entities/technology';
 import type { ProjectItem } from './types';
 
+import campusMapImg from '@/assets/projects/project-08-campus-map.webp';
+import madaiImg from '@/assets/projects/project-10-MAD-AI.webp';
+import fluentreadsImg from '@/assets/projects/project-09-fluentreads.webp';
+import auctionsImg from '@/assets/projects/project-02-auctions.webp';
+
 /**
  * Project database
  */
@@ -11,7 +16,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			description: t('projects.campus-map.description'),
 			link: 'https://mapa-unp.sandovaldavid.com',
 			github: 'https://github.com/dev-sandoval/unp-campus-map',
-			image: '/projects/project-08-campus-map.png',
+			image: campusMapImg,
 			tags: [TAGS.TAILWIND, TAGS.CLOUDINARY, TAGS.NEXTJS, TAGS.JAVASCRIPT, TAGS.MYSQL],
 			featured: true,
 			category: 'Full-Stack Development',
@@ -20,7 +25,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			title: t('projects.madai.title'),
 			description: t('projects.madai.description'),
 			github: 'https://github.com/dev-sandoval/MAD-AI',
-			image: '/projects/project-10-MAD-AI.webp',
+			image: madaiImg,
 			tags: [
 				TAGS.ANGULAR,
 				TAGS.TAILWIND,
@@ -38,17 +43,16 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			description: t('projects.fluentreads.description'),
 			link: 'https://fluentreads.vercel.app',
 			github: 'https://github.com/dev-sandoval/fluentreads',
-			image: '/projects/project-09-fluentreads.webp',
+			image: fluentreadsImg,
 			tags: [TAGS.ASTRO, TAGS.REACT, TAGS.TAILWIND, TAGS.TYPESCRIPT],
 			category: 'Frontend Development',
 		},
-
 		{
 			title: t('projects.auctions.title'),
 			description: t('projects.auctions.description'),
 			link: 'https://auctions.sandovaldavid.com',
 			github: 'https://github.com/sandovaldavid/project-02-auctions',
-			image: '/projects/project-02-auctions.webp',
+			image: auctionsImg,
 			tags: [TAGS.DJANGO, TAGS.PYTHON, TAGS.BOOTSTRAP, TAGS.JAVASCRIPT, TAGS.POSTGRESQL],
 			category: 'Full-Stack Development',
 		},

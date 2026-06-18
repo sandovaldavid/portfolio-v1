@@ -15,9 +15,13 @@ test.describe('Homepage', () => {
   test('should have working navigation', async ({ page }) => {
     await page.goto('/');
 
-    // Check if nav links exist
-    const navLinks = page.locator('nav a, [role="navigation"] a');
-    await expect(navLinks.first()).toBeVisible();
+    // Desktop: nav links are visible; mobile: hamburger toggle button is visible
+    const desktopNav = page.locator('header nav a').first();
+    const mobileToggle = page.locator('button[aria-label="Toggle menu"]');
+
+    const hasDesktop = await desktopNav.isVisible().catch(() => false);
+    const hasMobile = await mobileToggle.isVisible().catch(() => false);
+    expect(hasDesktop || hasMobile).toBe(true);
   });
 
   test('should be responsive on mobile', async ({ page }) => {
