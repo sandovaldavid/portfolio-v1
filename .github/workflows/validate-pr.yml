@@ -32,17 +32,20 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Security audit
+        run: bun audit --audit-level moderate
+
       - name: Run ESLint
         run: bun run lint
-        continue-on-error: true
 
       - name: Check code formatting
         run: bun run format:check
-        continue-on-error: true
+
+      - name: Run unit tests
+        run: bun run test:unit
 
       - name: Type check
         run: bun run build
-        continue-on-error: false
 
       - name: Validate Conventional Commits
         if: github.event_name == 'pull_request'

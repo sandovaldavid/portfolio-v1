@@ -1,127 +1,249 @@
-# CLAUDE.md
+# CLAUDE.md - Portfolio V1 Development Guide
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Comprehensive development guidance for Portfolio V1. This file is essential for understanding project structure, workflows, and best practices.
+
+**Contact:** hello@sandovaldavid.com | dev@sandovaldavid.com
+
+---
 
 ## Project Overview
 
-Personal portfolio website built with Astro, TypeScript, and Tailwind CSS. Live at <https://devsandoval.me>
+Personal portfolio website built with Astro, TypeScript, and Tailwind CSS. 
+**Live:** https://devsandoval.me
 
 **Tech Stack:**
+- Astro 5.17.1 (Static Site Generator)
+- TypeScript 5.9.3 (strict mode)
+- Tailwind CSS 4.1.18 with @tailwindcss/vite
+- Bun 1.3.14 (package manager and runtime)
+- Playwright 1.61.0 (E2E testing)
+- Vitest 2.1.2 (Unit testing)
 
-- Astro 5.14.1 (Static Site Generator)
-- TypeScript 5.7.2 (strict mode)
-- Tailwind CSS 4.1.13 with @tailwindcss/vite
-- Bun (package manager and runtime)
-- astro-i18n (i18n support for es/en)
+---
 
-## Development Commands
+## Quick Start
 
-**Always use Bun (not npm):**
+[INFO] Always use Bun, never npm or yarn:
 
 ```bash
+# Development
 bun install              # Install dependencies
 bun run dev              # Start dev server (localhost:4321)
 bun run build            # Type check + build for production
 bun run preview          # Preview production build
+
+# Code Quality
 bun run format           # Format code with Prettier
-bun run format:check     # Check code formatting
-bun run lint             # Run ESLint on TypeScript/JavaScript files
-bun run lint:fix         # Fix ESLint violations automatically
+bun run format:check     # Check formatting
+bun run lint             # Run ESLint
+bun run lint:fix         # Auto-fix linting errors
+
+# Testing
+bun run test:unit        # Unit tests with Vitest
+bun run test:unit:ui     # Interactive Vitest UI
+bun run test:unit:coverage  # Coverage report
+bun run test             # E2E tests with Playwright
+bun run test:ui          # Interactive Playwright UI
+bun run test:all         # Run all tests
+
+# Performance
+bun run lighthouse       # Lighthouse CI
+bun run bundle:analyze   # Bundle size analysis
 ```
+
+---
 
 ## Architecture: Feature-Sliced Design (FSD)
 
-The project follows **Feature-Sliced Design** methodology with strict layer hierarchy:
+The project strictly follows FSD with proper layer hierarchy:
 
-```bash
+```
 src/
-├── app/         # Global config, providers, layouts, styles
-├── pages/       # Astro pages (route handlers)
-├── widgets/     # Large UI blocks (Header, Hero, Footer sections)
-├── features/    # Reusable business features (ThemeToggle, etc)
-├── entities/    # Business entities (projects, badges)
-└── shared/      # Reusable utilities, UI components, config
-    ├── ui/      # Design system components
-    ├── lib/     # Utility functions
-    ├── config/  # Configuration (i18n, constants)
-    └── api/     # External integrations
+├── app/                 # Global layouts, config, styles
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── styles/
+│       ├── global.css
+│       └── colors.css
+├── pages/               # Route handlers (astro pages)
+│   ├── index.astro
+│   ├── about-me.astro
+│   ├── projects.astro
+│   └── es/
+├── widgets/             # Large reusable UI blocks
+│   ├── header/
+│   ├── footer/
+│   ├── hero/
+│   └── [13 widgets total]
+├── features/            # Business features
+│   ├── theme-toggle/
+│   ├── language-picker/
+│   ├── cli-terminal/
+│   └── splash-screen/
+├── entities/            # Business domain entities
+│   ├── project/
+│   ├── experience/
+│   ├── badge/
+│   └── technology/
+└── shared/              # Shared utilities
+    ├── ui/              # UI components
+    ├── lib/             # Utilities and helpers
+    ├── config/          # Configuration
+    └── api/             # External integrations
 ```
 
-### FSD Critical Rules
+### FSD Rules (STRICT)
 
-1. **Import Rule**: Layers can ONLY import from layers below them (app → pages → widgets → features → entities → shared)
-2. **Slice Independence**: Slices within the same layer CANNOT depend on each other
-3. **Public API**: Each slice must expose its API through `index.ts` files
-4. **No Cross-References**: Never import directly between slices at the same level
+[INFO] **Import Direction:** app → pages → widgets → features → entities → shared
 
-### Path Aliases (tsconfig.json)
+1. Each layer can ONLY import from layers below it
+2. Pages cannot import other pages
+3. Widgets cannot import other widgets
+4. Features cannot import other features
+5. Each slice has `index.ts` exporting public API
+6. No circular dependencies
+
+**Example - Correct:**
+```typescript
+// ✓ Widget importing from Entity
+import { ProjectCard } from '@entities/project';
+
+// ✓ Page importing Widget
+import { ProjectsWidget } from '@widgets/projects';
+
+// ✓ Feature importing shared
+import { Button } from '@shared/ui';
+```
+
+**Example - Incorrect:**
+```typescript
+// ✗ Widget importing another Widget
+import { Header } from '@widgets/header';  // WRONG!
+
+// ✗ Shared importing from higher layer
+import { ProjectCard } from '@entities/project';  // WRONG!
+
+// ✗ Page importing Page
+import { ProjectPage } from '@pages/projects';  // WRONG!
+```
+
+### Path Aliases
 
 ```typescript
-@/           // src/
-@app/*       // src/app/*
-@pages/*     // src/pages/*
-@widgets/*   // src/widgets/*
-@features/*  // src/features/*
-@entities/*  // src/entities/*
-@shared/*    // src/shared/*
-@components/*  // src/components/* (LEGACY - migrating to FSD)
+@/              // src/
+@app/*          // src/app/*
+@pages/*        // src/pages/*
+@widgets/*      // src/widgets/*
+@features/*     // src/features/*
+@entities/*     // src/entities/*
+@shared/*       // src/shared/*
 ```
+
+---
 
 ## Internationalization (i18n)
 
-- **Supported languages**: Spanish (es, default), English (en)
-- **Configuration**: `astro.config.mjs` with prefixDefaultLocale: false
-- **Translation utilities**: `src/shared/lib/i18n/`
-- **Dictionaries**: `src/shared/config/i18n/dictionaries/`
-
-**Usage pattern:**
+**Status:** English (default, no prefix) | Spanish (/es prefix)
 
 ```typescript
+// In components
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-// t('hero.title'), t('navigation.home'), etc.
+
+// Usage
+<h1>{t('page.title')}</h1>
 ```
 
-## Theme System
+**Adding translations:**
 
-- **Modes**: Light/Dark with system preference detection
-- **Implementation**: CSS custom properties + localStorage
-- **Color System**: OKLCH-based with semantic naming in `src/app/styles/colors.css`
-- **Toggle**: ThemeToggle component with client-side hydration
+1. Update `src/shared/config/i18n/locales/en.json`:
+   ```json
+   {
+     "feature.myFeature.title": "My Feature"
+   }
+   ```
+
+2. Update `src/shared/config/i18n/locales/es.json`:
+   ```json
+   {
+     "feature.myFeature.title": "Mi Feature"
+   }
+   ```
+
+3. Use in component:
+   ```astro
+   {t('feature.myFeature.title')}
+   ```
+
+---
 
 ## Code Standards
 
 ### TypeScript
 
-- Strict mode enabled
+[REQUIRED] Strict mode enabled:
 - Always type function parameters and return types
 - Prefer `interface` over `type` for object shapes
 - Use `const` over `let` where possible
+- No `any` (use `unknown` or specific type)
+
+```typescript
+// ✓ Correct
+interface ComponentProps {
+  title: string;
+  description?: string;
+}
+
+function getConfig(props: ComponentProps): ConfigType {
+  return { ...props };
+}
+
+// ✗ Incorrect
+function getConfig(props) {  // No type!
+  return props;
+}
+```
 
 ### Astro Components
 
 - File extension: `.astro`
-- Structure: frontmatter (TypeScript) → template → scoped styles
-- Props: Always use typed interfaces
+- Component names: PascalCase
+- Props: Always typed with interface
+- Keep frontmatter clean (separate imports)
 
 ```astro
 ---
+import Layout from '@app/layouts/Layout.astro';
+
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
+
 const { title, description } = Astro.props;
 ---
+
+<Layout title={title}>
+  <h1>{title}</h1>
+  {description && <p>{description}</p>}
+</Layout>
 ```
 
 ### Styling
 
-- **Primary**: Tailwind CSS utility classes
-- **Approach**: Mobile-first responsive design
-- **Themes**: Support both light and dark modes
-- **Scoping**: Prefer scoped component styles
+- Primary: Tailwind CSS utility classes
+- Mobile-first responsive design
+- Support dark mode with `dark:` prefix
+- Prefer scoped styles over global
+- Use semantic color tokens from colors.css
+
+```astro
+<div class="text-sm dark:text-gray-300 md:text-base">
+  Content
+</div>
+```
 
 ### File Naming
 
@@ -130,156 +252,478 @@ const { title, description } = Astro.props;
 - Utilities: camelCase (`translations.ts`)
 - Constants: UPPER_SNAKE_CASE
 
-## Migration Status
-
-**Current State**: Migrating from legacy `src/components/` structure to FSD architecture.
-
-**Legacy paths** (still in use):
-
-- `src/components/` → Gradually moving to appropriate FSD layers
-- `src/i18n/` → Migrated to `src/shared/config/i18n/` and `src/shared/lib/i18n/`
-
-**When adding new code:**
-
-1. Always place in appropriate FSD layer based on business logic level
-2. Create proper public API exports via `index.ts`
-3. Follow layer import rules strictly
-4. Use path aliases for clean imports
-
-## Build & Deployment
-
-1. Type checking runs automatically in `bun run build` via `astro check`
-2. Production builds go to `dist/`
-3. **Deployment**: Automatic via GitHub Actions → Vercel
-   - `main` branch → Production (https://devsandoval.me)
-   - `develop` branch & PRs → Preview deployments
-4. **Vercel auto-deployments disabled** (`vercel.json`: `"deploymentEnabled": false`)
-5. Code validation runs on every PR and push (ESLint, Prettier, TypeScript check)
-
-## Key Patterns
-
-### Component Props Pattern
-
-```astro
 ---
-interface Props {
-	title: string;
-	img_preview: string;
+
+## Testing Strategy
+
+[INFO] Three levels of testing:
+
+### Unit Tests (Vitest)
+
+**Location:** `tests/unit/**/*.spec.ts`
+
+[REQUIRED] for:
+- Utility functions (i18n, helpers)
+- Data transformations
+- Business logic
+
+```typescript
+import { describe, it, expect } from 'vitest';
+import { getLangFromUrl } from '@shared/lib/i18n';
+
+describe('getLangFromUrl', () => {
+  it('should return "en" for root URL', () => {
+    const url = new URL('http://localhost:4321/');
+    expect(getLangFromUrl(url)).toBe('en');
+  });
+});
+```
+
+**Run:**
+```bash
+bun run test:unit          # All tests
+bun run test:unit:ui       # Interactive
+bun run test:unit:coverage # Coverage
+```
+
+**Coverage targets:** 70% (lines, functions, branches)
+
+### E2E Tests (Playwright)
+
+**Location:** `tests/e2e/**/*.spec.ts`
+
+[REQUIRED] for:
+- User-facing features
+- Critical user flows
+- Multi-page navigation
+- Form submissions
+- Accessibility compliance
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('homepage should load', async ({ page }) => {
+  await page.goto('/');
+  
+  // Navigation
+  const heading = page.locator('h1');
+  await expect(heading).toBeVisible();
+  
+  // Interaction
+  const button = page.locator('button').first();
+  await button.click();
+});
+```
+
+**Run:**
+```bash
+bun run test               # All tests
+bun run test:ui            # Interactive
+bun run test tests/e2e/my.spec.ts  # Specific test
+```
+
+**Coverage:** All new features must have E2E tests
+
+### Performance Tests (Lighthouse)
+
+**Location:** `.lighthouserc.json`
+
+[REQUIRED] thresholds:
+- Performance: ≥90
+- Accessibility: ≥95
+- Best Practices: ≥90
+- SEO: ≥90
+- LCP: ≤2.5s
+- CLS: ≤0.1
+
+```bash
+bun run lighthouse         # Run Lighthouse CI
+```
+
+---
+
+## Adding New Features
+
+### Step 1: Plan
+
+Before coding:
+- Which FSD layer?
+- What dependencies?
+- Needs i18n?
+- Needs tests?
+- Needs documentation?
+
+### Step 2: Create Slice
+
+```bash
+src/features/my-feature/
+├── index.ts              # Public API
+├── model/
+│   └── types.ts          # Types and interfaces
+└── ui/
+    ├── MyFeature.astro   # Component
+    └── index.ts          # Export component
+```
+
+### Step 3: Implement
+
+```typescript
+// model/types.ts
+export interface MyFeatureProps {
+  title: string;
+  description?: string;
 }
-const { title, img_preview } = Astro.props;
----
 ```
-
-### Theme Toggle Script
 
 ```astro
-<script is:inline>
-	// Client-side theme detection and application
-	document.documentElement.classList.toggle(
-		'dark',
-		localStorage.theme === 'dark' ||
-			(!('theme' in localStorage) &&
-				window.matchMedia('(prefers-color-scheme: dark)').matches)
-	);
-</script>
+--- // ui/MyFeature.astro
+import type { MyFeatureProps } from '../model/types';
+
+interface Props extends MyFeatureProps {}
+const { title, description } = Astro.props;
+---
+
+<div>
+  <h2>{title}</h2>
+  {description && <p>{description}</p>}
+</div>
 ```
 
-## Code Quality & Git Hooks
-
-### Configured Tools
-
-- **ESLint**: TypeScript/JavaScript linting (excludes `.astro` files)
-- **Prettier**: Code formatting (handles all file types including `.astro`)
-- **commitlint**: Validates commit messages against Conventional Commits specification
-- **Husky**: Git hooks for pre-commit validation
-
-### Commit Message Format
-
-All commits must follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
-
-```
-<type>(<optional scope>): <subject>
-
-<optional body>
-<optional footer>
+```typescript
+// index.ts
+export { default as MyFeature } from './ui/MyFeature.astro';
+export type { MyFeatureProps } from './model/types';
 ```
 
-**Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `revert`, `build`, `deps`, `security`, `hotfix`
+### Step 4: Add Tests
 
-### GitHub Actions Workflows
+**Unit tests** (if logic):
+```bash
+tests/unit/features/my-feature.spec.ts
+```
 
-Located in `.github/workflows/`:
+**E2E tests** (if UI):
+```bash
+tests/e2e/my-feature.spec.ts
+```
 
-1. **validate-pr.yml**: Runs on every PR and push
-   - ESLint check
-   - Prettier format check
-   - TypeScript type check (via `astro check`)
+### Step 5: Add Translations
 
-2. **deploy-preview.yml**: Runs on develop branch & PRs
-   - Deploys preview to Vercel
-   - Comments PR with preview URL
+If text content:
+```json
+// locales/en.json
+{
+  "feature.myFeature.title": "My Feature Title"
+}
 
-3. **deploy-production.yml**: Runs on main branch
-   - Full validation suite
-   - Deploys to Vercel production
+// locales/es.json
+{
+  "feature.myFeature.title": "Título de Mi Feature"
+}
+```
 
-## Testing & Quality Assurance
+### Step 6: Document
 
-### Screenshots
+Update relevant docs:
+- CONTRIBUTING.md - If changing workflow
+- docs/TESTING.md - If adding tests
+- README.md - If user-facing
 
-Automated screenshot capture across all device sizes using Playwright:
+---
+
+## Git Workflow & Commits
+
+### Branch Naming
+
+```
+feat/feature-name           # New feature
+fix/issue-description       # Bug fix
+docs/what-changed           # Documentation
+refactor/component-name     # Refactoring
+perf/optimization-name      # Performance
+test/test-coverage          # Tests
+chore/maintenance           # Maintenance
+```
+
+### Conventional Commits
+
+[REQUIRED] Format:
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:**
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation
+- `style` - Formatting
+- `refactor` - Refactoring
+- `perf` - Performance
+- `test` - Tests
+- `chore` - Maintenance
+- `ci` - CI/CD
+- `deps` - Dependencies
+- `security` - Security
+
+**Examples:**
+```
+feat(i18n): add French language support
+fix(header): resolve mobile menu toggle
+docs: update README with new features
+test(unit): add i18n utility tests
+chore(deps): update Astro to v5.17.1
+```
+
+[INFO] Pre-commit hook auto-formats and lints before commit
+[INFO] Husky validates commit message format
+
+---
+
+## CI/CD Pipelines
+
+### validate-pr.yml
+
+Runs on: Push to main/develop, Pull requests
+
+Checks:
+1. Security audit (`bun audit`)
+2. ESLint
+3. Prettier format
+4. Unit tests (Vitest)
+5. Type check (Astro check)
+6. Build verification
+
+[REQUIRED] All must pass before merge
+
+### testing-ci.yml
+
+Runs on: Push to main/develop, Pull requests
+
+Jobs:
+1. Lighthouse CI (6 pages, 3 runs averaged)
+2. Playwright E2E (5 browsers/devices)
+3. Performance summary
+
+Reports published to GitHub Pages
+
+### codeql.yml
+
+Runs on: Push, PRs, weekly schedule
+
+Analyzes:
+- JavaScript/TypeScript code
+- Security vulnerabilities
+- Code quality issues
+
+### publish-reports.yml
+
+Triggered by: testing-ci.yml success
+
+Publishes:
+- Lighthouse reports
+- Playwright reports
+- Test results
+
+Access at: `https://<user>.github.io/portfolio-v1/test-reports/`
+
+### bundle-analysis.yml
+
+Runs on: Push, PRs
+
+Monitors:
+- JS bundle size
+- CSS bundle size
+- Total dist size (2MB threshold)
+- Comments PR with comparison
+
+---
+
+## Deployment
+
+### Preview (develop branch)
+
+Automatically deployed to Vercel Preview on:
+- Push to develop
+- Pull requests
+
+### Production (main branch)
+
+Automatically deployed to Vercel Production on:
+- Push to main
+
+[WARNING] Ensure all checks pass before pushing to main
+
+**Vercel Configuration:**
+```json
+{
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run build",
+  "deploymentEnabled": false  // Manual via Actions
+}
+```
+
+---
+
+## Performance Guidelines
+
+### Bundle Size
+
+[TARGET] dist/ ≤ 2MB
+
+Monitor:
+```bash
+bun run build
+bun run bundle:analyze
+```
+
+### Lighthouse Targets
+
+[TARGET] All pages:
+- Performance: ≥90
+- Accessibility: ≥95
+- Best Practices: ≥90
+- SEO: ≥90
+
+### Images
+
+- Use WebP format
+- Optimize dimensions before adding
+- Use responsive images
+- Lazy load below-the-fold
+
+---
+
+## Accessibility Requirements
+
+[REQUIRED] All features must:
+- Support keyboard navigation
+- Have proper alt text
+- Use semantic HTML
+- Maintain heading hierarchy
+- Pass WCAG 2.1 Level AA
+- Not rely on color alone
+
+---
+
+## Documentation
+
+### Key Files
+
+- **CLAUDE.md** - This file (development guide)
+- **CONTRIBUTING.md** - Contributing guidelines
+- **CHANGELOG.md** - Version history
+- **docs/INFRASTRUCTURE_AUDIT.md** - Detailed audit report
+- **docs/TESTING.md** - Testing guide
+- **docs/FSD-Architecture/** - FSD documentation
+
+### Creating New Docs
+
+- Use Markdown format
+- Include examples
+- Add table of contents for long docs
+- Link to related documentation
+- Update CONTRIBUTING.md if relevant
+
+---
+
+## Troubleshooting
+
+### Tests failing locally
 
 ```bash
-# Make sure dev server is running
-bun run dev
+# Clear cache
+rm -rf node_modules .bun dist
 
-# In another terminal, capture screenshots for mobile, tablet, and desktop
-bun run screenshots
+# Reinstall
+bun install
 
-# Or use the helper script (starts dev server automatically)
-bash docs/testing/generate-reports.sh
+# Run tests
+bun run test:all
 ```
 
-**Device sizes captured:**
-- Mobile: iPhone 12 Pro (390x844)
-- Tablet: iPad Pro (1024x1366)
-- Desktop: Full width (1920x1080)
-
-Screenshots saved to `docs/testing/screenshots/` by device type:
-
-```
-docs/testing/screenshots/
-├── mobile/      # 390x844 screenshots
-├── tablet/      # 1024x1366 screenshots
-└── desktop/     # 1920x1080 screenshots
-```
-
-**Important**: Screenshots are NOT committed to git (see `.gitignore`). Use them for visual regression testing and PR reviews.
-
-### Lighthouse Performance Reports
-
-Generate Lighthouse reports with the `/verify` skill:
+### Build failing
 
 ```bash
-/verify
+# Check for type errors
+bun run build
+
+# Run linting
+bun run lint
+
+# Format code
+bun run format
 ```
 
-Reports are saved to `docs/testing/lighthouse/`:
+### Playwright issues
 
-- `latest.json` — Machine-readable (for CI/CD tracking)
-- `latest.html` — Human-readable interactive report
+```bash
+# Install browsers
+bunx playwright install --with-deps
 
-**Target scores**:
-- Performance: ≥ 90
-- Accessibility: ≥ 95
-- Best Practices: ≥ 90
-- SEO: ≥ 90
+# Run specific test
+bun run test tests/e2e/homepage.spec.ts --debug
+```
 
-See `docs/testing/README.md` for detailed testing documentation.
+---
 
-## Important References
+## Common Tasks
 
-- **FSD Documentation**: `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`
-- **Layer-specific rules**: Each FSD layer has detailed instructions in `.github/instructions/`
-- **Conventional Commits**: https://www.conventionalcommits.org/
-- **Testing Guide**: `docs/testing/README.md` — Screenshots, Lighthouse audits, best practices
+### Fix linting errors
+```bash
+bun run lint:fix
+```
+
+### Format all code
+```bash
+bun run format
+```
+
+### Update dependencies
+```bash
+bun update
+```
+
+### Check TypeScript
+```bash
+bun run build
+```
+
+### View test coverage
+```bash
+bun run test:unit:coverage
+```
+
+---
+
+## Performance Checklist
+
+Before merging:
+- [ ] Unit tests passing
+- [ ] E2E tests passing
+- [ ] Lighthouse ≥90 on all categories
+- [ ] Bundle size within limits
+- [ ] No TypeScript errors
+- [ ] ESLint passes
+- [ ] Prettier formatted
+- [ ] Accessibility checks pass
+- [ ] Documentation updated
+
+---
+
+## Getting Help
+
+[INFO] Questions or issues?
+- Email: hello@sandovaldavid.com
+- Email: dev@sandovaldavid.com
+- Create GitHub Discussion
+- Check docs/INFRASTRUCTURE_AUDIT.md for detailed info
+
+---
+
+**Last Updated:** June 18, 2026
+**Status:** Active Development
+**Maturity:** 4.5/5 (Production Ready)

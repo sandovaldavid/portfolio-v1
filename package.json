@@ -15,6 +15,10 @@
 		"test": "playwright test",
 		"test:ui": "playwright test --ui",
 		"test:debug": "playwright test --debug",
+		"test:unit": "vitest",
+		"test:unit:ui": "vitest --ui",
+		"test:unit:coverage": "vitest --coverage",
+		"test:all": "bun run test:unit && bun run test",
 		"lighthouse": "lhci autorun",
 		"lighthouse:collect": "lhci collect",
 		"lighthouse:assert": "lhci assert",
@@ -41,8 +45,11 @@
 		"@eslint/js": "^10.0.1",
 		"@typescript-eslint/eslint-plugin": "^8.61.1",
 		"@typescript-eslint/parser": "^8.61.1",
+		"@vitest/coverage-v8": "^2.1.2",
+		"@vitest/ui": "^2.1.2",
 		"eslint": "^10.5.0",
 		"husky": "^9.1.7",
-		"playwright": "^1.61.0"
+		"playwright": "^1.61.0",
+		"vitest": "^2.1.2"
 	}
 }

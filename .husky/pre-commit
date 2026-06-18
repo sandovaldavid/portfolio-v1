@@ -1,0 +1,29 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running pre-commit checks..."
+echo ""
+
+# Run linting
+echo "[INFO] Running ESLint..."
+bun run lint:fix
+LINT_EXIT=$?
+
+# Run formatting
+echo "[INFO] Running Prettier..."
+bun run format
+FORMAT_EXIT=$?
+
+# Stage all changes
+git add -A
+
+# Check results
+if [ $LINT_EXIT -ne 0 ] || [ $FORMAT_EXIT -ne 0 ]; then
+  echo ""
+  echo "[WARNING] Pre-commit checks found issues and auto-fixed them"
+  echo "[INFO] Please review the changes and re-commit"
+  exit 1
+fi
+
+echo ""
+echo "[OK] Pre-commit checks passed"
