@@ -60,11 +60,16 @@ test.describe('Homepage', () => {
 
 test.describe('Page Load Performance', () => {
   test('should load within acceptable time', async ({ page }) => {
-    const startTime = Date.now();
     await page.goto('/');
-    const loadTime = Date.now() - startTime;
 
-    // Page load time should be under 3 seconds
+    // Use Navigation Timing API for accurate browser-measured load time
+    const loadTime = await page.evaluate(() => {
+      const [entry] = performance.getEntriesByType(
+        'navigation'
+      ) as PerformanceNavigationTiming[];
+      return entry ? Math.round(entry.loadEventEnd - entry.startTime) : 0;
+    });
+
     expect(loadTime).toBeLessThan(3000);
   });
 
