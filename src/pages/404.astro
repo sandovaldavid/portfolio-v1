@@ -7,6 +7,7 @@ import '@app/styles/global.css';
 import '@fontsource-variable/onest';
 import { SectionContainer, LinkButton, Button } from '@shared/ui';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
 
 // Detect language from URL
 const lang = getLangFromUrl(Astro.url);
@@ -86,7 +87,7 @@ const t = useTranslations(lang);
 					</div>
 					<!-- Action Buttons -->
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-						<LinkButton href={lang === 'en' ? '/en' : '/'} target="_self">
+						<LinkButton href={lang === Language.ENGLISH ? '/' : '/es/'} target="_self">
 							<Home class="size-5" />
 							{t('not-found.home-button')}
 						</LinkButton>
