@@ -1,59 +1,29 @@
 import { Language } from '../languages';
-import { navigationTranslations } from './navigation';
-import { heroTranslations } from './hero';
-import { avatarTranslations } from './avatar';
-import { experienceTranslations } from './experience';
-import { aboutMeTranslations } from './about-me';
-import { projectsTranslations } from './projects';
-import { badgesTranslations } from './badges';
-import { footerTranslations } from './footer';
-import { themeTranslations } from './theme';
-import { notFoundTranslations } from './not-found';
-import { titleSectionsTranslations } from './title-sections';
-import { researchTranslations } from './research';
-import { visionTranslations } from './vision';
-import { splashScreenTranslations } from './splash-screen';
+import enRaw from '../locales/en.json';
+import esRaw from '../locales/es.json';
 
-/**
- * Combina todos los diccionarios de traducción en un solo objeto.
- *
- * @param {Language} lang - Idioma para el que se combinan las traducciones.
- * @returns {Record<string, string | readonly string[]>} Diccionario combinado de traducciones para el idioma dado.
- */
-function combineTranslations(lang: Language): Record<string, string | readonly string[]> {
-	return {
-		...navigationTranslations[lang],
-		...heroTranslations[lang],
-		...avatarTranslations[lang],
-		...experienceTranslations[lang],
-		...aboutMeTranslations[lang],
-		...projectsTranslations[lang],
-		...badgesTranslations[lang],
-		...footerTranslations[lang],
-		...themeTranslations[lang],
-		...notFoundTranslations[lang],
-		...titleSectionsTranslations[lang],
-		...researchTranslations[lang],
-		...visionTranslations[lang],
-		...splashScreenTranslations[lang],
-	};
+function flattenJSON(
+	obj: Record<string, unknown>,
+	prefix = ''
+): Record<string, string | string[]> {
+	return Object.entries(obj).reduce((acc, [key, val]) => {
+		const fullKey = prefix ? `${prefix}.${key}` : key;
+		if (Array.isArray(val)) {
+			acc[fullKey] = val as string[];
+		} else if (typeof val === 'object' && val !== null) {
+			Object.assign(acc, flattenJSON(val as Record<string, unknown>, fullKey));
+		} else {
+			acc[fullKey] = val as string;
+		}
+		return acc;
+	}, {} as Record<string, string | string[]>);
 }
 
-/**
- * Diccionarios completos de traducción para todos los idiomas soportados.
- */
 export const translations = {
-	[Language.ENGLISH]: combineTranslations(Language.ENGLISH),
-	[Language.SPANISH]: combineTranslations(Language.SPANISH),
+	[Language.ENGLISH]: flattenJSON(enRaw),
+	[Language.SPANISH]: flattenJSON(esRaw),
 } as const;
 
-/**
- * Tipo que representa todas las posibles claves de traducción.
- * Garantiza seguridad de tipos al acceder a traducciones.
- */
 export type TranslationKey = keyof (typeof translations)[Language.ENGLISH];
 
-/**
- * Tipo para el diccionario completo de traducción de un idioma.
- */
 export type TranslationDictionary = (typeof translations)[Language.ENGLISH];
