@@ -11,7 +11,6 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const personalImageAlt = 'Juan David';
-const isEN = lang === Language.ENGLISH;
 
 const focusAreas = [
 	t('about-me.focus1'),
@@ -22,13 +21,11 @@ const focusAreas = [
 	t('about-me.focus6'),
 ];
 
-const pageTitle = isEN ? 'About Me - David Sandoval' : 'Sobre Mí - David Sandoval';
-const pageDesc = isEN
-	? 'Learn more about the background, professional journey, and motivations of David Sandoval in software engineering.'
-	: 'Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.';
-const bioTitle = isEN ? 'Full Biography' : 'Biografía Completa';
-const userRecord = isEN ? '[ USER RECORD: DAVID_S // STATUS: ARCHIVED ]' : '[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]';
-const returnBtn = isEN ? '[ RETURN TO HOME ]' : '[ RETORNAR AL INICIO ]';
+const pageTitle = t('about-me.page-title');
+const pageDesc = t('about-me.page-description');
+const bioTitle = t('about-me.bio-title');
+const userRecord = t('about-me.user-record');
+const returnBtn = t('about-me.return-button');
 ---
 
 <Layout

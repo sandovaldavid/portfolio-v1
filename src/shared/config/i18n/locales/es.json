@@ -86,6 +86,11 @@
     }
   },
   "about-me": {
+    "page-title": "Sobre Mí - David Sandoval",
+    "page-description": "Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.",
+    "bio-title": "Biografía Completa",
+    "user-record": "[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]",
+    "return-button": "[ RETORNAR AL INICIO ]",
     "paragraph1": "Ingeniero Informático enfocado en la intersección de arquitecturas empresariales robustas y Deep Learning aplicado. Especialista en el ecosistema <strong>.NET 8 (Clean Architecture/CQRS)</strong> y <strong>Angular 19 (Signals/Zoneless)</strong>. Mi trabajo de investigación se centra en <strong>Mining Software Repositories (MSR)</strong> mediante redes <strong>LSTM</strong>, buscando patrones de evolución y mantenibilidad en repositorios de gran escala.",
     "paragraph2": "Mi experiencia profesional incluye el desarrollo de sistemas de alta disponibilidad, implementación de arquitecturas reactivas modernas, y aplicación de técnicas de aprendizaje automático para predecir la degradación de la calidad del código. Combino prácticas rigurosas de ingeniería de software con enfoques basados en datos para construir soluciones escalables y mantenibles.",
     "paragraph3": "Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.",
