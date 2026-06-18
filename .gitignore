@@ -30,3 +30,4 @@ __pycache__/
 *$py.class# Testing & audit artifacts
 *.png
 lighthouse_report.*
+.vercel
