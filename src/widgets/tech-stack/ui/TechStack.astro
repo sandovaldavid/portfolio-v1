@@ -17,13 +17,9 @@ const coreFrontend = [
 	TAGS.ASTRO,
 ].filter(Boolean);
 
-const coreBackend = [
-	TAGS.JAVA,
-	TAGS.PYTHON,
-	TAGS.DJANGO,
-	TAGS.POSTGRESQL,
-	TAGS.MYSQL,
-].filter(Boolean);
+const coreBackend = [TAGS.JAVA, TAGS.PYTHON, TAGS.DJANGO, TAGS.POSTGRESQL, TAGS.MYSQL].filter(
+	Boolean
+);
 
 const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS HABILIDADES';
 ---
@@ -31,8 +27,12 @@ const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS H
 <div class="font-sans w-full flex flex-col items-center gap-8 mt-2">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
 		<!-- Frontend Spells Card -->
-		<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
-			<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+		<article
+			class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4"
+		>
+			<h3
+				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+			>
 				[ CORE FRONTEND SPELLS ]
 			</h3>
 			<div class="flex flex-wrap gap-2.5">
@@ -45,8 +45,12 @@ const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS H
 		</article>
 
 		<!-- Backend Runes Card -->
-		<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4">
-			<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+		<article
+			class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-border-strong)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-border-strong)] transition-all duration-100 flex flex-col gap-4"
+		>
+			<h3
+				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+			>
 				[ CORE BACKEND RUNES ]
 			</h3>
 			<div class="flex flex-wrap gap-2.5">

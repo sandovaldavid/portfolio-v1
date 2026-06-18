@@ -8,7 +8,7 @@
 	@apply transition-all duration-100;
 	@apply focus:outline-none focus-visible:outline-none;
 	@apply focus-visible:ring-2 focus-visible:ring-primary-500;
-	
+
 	/* Retro 3D offset shadow */
 	box-shadow: 3px 3px 0px 0px var(--color-border-strong);
 }

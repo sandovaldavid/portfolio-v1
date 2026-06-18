@@ -32,12 +32,7 @@ const backendTechs = [
 	TAGS.SQLITE,
 ].filter(Boolean);
 
-const toolsTechs = [
-	TAGS.CLOUDINARY,
-	TAGS.SANITY,
-	TAGS.CHARTJS,
-	TAGS.MARKDOWN,
-].filter(Boolean);
+const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].filter(Boolean);
 ---
 
 <Layout
@@ -48,18 +43,25 @@ const toolsTechs = [
 >
 	<SectionContainer id="all-skills" class="w-full max-w-5xl px-4 flex flex-col gap-8">
 		<div class="text-center space-y-3 mb-4">
-			<h2 class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide">
+			<h2
+				class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide"
+			>
 				Inventario de Habilidades
 			</h2>
 			<p class="text-text-muted font-mono text-sm uppercase">
-				[ Carga de Habilidades: 100% Completado // Personaje de Clase Ingeniero de Sistemas ]
+				[ Carga de Habilidades: 100% Completado // Personaje de Clase Ingeniero de Sistemas
+				]
 			</p>
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-2">
 			<!-- Frontend Spells Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4">
-				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+			<article
+				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4"
+			>
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				>
 					[ FRONTEND SPELLS ]
 				</h3>
 				<div class="grid grid-cols-2 gap-2">
@@ -68,8 +70,12 @@ const toolsTechs = [
 							const Icon = tech.icon;
 							return (
 								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
-									{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									{Icon && (
+										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
+									)}
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+										{tech.name}
+									</span>
 								</div>
 							);
 						})
@@ -78,8 +84,12 @@ const toolsTechs = [
 			</article>
 
 			<!-- Backend Runes Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4">
-				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+			<article
+				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4"
+			>
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				>
 					[ BACKEND RUNES ]
 				</h3>
 				<div class="grid grid-cols-2 gap-2">
@@ -88,8 +98,12 @@ const toolsTechs = [
 							const Icon = tech.icon;
 							return (
 								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
-									{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									{Icon && (
+										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
+									)}
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+										{tech.name}
+									</span>
 								</div>
 							);
 						})
@@ -98,8 +112,12 @@ const toolsTechs = [
 			</article>
 
 			<!-- Tools & Utility Card -->
-			<article class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4 md:col-span-2 lg:col-span-1">
-				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2">
+			<article
+				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4 md:col-span-2 lg:col-span-1"
+			>
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				>
 					[ UTILITIES & ITEMS ]
 				</h3>
 				<div class="grid grid-cols-2 gap-2">
@@ -108,8 +126,12 @@ const toolsTechs = [
 							const Icon = tech.icon;
 							return (
 								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
-									{Icon && <Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">{tech.name}</span>
+									{Icon && (
+										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
+									)}
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+										{tech.name}
+									</span>
 								</div>
 							);
 						})

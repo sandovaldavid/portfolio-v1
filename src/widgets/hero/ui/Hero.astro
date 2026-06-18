@@ -7,16 +7,20 @@ const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 ---
 
-<div class="w-full min-h-[calc(100dvh-4.5rem)] hero-gradient flex flex-col items-center justify-start md:justify-center py-8 md:py-0  px-4">
+<div
+	class="w-full min-h-[calc(100dvh-4.5rem)] hero-gradient flex flex-col items-center justify-start md:justify-center py-8 md:py-0 px-4"
+>
 	<div class="w-full max-w-5xl flex flex-col items-center gap-10">
 		<!-- Top header banner -->
-		<div class="w-full text-center border-2 border-dashed border-primary-500/60 p-3 font-retro-tag text-xs sm:text-sm text-primary-400 tracking-widest uppercase animate-pulse">
+		<div
+			class="w-full text-center border-2 border-dashed border-primary-500/60 p-3 font-retro-tag text-xs sm:text-sm text-primary-400 tracking-widest uppercase animate-pulse"
+		>
 			[ SYSTEM STATUS: ACTIVE // PLAYER 1 READY ]
 		</div>
 
 		<!-- Title Name -->
 		<div class="text-center space-y-3">
-			<span 
+			<span
 				class="font-retro-tag text-[10px] sm:text-xs uppercase tracking-widest text-primary-500 font-bold block"
 				style="animation: var(--animate-fade-in); animation-delay: 0ms;"
 			>
@@ -31,45 +35,66 @@ const t = useTranslations(lang);
 		</div>
 
 		<!-- Character Select Dashboard (Enlarged) -->
-		<div class="w-full grid grid-cols-1 md:grid-cols-3 border-2 border-black dark:border-white bg-surface shadow-[8px_8px_0px_0px_var(--color-border-strong)] rounded-none overflow-hidden font-mono mt-2">
-			
+		<div
+			class="w-full grid grid-cols-1 md:grid-cols-3 border-2 border-black dark:border-white bg-surface shadow-[8px_8px_0px_0px_var(--color-border-strong)] rounded-none overflow-hidden font-mono mt-2"
+		>
 			<!-- Column 1: Avatar Portrait (Enlarged) -->
-			<div class="flex flex-col items-center justify-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-white bg-neutral-100/50 dark:bg-black/20 shrink-0">
-				<div class="relative w-48 h-48 md:w-56 md:h-56 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] overflow-hidden bg-black">
+			<div
+				class="flex flex-col items-center justify-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-white bg-neutral-100/50 dark:bg-black/20 shrink-0"
+			>
+				<div
+					class="relative w-48 h-48 md:w-56 md:h-56 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] overflow-hidden bg-black"
+				>
 					<img
 						src="/profile/perfil.webp"
 						alt="David Sandoval character sprite"
 						class="w-full h-full object-cover aspect-square"
 					/>
-					<div class="absolute bottom-0 inset-x-0 bg-primary-500 text-white dark:text-black text-[10px] font-pixel text-center py-1.5 uppercase tracking-widest">
+					<div
+						class="absolute bottom-0 inset-x-0 bg-primary-500 text-white dark:text-black text-[10px] font-pixel text-center py-1.5 uppercase tracking-widest"
+					>
 						P1: DAVID_S
 					</div>
 				</div>
-				<span class="font-retro-tag text-[10px] text-text-muted mt-4 uppercase tracking-wider">LEVEL 5+ ENGINEER</span>
+				<span
+					class="font-retro-tag text-[10px] text-text-muted mt-4 uppercase tracking-wider"
+					>LEVEL 5+ ENGINEER</span
+				>
 			</div>
 
 			<!-- Column 2 & 3: Stats Details (Enlarged) -->
 			<div class="col-span-2 p-8 md:p-10 flex flex-col justify-between gap-6 bg-surface">
-				<div class="w-full border-b-2 border-dashed border-border-subtle pb-3 flex justify-between items-center">
-					<span class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-text-main">
+				<div
+					class="w-full border-b-2 border-dashed border-border-subtle pb-3 flex justify-between items-center"
+				>
+					<span
+						class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-text-main"
+					>
 						CHARACTER STATS
 					</span>
-					<span class="font-retro-tag text-[10px] bg-emerald-500 text-black dark:text-black px-2.5 py-1 font-bold animate-pulse uppercase">
+					<span
+						class="font-retro-tag text-[10px] bg-emerald-500 text-black dark:text-black px-2.5 py-1 font-bold animate-pulse uppercase"
+					>
 						ONLINE
 					</span>
 				</div>
 
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-base">
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">CLASS:</span>
+						<span class="text-text-muted font-bold uppercase tracking-wide">CLASS:</span
+						>
 						<span class="text-text-main font-semibold">Systems Architect</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">ALIGNMENT:</span>
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>ALIGNMENT:</span
+						>
 						<span class="text-text-main font-semibold">Clean Code</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">SPECIALTIES:</span>
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>SPECIALTIES:</span
+						>
 						<span class="text-text-main font-semibold">Java, Angular, React</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
@@ -77,22 +102,30 @@ const t = useTranslations(lang);
 						<span class="text-text-main font-semibold">Piura, Peru</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">HP / MANA:</span>
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>HP / MANA:</span
+						>
 						<span class="text-primary-500 font-bold">99 / 99</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">SKILL LEVEL:</span>
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>SKILL LEVEL:</span
+						>
 						<span class="text-text-main font-semibold">Lvl. 99 (Expert)</span>
 					</div>
 				</div>
 
 				<!-- Stats Progress Bar -->
 				<div class="space-y-2">
-					<div class="flex justify-between text-xs font-bold uppercase tracking-wider text-text-muted">
+					<div
+						class="flex justify-between text-xs font-bold uppercase tracking-wider text-text-muted"
+					>
 						<span>EXPERIENCE POINTS:</span>
 						<span>100% COMPLETE</span>
 					</div>
-					<div class="w-full h-5 border-2 border-black dark:border-white bg-black/10 dark:bg-black/30 p-0.5">
+					<div
+						class="w-full h-5 border-2 border-black dark:border-white bg-black/10 dark:bg-black/30 p-0.5"
+					>
 						<div class="h-full bg-primary-500 w-full animate-pulse"></div>
 					</div>
 				</div>

@@ -31,7 +31,7 @@ const getLanguagePath = (targetLang: string): string => {
 
 <div class="flex items-center gap-2 font-mono">
 	{
-		AVAILABLE_LANGUAGES.map((lang) => {
+		AVAILABLE_LANGUAGES.map(lang => {
 			const isActive = currentLang === lang;
 			const path = isActive ? '#' : getLanguagePath(lang);
 

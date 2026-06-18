@@ -1,300 +1,303 @@
 {
-  "hero": {
-    "available": "Disponible para trabajar",
-    "intro": "Hola, soy David Sandoval",
-    "description": "<strong>Ingeniero Informático</strong> egresado de la <strong>Universidad Nacional de Piura</strong> con formación en <strong>desarrollo web</strong> y certificación en <strong>frontend</strong> por <strong>Alura Latam</strong> (ONE EDUCATION).",
-    "title": "Ingeniería de Sistemas Escalables",
-    "subtitle": "Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática",
-    "credential": "Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM",
-    "cta": {
-      "contact": "Contáctame",
-      "view-work": "Ver mi Trabajo",
-      "download-resume": "Descargar CV",
-      "view-research": "Ver Investigación"
-    }
-  },
-  "nav": {
-    "experience": "Experiencia",
-    "projects": "Proyectos",
-    "about": "Sobre mí",
-    "stack": "Stack",
-    "research": "Investigación"
-  },
-  "avatar": {
-    "alt": "{{name}} - Desarrollador Web"
-  },
-  "experience": {
-    "learn-more": "Saber más",
-    "atena": {
-      "date": "Presente - Remoto",
-      "title": "Desarrollador Full-Stack Junior",
-      "company": "Atena",
-      "description": [
-        "Implementé la migración de módulos críticos a Angular 19 Signals, reduciendo la carga del Event Loop al eliminar la dependencia de Zone.js en componentes de visualización de datos",
-        "Desarrollé y documenté 3 nuevas APIs REST usando .NET 8 y Clean Architecture, garantizando una cobertura de pruebas unitarias del >80% y facilitando la escalabilidad del sistema",
-        "Reduje el Bundle Size del frontend en un 35% mediante la implementación de Standalone Components y Lazy Loading, optimizando el Time to Interactive (TTI) para usuarios en conexiones de baja latencia"
-      ],
-      "technologies": [
-        ".NET 8",
-        "Clean Architecture",
-        "CQRS",
-        "Angular 19",
-        "Signals",
-        "Zoneless",
-        "Standalone Components",
-        "Lazy Loading",
-        "Pruebas Unitarias"
-      ]
-    },
-    "chirasoft": {
-      "date": "May 2025 – Jul 2025",
-      "title": "Desarrollador Fullstack Freelance",
-      "company": "Chirasoft",
-      "description": [
-        "Realicé la migración de un sitio institucional educativo de WordPress a Angular, mejorando su rendimiento, mantenibilidad y experiencia de usuario",
-        "Contribuí al desarrollo integral de una plataforma de comercio electrónico, desde el frontend hasta la lógica de negocio en el backend",
-        "Implementé patrones de diseño responsivo y optimicé la arquitectura de componentes para escalabilidad"
-      ],
-      "technologies": [
-        "Angular",
-        "TypeScript",
-        "WordPress",
-        "E-commerce",
-        "Diseño Responsivo",
-        "Java",
-        "Spring Boot"
-      ]
-    },
-    "programador-ti": {
-      "date": "Jun 2024 - Oct 2024",
-      "title": "Desarrollador de Software y Especialista TI",
-      "company": "Municipalidad Provincial de Piura",
-      "description": [
-        "Brindé soporte técnico para mantenimiento y configuración de infraestructura tecnológica",
-        "Realicé diagnóstico y resolución de incidentes, optimizando procesos tecnológicos en entorno institucional",
-        "Apoyé en la migración de plataformas institucionales de FoxPro a React (frontend), modernizando el stack tecnológico",
-        "Fortalecí mi capacidad para abordar desafíos técnicos y mejorar la gestión de sistemas"
-      ],
-      "technologies": [
-        "React",
-        "FoxPro",
-        "Migración de Sistemas",
-        "Administración de Sistemas",
-        "Infraestructura",
-        "Solución de Problemas"
-      ]
-    }
-  },
-  "about-me": {
-    "page-title": "Sobre Mí - David Sandoval",
-    "page-description": "Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.",
-    "bio-title": "Biografía Completa",
-    "user-record": "[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]",
-    "return-button": "[ RETORNAR AL INICIO ]",
-    "paragraph1": "Ingeniero Informático enfocado en la intersección de arquitecturas empresariales robustas y Deep Learning aplicado. Especialista en el ecosistema <strong>.NET 8 (Clean Architecture/CQRS)</strong> y <strong>Angular 19 (Signals/Zoneless)</strong>. Mi trabajo de investigación se centra en <strong>Mining Software Repositories (MSR)</strong> mediante redes <strong>LSTM</strong>, buscando patrones de evolución y mantenibilidad en repositorios de gran escala.",
-    "paragraph2": "Mi experiencia profesional incluye el desarrollo de sistemas de alta disponibilidad, implementación de arquitecturas reactivas modernas, y aplicación de técnicas de aprendizaje automático para predecir la degradación de la calidad del código. Combino prácticas rigurosas de ingeniería de software con enfoques basados en datos para construir soluciones escalables y mantenibles.",
-    "paragraph3": "Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.",
-    "currently-focused": "Enfocado actualmente en:",
-    "focus1": "BiLSTM para predicción de abandono OSS",
-    "focus2": "Minería de Repositorios de Software (MSR)",
-    "focus3": "Empresarial .NET 8 & Angular 19",
-    "focus4": "Optimización de sistemas de alta disponibilidad",
-    "focus5": "Deep Learning aplicado a ingeniería de software",
-    "focus6": "Contribuciones de código abierto",
-    "profile": {
-      "title": "PERFIL PROFESIONAL"
-    },
-    "atena": {
-      "title": "TRABAJO ACTUAL EN ATENA",
-      "summary": "Actualmente trabajo como Desarrollador de Software en <strong>Atena</strong>, liderando el desarrollo frontend de productos clave usando Angular. Me enfoco en optimizar el rendimiento, diseñar arquitecturas de interfaz escalables y coordinar integraciones con servicios backend.",
-      "button": "VER DETALLES DEL TRABAJO"
-    },
-    "read-more": "VER BIOGRAFÍA COMPLETA"
-  },
-  "projects": {
-    "code-button": "Código",
-    "preview-button": "Vista previa",
-    "view-all": "Ver Todos los Proyectos",
-    "category": {
-      "machine-learning": "Machine Learning · Proyecto de Tesis",
-      "fullstack": "Desarrollo Full-Stack",
-      "enterprise": "Software Empresarial"
-    },
-    "wiki": {
-      "title": "Wiki",
-      "description": "Este proyecto es un sitio web tipo enciclopedia construido con Django, llamado 'wiki', que contiene una única aplicación llamada 'encyclopedia'"
-    },
-    "auctions": {
-      "title": "Auctions",
-      "description": "El Sitio de Subastas es una aplicación web donde los usuarios pueden crear, pujar y gestionar subastas en línea. Proporciona una plataforma para que los usuarios enumeren artículos para la venta, realicen ofertas competitivas e interactúen con la comunidad de subastas a través de comentarios y listas de seguimiento."
-    },
-    "campus-map": {
-      "title": "UNP Campus Map",
-      "description": "Una plataforma centralizada y orientada a la ubicación que ayuda a los estudiantes de la Universidad Nacional de Piura a encontrar rápidamente facultades, pabellones y recursos académicos. Construido con Next.js 14 y MySQL."
-    },
-    "fluentreads": {
-      "title": "FluentReads",
-      "description": "Una tienda en línea moderna especializada en la venta de libros en inglés, exámenes internacionales y paquetes de estudio. Cuenta con un catálogo interactivo, carrito de compras funcional y flujo de pago, construida con la arquitectura de Islas de Astro para máximo rendimiento."
-    },
-    "madai": {
-      "title": "MAD AI",
-      "description": "Una plataforma administrativa moderna construida con Angular 20 y Clean Architecture. Incorpora gestión avanzada de usuarios y roles, autenticación segura, notificaciones y renderizado del lado del servidor (SSR) con Express, todo estilizado con la última versión de Tailwind CSS."
-    }
-  },
-  "badges": {
-    "title": "Insignias",
-    "github-foundations": {
-      "label": "GitHub Foundations | GitHub"
-    },
-    "data-modeling": {
-      "label": "Modelado de Datos con Python | ONE - G8"
-    },
-    "etl": {
-      "label": "ETL | ONE - G8"
-    },
-    "statistics-ml": {
-      "label": "Estadisticas y Machine Learning | ONE - G8"
-    }
-  },
-  "footer": {
-    "rights": "Todos los derechos reservados",
-    "about": "Sobre mí",
-    "contact": "Contacto",
-    "title": "Construyamos algo juntos",
-    "subtitle": "Abierto a oportunidades y colaboraciones",
-    "cta": "Contáctame",
-    "built-with": "Diseñado y Construido con Astro"
-  },
-  "theme": {
-    "select": "Elige el tema",
-    "light": "Claro",
-    "dark": "Oscuro",
-    "system": "Sistema"
-  },
-  "not-found": {
-    "title": "404 - Página no encontrada | David Sandoval",
-    "description": "La página que buscas no existe o ha sido movida.",
-    "heading": "Página no encontrada",
-    "message": "Parece que te has perdido en el código. La página que buscas no existe o ha sido movida a otra ubicación.",
-    "home-button": "Ir al inicio",
-    "back-button": "Volver atrás",
-    "quote": "En un multiverso infinito, esta página existe... solo que no en este."
-  },
-  "title": {
-    "experience": "Experiencia",
-    "projects": "Proyectos",
-    "about-me": "Sobre Mí",
-    "technologies": "Tecnologías",
-    "research": "Investigación",
-    "vision": "Visión e Impacto"
-  },
-  "research": {
-    "title": "Investigación",
-    "summary": "Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.",
-    "tech-stack-label": "TECNOLOGÍAS",
-    "full-methodology": "Metodología completa, arquitectura y pipeline en la página de investigación.",
-    "view-full-button": "▸ VER COMPLETO",
-    "page-title": "Investigación — BiLSTM Abandono OSS | David Sandoval",
-    "page-description": "Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.",
-    "back-button": "Volver al Portfolio",
-    "thesis": {
-      "label": "Tesis de Pregrado",
-      "title": "Predicción del Estado de Abandono de Repositorios OSS usando Redes Neuronales BiLSTM",
-      "problem": "Un número significativo de repositorios de Software de Código Abierto (OSS) son abandonados con el tiempo, dejando expuestos a proyectos dependientes ante vulnerabilidades de seguridad, falta de actualizaciones y deuda técnica. La detección temprana del riesgo de abandono es un desafío crítico y poco explorado en la salud de los ecosistemas de software.",
-      "hypothesis": "¿Pueden las redes BiLSTM (Bidirectional Long Short-Term Memory), entrenadas con métricas históricas de actividad de repositorios GitHub (commits, issues, pull requests, patrones de contribuidores), predecir el estado de abandono de un repositorio OSS con mayor precisión que los baselines de ML tradicionales?",
-      "approach": "Mining Software Repositories (MSR) — extracción de secuencias temporales de señales de actividad desde la API de GitHub (GH Archive), ingeniería de características que capturan decaimiento de contribuciones, tasas de resolución de issues y tendencias del bus factor, para luego entrenar modelos BiLSTM que clasifiquen la probabilidad futura de abandono.",
-      "dataset": "Dataset curado de repositorios OSS en GitHub de múltiples dominios, etiquetados por estado de abandono usando umbrales de actividad histórica (frecuencia de commits, fecha del último aporte, antigüedad de issues abiertos).",
-      "metrics-title": "Métricas de Evaluación",
-      "metrics": {
-        "accuracy": "Accuracy de clasificación vs. baselines Logistic Regression y Random Forest",
-        "f1": "F1-Score sobre clases de abandono desbalanceadas",
-        "auc": "AUC-ROC para ranking de probabilidad de abandono",
-        "loss": "Curvas de Binary Cross-Entropy para convergencia del entrenamiento BiLSTM"
-      },
-      "status": "En Progreso",
-      "institution": "Universidad Nacional de Piura",
-      "keywords": [
-        "BiLSTM",
-        "Abandono OSS",
-        "MSR",
-        "Deep Learning",
-        "Minería de GitHub",
-        "Salud de Repositorios",
-        "Clasificación de Series Temporales"
-      ]
-    },
-    "labels": {
-      "problem": "PLANTEAMIENTO DEL PROBLEMA",
-      "hypothesis": "HIPÓTESIS DE INVESTIGACIÓN",
-      "approach": "METODOLOGÍA (MSR)",
-      "dataset": "CONJUNTO DE DATOS",
-      "metrics": "MÉTRICAS DE EVALUACIÓN",
-      "arch": "ARQUITECTURA DEL MODELO",
-      "pipeline": "PIPELINE DE DATOS",
-      "keywords": "PALABRAS CLAVE",
-      "status": "ESTADO ACTUAL",
-      "contact": "¿INTERESADO? CONTÁCTAME",
-      "engineered-features": "CARACTERÍSTICAS INGENIERIZADAS"
-    },
-    "pipeline-steps": [
-      "GitHub API / GH Archive",
-      "Datos Crudos de Actividad",
-      "Ingeniería de Características",
-      "Secuencias Temporales",
-      "Entrenamiento BiLSTM",
-      "Clasificador de Abandono"
-    ],
-    "arch-details": [
-      { "label": "Entrada", "value": "Serie temporal de señales de actividad del repo (T pasos)" },
-      { "label": "Capa 1", "value": "BiLSTM — 128 unidades forward + backward" },
-      { "label": "Capa 2", "value": "BiLSTM — 64 unidades con dropout (0.3)" },
-      { "label": "Capa 3", "value": "Dense — 32 unidades, activación ReLU" },
-      { "label": "Salida", "value": "Sigmoid — P(abandonado) ∈ [0,1]" },
-      { "label": "Pérdida", "value": "Binary Cross-Entropy + pesos de clase" },
-      { "label": "Optimizador", "value": "Adam (lr=1e-3)" }
-    ],
-    "engineered-features": [
-      "Frecuencia de commits (promedio semanal)",
-      "Contribuidores únicos por ventana temporal",
-      "Antigüedad de issues abiertos (días sin resolver)",
-      "Tasa de merge/cierre de PRs",
-      "Días desde el último commit",
-      "Estimación del bus factor",
-      "Tiempo de respuesta a issues",
-      "Cadencia de releases"
-    ],
-    "current-status": "Entrenamiento activo de modelos BiLSTM y comparación con baselines de ML. Los resultados se publicarán al completar la tesis.",
-    "contact-cta": "Colaboraciones, preguntas u oportunidades.",
-    "contact-button": "Contactar"
-  },
-  "vision": {
-    "title": "Visión e Impacto",
-    "subtitle": "Evidencia Verificable",
-    "leetcode": {
-      "title": "Soluciones LeetCode",
-      "description": "Repositorio con soluciones documentadas en O(n) para patrones \"Blind 75\"",
-      "link": "#"
-    },
-    "writing": {
-      "title": "Escritura Técnica",
-      "description": "Cómo implementé mi primera arquitectura Zoneless en Angular 19",
-      "link": "#"
-    },
-    "lab": {
-      "title": "DevSolution Lab",
-      "description": "POC: Predictor de Churn básico usando LSTM (Dockerizado)",
-      "link": "#"
-    },
-    "view-project": "Ver Proyecto",
-    "coming-soon": "Próximamente"
-  },
-  "splash": {
-    "press-enter": "[ PRESIONA ENTER / CLICK INICIAR ]",
-    "initializing": "> INICIALIZANDO MÓDULOS DEL SISTEMA...",
-    "loading-stack": "> CARGANDO LIBRERÍA DE TECH STACK... [ OK ]",
-    "connecting-github": "> CONECTANDO A LA API DE GITHUB... [ OK ]",
-    "ready-player": "> JUGADOR 1 LISTO // ",
-    "welcome": ">> HOLA VISITANTE. BIENVENIDO A MI PORTAFOLIO.",
-    "prepare": ">> PREPÁRATE PARA UNA AVENTURA INTERACTIVA..."
-  }
+	"hero": {
+		"available": "Disponible para trabajar",
+		"intro": "Hola, soy David Sandoval",
+		"description": "<strong>Ingeniero Informático</strong> egresado de la <strong>Universidad Nacional de Piura</strong> con formación en <strong>desarrollo web</strong> y certificación en <strong>frontend</strong> por <strong>Alura Latam</strong> (ONE EDUCATION).",
+		"title": "Ingeniería de Sistemas Escalables",
+		"subtitle": "Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática",
+		"credential": "Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM",
+		"cta": {
+			"contact": "Contáctame",
+			"view-work": "Ver mi Trabajo",
+			"download-resume": "Descargar CV",
+			"view-research": "Ver Investigación"
+		}
+	},
+	"nav": {
+		"experience": "Experiencia",
+		"projects": "Proyectos",
+		"about": "Sobre mí",
+		"stack": "Stack",
+		"research": "Investigación"
+	},
+	"avatar": {
+		"alt": "{{name}} - Desarrollador Web"
+	},
+	"experience": {
+		"learn-more": "Saber más",
+		"atena": {
+			"date": "Presente - Remoto",
+			"title": "Desarrollador Full-Stack Junior",
+			"company": "Atena",
+			"description": [
+				"Implementé la migración de módulos críticos a Angular 19 Signals, reduciendo la carga del Event Loop al eliminar la dependencia de Zone.js en componentes de visualización de datos",
+				"Desarrollé y documenté 3 nuevas APIs REST usando .NET 8 y Clean Architecture, garantizando una cobertura de pruebas unitarias del >80% y facilitando la escalabilidad del sistema",
+				"Reduje el Bundle Size del frontend en un 35% mediante la implementación de Standalone Components y Lazy Loading, optimizando el Time to Interactive (TTI) para usuarios en conexiones de baja latencia"
+			],
+			"technologies": [
+				".NET 8",
+				"Clean Architecture",
+				"CQRS",
+				"Angular 19",
+				"Signals",
+				"Zoneless",
+				"Standalone Components",
+				"Lazy Loading",
+				"Pruebas Unitarias"
+			]
+		},
+		"chirasoft": {
+			"date": "May 2025 – Jul 2025",
+			"title": "Desarrollador Fullstack Freelance",
+			"company": "Chirasoft",
+			"description": [
+				"Realicé la migración de un sitio institucional educativo de WordPress a Angular, mejorando su rendimiento, mantenibilidad y experiencia de usuario",
+				"Contribuí al desarrollo integral de una plataforma de comercio electrónico, desde el frontend hasta la lógica de negocio en el backend",
+				"Implementé patrones de diseño responsivo y optimicé la arquitectura de componentes para escalabilidad"
+			],
+			"technologies": [
+				"Angular",
+				"TypeScript",
+				"WordPress",
+				"E-commerce",
+				"Diseño Responsivo",
+				"Java",
+				"Spring Boot"
+			]
+		},
+		"programador-ti": {
+			"date": "Jun 2024 - Oct 2024",
+			"title": "Desarrollador de Software y Especialista TI",
+			"company": "Municipalidad Provincial de Piura",
+			"description": [
+				"Brindé soporte técnico para mantenimiento y configuración de infraestructura tecnológica",
+				"Realicé diagnóstico y resolución de incidentes, optimizando procesos tecnológicos en entorno institucional",
+				"Apoyé en la migración de plataformas institucionales de FoxPro a React (frontend), modernizando el stack tecnológico",
+				"Fortalecí mi capacidad para abordar desafíos técnicos y mejorar la gestión de sistemas"
+			],
+			"technologies": [
+				"React",
+				"FoxPro",
+				"Migración de Sistemas",
+				"Administración de Sistemas",
+				"Infraestructura",
+				"Solución de Problemas"
+			]
+		}
+	},
+	"about-me": {
+		"page-title": "Sobre Mí - David Sandoval",
+		"page-description": "Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.",
+		"bio-title": "Biografía Completa",
+		"user-record": "[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]",
+		"return-button": "[ RETORNAR AL INICIO ]",
+		"paragraph1": "Ingeniero Informático enfocado en la intersección de arquitecturas empresariales robustas y Deep Learning aplicado. Especialista en el ecosistema <strong>.NET 8 (Clean Architecture/CQRS)</strong> y <strong>Angular 19 (Signals/Zoneless)</strong>. Mi trabajo de investigación se centra en <strong>Mining Software Repositories (MSR)</strong> mediante redes <strong>LSTM</strong>, buscando patrones de evolución y mantenibilidad en repositorios de gran escala.",
+		"paragraph2": "Mi experiencia profesional incluye el desarrollo de sistemas de alta disponibilidad, implementación de arquitecturas reactivas modernas, y aplicación de técnicas de aprendizaje automático para predecir la degradación de la calidad del código. Combino prácticas rigurosas de ingeniería de software con enfoques basados en datos para construir soluciones escalables y mantenibles.",
+		"paragraph3": "Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.",
+		"currently-focused": "Enfocado actualmente en:",
+		"focus1": "BiLSTM para predicción de abandono OSS",
+		"focus2": "Minería de Repositorios de Software (MSR)",
+		"focus3": "Empresarial .NET 8 & Angular 19",
+		"focus4": "Optimización de sistemas de alta disponibilidad",
+		"focus5": "Deep Learning aplicado a ingeniería de software",
+		"focus6": "Contribuciones de código abierto",
+		"profile": {
+			"title": "PERFIL PROFESIONAL"
+		},
+		"atena": {
+			"title": "TRABAJO ACTUAL EN ATENA",
+			"summary": "Actualmente trabajo como Desarrollador de Software en <strong>Atena</strong>, liderando el desarrollo frontend de productos clave usando Angular. Me enfoco en optimizar el rendimiento, diseñar arquitecturas de interfaz escalables y coordinar integraciones con servicios backend.",
+			"button": "VER DETALLES DEL TRABAJO"
+		},
+		"read-more": "VER BIOGRAFÍA COMPLETA"
+	},
+	"projects": {
+		"code-button": "Código",
+		"preview-button": "Vista previa",
+		"view-all": "Ver Todos los Proyectos",
+		"category": {
+			"machine-learning": "Machine Learning · Proyecto de Tesis",
+			"fullstack": "Desarrollo Full-Stack",
+			"enterprise": "Software Empresarial"
+		},
+		"wiki": {
+			"title": "Wiki",
+			"description": "Este proyecto es un sitio web tipo enciclopedia construido con Django, llamado 'wiki', que contiene una única aplicación llamada 'encyclopedia'"
+		},
+		"auctions": {
+			"title": "Auctions",
+			"description": "El Sitio de Subastas es una aplicación web donde los usuarios pueden crear, pujar y gestionar subastas en línea. Proporciona una plataforma para que los usuarios enumeren artículos para la venta, realicen ofertas competitivas e interactúen con la comunidad de subastas a través de comentarios y listas de seguimiento."
+		},
+		"campus-map": {
+			"title": "UNP Campus Map",
+			"description": "Una plataforma centralizada y orientada a la ubicación que ayuda a los estudiantes de la Universidad Nacional de Piura a encontrar rápidamente facultades, pabellones y recursos académicos. Construido con Next.js 14 y MySQL."
+		},
+		"fluentreads": {
+			"title": "FluentReads",
+			"description": "Una tienda en línea moderna especializada en la venta de libros en inglés, exámenes internacionales y paquetes de estudio. Cuenta con un catálogo interactivo, carrito de compras funcional y flujo de pago, construida con la arquitectura de Islas de Astro para máximo rendimiento."
+		},
+		"madai": {
+			"title": "MAD AI",
+			"description": "Una plataforma administrativa moderna construida con Angular 20 y Clean Architecture. Incorpora gestión avanzada de usuarios y roles, autenticación segura, notificaciones y renderizado del lado del servidor (SSR) con Express, todo estilizado con la última versión de Tailwind CSS."
+		}
+	},
+	"badges": {
+		"title": "Insignias",
+		"github-foundations": {
+			"label": "GitHub Foundations | GitHub"
+		},
+		"data-modeling": {
+			"label": "Modelado de Datos con Python | ONE - G8"
+		},
+		"etl": {
+			"label": "ETL | ONE - G8"
+		},
+		"statistics-ml": {
+			"label": "Estadisticas y Machine Learning | ONE - G8"
+		}
+	},
+	"footer": {
+		"rights": "Todos los derechos reservados",
+		"about": "Sobre mí",
+		"contact": "Contacto",
+		"title": "Construyamos algo juntos",
+		"subtitle": "Abierto a oportunidades y colaboraciones",
+		"cta": "Contáctame",
+		"built-with": "Diseñado y Construido con Astro"
+	},
+	"theme": {
+		"select": "Elige el tema",
+		"light": "Claro",
+		"dark": "Oscuro",
+		"system": "Sistema"
+	},
+	"not-found": {
+		"title": "404 - Página no encontrada | David Sandoval",
+		"description": "La página que buscas no existe o ha sido movida.",
+		"heading": "Página no encontrada",
+		"message": "Parece que te has perdido en el código. La página que buscas no existe o ha sido movida a otra ubicación.",
+		"home-button": "Ir al inicio",
+		"back-button": "Volver atrás",
+		"quote": "En un multiverso infinito, esta página existe... solo que no en este."
+	},
+	"title": {
+		"experience": "Experiencia",
+		"projects": "Proyectos",
+		"about-me": "Sobre Mí",
+		"technologies": "Tecnologías",
+		"research": "Investigación",
+		"vision": "Visión e Impacto"
+	},
+	"research": {
+		"title": "Investigación",
+		"summary": "Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.",
+		"tech-stack-label": "TECNOLOGÍAS",
+		"full-methodology": "Metodología completa, arquitectura y pipeline en la página de investigación.",
+		"view-full-button": "▸ VER COMPLETO",
+		"page-title": "Investigación — BiLSTM Abandono OSS | David Sandoval",
+		"page-description": "Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.",
+		"back-button": "Volver al Portfolio",
+		"thesis": {
+			"label": "Tesis de Pregrado",
+			"title": "Predicción del Estado de Abandono de Repositorios OSS usando Redes Neuronales BiLSTM",
+			"problem": "Un número significativo de repositorios de Software de Código Abierto (OSS) son abandonados con el tiempo, dejando expuestos a proyectos dependientes ante vulnerabilidades de seguridad, falta de actualizaciones y deuda técnica. La detección temprana del riesgo de abandono es un desafío crítico y poco explorado en la salud de los ecosistemas de software.",
+			"hypothesis": "¿Pueden las redes BiLSTM (Bidirectional Long Short-Term Memory), entrenadas con métricas históricas de actividad de repositorios GitHub (commits, issues, pull requests, patrones de contribuidores), predecir el estado de abandono de un repositorio OSS con mayor precisión que los baselines de ML tradicionales?",
+			"approach": "Mining Software Repositories (MSR) — extracción de secuencias temporales de señales de actividad desde la API de GitHub (GH Archive), ingeniería de características que capturan decaimiento de contribuciones, tasas de resolución de issues y tendencias del bus factor, para luego entrenar modelos BiLSTM que clasifiquen la probabilidad futura de abandono.",
+			"dataset": "Dataset curado de repositorios OSS en GitHub de múltiples dominios, etiquetados por estado de abandono usando umbrales de actividad histórica (frecuencia de commits, fecha del último aporte, antigüedad de issues abiertos).",
+			"metrics-title": "Métricas de Evaluación",
+			"metrics": {
+				"accuracy": "Accuracy de clasificación vs. baselines Logistic Regression y Random Forest",
+				"f1": "F1-Score sobre clases de abandono desbalanceadas",
+				"auc": "AUC-ROC para ranking de probabilidad de abandono",
+				"loss": "Curvas de Binary Cross-Entropy para convergencia del entrenamiento BiLSTM"
+			},
+			"status": "En Progreso",
+			"institution": "Universidad Nacional de Piura",
+			"keywords": [
+				"BiLSTM",
+				"Abandono OSS",
+				"MSR",
+				"Deep Learning",
+				"Minería de GitHub",
+				"Salud de Repositorios",
+				"Clasificación de Series Temporales"
+			]
+		},
+		"labels": {
+			"problem": "PLANTEAMIENTO DEL PROBLEMA",
+			"hypothesis": "HIPÓTESIS DE INVESTIGACIÓN",
+			"approach": "METODOLOGÍA (MSR)",
+			"dataset": "CONJUNTO DE DATOS",
+			"metrics": "MÉTRICAS DE EVALUACIÓN",
+			"arch": "ARQUITECTURA DEL MODELO",
+			"pipeline": "PIPELINE DE DATOS",
+			"keywords": "PALABRAS CLAVE",
+			"status": "ESTADO ACTUAL",
+			"contact": "¿INTERESADO? CONTÁCTAME",
+			"engineered-features": "CARACTERÍSTICAS INGENIERIZADAS"
+		},
+		"pipeline-steps": [
+			"GitHub API / GH Archive",
+			"Datos Crudos de Actividad",
+			"Ingeniería de Características",
+			"Secuencias Temporales",
+			"Entrenamiento BiLSTM",
+			"Clasificador de Abandono"
+		],
+		"arch-details": [
+			{
+				"label": "Entrada",
+				"value": "Serie temporal de señales de actividad del repo (T pasos)"
+			},
+			{ "label": "Capa 1", "value": "BiLSTM — 128 unidades forward + backward" },
+			{ "label": "Capa 2", "value": "BiLSTM — 64 unidades con dropout (0.3)" },
+			{ "label": "Capa 3", "value": "Dense — 32 unidades, activación ReLU" },
+			{ "label": "Salida", "value": "Sigmoid — P(abandonado) ∈ [0,1]" },
+			{ "label": "Pérdida", "value": "Binary Cross-Entropy + pesos de clase" },
+			{ "label": "Optimizador", "value": "Adam (lr=1e-3)" }
+		],
+		"engineered-features": [
+			"Frecuencia de commits (promedio semanal)",
+			"Contribuidores únicos por ventana temporal",
+			"Antigüedad de issues abiertos (días sin resolver)",
+			"Tasa de merge/cierre de PRs",
+			"Días desde el último commit",
+			"Estimación del bus factor",
+			"Tiempo de respuesta a issues",
+			"Cadencia de releases"
+		],
+		"current-status": "Entrenamiento activo de modelos BiLSTM y comparación con baselines de ML. Los resultados se publicarán al completar la tesis.",
+		"contact-cta": "Colaboraciones, preguntas u oportunidades.",
+		"contact-button": "Contactar"
+	},
+	"vision": {
+		"title": "Visión e Impacto",
+		"subtitle": "Evidencia Verificable",
+		"leetcode": {
+			"title": "Soluciones LeetCode",
+			"description": "Repositorio con soluciones documentadas en O(n) para patrones \"Blind 75\"",
+			"link": "#"
+		},
+		"writing": {
+			"title": "Escritura Técnica",
+			"description": "Cómo implementé mi primera arquitectura Zoneless en Angular 19",
+			"link": "#"
+		},
+		"lab": {
+			"title": "DevSolution Lab",
+			"description": "POC: Predictor de Churn básico usando LSTM (Dockerizado)",
+			"link": "#"
+		},
+		"view-project": "Ver Proyecto",
+		"coming-soon": "Próximamente"
+	},
+	"splash": {
+		"press-enter": "[ PRESIONA ENTER / CLICK INICIAR ]",
+		"initializing": "> INICIALIZANDO MÓDULOS DEL SISTEMA...",
+		"loading-stack": "> CARGANDO LIBRERÍA DE TECH STACK... [ OK ]",
+		"connecting-github": "> CONECTANDO A LA API DE GITHUB... [ OK ]",
+		"ready-player": "> JUGADOR 1 LISTO // ",
+		"welcome": ">> HOLA VISITANTE. BIENVENIDO A MI PORTAFOLIO.",
+		"prepare": ">> PREPÁRATE PARA UNA AVENTURA INTERACTIVA..."
+	}
 }

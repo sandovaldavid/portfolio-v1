@@ -5,7 +5,7 @@ import { getLocalizedPath, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 interface Props {
-  lang: Language;
+	lang: Language;
 }
 
 const { lang } = Astro.props;
@@ -37,7 +37,9 @@ const returnBtn = t('about-me.return-button');
 	<SectionContainer id="about-details" class="w-full max-w-4xl px-4 flex flex-col gap-8">
 		<!-- Page Header -->
 		<div class="text-center space-y-3">
-			<h2 class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide">
+			<h2
+				class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide"
+			>
 				{bioTitle}
 			</h2>
 			<p class="text-text-muted font-mono text-sm uppercase">
@@ -78,7 +80,9 @@ const returnBtn = t('about-me.return-button');
 			<article
 				class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
 			>
-				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-border-subtle pb-2">
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-border-subtle pb-2"
+				>
 					{t('about-me.currently-focused')}
 				</h3>
 				<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 font-mono text-sm">

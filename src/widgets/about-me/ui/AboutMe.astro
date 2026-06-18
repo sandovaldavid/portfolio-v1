@@ -16,7 +16,9 @@ const personalImageAlt = 'Juan David';
 		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
 			<!-- Text Content -->
 			<div class="flex-1 space-y-4">
-				<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
+				>
 					{t('about-me.profile.title')}
 				</h3>
 				<div
@@ -36,7 +38,10 @@ const personalImageAlt = 'Juan David';
 
 			<!-- Profile Image -->
 			<div class="shrink-0 relative group">
-				<div class="absolute inset-0 bg-primary-500 translate-x-1.5 translate-y-1.5 group-hover:translate-x-2.5 group-hover:translate-y-2.5 transition-transform duration-200"></div>
+				<div
+					class="absolute inset-0 bg-primary-500 translate-x-1.5 translate-y-1.5 group-hover:translate-x-2.5 group-hover:translate-y-2.5 transition-transform duration-200"
+				>
+				</div>
 				<img
 					width="240"
 					height="240"
@@ -54,10 +59,15 @@ const personalImageAlt = 'Juan David';
 		class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
 	>
 		<div class="space-y-4">
-			<h3 class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+			<h3
+				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
+			>
 				{t('about-me.atena.title')}
 			</h3>
-			<p class="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed text-pretty" set:html={t('about-me.atena.summary')} />
+			<p
+				class="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed text-pretty"
+				set:html={t('about-me.atena.summary')}
+			/>
 			<div class="pt-2">
 				<a
 					href={getLocalizedPath(lang, '/atena')}

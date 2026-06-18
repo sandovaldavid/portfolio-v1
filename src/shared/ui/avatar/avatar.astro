@@ -33,7 +33,11 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./') || src.startsWi
 			alt={alt}
 			width={dimension}
 			height={dimension}
-			class:list={['rounded-none border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_var(--color-border-strong)] object-cover aspect-square', sizeClass, className]}
+			class:list={[
+				'rounded-none border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_var(--color-border-strong)] object-cover aspect-square',
+				sizeClass,
+				className,
+			]}
 		/>
 	) : (
 		<img
@@ -41,7 +45,11 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./') || src.startsWi
 			alt={alt}
 			width={dimension}
 			height={dimension}
-			class:list={['rounded-none border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_var(--color-border-strong)] object-cover aspect-square', sizeClass, className]}
+			class:list={[
+				'rounded-none border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_var(--color-border-strong)] object-cover aspect-square',
+				sizeClass,
+				className,
+			]}
 		/>
 	)
 }

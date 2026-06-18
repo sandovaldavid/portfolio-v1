@@ -58,7 +58,8 @@ const { href = '/', class: className = '' } = Astro.props;
 	}
 
 	@keyframes prompt-pulse {
-		0%, 100% {
+		0%,
+		100% {
 			opacity: 0.6;
 			transform: scale(0.95);
 			text-shadow: 0 0 2px var(--color-primary-500);
@@ -66,44 +67,69 @@ const { href = '/', class: className = '' } = Astro.props;
 		50% {
 			opacity: 1;
 			transform: scale(1.05);
-			text-shadow: 0 0 8px var(--color-primary-400), 0 0 12px var(--color-primary-500);
+			text-shadow:
+				0 0 8px var(--color-primary-400),
+				0 0 12px var(--color-primary-500);
 		}
 	}
 
 	@keyframes typing-load {
-		from { width: 0 }
-		to { width: 17ch }
+		from {
+			width: 0;
+		}
+		to {
+			width: 17ch;
+		}
 	}
 
 	@keyframes typing-hover {
-		from { width: 0 }
-		to { width: 17ch }
+		from {
+			width: 0;
+		}
+		to {
+			width: 17ch;
+		}
 	}
 
 	@keyframes blink-caret {
-		from, to { border-color: transparent }
-		50% { border-color: currentColor }
+		from,
+		to {
+			border-color: transparent;
+		}
+		50% {
+			border-color: currentColor;
+		}
 	}
 
 	@keyframes glitch {
 		0% {
-			text-shadow: 1.5px -1px 0 #ff0055, -1.5px 1.2px 0 #00ffaa;
+			text-shadow:
+				1.5px -1px 0 #ff0055,
+				-1.5px 1.2px 0 #00ffaa;
 			transform: translate(0.5px, -0.5px);
 		}
 		25% {
-			text-shadow: -1.5px 1.5px 0 #ff0055, 1.5px -1.2px 0 #00ffaa;
+			text-shadow:
+				-1.5px 1.5px 0 #ff0055,
+				1.5px -1.2px 0 #00ffaa;
 			transform: translate(-0.5px, 0.5px);
 		}
 		50% {
-			text-shadow: 1.2px 1.5px 0 #ff0055, -1.2px -1.5px 0 #00ffaa;
+			text-shadow:
+				1.2px 1.5px 0 #ff0055,
+				-1.2px -1.5px 0 #00ffaa;
 			transform: translate(0.5px, 0.5px);
 		}
 		75% {
-			text-shadow: -1.2px -1.2px 0 #ff0055, 1.2px 1.2px 0 #00ffaa;
+			text-shadow:
+				-1.2px -1.2px 0 #ff0055,
+				1.2px 1.2px 0 #00ffaa;
 			transform: translate(-0.5px, -0.5px);
 		}
 		100% {
-			text-shadow: 1.5px -1px 0 #ff0055, -1.5px 1.2px 0 #00ffaa;
+			text-shadow:
+				1.5px -1px 0 #ff0055,
+				-1.5px 1.2px 0 #00ffaa;
 			transform: translate(0);
 		}
 	}

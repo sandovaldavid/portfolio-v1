@@ -11,7 +11,10 @@ const hudTitle = lang === 'en' ? 'RECRUITER HUD v1.0' : 'HUD RECLUTADOR v1.0';
 const activeQuest = lang === 'en' ? 'ACTIVE QUEST:' : 'MISIÓN ACTIVA:';
 const questName = lang === 'en' ? 'RECRUIT THE ARCHITECT' : 'RECLUTAR AL ARQUITECTO';
 const questGoal = lang === 'en' ? 'Goal: Hire David Sandoval' : 'Meta: Contratar a David Sandoval';
-const questReward = lang === 'en' ? 'Reward: +999 Clean Code, Architect Lvl 99' : 'Recompensa: +999 Código Limpio, Arquitecto Lvl 99';
+const questReward =
+	lang === 'en'
+		? 'Reward: +999 Clean Code, Architect Lvl 99'
+		: 'Recompensa: +999 Código Limpio, Arquitecto Lvl 99';
 
 const btnEmail = lang === 'en' ? 'SEND EMAIL' : 'ENVIAR EMAIL';
 const btnResume = lang === 'en' ? 'GET RESUME' : 'DESCARGAR CV';
@@ -47,8 +50,19 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	>
 		<span class="text-base font-pixel-clean">[ P1 HUD ]</span>
 		<!-- Simple retro layout icon -->
-		<svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-			<path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 3m0-3a2 2 0 110 3m-9 8h10M3 12h10m-9 4h10m9-4h.01M21 16h.01M21 12h.01" />
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="size-4.5"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="2.5"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M12 6V4m0 2a2 2 0 100 3m0-3a2 2 0 110 3m-9 8h10M3 12h10m-9 4h10m9-4h.01M21 16h.01M21 12h.01"
+			></path>
 		</svg>
 	</button>
 
@@ -58,8 +72,12 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		class="absolute bottom-16 right-0 w-[330px] sm:w-[350px] bg-surface border-2 border-black dark:border-white p-5 shadow-[6px_6px_0px_var(--color-border-strong)] hidden flex-col gap-4 transition-all duration-200"
 	>
 		<!-- Panel Header -->
-		<div class="flex items-center justify-between border-b-2 border-dashed border-border-subtle pb-2.5">
-			<span class="font-pixel-clean text-xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+		<div
+			class="flex items-center justify-between border-b-2 border-dashed border-border-subtle pb-2.5"
+		>
+			<span
+				class="font-pixel-clean text-xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
+			>
 				{hudTitle}
 			</span>
 			<button
@@ -71,14 +89,23 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		</div>
 
 		<!-- Quest Card -->
-		<div class="border-2 border-black dark:border-white bg-black/10 dark:bg-black/35 p-3 flex flex-col gap-1 text-xs">
-			<div class="flex justify-between items-center text-primary-500 dark:text-primary-400 font-bold tracking-wide">
+		<div
+			class="border-2 border-black dark:border-white bg-black/10 dark:bg-black/35 p-3 flex flex-col gap-1 text-xs"
+		>
+			<div
+				class="flex justify-between items-center text-primary-500 dark:text-primary-400 font-bold tracking-wide"
+			>
 				<span>{activeQuest}</span>
-				<span class="animate-pulse bg-emerald-500/20 text-emerald-400 px-1 py-0.5 text-[9px] border border-emerald-500/40 font-semibold">[ IN PROGRESS ]</span>
+				<span
+					class="animate-pulse bg-emerald-500/20 text-emerald-400 px-1 py-0.5 text-[9px] border border-emerald-500/40 font-semibold"
+					>[ IN PROGRESS ]</span
+				>
 			</div>
 			<span class="font-bold text-text-main text-sm">{questName}</span>
 			<span class="text-text-muted mt-1">{questGoal}</span>
-			<span class="text-[10px] text-emerald-500 dark:text-emerald-400 mt-1 font-semibold">{questReward}</span>
+			<span class="text-[10px] text-emerald-500 dark:text-emerald-400 mt-1 font-semibold"
+				>{questReward}</span
+			>
 		</div>
 
 		<!-- Action Buttons Toolkit -->
@@ -113,23 +140,31 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 
 		<!-- Secret Cheats Section -->
 		<div class="flex flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
-			<span class="text-[10px] font-bold text-text-muted uppercase tracking-widest">{cheatsTitle}</span>
-			
+			<span class="text-[10px] font-bold text-text-muted uppercase tracking-widest"
+				>{cheatsTitle}</span
+			>
+
 			<div class="flex flex-col gap-2">
 				<button
 					id="hud-cheat-matrix"
 					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
 				>
 					<span>{cheatMatrix}</span>
-					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: MATRIX ]</span>
+					<span
+						class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold"
+						>[ CODE: MATRIX ]</span
+					>
 				</button>
-				
+
 				<button
 					id="hud-cheat-stats"
 					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
 				>
 					<span>{cheatStats}</span>
-					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: STATUS ]</span>
+					<span
+						class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold"
+						>[ CODE: STATUS ]</span
+					>
 				</button>
 
 				<button
@@ -137,7 +172,10 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
 				>
 					<span>{cheatAutopilot}</span>
-					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: TOUR ]</span>
+					<span
+						class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold"
+						>[ CODE: TOUR ]</span
+					>
 				</button>
 
 				<!-- Divider -->
@@ -149,7 +187,10 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
 				>
 					<span>{cheatShortcuts}</span>
-					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: ? ]</span>
+					<span
+						class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold"
+						>[ CODE: ? ]</span
+					>
 				</button>
 
 				<!-- Live GitHub Stats -->
@@ -158,15 +199,26 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 					class="w-full text-left px-3 py-1.5 bg-neutral-100 hover:bg-primary-500/10 hover:text-primary-500 dark:bg-black/20 dark:hover:bg-primary-500/10 dark:hover:text-primary-400 border border-black/40 dark:border-white/30 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex justify-between items-center"
 				>
 					<span>{cheatGithub}</span>
-					<span class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold">[ CODE: GITHUB ]</span>
+					<span
+						class="text-text-muted text-[8px] border border-black/30 dark:border-white/20 px-1 font-semibold"
+						>[ CODE: GITHUB ]</span
+					>
 				</button>
 			</div>
 		</div>
 
 		<!-- Secret Status Panel (Collapsible) -->
-		<div id="hud-secret-stats-panel" class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
-			<span class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">{secStatsTitle}</span>
-			<div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10">
+		<div
+			id="hud-secret-stats-panel"
+			class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3"
+		>
+			<span
+				class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest"
+				>{secStatsTitle}</span
+			>
+			<div
+				class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10"
+			>
 				<div class="flex justify-between border-b border-border-subtle/50 pb-1">
 					<span class="text-text-muted uppercase">COFFEE:</span>
 					<span class="text-text-main font-bold">99 / 99</span>
@@ -187,10 +239,21 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		</div>
 
 		<!-- GitHub Live Stats Panel (Collapsible) -->
-		<div id="hud-github-panel" class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3">
-			<span class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest">{ghStatsTitle}</span>
-			<div id="hud-github-content" class="text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10 space-y-1.5 text-text-muted">
-				<span class="animate-pulse">{lang === 'en' ? 'Loading data…' : 'Cargando datos…'}</span>
+		<div
+			id="hud-github-panel"
+			class="hidden flex-col gap-2 border-t-2 border-dashed border-border-subtle pt-3"
+		>
+			<span
+				class="text-[10px] font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest"
+				>{ghStatsTitle}</span
+			>
+			<div
+				id="hud-github-content"
+				class="text-[10px] bg-black/5 dark:bg-black/20 p-2 border border-black/20 dark:border-white/10 space-y-1.5 text-text-muted"
+			>
+				<span class="animate-pulse"
+					>{lang === 'en' ? 'Loading data…' : 'Cargando datos…'}</span
+				>
 			</div>
 		</div>
 	</div>
@@ -232,7 +295,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	}
 
 	// Open/Close panel
-	toggleBtn?.addEventListener('click', (e) => {
+	toggleBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		const isHidden = panel?.classList.contains('hidden');
 		if (isHidden) {
@@ -247,7 +310,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		}
 	});
 
-	closeBtn?.addEventListener('click', (e) => {
+	closeBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		panel?.classList.add('hidden');
 		panel?.classList.remove('flex');
@@ -255,7 +318,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	});
 
 	// Close on click outside
-	document.addEventListener('click', (e) => {
+	document.addEventListener('click', e => {
 		if (panel && !panel.classList.contains('hidden')) {
 			const target = e.target as HTMLElement;
 			if (!panel.contains(target) && target !== toggleBtn && !toggleBtn?.contains(target)) {
@@ -267,18 +330,19 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	});
 
 	// Copy email to clipboard with floating feedback effect
-	copyBtn?.addEventListener('click', (e) => {
+	copyBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		const email = document.getElementById('hud-copy-btn')?.dataset.email ?? '';
 		navigator.clipboard.writeText(email).then(() => {
 			// Floating retro notification
 			const floatText = document.createElement('span');
 			floatText.innerText = '+100 XP / COPIED!';
-			floatText.className = 'absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-2 py-0.5 border border-black text-[9px] font-bold uppercase tracking-widest whitespace-nowrap animate-float-fade';
+			floatText.className =
+				'absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-2 py-0.5 border border-black text-[9px] font-bold uppercase tracking-widest whitespace-nowrap animate-float-fade';
 			floatText.style.animation = 'float-up-fade 1.2s ease-out forwards';
-			
+
 			copyBtn.appendChild(floatText);
-			
+
 			setTimeout(() => {
 				floatText.remove();
 			}, 1200);
@@ -288,8 +352,8 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	// Cheat Code 1: Matrix Digital Rain (Cyber cian color)
 	let canvas: HTMLCanvasElement | null = null;
 	let animationFrameId: number | null = null;
-	
-	cheatMatrixBtn?.addEventListener('click', (e) => {
+
+	cheatMatrixBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		if (canvas) {
 			// Remove canvas
@@ -301,7 +365,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		}
 
 		cheatMatrixBtn.classList.add('text-primary-500', 'border-primary-500/70');
-		
+
 		canvas = document.createElement('canvas');
 		canvas.className = 'fixed inset-0 w-full h-full pointer-events-none z-10 opacity-15';
 		document.body.appendChild(canvas);
@@ -311,7 +375,8 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		canvas.height = window.innerHeight;
 
 		// Matrix characters
-		const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>/{}[]=-+*';
+		const alphabet =
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>/{}[]=-+*';
 		const fontSize = 14;
 		const columns = canvas.width / fontSize;
 
@@ -351,7 +416,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	});
 
 	// Cheat Code 2: Unleash Secret Stats
-	cheatStatsBtn?.addEventListener('click', (e) => {
+	cheatStatsBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		const isHidden = secretStatsPanel?.classList.contains('hidden');
 		if (isHidden) {
@@ -366,17 +431,18 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	});
 
 	// Cheat Code 4: Open keyboard shortcuts modal (from CLITerminal)
-	cheatShortcutsBtn?.addEventListener('click', (e) => {
+	cheatShortcutsBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		panel?.classList.add('hidden');
 		panel?.classList.remove('flex');
 		toggleBtn?.setAttribute('aria-expanded', 'false');
-		const openFn = (window as unknown as Record<string, (() => void) | undefined>).__openShortcutsModal;
+		const openFn = (window as unknown as Record<string, (() => void) | undefined>)
+			.__openShortcutsModal;
 		openFn?.();
 	});
 
 	// Cheat Code 5: Live GitHub Stats
-	cheatGithubBtn?.addEventListener('click', async (e) => {
+	cheatGithubBtn?.addEventListener('click', async e => {
 		e.stopPropagation();
 		const isHidden = githubPanel?.classList.contains('hidden');
 		if (isHidden) {
@@ -386,7 +452,12 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 
 			// Fetch only once
 			if (githubContent && !githubContent.dataset.loaded) {
-				const ghApi = (window as unknown as Record<string, { fetch?: () => Promise<Record<string, unknown> | null> }>).__portfolioGitHub;
+				const ghApi = (
+					window as unknown as Record<
+						string,
+						{ fetch?: () => Promise<Record<string, unknown> | null> }
+					>
+				).__portfolioGitHub;
 				const stats = await ghApi?.fetch?.();
 				githubContent.dataset.loaded = 'true';
 				if (stats) {
@@ -424,7 +495,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	});
 
 	// Cheat Code 3: Autopilot Tour
-	cheatAutopilotBtn?.addEventListener('click', (e) => {
+	cheatAutopilotBtn?.addEventListener('click', e => {
 		e.stopPropagation();
 		panel?.classList.add('hidden');
 		panel?.classList.remove('flex');
@@ -439,10 +510,11 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 				const el = document.querySelector(selector);
 				if (el) {
 					el.scrollIntoView({ behavior: 'smooth' });
-					
+
 					// Floating indicator bubble
 					const popup = document.createElement('div');
-					popup.className = 'fixed top-[15%] left-1/2 -translate-x-1/2 bg-primary-500 text-white dark:text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs animate-pulse';
+					popup.className =
+						'fixed top-[15%] left-1/2 -translate-x-1/2 bg-primary-500 text-white dark:text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs animate-pulse';
 					popup.innerText = `AUTOPILOT: EXPLORING ${selector.slice(1).toUpperCase()}`;
 					document.body.appendChild(popup);
 
@@ -456,7 +528,8 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 				// Scroll back to top
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 				const popup = document.createElement('div');
-				popup.className = 'fixed top-[15%] left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs';
+				popup.className =
+					'fixed top-[15%] left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] z-50 font-bold uppercase tracking-widest text-xs';
 				popup.innerText = 'TOUR COMPLETE! PLAYER 1 READY!';
 				document.body.appendChild(popup);
 				setTimeout(() => popup.remove(), 3000);

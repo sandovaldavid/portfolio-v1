@@ -132,9 +132,5 @@ body {
 }
 
 :root.dark .hero-gradient {
-	background: radial-gradient(
-		circle at 50% 0%,
-		rgba(0, 176, 255, 0.14) 0%,
-		rgba(2, 4, 8, 0) 50%
-	);
+	background: radial-gradient(circle at 50% 0%, rgba(0, 176, 255, 0.14) 0%, rgba(2, 4, 8, 0) 50%);
 }

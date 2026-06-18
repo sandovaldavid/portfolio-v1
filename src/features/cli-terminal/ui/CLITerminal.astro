@@ -111,7 +111,8 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	data-email={siteConfig.email}
 	data-linkedin={siteConfig.social.linkedinUsername}
 	data-site-url={siteConfig.url}
-></div>
+>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════
      CLI TERMINAL OVERLAY
@@ -151,11 +152,10 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				class="h-96 overflow-y-auto p-4 space-y-0.5"
 				aria-live="polite"
 				aria-relevant="additions"
-			></div>
-			<!-- Input line -->
-			<div
-				class="flex items-center border-t border-[#00b0ff]/30 px-4 py-3 bg-[#0a0a0a]"
 			>
+			</div>
+			<!-- Input line -->
+			<div class="flex items-center border-t border-[#00b0ff]/30 px-4 py-3 bg-[#0a0a0a]">
 				<span class="text-[#00b0ff] mr-2 text-sm font-bold select-none">❯</span>
 				<input
 					id="cli-input"
@@ -164,7 +164,9 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					placeholder={cliPlaceholder}
 					autocomplete="off"
 					spellcheck="false"
-					aria-label={isEn ? "Terminal command input" : "Entrada de comandos de la terminal"}
+					aria-label={isEn
+						? 'Terminal command input'
+						: 'Entrada de comandos de la terminal'}
 				/>
 				<span class="text-[10px] text-white/20 uppercase tracking-widest hidden sm:block"
 					>{cliTabHint}</span
@@ -311,7 +313,8 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	<div
 		class="absolute inset-0 pointer-events-none opacity-25"
 		style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,176,255,0.05) 2px, rgba(0,176,255,0.05) 4px);"
-	></div>
+	>
+	</div>
 
 	<div class="w-full max-w-md font-mono space-y-4 relative z-10">
 		<!-- CLASSIFIED header -->
@@ -331,7 +334,8 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 		<div
 			id="egg-loading"
 			class="bg-black/60 border border-[#00b0ff]/30 p-4 text-xs space-y-1 min-h-[9rem] overflow-hidden"
-		></div>
+		>
+		</div>
 
 		<!-- Secrets revealed -->
 		<div id="egg-stats" class="hidden border-2 border-[#00ff88] bg-[#00ff88]/5 p-4">
@@ -394,11 +398,10 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	const isEn = lang === 'en';
 	const sectionNames: string[] = JSON.parse(
 		i18nEl?.dataset.sectionNames ??
-			'["Hero","Experience","Research","Projects","About Me","Technologies"]',
+			'["Hero","Experience","Research","Projects","About Me","Technologies"]'
 	);
 	const resumeUrl =
-		i18nEl?.dataset.resumeUrl ??
-		'https://github.com/sandovaldavid/resume/releases/latest';
+		i18nEl?.dataset.resumeUrl ?? 'https://github.com/sandovaldavid/resume/releases/latest';
 	const GITHUB_USER = i18nEl?.dataset.githubUser ?? 'sandovaldavid';
 	const CONTACT_EMAIL = i18nEl?.dataset.email ?? 'hello@sandovaldavid.com';
 	const CONTACT_LINKEDIN = i18nEl?.dataset.linkedin ?? 'jdavidsandoval';
@@ -442,10 +445,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	}
 
 	function escHtml(s: string): string {
-		return String(s)
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;');
+		return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 
 	// ── CLI print utilities ───────────────────────────────────────────────
@@ -515,7 +515,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				printLine(msg, 'muted');
 				printBlank();
 			},
-			lines.length * 40 + 30,
+			lines.length * 40 + 30
 		);
 	}
 
@@ -530,7 +530,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	];
 
 	function navigateToSection(num: number) {
-		const s = SECTIONS.find((x) => x.num === num);
+		const s = SECTIONS.find(x => x.num === num);
 		if (!s) return;
 		if (!s.id) {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -565,12 +565,14 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				githubCache = JSON.parse(cached) as GitHubStats;
 				return githubCache;
 			}
-		} catch { /* ignore */ }
+		} catch {
+			/* ignore */
+		}
 		try {
 			const [uRes, rRes] = await Promise.all([
 				fetch(`https://api.github.com/users/${GITHUB_USER}`),
 				fetch(
-					`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
+					`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`
 				),
 			]);
 			if (!uRes.ok) throw new Error('rate limit');
@@ -581,14 +583,11 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				language?: string;
 			}> = rRes.ok ? await rRes.json() : [];
 
-			const totalStars = repos.reduce(
-				(n, r) => n + (r.stargazers_count ?? 0),
-				0,
-			);
+			const totalStars = repos.reduce((n, r) => n + (r.stargazers_count ?? 0), 0);
 			const totalForks = repos.reduce((n, r) => n + (r.forks_count ?? 0), 0);
 
 			const langMap: Record<string, number> = {};
-			repos.forEach((r) => {
+			repos.forEach(r => {
 				if (r.language) langMap[r.language] = (langMap[r.language] ?? 0) + 1;
 			});
 			const topLangs = Object.entries(langMap)
@@ -607,7 +606,11 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				topLangs,
 				bio: user.bio ?? null,
 			};
-			try { sessionStorage.setItem('pf_gh_stats', JSON.stringify(githubCache)); } catch { /* ignore */ }
+			try {
+				sessionStorage.setItem('pf_gh_stats', JSON.stringify(githubCache));
+			} catch {
+				/* ignore */
+			}
 			return githubCache;
 		} catch {
 			return null;
@@ -629,7 +632,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 
 		printLine(
 			`<span class="text-[#00b0ff]">❯</span> <span class="text-white">${escHtml(input)}</span>`,
-			'command',
+			'command'
 		);
 
 		const parts = input.split(/\s+/);
@@ -639,93 +642,75 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 		switch (cmd) {
 			case 'help':
 				printBlank();
-				printLine(
-					'┌──────────── PORTFOLIO OS — COMMANDS ────────────┐',
-					'info',
-				);
+				printLine('┌──────────── PORTFOLIO OS — COMMANDS ────────────┐', 'info');
 				printLine(
 					'│  <span class="text-yellow-400">about</span>             About David Sandoval',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">research</span>          BiLSTM thesis overview',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">whoami</span>            Personal info',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">ls</span>                List all sections',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">goto &lt;section&gt;</span>  Navigate to a section',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">github</span>            Live GitHub statistics',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">contact</span>           Contact information',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">skills</span>            Tech stack overview',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">matrix</span>            Toggle matrix rain',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">open resume</span>       Open resume PDF',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">clear</span>             Clear terminal',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  <span class="text-yellow-400">:q</span> / <span class="text-yellow-400">exit</span>         Close terminal (vim-style!)',
-					'output',
+					'output'
 				);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'whoami':
 				printBlank();
-				printLine(
-					'┌─ USER PROFILE ──────────────────────────────────┐',
-					'info',
-				);
+				printLine('┌─ USER PROFILE ──────────────────────────────────┐', 'info');
 				printLine(
 					'│  Name:       <span class="text-white">David Sandoval</span>',
-					'output',
+					'output'
 				);
-				printLine(
-					'│  Role:       Software Engineer · BiLSTM Researcher',
-					'output',
-				);
+				printLine('│  Role:       Software Engineer · BiLSTM Researcher', 'output');
 				printLine('│  Location:   Piura, Perú 🇵🇪', 'output');
-				printLine(
-					'│  Company:    <span class="text-[#00b0ff]">Atena</span>',
-					'output',
-				);
+				printLine('│  Company:    <span class="text-[#00b0ff]">Atena</span>', 'output');
 				printLine(
 					isEn
 						? '│  Status:     <span class="text-[#00ff88]">▶ Available for opportunities</span>'
 						: '│  Status:     <span class="text-[#00ff88]">▶ Disponible para oportunidades</span>',
-					'output',
+					'output'
 				);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'ls':
@@ -734,44 +719,44 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">hero/</span>            Landing & hero'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">hero/</span>            Sección de inicio',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">experience/</span>      Work history at Atena'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">experience/</span>      Experiencia laboral',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">research/</span>        BiLSTM thesis & publications'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">research/</span>        Tesis BiLSTM y publicaciones',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">projects/</span>        Personal & professional work'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">projects/</span>        Trabajo personal y profesional',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">about-me/</span>        Personal biography'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">about-me/</span>        Biografía personal',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? 'drwxr-xr-x  <span class="text-[#00b0ff]">technologies/</span>    Stack & tools'
 						: 'drwxr-xr-x  <span class="text-[#00b0ff]">technologies/</span>    Stack y herramientas',
-					'output',
+					'output'
 				);
 				printBlank();
 				printLine(
 					isEn
 						? 'Tip: use <span class="text-yellow-400">goto &lt;name&gt;</span> to navigate any section.'
 						: 'Tip: usa <span class="text-yellow-400">goto &lt;nombre&gt;</span> para navegar a cualquier sección.',
-					'muted',
+					'muted'
 				);
 				break;
 
@@ -802,7 +787,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 						isEn
 							? 'Usage: <span class="text-yellow-400">goto &lt;section&gt;</span>  (hero, experience, research, projects, about, tech)'
 							: 'Uso: <span class="text-yellow-400">goto &lt;sección&gt;</span>  (hero, experience, research, projects, about, tech)',
-						'warning',
+						'warning'
 					);
 					break;
 				}
@@ -812,7 +797,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 						isEn
 							? `Navigating to <span class="text-[#00b0ff]">${escHtml(t)}</span>…`
 							: `Navegando a <span class="text-[#00b0ff]">${escHtml(t)}</span>…`,
-						'output',
+						'output'
 					);
 					setTimeout(() => {
 						if (!id) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -824,11 +809,11 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 						isEn
 							? `Error: unknown section '<span class="text-red-400">${escHtml(t)}</span>'`
 							: `Error: sección desconocida '<span class="text-red-400">${escHtml(t)}</span>'`,
-						'error',
+						'error'
 					);
 					printLine(
 						'Available: hero, experience, research, projects, about, tech',
-						'muted',
+						'muted'
 					);
 				}
 				break;
@@ -839,7 +824,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					isEn
 						? '<span class="text-white/40">Fetching live data from GitHub API…</span>'
 						: '<span class="text-white/40">Obteniendo datos en vivo de la API de GitHub…</span>',
-					'muted',
+					'muted'
 				);
 				const stats = await fetchGitHubStats();
 				if (!stats) {
@@ -847,105 +832,87 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 						isEn
 							? '⚠ Could not fetch data (API rate limit or network error)'
 							: '⚠ No se pudo obtener datos (límite de API o error de red)',
-						'error',
+						'error'
 					);
 					printLine(
 						'Direct link: <span class="text-[#00b0ff]">github.com/sandovaldavid</span>',
-						'muted',
+						'muted'
 					);
 					break;
 				}
 				printBlank();
-				printLine(
-					`┌─ GITHUB LIVE STATS ─── github.com/${GITHUB_USER} ┐`,
-					'info',
-				);
+				printLine(`┌─ GITHUB LIVE STATS ─── github.com/${GITHUB_USER} ┐`, 'info');
 				printLine(
 					`│  📦 ${isEn ? 'Public repos' : 'Repos públicos'}:   <span class="text-yellow-400">${stats.public_repos}</span>`,
-					'output',
+					'output'
 				);
 				printLine(
 					`│  ⭐ ${isEn ? 'Total stars' : 'Estrellas totales'}:    <span class="text-yellow-400">${stats.totalStars}</span>`,
-					'output',
+					'output'
 				);
 				printLine(
 					`│  🍴 ${isEn ? 'Total forks' : 'Forks totales'}:    <span class="text-yellow-400">${stats.totalForks}</span>`,
-					'output',
+					'output'
 				);
 				printLine(
 					`│  👥 ${isEn ? 'Followers' : 'Seguidores'}:       <span class="text-yellow-400">${stats.followers}</span>`,
-					'output',
+					'output'
 				);
 				if (stats.topLangs.length)
 					printLine(
 						`│  🔤 ${isEn ? 'Top languages' : 'Top lenguajes'}:  <span class="text-[#00b0ff]">${stats.topLangs.join(', ')}</span>`,
-						'output',
+						'output'
 					);
 				if (stats.bio)
 					printLine(
 						`│  💬 Bio: <span class="text-white/60">${escHtml(stats.bio)}</span>`,
-						'muted',
+						'muted'
 					);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 			}
 
 			case 'contact':
 				printBlank();
-				printLine(
-					'┌─ CONTACT INFO ──────────────────────────────────┐',
-					'info',
-				);
+				printLine('┌─ CONTACT INFO ──────────────────────────────────┐', 'info');
 				printLine(`│  📧 ${CONTACT_EMAIL}`, 'output');
 				printLine(`│  💼 linkedin.com/in/${CONTACT_LINKEDIN}`, 'output');
 				printLine(`│  🐙 github.com/${GITHUB_USER}`, 'output');
 				printLine(`│  🌐 ${SITE_URL}`, 'output');
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'skills':
 				printBlank();
-				printLine(
-					'┌─ TECH STACK ────────────────────────────────────┐',
-					'info',
-				);
+				printLine('┌─ TECH STACK ────────────────────────────────────┐', 'info');
 				printLine(
 					'│  Frontend:  <span class="text-[#00b0ff]">Angular · React · Astro · TypeScript</span>',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  Backend:   <span class="text-[#00b0ff]">Django · FastAPI · .NET · Node.js</span>',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  ML / AI:   <span class="text-[#00b0ff]">BiLSTM · TensorFlow · Scikit-learn</span>',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  DevOps:    <span class="text-[#00b0ff]">Docker · K8s · GitHub Actions</span>',
-					'output',
+					'output'
 				);
 				printLine(
 					'│  DB:        <span class="text-[#00b0ff]">PostgreSQL · MongoDB · Redis</span>',
-					'output',
+					'output'
 				);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'matrix':
 				document.getElementById('hud-cheat-matrix')?.click();
 				printLine(
 					isEn ? 'Matrix rain toggled.' : 'Lluvia matrix activada/desactivada.',
-					'output',
+					'output'
 				);
 				break;
 
@@ -955,17 +922,17 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				if (t2 === 'resume' || t2 === 'cv') {
 					printLine(
 						isEn ? 'Opening resume in new tab…' : 'Abriendo CV en nueva pestaña…',
-						'muted',
+						'muted'
 					);
 					setTimeout(() => window.open(resumeUrl, '_blank'), 400);
 				} else {
 					printLine(
 						`${escHtml(cmd)}: ${isEn ? 'unknown target' : 'destino desconocido'} '${escHtml(t2)}'`,
-						'error',
+						'error'
 					);
 					printLine(
 						`${isEn ? 'Try' : 'Prueba'}: <span class="text-yellow-400">open resume</span>`,
-						'muted',
+						'muted'
 					);
 				}
 				break;
@@ -991,46 +958,40 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					isEn
 						? '┌─ RESEARCH ─── BiLSTM OSS Abandonment ──────────┐'
 						: '┌─ INVESTIGACIÓN ─── Abandono OSS BiLSTM ─────────┐',
-					'info',
+					'info'
 				);
 				printLine(
 					isEn
 						? '│  Thesis: Predicting OSS Repository Abandonment'
 						: '│  Tesis: Predicción de Abandono de Repos OSS',
-					'output',
+					'output'
 				);
-				printLine(
-					'│  Model:  BiLSTM Neural Networks (TensorFlow)',
-					'output',
-				);
+				printLine('│  Model:  BiLSTM Neural Networks (TensorFlow)', 'output');
 				printLine(
 					isEn
 						? '│  Data:   GitHub API / GH Archive (MSR approach)'
 						: '│  Datos:  GitHub API / GH Archive (enfoque MSR)',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? '│  Eval:   ACC · F1-Score · AUC-ROC · Loss'
 						: '│  Eval.:  ACC · F1-Score · AUC-ROC · Loss',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? `│  Status: <span class="text-[#00ff88]">● IN PROGRESS — UNP 2025</span>`
 						: `│  Estado: <span class="text-[#00ff88]">● EN CURSO — UNP 2025</span>`,
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? '│  Full details: sandovaldavid.com/research'
 						: '│  Detalles: sandovaldavid.com/research',
-					'muted',
+					'muted'
 				);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'about':
@@ -1039,60 +1000,58 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 					isEn
 						? '┌─ ABOUT DAVID SANDOVAL ─────────────────────────┐'
 						: '┌─ SOBRE DAVID SANDOVAL ─────────────────────────┐',
-					'info',
+					'info'
 				);
 				printLine(
 					isEn
 						? '│  Software Engineer & BiLSTM/ML Researcher'
 						: '│  Ingeniero de Software & Investigador BiLSTM/ML',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? '│  Currently at Atena — full-stack .NET 8 + Angular 19'
 						: '│  Actualmente en Atena — .NET 8 + Angular 19 full-stack',
-					'output',
+					'output'
 				);
 				printLine(
 					isEn
 						? '│  Thesis: Predicting OSS repository abandonment'
 						: '│  Tesis: Predicción de abandono de repos OSS',
-					'output',
+					'output'
 				);
-				printLine(
-					'│         using BiLSTM neural networks (UNP)',
-					'output',
-				);
+				printLine('│         using BiLSTM neural networks (UNP)', 'output');
 				printLine(
 					isEn
 						? `│  <span class="text-[#00ff88]">▶ Open to new opportunities</span>`
 						: `│  <span class="text-[#00ff88]">▶ Disponible para nuevas oportunidades</span>`,
-					'output',
+					'output'
 				);
-				printLine(
-					'└─────────────────────────────────────────────────┘',
-					'info',
-				);
+				printLine('└─────────────────────────────────────────────────┘', 'info');
 				break;
 
 			case 'sudo':
 				printLine(
-					isEn ? '🚫 Access denied. Nice try though.' : '🚫 Acceso denegado. Buen intento.',
-					'error',
+					isEn
+						? '🚫 Access denied. Nice try though.'
+						: '🚫 Acceso denegado. Buen intento.',
+					'error'
 				);
 				printLine(
 					isEn
 						? '(Psst: there IS a secret in this portfolio. Keep looking.)'
 						: '(Psst: HAY un secreto en este portfolio. Sigue buscando.)',
-					'muted',
+					'muted'
 				);
 				break;
 
 			case 'vim':
 			case 'nvim':
 				printLine(
-					isEn ? 'A Neovim user? Excellent taste. 🔥' : '¿Usuario de Neovim? Excelente gusto. 🔥',
-					'output',
+					isEn
+						? 'A Neovim user? Excellent taste. 🔥'
+						: '¿Usuario de Neovim? Excelente gusto. 🔥',
+					'output'
 				);
 				setTimeout(
 					() =>
@@ -1100,9 +1059,9 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 							isEn
 								? 'Vim motions work outside this terminal too — try j/k/gg/G.'
 								: 'Los movimientos vim también funcionan fuera del terminal — prueba j/k/gg/G.',
-							'muted',
+							'muted'
 						),
-					500,
+					500
 				);
 				break;
 
@@ -1110,16 +1069,16 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				if (cmd.startsWith(':') && cmd.length > 1) {
 					printLine(
 						`vim: E492 — command not found: <span class="text-red-400">${escHtml(cmd)}</span>`,
-						'error',
+						'error'
 					);
 				} else {
 					printLine(
 						`${isEn ? 'command not found' : 'comando no encontrado'}: <span class="text-red-400">${escHtml(cmd)}</span>`,
-						'error',
+						'error'
 					);
 					printLine(
 						`${isEn ? 'Type' : 'Escribe'} <span class="text-yellow-400">help</span> ${isEn ? 'to see available commands.' : 'para ver los comandos disponibles.'}`,
-						'muted',
+						'muted'
 					);
 				}
 		}
@@ -1127,7 +1086,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	}
 
 	// ── CLI input events ──────────────────────────────────────────────────
-	cliInput.addEventListener('keydown', (e) => {
+	cliInput.addEventListener('keydown', e => {
 		if (e.key === 'Enter') {
 			const val = cliInput.value;
 			cliInput.value = '';
@@ -1170,15 +1129,13 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				'exit',
 				':q',
 			];
-			const match = cmds.find(
-				(c) => c.startsWith(cliInput.value) && c !== cliInput.value,
-			);
+			const match = cmds.find(c => c.startsWith(cliInput.value) && c !== cliInput.value);
 			if (match) cliInput.value = match;
 		}
 	});
 
 	cliCloseDot.addEventListener('click', closeCLI);
-	cliOverlay.addEventListener('click', (e) => {
+	cliOverlay.addEventListener('click', e => {
 		if (e.target === cliOverlay) closeCLI();
 	});
 
@@ -1193,7 +1150,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	}
 
 	shortcutsClose.addEventListener('click', closeShortcutsModal);
-	shortcutsModal.addEventListener('click', (e) => {
+	shortcutsModal.addEventListener('click', e => {
 		if (e.target === shortcutsModal) closeShortcutsModal();
 	});
 
@@ -1208,10 +1165,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 		eggLoading.innerHTML = '';
 
 		document.documentElement.classList.add('pf-glitch');
-		setTimeout(
-			() => document.documentElement.classList.remove('pf-glitch'),
-			450,
-		);
+		setTimeout(() => document.documentElement.classList.remove('pf-glitch'), 450);
 
 		const loadLines = isEn
 			? [
@@ -1251,7 +1205,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 			() => {
 				eggStats.classList.remove('hidden');
 			},
-			loadLines.length * 370 + 300,
+			loadLines.length * 370 + 300
 		);
 	}
 
@@ -1261,7 +1215,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	});
 
 	// ── Global keyboard handler ───────────────────────────────────────────
-	document.addEventListener('keydown', (e) => {
+	document.addEventListener('keydown', e => {
 		if (isInInput()) return;
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
 

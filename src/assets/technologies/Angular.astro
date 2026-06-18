@@ -1,6 +1,7 @@
 ---
 const idSuffix = Math.random().toString(36).substring(2, 9);
 ---
+
 <svg {...Astro.props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 242 256"
 	><g clip-path={`url(#angular__a-${idSuffix})`}
 		><mask
@@ -45,5 +46,8 @@ const idSuffix = Math.random().toString(36).substring(2, 9);
 				offset="1"
 				stop-color="#FF5BE1"
 				stop-opacity="0"></stop></linearGradient
-		><clipPath id={`angular__a-${idSuffix}`}><path fill="#fff" d="M0 0h242v256H0z"></path></clipPath></defs
-	></svg>
+		><clipPath id={`angular__a-${idSuffix}`}
+			><path fill="#fff" d="M0 0h242v256H0z"></path></clipPath
+		></defs
+	></svg
+>

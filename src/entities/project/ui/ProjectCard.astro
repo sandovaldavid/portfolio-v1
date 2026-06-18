@@ -39,9 +39,14 @@ const isPrimary = variant === 'primary';
 		<div
 			class="absolute inset-x-0 top-0 flex items-center gap-2 border-b-2 border-black dark:border-white bg-white/90 dark:bg-neutral-900 px-4 py-3"
 		>
-			<span class="size-3 border border-black dark:border-white bg-red-500" aria-hidden="true"></span>
-			<span class="size-3 border border-black dark:border-white bg-yellow-500" aria-hidden="true"></span>
-			<span class="size-3 border border-black dark:border-white bg-green-500" aria-hidden="true"></span>
+			<span class="size-3 border border-black dark:border-white bg-red-500" aria-hidden="true"
+			></span>
+			<span
+				class="size-3 border border-black dark:border-white bg-yellow-500"
+				aria-hidden="true"></span>
+			<span
+				class="size-3 border border-black dark:border-white bg-green-500"
+				aria-hidden="true"></span>
 			<span
 				class="ml-auto font-retro-tag text-[9px] uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-bold"
 				>{isPrimary ? 'Feature' : 'Project'}</span
