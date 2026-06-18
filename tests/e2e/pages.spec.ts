@@ -63,7 +63,10 @@ test.describe('Navigation between pages', () => {
 
       if (href && href !== '#') {
         const response = await page.goto(href || '/');
-        expect(response?.status()).toBeLessThan(400);
+        // response is null when navigating to the same URL — skip those
+        if (response !== null) {
+          expect(response.status()).toBeLessThan(400);
+        }
       }
     }
   });
