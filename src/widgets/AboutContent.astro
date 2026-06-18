@@ -4,9 +4,14 @@ import { SectionContainer } from '@/shared/ui';
 import { getLocalizedPath, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
-const lang = Language.ENGLISH;
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
 const t = useTranslations(lang);
 const personalImageAlt = 'Juan David';
+const isEN = lang === Language.ENGLISH;
 
 const focusAreas = [
 	t('about-me.focus1'),
@@ -16,11 +21,19 @@ const focusAreas = [
 	t('about-me.focus5'),
 	t('about-me.focus6'),
 ];
+
+const pageTitle = isEN ? 'About Me - David Sandoval' : 'Sobre Mí - David Sandoval';
+const pageDesc = isEN
+	? 'Learn more about the background, professional journey, and motivations of David Sandoval in software engineering.'
+	: 'Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.';
+const bioTitle = isEN ? 'Full Biography' : 'Biografía Completa';
+const userRecord = isEN ? '[ USER RECORD: DAVID_S // STATUS: ARCHIVED ]' : '[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]';
+const returnBtn = isEN ? '[ RETURN TO HOME ]' : '[ RETORNAR AL INICIO ]';
 ---
 
 <Layout
-	title="About Me - David Sandoval"
-	description="Learn more about the background, professional journey, and motivations of David Sandoval in software engineering."
+	title={pageTitle}
+	description={pageDesc}
 	img_preview="/projects/portfolio.webp"
 	isHome={false}
 >
@@ -28,10 +41,10 @@ const focusAreas = [
 		<!-- Page Header -->
 		<div class="text-center space-y-3">
 			<h2 class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide">
-				Full Biography
+				{bioTitle}
 			</h2>
 			<p class="text-text-muted font-mono text-sm uppercase">
-				[ USER RECORD: DAVID_S // STATUS: ARCHIVED ]
+				{userRecord}
 			</p>
 		</div>
 
@@ -95,7 +108,7 @@ const focusAreas = [
 				href={getLocalizedPath(lang, '/')}
 				class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
 			>
-				[ RETURN TO HOME ]
+				{returnBtn}
 			</a>
 		</div>
 	</SectionContainer>
