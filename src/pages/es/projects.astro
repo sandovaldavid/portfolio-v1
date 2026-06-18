@@ -1,6 +1,6 @@
 ---
 import Layout from '@app/layouts/Layout.astro';
-import { Projects } from '@widgets/projects';
+import { Projects as ProjectsWidget } from '@widgets/projects';
 import { SectionContainer } from '@/shared/ui';
 ---
 
@@ -16,6 +16,6 @@ import { SectionContainer } from '@/shared/ui';
 		>
 			Catálogo de Proyectos
 		</h2>
-		<Projects showAll={true} />
+		<ProjectsWidget showAll={true} />
 	</SectionContainer>
 </Layout>
