@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 
 const pages = [
   { path: '/', name: 'Home (English)' },
-  { path: '/about-me', name: 'About (English)' },
+  { path: '/about', name: 'About (English)' },
   { path: '/projects', name: 'Projects (English)' },
   { path: '/es/', name: 'Home (Spanish)' },
-  { path: '/es/sobre-mi', name: 'About (Spanish)' },
-  { path: '/es/proyectos', name: 'Projects (Spanish)' },
+  { path: '/es/about', name: 'About (Spanish)' },
+  { path: '/es/projects', name: 'Projects (Spanish)' },
 ];
 
 pages.forEach(({ path, name }) => {

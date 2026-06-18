@@ -35,7 +35,9 @@ coverage/
 # testing artifacts
 docs/testing/screenshots/
 docs/testing/lighthouse/
-docs/test-reports/
+docs/test-reports/lighthouse/
+docs/test-reports/playwright/
+docs/test-reports/coverage/
 playwright-report/
 test-results.json
 junit-results.xml

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Reports — Portfolio V1</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0f0f10;
+        --surface: #1a1a1d;
+        --border: #2a2a2e;
+        --accent: #7c6af0;
+        --accent-hover: #9b8df5;
+        --text: #e8e8ea;
+        --text-muted: #8b8b94;
+        --pass: #3ecf8e;
+        --warn: #f5a623;
+        --fail: #f55555;
+      }
+
+      body {
+        font-family: ui-monospace, 'Geist Mono', 'Cascadia Code', monospace;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      header {
+        max-width: 960px;
+        margin: 0 auto 3rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+      }
+
+      .grid {
+        max-width: 960px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition: border-color 0.15s;
+      }
+
+      .card:hover {
+        border-color: var(--accent);
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .card h2 {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .card p {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        line-height: 1.6;
+        flex: 1;
+      }
+
+      .card a {
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        align-self: flex-start;
+        transition: background 0.15s;
+      }
+
+      .card a:hover {
+        background: var(--accent-hover);
+      }
+
+      footer {
+        max-width: 960px;
+        margin: 3rem auto 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>portfolio-v1 / test-reports</h1>
+      <p>Published automatically by CI on every merge to main or develop.</p>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🔦</div>
+        <h2>Lighthouse</h2>
+        <p>
+          Performance, accessibility, best practices, and SEO audits across all
+          six pages (EN + ES). Thresholds: ≥90% performance, ≥95%
+          accessibility.
+        </p>
+        <a href="./lighthouse/">View report</a>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <h2>Playwright E2E</h2>
+        <p>
+          End-to-end tests covering page loads, navigation, meta tags, language
+          attributes, and responsiveness across Chromium, Firefox, and WebKit.
+        </p>
+        <a href="./playwright/">View report</a>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h2>Unit Tests</h2>
+        <p>
+          Vitest unit tests for i18n utilities, helpers, and business logic.
+          Coverage targets: ≥90% lines, functions, and branches.
+        </p>
+        <a href="./coverage/">View coverage</a>
+      </div>
+    </div>
+
+    <footer>
+      <span>sandovaldavid/portfolio-v1</span>
+      <a
+        href="https://github.com/sandovaldavid/portfolio-v1/actions"
+        style="color: var(--accent); text-decoration: none"
+        >GitHub Actions ↗</a
+      >
+    </footer>
+  </body>
+</html>

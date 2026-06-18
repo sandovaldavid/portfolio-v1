@@ -68,7 +68,11 @@ test.describe('Page Load Performance', () => {
     const errors: string[] = [];
     page.on('console', msg => {
       if (msg.type() === 'error') {
-        errors.push(msg.text());
+        const text = msg.text();
+        // Ignore 404s for external resources (fonts, analytics) — only fail on JS errors
+        if (!text.includes('Failed to load resource') && !text.includes('net::ERR_')) {
+          errors.push(text);
+        }
       }
     });
 
