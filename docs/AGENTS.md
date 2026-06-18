@@ -307,6 +307,56 @@ const projections = items.map(i => project(i));
 
 ## Git & Version Control
 
+### Branch Strategy (REQUIRED)
+
+```
+main
+ └── develop          ← base para todo el trabajo
+       ├── feat/...
+       ├── fix/...
+       ├── docs/...
+       └── ...
+```
+
+**Reglas estrictas:**
+1. **Todas las ramas nuevas salen de `develop`**, nunca de `main`
+2. **Las PRs van siempre a `develop`**, nunca directamente a `main`
+3. **Solo `develop` hace PR a `main`** para desplegar a producción
+4. **Nunca trabajar directamente** en `main` ni en `develop`
+
+**Flujo que debe seguir el agente:**
+```bash
+# 1. Asegurarse de estar en develop actualizado
+git checkout develop
+git pull origin develop
+
+# 2. Crear rama desde develop con prefijo correcto
+git checkout -b feat/my-feature   # o fix/, docs/, etc.
+
+# 3. Implementar y commitear
+git add <files>
+git commit -m "feat(scope): description"
+
+# 4. Push y crear PR hacia develop
+git push origin feat/my-feature
+# → PR: feat/my-feature → develop  (NUNCA → main directamente)
+```
+
+**Prefijos obligatorios según el tipo de cambio:**
+
+| Prefijo | Cuándo usarlo |
+|---------|--------------|
+| `feat/` | Nueva funcionalidad |
+| `fix/` | Corrección de bug |
+| `docs/` | Solo documentación |
+| `refactor/` | Refactorización sin cambio de comportamiento |
+| `perf/` | Mejora de performance |
+| `test/` | Agregar o corregir tests |
+| `chore/` | Mantenimiento, tooling |
+| `ci/` | Cambios en CI/CD |
+| `deps/` | Actualización de dependencias |
+| `security/` | Correcciones de seguridad |
+
 ### Commit Messages
 
 [REQUIRED] Conventional Commits format:

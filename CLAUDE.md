@@ -433,16 +433,54 @@ Update relevant docs:
 
 ## Git Workflow & Commits
 
+### Branch Strategy
+
+```
+main
+ └── develop          ← base para todo el trabajo
+       ├── feat/...
+       ├── fix/...
+       ├── docs/...
+       └── ...
+```
+
+**Reglas:**
+1. Todas las ramas nuevas salen de `develop`, no de `main`
+2. Las PRs van siempre a `develop`
+3. Solo `develop` hace PR a `main` (producción)
+4. Nunca trabajar directamente en `main` ni en `develop`
+
+**Flujo estándar:**
+```bash
+# 1. Asegurarse de estar en develop actualizado
+git checkout develop
+git pull origin develop
+
+# 2. Crear rama desde develop
+git checkout -b feat/my-feature
+
+# 3. Desarrollar, commitear
+git add .
+git commit -m "feat(scope): description"
+
+# 4. Push y abrir PR hacia develop
+git push origin feat/my-feature
+# Abrir PR: feat/my-feature → develop
+```
+
 ### Branch Naming
 
 ```
-feat/feature-name           # New feature
-fix/issue-description       # Bug fix
-docs/what-changed           # Documentation
-refactor/component-name     # Refactoring
+feat/feature-name           # Nueva funcionalidad
+fix/issue-description       # Corrección de bug
+docs/what-changed           # Documentación
+refactor/component-name     # Refactorización
 perf/optimization-name      # Performance
 test/test-coverage          # Tests
-chore/maintenance           # Maintenance
+chore/maintenance           # Mantenimiento
+ci/pipeline-change          # CI/CD
+deps/package-update         # Dependencias
+security/fix-description    # Seguridad
 ```
 
 ### Conventional Commits
@@ -484,6 +522,20 @@ chore(deps): update Astro to v5.17.1
 ---
 
 ## CI/CD Pipelines
+
+### Flujo de despliegue
+
+```
+feat/* / fix/* / ...
+        │
+        │  PR → develop
+        ▼
+    develop  ──→  Preview en Vercel (automático)
+        │
+        │  PR → main (solo desde develop)
+        ▼
+      main   ──→  Producción en Vercel (automático)
+```
 
 ### validate-pr.yml
 
