@@ -1,58 +1,50 @@
 import { describe, it, expect } from 'vitest';
 import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
 
 describe('i18n utilities', () => {
-  describe('getLangFromUrl', () => {
-    it('should return "en" for root URL', () => {
-      const url = new URL('http://localhost:4321/');
-      const lang = getLangFromUrl(url);
-      expect(lang).toBe('en');
-    });
+	describe('getLangFromUrl', () => {
+		it('should return "en" for root URL', () => {
+			const url = new URL('http://localhost:4321/');
+			expect(getLangFromUrl(url)).toBe(Language.ENGLISH);
+		});
 
-    it('should return "en" for /en/ URL', () => {
-      const url = new URL('http://localhost:4321/en/');
-      const lang = getLangFromUrl(url);
-      expect(lang).toBe('en');
-    });
+		it('should return "en" for /en/ URL', () => {
+			const url = new URL('http://localhost:4321/en/');
+			expect(getLangFromUrl(url)).toBe(Language.ENGLISH);
+		});
 
-    it('should return "es" for /es/ URL', () => {
-      const url = new URL('http://localhost:4321/es/');
-      const lang = getLangFromUrl(url);
-      expect(lang).toBe('es');
-    });
+		it('should return "es" for /es/ URL', () => {
+			const url = new URL('http://localhost:4321/es/');
+			expect(getLangFromUrl(url)).toBe(Language.SPANISH);
+		});
 
-    it('should return "en" for /en/about-me', () => {
-      const url = new URL('http://localhost:4321/en/about-me');
-      const lang = getLangFromUrl(url);
-      expect(lang).toBe('en');
-    });
+		it('should return "en" for /en/about-me', () => {
+			const url = new URL('http://localhost:4321/en/about-me');
+			expect(getLangFromUrl(url)).toBe(Language.ENGLISH);
+		});
 
-    it('should return "es" for /es/sobre-mi', () => {
-      const url = new URL('http://localhost:4321/es/sobre-mi');
-      const lang = getLangFromUrl(url);
-      expect(lang).toBe('es');
-    });
-  });
+		it('should return "es" for /es/sobre-mi', () => {
+			const url = new URL('http://localhost:4321/es/sobre-mi');
+			expect(getLangFromUrl(url)).toBe(Language.SPANISH);
+		});
+	});
 
-  describe('getLocalizedPath', () => {
-    it('should add /es prefix for Spanish', () => {
-      const path = getLocalizedPath('/about-me', 'es');
-      expect(path).toBe('/es/sobre-mi');
-    });
+	describe('getLocalizedPath', () => {
+		it('should prefix Spanish with /es', () => {
+			expect(getLocalizedPath(Language.SPANISH, '/about-me')).toBe('/es/about-me');
+		});
 
-    it('should not add /en prefix for English', () => {
-      const path = getLocalizedPath('/about-me', 'en');
-      expect(path).toBe('/about-me');
-    });
+		it('should return path unchanged for English (default)', () => {
+			expect(getLocalizedPath(Language.ENGLISH, '/about-me')).toBe('/about-me');
+		});
 
-    it('should translate project path to Spanish', () => {
-      const path = getLocalizedPath('/projects', 'es');
-      expect(path).toBe('/es/proyectos');
-    });
+		it('should prefix /projects with /es for Spanish', () => {
+			expect(getLocalizedPath(Language.SPANISH, '/projects')).toBe('/es/projects');
+		});
 
-    it('should keep root path for root', () => {
-      const path = getLocalizedPath('/', 'en');
-      expect(path).toBe('/');
-    });
-  });
+		it('should return root path unchanged for English', () => {
+			expect(getLocalizedPath(Language.ENGLISH, '/')).toBe('/');
+		});
+	});
 });
