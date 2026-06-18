@@ -119,9 +119,9 @@ const features = isEN ? [
 		</div>
 
 		<!-- Main grid -->
-		<div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+		<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
 
-			<!-- Left column (2/3) -->
+			<!-- Left column (3/5) -->
 			<div class="lg:col-span-3 flex flex-col gap-6">
 
 				<!-- Problem -->
@@ -192,7 +192,7 @@ const features = isEN ? [
 
 			</div>
 
-			<!-- Right column (1/3) -->
+			<!-- Right column (2/5) -->
 			<div class="lg:col-span-2 flex flex-col gap-6">
 
 				<!-- Model Architecture -->
@@ -249,23 +249,36 @@ const features = isEN ? [
 					</div>
 				</div>
 
-				<!-- Contact CTA -->
-				<div class="border-2 border-black dark:border-white bg-surface p-5 shadow-[4px_4px_0px_0px_var(--color-border-strong)]">
-					<h2 class="font-gaming-mono text-sm sm:text-base font-bold text-text-muted uppercase tracking-wider mb-3">▸ {labels.contact}</h2>
-					<p class="text-sm text-text-muted mb-3 leading-relaxed">
-						{isEN
-							? 'Collaborations, questions or opportunities welcome.'
-							: 'Colaboraciones, preguntas u oportunidades son bienvenidas.'}
-					</p>
-					<a
-						href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(isEN ? 'Research Collaboration' : 'Colaboración en Investigación')}`}
-						class="block text-center text-sm font-bold uppercase tracking-wider px-4 py-3 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] transition-all font-gaming-mono"
-					>
-						{isEN ? '✉ GET IN TOUCH' : '✉ CONTACTAR'}
-					</a>
-				</div>
-
 			</div>
 		</div>
+
+		<!-- Contact CTA — horizontal bar inspired by header -->
+		<div class="mt-12 border-2 border-black dark:border-white bg-primary-500 px-6 py-4 shadow-[6px_6px_0px_0px_var(--color-border-strong)]">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+				<!-- Left: icon + label + description -->
+				<div class="flex items-center gap-3 flex-1 min-w-0">
+					<span class="shrink-0 font-gaming-mono text-lg text-white dark:text-black" aria-hidden="true">✉</span>
+					<div class="flex flex-col gap-0.5 min-w-0">
+						<h2 class="font-gaming-mono text-xs sm:text-sm font-bold text-white/90 dark:text-black/80 uppercase tracking-wider">
+							{labels.contact}
+						</h2>
+						<p class="text-xs text-white/80 dark:text-black/70 leading-snug">
+							{isEN
+								? 'Collaborations, questions or opportunities.'
+								: 'Colaboraciones, preguntas u oportunidades.'}
+						</p>
+					</div>
+				</div>
+				<!-- Right: CTA button -->
+				<a
+					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(isEN ? 'Research Collaboration' : 'Colaboración en Investigación')}`}
+					class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
+				>
+					<span aria-hidden="true">→</span>
+					{isEN ? 'Contact' : 'Contactar'}
+				</a>
+			</div>
+		</div>
+
 	</div>
 </Layout>
