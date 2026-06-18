@@ -8,22 +8,24 @@ const pathname = url.pathname;
 
 /**
  * Generates the correct path for language switching
- * Spanish (default): / or /page
- * English: /en/ or /en/page
+ * English (default): / or /page
+ * Spanish: /es/ or /es/page
  */
 const getLanguagePath = (targetLang: string): string => {
-	const cleanPath = pathname.replace(/^\/en(\/|$)/, '/');
+	// Remove any language prefix (/es or /en) from the pathname
+	const cleanPath = pathname.replace(/^\/(es|en)(\/|$)/, '/');
 
 	if (targetLang === DEFAULT_LANGUAGE) {
+		// For English (default), return path without prefix
 		return cleanPath === '' ? '/' : cleanPath;
 	}
 
-	// For English, add /en prefix
+	// For Spanish, add /es prefix
 	if (cleanPath === '/' || cleanPath === '') {
-		return '/en/';
+		return '/es/';
 	}
 
-	return `/en${cleanPath}`;
+	return `/es${cleanPath}`;
 };
 ---
 

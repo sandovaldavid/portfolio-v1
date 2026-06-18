@@ -26,7 +26,7 @@ export const LANGUAGE_FLAGS = {
 /**
  * Default language for the application
  */
-export const DEFAULT_LANGUAGE = Language.SPANISH;
+export const DEFAULT_LANGUAGE = Language.ENGLISH;
 
 /**
  * All available languages
