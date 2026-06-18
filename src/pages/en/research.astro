@@ -85,7 +85,7 @@ const archDetails = [
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+		<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
 			<div class="lg:col-span-3 flex flex-col gap-6">
 				<div class="border-2 border-border-subtle bg-surface p-5">
 					<h2 class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3">▸ {labels.problem}</h2>
@@ -167,17 +167,34 @@ const archDetails = [
 						))}
 					</div>
 				</div>
-				<div class="border-2 border-black dark:border-white bg-surface p-5 shadow-[4px_4px_0px_0px_var(--color-border-strong)]">
-					<h2 class="font-gaming-mono text-sm sm:text-base font-bold text-text-muted uppercase tracking-wider mb-3">▸ {labels.contact}</h2>
-					<p class="text-sm text-text-muted mb-3 leading-relaxed">Collaborations, questions or opportunities welcome.</p>
-					<a
-						href={`mailto:${siteConfig.email}?subject=${encodeURIComponent('Research Collaboration')}`}
-						class="block text-center text-sm font-bold uppercase tracking-wider px-4 py-3 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] transition-all font-gaming-mono"
-					>
-						✉ GET IN TOUCH
-					</a>
-				</div>
 			</div>
 		</div>
+
+		<!-- Contact CTA — horizontal bar (full width, outside grid like header) -->
+		<div class="border-2 border-black dark:border-white bg-primary-500 px-6 py-4 mt-8 shadow-[6px_6px_0px_0px_var(--color-border-strong)]">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+				<!-- Left: icon + label + description -->
+				<div class="flex items-center gap-3 flex-1 min-w-0">
+					<span class="shrink-0 font-gaming-mono text-lg text-white dark:text-black" aria-hidden="true">✉</span>
+					<div class="flex flex-col gap-0.5 min-w-0">
+						<h2 class="font-gaming-mono text-xs sm:text-sm font-bold text-white/90 dark:text-black/80 uppercase tracking-wider">
+							{labels.contact}
+						</h2>
+						<p class="text-xs text-white/80 dark:text-black/70 leading-snug">
+							Collaborations, questions or opportunities.
+						</p>
+					</div>
+				</div>
+				<!-- Right: CTA button -->
+				<a
+					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent('Research Collaboration')}`}
+					class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
+				>
+					<span aria-hidden="true">→</span>
+					Contact
+				</a>
+			</div>
+		</div>
+
 	</div>
 </Layout>
