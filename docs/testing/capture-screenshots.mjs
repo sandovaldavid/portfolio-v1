@@ -38,9 +38,14 @@ const devices = {
 };
 
 const pages = [
-	{ url: '/', name: 'home' },
-	{ url: '/es/', name: 'home-es' },
+	// Spanish (default)
+	{ url: '/', name: 'home-es' },
+	{ url: '/sobre-mi', name: 'about-es' },
+	{ url: '/proyectos', name: 'projects-es' },
+	// English
 	{ url: '/en/', name: 'home-en' },
+	{ url: '/en/about-me', name: 'about-en' },
+	{ url: '/en/projects', name: 'projects-en' },
 ];
 
 /**
