@@ -245,11 +245,11 @@ bun run test:unit:coverage
 
 ### Coverage Targets
 
-[TARGET] Minimum 70% coverage:
-- Lines: ≥70%
-- Functions: ≥70%
-- Branches: ≥70%
-- Statements: ≥70%
+[TARGET] Minimum 90% coverage:
+- Lines: ≥90%
+- Functions: ≥90%
+- Branches: ≥90%
+- Statements: ≥90%
 
 ---
 
@@ -523,7 +523,7 @@ When reviewing changes, verify:
 - [ ] Unit tests added (if logic)
 - [ ] E2E tests added (if UI)
 - [ ] Tests cover happy path + edge cases
-- [ ] Coverage ≥70%
+- [ ] Coverage ≥90%
 
 ### Documentation
 - [ ] README updated (if user-facing)

@@ -286,7 +286,7 @@ bun run test:unit:ui       # Interactive
 bun run test:unit:coverage # Coverage
 ```
 
-**Coverage targets:** 70% (lines, functions, branches)
+**Coverage targets:** 90% (lines, functions, branches, statements)
 
 ### E2E Tests (Playwright)
 
