@@ -190,6 +190,10 @@
   },
   "research": {
     "title": "Research Work",
+    "summary": "Applying Bidirectional LSTM neural networks to detect OSS repository abandonment risk from GitHub activity time series — commits, issues, PRs, and contributor patterns — and benchmarked against traditional ML baselines.",
+    "tech-stack-label": "TECH STACK",
+    "full-methodology": "Full methodology, architecture & pipeline on the research page.",
+    "view-full-button": "▸ FULL RESEARCH",
     "page-title": "Research — BiLSTM OSS Abandonment | David Sandoval",
     "page-description": "Thesis research: predicting OSS repository abandonment using BiLSTM neural networks. Mining Software Repositories, deep learning, GitHub data.",
     "back-button": "Back to Portfolio",

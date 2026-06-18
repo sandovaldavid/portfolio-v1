@@ -7,13 +7,7 @@ const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 
-
-const isEN = lang === Language.ENGLISH;
-
-const summary = isEN
-	? 'Applying Bidirectional LSTM neural networks to detect OSS repository abandonment risk from GitHub activity time series — commits, issues, PRs, and contributor patterns — and benchmarked against traditional ML baselines.'
-	: 'Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.';
-
+const summary = t('research.summary');
 const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'GitHub API'];
 
 ---
@@ -50,7 +44,7 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 			<!-- Tech stack -->
 			<div>
 				<h4 class="font-retro-tag text-xs font-bold text-primary-500 uppercase tracking-widest mb-2.5">
-					▸ {isEN ? 'TECH STACK' : 'TECNOLOGÍAS'}
+					▸ {t('research.tech-stack-label')}
 				</h4>
 				<div class="flex flex-wrap gap-2">
 					{techStack.map(tag => (
@@ -64,15 +58,13 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 			<!-- CTA -->
 			<div class="border-t-2 border-dashed border-border-subtle pt-4 flex items-center justify-between gap-4">
 				<p class="text-xs text-text-muted leading-snug">
-					{isEN
-						? 'Full methodology, architecture & pipeline on the research page.'
-						: 'Metodología completa, arquitectura y pipeline en la página de investigación.'}
+					{t('research.full-methodology')}
 				</p>
 				<a
 					href={getLocalizedPath(lang, '/research')}
 					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-xs font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap"
 				>
-					{isEN ? '▸ FULL RESEARCH' : '▸ VER COMPLETO'}
+					{t('research.view-full-button')}
 				</a>
 			</div>
 

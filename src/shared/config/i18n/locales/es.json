@@ -190,6 +190,10 @@
   },
   "research": {
     "title": "Investigación",
+    "summary": "Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.",
+    "tech-stack-label": "TECNOLOGÍAS",
+    "full-methodology": "Metodología completa, arquitectura y pipeline en la página de investigación.",
+    "view-full-button": "▸ VER COMPLETO",
     "page-title": "Investigación — BiLSTM Abandono OSS | David Sandoval",
     "page-description": "Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.",
     "back-button": "Volver al Portfolio",
