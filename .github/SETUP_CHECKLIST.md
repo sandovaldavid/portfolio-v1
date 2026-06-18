@@ -8,8 +8,13 @@
   - `deploy-production.yml` - Deploys to Vercel Production
   
 - [x] **GitHub Secrets Added**
-  - `VERCEL_PROJECT_ID` = `prj_0K5D5KSNY6bP4HgSpUL9dUAed1Yj`
-  - `VERCEL_ORG_ID` = `devsolution`
+  - `VERCEL_PROJECT_ID` = `prj_O25Gj9BqKwaSH5h8rAqJpJpk4Vj5`
+  - `VERCEL_ORG_ID` = `team_Kni208cT03lJVCIgxVKQcVGt`
+  
+- [x] **Vercel Project Linked**
+  - Organization: `devsolution`
+  - Project: `portfolio-v1`
+  - Configuration file: `.vercel/project.json`
   
 - [x] **Code Quality Tools Configured**
   - ESLint (0 errors, 1 warning)
@@ -127,8 +132,8 @@ Once VERCEL_TOKEN is configured:
 
 | Component | Status | Details |
 |-----------|--------|---------|
-| **Vercel Project** | ✅ Linked | Project ID: `prj_0K5D5KSNY6bP4HgSpUL9dUAed1Yj` |
-| **Vercel Org** | ✅ Linked | Org ID: `devsolution` |
+| **Vercel Project** | ✅ Linked | Project ID: `prj_O25Gj9BqKwaSH5h8rAqJpJpk4Vj5` |
+| **Vercel Org** | ✅ Linked | Org ID: `team_Kni208cT03lJVCIgxVKQcVGt` |
 | **Vercel Token** | ⚠️ PENDING | Need to create and add secret |
 | **GitHub Secrets** | ✅ Configured | 2/3 secrets added |
 | **GitHub Actions** | ✅ Ready | 3 workflows deployed |
