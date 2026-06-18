@@ -8,7 +8,9 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"format": "prettier --write \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
-		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\""
+		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
+		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\"",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx,astro}\" --fix"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.9",
@@ -26,6 +28,13 @@
 		"typescript": "^5.9.3"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^21.0.2",
+		"@commitlint/config-conventional": "^21.0.2",
+		"@eslint/js": "^10.0.1",
+		"@typescript-eslint/eslint-plugin": "^8.61.1",
+		"@typescript-eslint/parser": "^8.61.1",
+		"eslint": "^10.5.0",
+		"husky": "^9.1.7",
 		"playwright": "^1.61.0"
 	}
 }
