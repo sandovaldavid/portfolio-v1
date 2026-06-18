@@ -43,7 +43,7 @@ jobs:
       - name: Pull Vercel Environment
         run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build Preview
+      - name: Build
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Preview
