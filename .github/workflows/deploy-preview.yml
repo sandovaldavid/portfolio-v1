@@ -39,9 +39,6 @@ jobs:
         run: bun run format:check
         continue-on-error: true
 
-      - name: Build project
-        run: bun run build
-
       - name: Install Vercel CLI
         run: npm install -g vercel
 
@@ -54,7 +51,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           PRODUCTION: false
-          PREBUILT: true
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'
