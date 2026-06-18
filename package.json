@@ -10,7 +10,8 @@
 		"format": "prettier --write \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
 		"format:check": "prettier --check \"src/**/*.{astro,js,ts,jsx,tsx,css,md,json}\"",
 		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
-		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix"
+		"lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+		"screenshots": "node docs/testing/capture-screenshots.mjs"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",

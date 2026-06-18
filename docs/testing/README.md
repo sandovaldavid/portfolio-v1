@@ -23,21 +23,33 @@ testing/
 bun install
 ```
 
-### Generate Mobile & Tablet Screenshots
+### Generate Responsive Screenshots
 
-Use Claude Code to take responsive screenshots of your pages:
+Screenshots are captured automatically using Playwright across three device sizes:
 
 ```bash
-# In Claude Code, use the /verify skill to take screenshots:
-/verify
+# Automatic capture (requires dev server running on localhost:4321)
+bun run dev  # In one terminal
+bun run screenshots  # In another terminal
 
-# Or manually using your browser's DevTools:
-# 1. Open http://localhost:4321
-# 2. Press F12 to open DevTools
-# 3. Press Ctrl+Shift+M (or Cmd+Shift+M on Mac) for responsive mode
-# 4. Select device (iPhone 12 Pro, iPad Pro, etc.)
-# 5. Right-click and "Capture screenshot"
-# 6. Save to docs/testing/screenshots/{device-type}/
+# Or use the helper script (starts dev server automatically)
+bash docs/testing/generate-reports.sh
+```
+
+**Captured device sizes:**
+- **Mobile**: iPhone 12 Pro (390x844)
+- **Tablet**: iPad Pro (1024x1366)
+- **Desktop**: 1920x1080
+
+**Alternative: Manual screenshots** using browser DevTools:
+
+```
+1. Open http://localhost:4321
+2. Press F12 to open DevTools
+3. Press Ctrl+Shift+M (or Cmd+Shift+M) for responsive mode
+4. Select device from dropdown
+5. Right-click and "Capture screenshot"
+6. Save to docs/testing/screenshots/{device-type}/
 ```
 
 ### Naming Convention

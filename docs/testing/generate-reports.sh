@@ -33,18 +33,20 @@ else
 fi
 
 echo ""
-echo "📸 Taking screenshots..."
-echo "   This requires Claude Code /verify skill or Playwright"
+echo "📸 Capturing screenshots automatically..."
+echo "   Device types: Mobile (390x844) | Tablet (1024x1366) | Desktop (1920x1080)"
 echo ""
-echo "   Screenshot device types to capture:"
-echo "   ✓ Mobile (iPhone 12 Pro 390x844)"
-echo "   ✓ Tablet (iPad Pro 1024x1366)"
-echo "   ✓ Desktop (1920x1080 or larger)"
-echo ""
-echo "   Use Claude Code: /verify"
-echo "   - Start dev server on localhost:4321"
-echo "   - Takes responsive screenshots across all device sizes"
-echo "   - Saves to docs/testing/screenshots/{mobile,tablet,desktop}/"
+
+# Capture screenshots using Playwright
+bun run screenshots
+
+SCREENSHOT_RESULT=$?
+if [ $SCREENSHOT_RESULT -eq 0 ]; then
+    echo "✅ Screenshots captured successfully!"
+else
+    echo "⚠️  Some screenshots may not have been captured."
+fi
+
 echo ""
 
 echo "🔦 Generating Lighthouse reports..."

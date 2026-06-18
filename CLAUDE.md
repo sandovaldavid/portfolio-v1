@@ -227,27 +227,34 @@ Located in `.github/workflows/`:
 
 ### Screenshots
 
-Store responsive design screenshots in `docs/testing/screenshots/`:
+Automated screenshot capture across all device sizes using Playwright:
+
+```bash
+# Make sure dev server is running
+bun run dev
+
+# In another terminal, capture screenshots for mobile, tablet, and desktop
+bun run screenshots
+
+# Or use the helper script (starts dev server automatically)
+bash docs/testing/generate-reports.sh
+```
+
+**Device sizes captured:**
+- Mobile: iPhone 12 Pro (390x844)
+- Tablet: iPad Pro (1024x1366)
+- Desktop: Full width (1920x1080)
+
+Screenshots saved to `docs/testing/screenshots/` by device type:
 
 ```
 docs/testing/screenshots/
-├── mobile/      # iPhone, Android sizes
-├── tablet/      # iPad, Android tablet sizes
-└── desktop/     # Desktop browser sizes
+├── mobile/      # 390x844 screenshots
+├── tablet/      # 1024x1366 screenshots
+└── desktop/     # 1920x1080 screenshots
 ```
 
-**Use `/verify` skill** to take automated screenshots:
-
-```bash
-/verify
-```
-
-This will start the dev server, take screenshots across device sizes, and save them to `docs/testing/screenshots/`.
-
-Naming convention: `{device}_{page}[_{variant}].png`
-- Examples: `mobile_home.png`, `tablet_research_fullpage.png`, `desktop_about-me.png`
-
-**Important**: Screenshots are NOT committed to git (see `.gitignore`). They're useful for visual regression testing in PRs.
+**Important**: Screenshots are NOT committed to git (see `.gitignore`). Use them for visual regression testing and PR reviews.
 
 ### Lighthouse Performance Reports
 
