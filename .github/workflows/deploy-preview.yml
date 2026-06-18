@@ -43,10 +43,10 @@ jobs:
       - name: Pull Vercel Environment
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build for Preview
+      - name: Build
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy to Vercel Preview
+      - name: Deploy to Preview
         id: deploy
         run: |
           PREVIEW_URL=$(vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})

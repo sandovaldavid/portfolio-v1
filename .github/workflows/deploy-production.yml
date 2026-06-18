@@ -37,21 +37,11 @@ jobs:
       - name: Pull Vercel Environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build for Production
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy Preview
-        id: deploy
-        run: |
-          DEPLOYMENT_URL=$(vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
-          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
-          echo "Preview deployment created: $DEPLOYMENT_URL"
-
-      - name: Promote to Production
-        run: |
-          echo "Promoting ${{ steps.deploy.outputs.deployment_url }} to production..."
-          vercel promote ${{ steps.deploy.outputs.deployment_url }} --yes --token=${{ secrets.VERCEL_TOKEN }}
-          echo "✅ Successfully promoted to production"
+      - name: Deploy to Production
+        run: vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Summary
         if: always()
