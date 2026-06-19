@@ -24,75 +24,22 @@
 
 ---
 
-## ⚠️ Manual Steps Required
+## ✅ Manual Steps Completed
 
-### Step 1: Create VERCEL_TOKEN
+### VERCEL_TOKEN Configuration
+- [x] Create Vercel personal access token
+- [x] Configure token in repository secrets (`VERCEL_TOKEN`)
 
-1. Go to: https://vercel.com/account/tokens
-2. Click **"Create Token"**
-3. Configure:
-   - **Name**: `GitHub Actions`
-   - **Scope**: `Full Account`
-   - **Expiration**: 90 days (recommended)
-4. Copy the generated token
-5. Run in your terminal:
-   ```bash
-   gh secret set VERCEL_TOKEN
-   # Paste the token and press Enter
-   ```
-
-**Verify it was added:**
-```bash
-gh secret list | grep VERCEL
-```
-
-### Step 2: Configure Branch Protection Rules
-
-Since your repository is private, you'll need **GitHub Pro** to use API-based branch protection, OR configure manually:
-
-#### Option A: Manual Configuration (Free)
-
-**For `main` branch:**
-1. Go to: https://github.com/sandovaldavid/portfolio-v1/settings/branches
-2. Click **"Add rule"**
-3. Branch name pattern: `main`
-4. Configure:
-   - ✅ Require a pull request before merging
-     - Require 1 approval
-     - Dismiss stale pull request approvals
-   - ✅ Require status checks to pass before merging
-     - Require branches to be up to date
-     - Select status check: `validate`
-   - ✅ Restrict who can push to matching branches (optional)
-   - ✅ Allow force pushes: `Disable`
-   - ✅ Allow deletions: `Disable`
-   - ✅ Require conversation resolution: `Require`
-5. Click **"Create"**
-
-**For `develop` branch:**
-1. Click **"Add rule"** again
-2. Branch name pattern: `develop`
-3. Configure:
-   - ✅ Require a pull request before merging (optional)
-   - ✅ Require status checks to pass before merging
-     - Require branches to be up to date
-     - Select status check: `validate`
-   - ✅ Allow force pushes: `Disable`
-   - ✅ Allow deletions: `Disable`
-4. Click **"Create"**
-
-#### Option B: With GitHub Pro
-
-If you have GitHub Pro, the API commands are ready and can be run:
-```bash
-bash /tmp/branch_protection.sh
-```
+### Branch Protection Rules
+- [x] Configured Rulesets for `main` and `develop` branches using the GitHub API (via gh CLI).
+  - `main`: Requires PR with 1 review, stale review dismissal, Code Owners approval, conversation resolution, and successful deployments to `Production`. Strict status checks (`validate` and `deploy`) are enforced.
+  - `develop`: Requires PR (0 approvals), stale review dismissal, and strict status checks (`validate` and `deploy`) to pass before merging.
 
 ---
 
 ## 🧪 Test the Setup
 
-Once VERCEL_TOKEN is configured:
+Now that the configuration is complete, here is how to test the workflows:
 
 1. **Create a test branch:**
    ```bash
@@ -134,10 +81,10 @@ Once VERCEL_TOKEN is configured:
 |-----------|--------|---------|
 | **Vercel Project** | ✅ Linked | Project ID: `prj_O25Gj9BqKwaSH5h8rAqJpJpk4Vj5` |
 | **Vercel Org** | ✅ Linked | Org ID: `team_Kni208cT03lJVCIgxVKQcVGt` |
-| **Vercel Token** | ⚠️ PENDING | Need to create and add secret |
-| **GitHub Secrets** | ✅ Configured | 2/3 secrets added |
+| **Vercel Token** | ✅ Configured | Secret added (`VERCEL_TOKEN`) |
+| **GitHub Secrets** | ✅ Configured | 3/3 secrets added |
 | **GitHub Actions** | ✅ Ready | 3 workflows deployed |
-| **Branch Protection** | ⚠️ PENDING | Need manual setup (free) or Pro (API) |
+| **Branch Protection** | ✅ Configured | Active rulesets via gh CLI (Pro) |
 | **Code Quality** | ✅ Ready | Linter, formatter, type check configured |
 
 ---
