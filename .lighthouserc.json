@@ -9,6 +9,7 @@
         "http://localhost:4321/es/about",
         "http://localhost:4321/es/projects"
       ],
+      "outputPath": "./lighthouse-report",
       "startServerCommand": "npx serve ./dist -l 4321",
       "startServerReadyPattern": "Accepting connections",
       "numberOfRuns": 3,
