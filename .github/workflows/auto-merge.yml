@@ -1,0 +1,29 @@
+name: Auto Enable PR Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronized]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-merge:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable Auto-Merge
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          BASE_BRANCH=${{ github.event.pull_request.base.ref }}
+          
+          echo "Enabling auto-merge for PR #$PR_NUMBER targeting branch $BASE_BRANCH"
+          
+          if [ "$BASE_BRANCH" = "main" ]; then
+            gh pr merge $PR_NUMBER --auto --merge
+          else
+            gh pr merge $PR_NUMBER --auto --squash
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
