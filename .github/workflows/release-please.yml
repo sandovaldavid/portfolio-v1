@@ -1,0 +1,33 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # Run release-please on main
+      - name: Run release-please on main
+        if: github.ref_name == 'main'
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          target-branch: main
+
+      # Run release-please on develop
+      - name: Run release-please on develop
+        if: github.ref_name == 'develop'
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config-develop.json
+          manifest-file: .release-please-manifest-develop.json
+          target-branch: develop
