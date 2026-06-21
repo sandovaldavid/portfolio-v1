@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.0.0-beta.0...porfolio-dev-v1.1.0-beta.0) (2026-06-21)
+
+
+### Features
+
+* add automated screenshot capture with Playwright ([d391a8a](https://github.com/sandovaldavid/portfolio-v1/commit/d391a8aa1f31ee33ce665614bb38c8e79c4c9318))
+* add badges section ([facdaa1](https://github.com/sandovaldavid/portfolio-v1/commit/facdaa196a8ce579b3316d03064fccff19a960e2))
+* add clickable badge images ([437063f](https://github.com/sandovaldavid/portfolio-v1/commit/437063f5873781b6cadc922cfb3c2ea518b0cc72))
+* **ci:** implement hybrid gh-pages deployment ([#32](https://github.com/sandovaldavid/portfolio-v1/issues/32)) ([cf3436a](https://github.com/sandovaldavid/portfolio-v1/commit/cf3436a944ea65a27f85c8f43dafcf2ff361e708))
+* **contact-sidebar:** Add floating left contact sidebar ([3c20dbe](https://github.com/sandovaldavid/portfolio-v1/commit/3c20dbed8b3142f5cc41384d50a89f2fecb66299))
+* **i18n:** migrate AboutContent.astro to centralized translations ([b252f23](https://github.com/sandovaldavid/portfolio-v1/commit/b252f23da599bffdb0744c128db87decb3314284))
+* **i18n:** migrate Research.astro widget to centralized translations ([ffb1214](https://github.com/sandovaldavid/portfolio-v1/commit/ffb12143c74b24017e956730eeb8b4f9cd6b7916))
+* **i18n:** migrate ResearchContent.astro to use centralized translations ([b026727](https://github.com/sandovaldavid/portfolio-v1/commit/b0267270cb2ab11906bc3ea09b42ba4ac79d52ca))
+* **research:** Add '▸ FULL RESEARCH' CTA button in Research widget ([3c20dbe](https://github.com/sandovaldavid/portfolio-v1/commit/3c20dbed8b3142f5cc41384d50a89f2fecb66299))
+* **research:** Add dedicated /research page (ES + EN) ([3c20dbe](https://github.com/sandovaldavid/portfolio-v1/commit/3c20dbed8b3142f5cc41384d50a89f2fecb66299))
+
+
+### Bug Fixes
+
+* **ci-cd:** add --prod flag to production deployment ([0f91560](https://github.com/sandovaldavid/portfolio-v1/commit/0f9156092b62a362db7b25c9c66ffbca0b8e4226))
+* **ci-cd:** add prod flag to deploy step ([087b6ab](https://github.com/sandovaldavid/portfolio-v1/commit/087b6abbc659aba3e4f5b84822e684ee85297462))
+* **ci-cd:** align build and deploy flags for environment consistency ([c7d95eb](https://github.com/sandovaldavid/portfolio-v1/commit/c7d95eb460365bc04377642461c9bbfd8467adcc))
+* **ci-cd:** align deployment with portfolio v3 pattern ([6ec1597](https://github.com/sandovaldavid/portfolio-v1/commit/6ec1597ac9bddcbad9350a6133b647076359bb08))
+* **ci-cd:** explicitly promote deployment to production ([a064b1d](https://github.com/sandovaldavid/portfolio-v1/commit/a064b1db7c34accd8cb351c221fdbeaec9ca51c3))
+* **ci-cd:** install Vercel CLI before deployment ([ee60ba4](https://github.com/sandovaldavid/portfolio-v1/commit/ee60ba41a28d6bfc9bcfe5806e39c2aa6dad0f9d))
+* **ci-cd:** match build and deploy flags precisely ([6c8957e](https://github.com/sandovaldavid/portfolio-v1/commit/6c8957e2cc8a0b430efe6ab9477bc823a2fc3030))
+* **ci-cd:** optimize GitHub Actions and Vercel configuration ([a644703](https://github.com/sandovaldavid/portfolio-v1/commit/a644703e9ebd09aaf6d01336c04f8ef192163aed))
+* **ci-cd:** remove unnecessary promote step after production deployment ([592e5f5](https://github.com/sandovaldavid/portfolio-v1/commit/592e5f500b6e4ba68668970264b420c6c64de04e))
+* **ci-cd:** revert production deployment to main branch ([bd0c5d3](https://github.com/sandovaldavid/portfolio-v1/commit/bd0c5d3b7abc90ae8124b25311422e11d2bd41fb))
+* **ci-cd:** specify team ID in Vercel deployment commands ([bbffe7b](https://github.com/sandovaldavid/portfolio-v1/commit/bbffe7b75cfccb933ac74564e8330d97f56445c5))
+* **ci-cd:** use correct team ID that was previously working ([e618bfd](https://github.com/sandovaldavid/portfolio-v1/commit/e618bfda87bfcd2a940b78c1c68c2fb9ef7be91e))
+* **ci-cd:** use GitHub secrets for Vercel environment variables ([126924f](https://github.com/sandovaldavid/portfolio-v1/commit/126924f7bef6dc5452cc38df16f825f39865df80))
+* **ci-cd:** use vercel promote for production deployments ([d5c176d](https://github.com/sandovaldavid/portfolio-v1/commit/d5c176dfe3006a65f872d5dc1dcd73e7a913cf93))
+* **ci-cd:** use vercel promote to production ([5a064df](https://github.com/sandovaldavid/portfolio-v1/commit/5a064df20180dcc2a0bd603579955fb1cc0763de))
+* **ci-cd:** use VERCEL_ORG_ID from GitHub secrets ([5cc46d0](https://github.com/sandovaldavid/portfolio-v1/commit/5cc46d0595cd8983ff4f9768c5e0553c880d0325))
+* **ci:** change lighthouse reports directory to non-hidden path ([3147b28](https://github.com/sandovaldavid/portfolio-v1/commit/3147b28264f138b2d0df54e63234e480f13261c2))
+* **ci:** change lighthouse reports directory to non-hidden path ([7bfa19a](https://github.com/sandovaldavid/portfolio-v1/commit/7bfa19a9738ea933d7eca57cfda16d62d2d441d9))
+* **ci:** fix CodeQL, Playwright, and Lighthouse config ([d4170db](https://github.com/sandovaldavid/portfolio-v1/commit/d4170db726846c8f84be89c925e0e736d2ec17ce))
+* **ci:** fix Lighthouse assertions, Pages template, and E2E routes ([baf1456](https://github.com/sandovaldavid/portfolio-v1/commit/baf145650c5d51b04529f7cb8ac6e743e151ccdb))
+* **ci:** fix Playwright null response and Lighthouse threshold ([c1336da](https://github.com/sandovaldavid/portfolio-v1/commit/c1336da4add034467ef295a505a3e13bd8ab5fdb))
+* **ci:** lower audit level to high and fix Prettier JSX comments ([0ba3415](https://github.com/sandovaldavid/portfolio-v1/commit/0ba3415529145d3f47654c00d38fafce2528dba1))
+* **ci:** save lighthouse artifacts before lhci upload cleans local files ([8c733b6](https://github.com/sandovaldavid/portfolio-v1/commit/8c733b6abccf3be179b345b766ec58440f217b5c))
+* **ci:** update lockfile and document branch strategy ([d5e19fd](https://github.com/sandovaldavid/portfolio-v1/commit/d5e19fd7025c2546d72f1e98c55ee2b9d393c5ca))
+* **ci:** update PR comment and add GitHub Deployment environments ([849999a](https://github.com/sandovaldavid/portfolio-v1/commit/849999abf206a9dd711407f892ee09764d9eccc9))
+* **ci:** upgrade deps to fix security vulnerabilities and CI failures ([d4def93](https://github.com/sandovaldavid/portfolio-v1/commit/d4def93e71264124ad491413360bc49f111eb448))
+* **ci:** use branch ref for Environments box in PR ([46f56a1](https://github.com/sandovaldavid/portfolio-v1/commit/46f56a1abff0960b28aa6343cd588353a7edde25))
+* correct Playwright API usage in screenshot capture ([5e11f71](https://github.com/sandovaldavid/portfolio-v1/commit/5e11f717673b012ea6bde92e3044d2c657ad0c08))
+* **i18n:** normalize 404.astro to use Language enum ([8d23b6e](https://github.com/sandovaldavid/portfolio-v1/commit/8d23b6e3e0247b47f0f040856b8b0b0f0dd3e999))
+* **i18n:** update language picker for new default language ([87687f4](https://github.com/sandovaldavid/portfolio-v1/commit/87687f480e386d35e565940f8698577bf9003c42))
+* install vercel cli in deployment workflows ([5267977](https://github.com/sandovaldavid/portfolio-v1/commit/52679776f4059b632bffa468f632c77dbd5a8155))
+* prevent dev server termination issues in generate-reports script ([0f777bc](https://github.com/sandovaldavid/portfolio-v1/commit/0f777bc7f736bc99095a5791f52137ea41bc8e95))
+* remove prebuilt option from vercel deployment ([a2a48f2](https://github.com/sandovaldavid/portfolio-v1/commit/a2a48f233aa8d95e2c1f0336e5b957d5adafff74))
+* **research/en:** update contact section design to match Spanish version ([3b7b41b](https://github.com/sandovaldavid/portfolio-v1/commit/3b7b41bcb0c8d8de3d8a28a42fa34dfd06d1e807))
+* **research:** ensure contact box spans full grid width ([a4157e9](https://github.com/sandovaldavid/portfolio-v1/commit/a4157e9680c52a7a14f94ab0eb1a041dc3aebeb4))
+* **research:** move contact box into grid spanning full width ([af83eae](https://github.com/sandovaldavid/portfolio-v1/commit/af83eae6837bada9d6a6afb4b8b100d50b8290c9))
+* **research:** remove auto-rows-max for proper grid alignment ([68496ad](https://github.com/sandovaldavid/portfolio-v1/commit/68496ad98e245ecfa7e946965e6753df19e1fa85))
+* resolve ESLint and build warnings ([7010fc8](https://github.com/sandovaldavid/portfolio-v1/commit/7010fc825d7bc63e30d80d5cb1e5b57c170f08ca))
+* resolve Projects component naming conflicts in page components ([06e8944](https://github.com/sandovaldavid/portfolio-v1/commit/06e8944b39a7e321fe9642f1ada219e4f0690076))
+* **testing:** correct default language URLs for screenshot capture ([f2daff9](https://github.com/sandovaldavid/portfolio-v1/commit/f2daff9627582bf9be75bb6782e6a7a81eadfbd4))
+* **testing:** improve screenshot capture and report generation scripts ([0e6301e](https://github.com/sandovaldavid/portfolio-v1/commit/0e6301e39cd28dd9b8587f9071d0d3f77a4a6775))
+* **test:** use Navigation Timing API for page load measurement ([df55577](https://github.com/sandovaldavid/portfolio-v1/commit/df55577c0ba8226694df9a77416172d0e90067de))
+
+
+### Performance Improvements
+
+* **projects:** optimize images and fix render-blocking fonts ([94fe873](https://github.com/sandovaldavid/portfolio-v1/commit/94fe873390658511215d7394c950b8d08f32d60b))
+
 ## [Unreleased]
 
 ### Added
