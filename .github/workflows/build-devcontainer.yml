@@ -44,6 +44,6 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: ${{ env.IMAGE_NAME }}
-          # Tags the image with the branch name (e.g., develop, main) and the commit SHA
-          imageTag: ${{ github.ref_name }},${{ github.sha }}
+          # Tags the image with branch/pr name and the commit SHA (PR tags are formatted to avoid slashes)
+          imageTag: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || github.ref_name }},${{ github.sha }}
           push: ${{ github.event_name == 'push' && 'always' || 'never' }}
