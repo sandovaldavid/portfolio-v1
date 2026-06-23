@@ -1,14 +1,16 @@
 {
   "name": "Portfolio Dev Container",
   
-  // Approach 1: Build from local Dockerfile
+  // Pull pre-built image from GitHub Packages (GHCR) for instant startup
+  "image": "ghcr.io/sandovaldavid/portfolio-v1/devcontainer:develop",
+  
+  // Alternative (Commented out): Build from local Dockerfile if you are editing it
+  /*
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  
-  // Approach 2 (Alternative): Pull pre-built image from GitHub Packages:
-  // "image": "ghcr.io/sandovaldavid/portfolio-v1/devcontainer:develop",
+  */
 
   "customizations": {
     "vscode": {
