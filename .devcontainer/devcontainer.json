@@ -1,0 +1,37 @@
+{
+  "name": "Portfolio Dev Container",
+  
+  // Approach 1: Build from local Dockerfile
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  
+  // Approach 2 (Alternative): Pull pre-built image from GitHub Packages:
+  // "image": "ghcr.io/sandovaldavid/portfolio-v1/devcontainer:develop",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "astro-build.astro-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.path-intellisense"
+      ]
+    }
+  },
+  "remoteUser": "pwuser",
+  "containerUser": "pwuser",
+  "mounts": [
+    // Bind-mount Antigravity configurations to share authentication state and project registry
+    "source=${localEnv:HOME}/.gemini,target=/home/pwuser/.gemini,type=bind",
+    // Bind-mount Claude CLI credentials and command history
+    "source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind"
+  ],
+  "postCreateCommand": "bun install",
+  "forwardPorts": [4321]
+}
