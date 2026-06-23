@@ -41,7 +41,7 @@ jobs:
           echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}/devcontainer" >> $GITHUB_ENV
 
       - name: Build and push Dev Container to GHCR
-        uses: devcontainers/ci@v1
+        uses: devcontainers/ci@v0.3
         with:
           imageName: ${{ env.IMAGE_NAME }}
           # Tags the image with the branch name (e.g., develop, main) and the commit SHA
