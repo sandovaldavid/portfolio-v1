@@ -1,0 +1,48 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Dev Server (Bun)",
+			"type": "shell",
+			"command": "bun run dev",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Build Project (Bun)",
+			"type": "shell",
+			"command": "bun run build",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Unit Tests (Vitest)",
+			"type": "shell",
+			"command": "bun run test:unit",
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run E2E Tests (Playwright)",
+			"type": "shell",
+			"command": "bun run test",
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "Format Code (Prettier)",
+			"type": "shell",
+			"command": "bun run format",
+			"problemMatcher": []
+		},
+		{
+			"label": "Lint Code (ESLint)",
+			"type": "shell",
+			"command": "bun run lint:fix",
+			"problemMatcher": []
+		}
+	]
+}
