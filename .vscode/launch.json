@@ -9,10 +9,20 @@
 			"webRoot": "${workspaceFolder}"
 		},
 		{
-			"command": "./node_modules/.bin/astro dev",
-			"name": "Development server",
+			"command": "bun run dev",
+			"name": "Development server (Bun)",
 			"request": "launch",
 			"type": "node-terminal"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Debug Unit Tests (Vitest)",
+			"autoAttachChildProcesses": true,
+			"program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+			"args": ["run"],
+			"smartStep": true,
+			"console": "integratedTerminal"
 		}
 	]
 }
