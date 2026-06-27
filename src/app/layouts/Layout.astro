@@ -169,9 +169,15 @@ const websiteSchema = {
 	</head>
 
 	<body class="bg-background text-text-body flex flex-col min-h-screen">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white dark:focus:text-black focus:font-bold focus:uppercase focus:tracking-wider focus:border-2 focus:border-black dark:focus:border-white focus:shadow-[4px_4px_0px_var(--color-border-strong)] focus:rounded-none focus:no-underline"
+		>
+			Skip to main content
+		</a>
 		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
-			<main class="w-full min-h-screen flex flex-col items-center">
+			<main id="main-content" class="w-full min-h-screen flex flex-col items-center">
 				{
 					isHome ? (
 						<div class="pt-[4.5rem]">
