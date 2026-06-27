@@ -1,7 +1,7 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { Font } from 'astro:assets';
 import '@app/styles/global.css';
-import '@fontsource-variable/onest';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
@@ -124,21 +124,12 @@ const websiteSchema = {
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
 
-		<!-- Fonts: preload to avoid render-blocking -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="preload"
-			as="style"
-			href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap"
-			onload="this.onload=null;this.rel='stylesheet'"
-		/>
-		<noscript>
-			<link
-				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap"
-			/>
-		</noscript>
+		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
+		<Font cssVariable="--font-pixel" preload />
+		<Font cssVariable="--font-pixel-clean" preload />
+		<Font cssVariable="--font-retro-tag" />
+		<Font cssVariable="--font-gaming-mono" />
+		<Font cssVariable="--font-mono" />
 
 		<!-- Structured Data (JSON-LD) -->
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
