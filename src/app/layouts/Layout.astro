@@ -146,8 +146,24 @@ const websiteSchema = {
 
 		<meta name="generator" content={Astro.generator} />
 		<script is:inline>
-			// Force dark mode for high-contrast unified retro palette
-			document.documentElement.classList.add('dark');
+			(function applyTheme() {
+				const saved = localStorage.getItem('theme') || 'dark';
+				const isDark =
+					saved === 'dark' ||
+					(saved === 'system' &&
+						window.matchMedia('(prefers-color-scheme: dark)').matches);
+				document.documentElement.classList.toggle('dark', isDark);
+			})();
+			document.addEventListener('astro:after-swap', () => {
+				(function applyTheme() {
+					const saved = localStorage.getItem('theme') || 'dark';
+					const isDark =
+						saved === 'dark' ||
+						(saved === 'system' &&
+							window.matchMedia('(prefers-color-scheme: dark)').matches);
+					document.documentElement.classList.toggle('dark', isDark);
+				})();
+			});
 		</script>
 		<Analytics />
 	</head>
