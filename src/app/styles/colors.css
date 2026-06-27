@@ -1,6 +1,6 @@
 @theme {
-	--font-sans: 'JetBrains Mono', 'Geist Sans', 'Inter', system-ui, sans-serif;
-	--font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+	--font-sans: 'JetBrains Mono', 'Inter', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
 	--font-code: 'JetBrains Mono', 'Fira Code', monospace;
 	--font-pixel: 'Press Start 2P', monospace;
 	--font-pixel-clean: 'VT323', monospace;
