@@ -13,10 +13,17 @@ import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { ContactSidebar } from '@widgets/contact-sidebar';
 import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
-import { SectionContainer, TitleSection } from '@/shared/ui';
+import { SectionContainer, TitleSection } from '@shared/ui';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const canonicalPath =
+	langCode === 'en' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/es/, '') || '/';
+const enUrl = new URL(getRelativeLocaleUrl('en', canonicalPath), siteConfig.url).toString();
+const esUrl = new URL(getRelativeLocaleUrl('es', canonicalPath), siteConfig.url).toString();
 
 interface Props {
 	title: string;
@@ -34,7 +41,6 @@ const {
 	article = false,
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
 } = Astro.props;
-const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 
@@ -123,6 +129,11 @@ const websiteSchema = {
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- hreflang alternates for bilingual SEO -->
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="es" href={esUrl} />
+		<link rel="alternate" hreflang="x-default" href={enUrl} />
 
 		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
 		<Font cssVariable="--font-pixel" preload />
