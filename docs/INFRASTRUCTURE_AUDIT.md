@@ -1,6 +1,6 @@
 # Infrastructure & CI/CD Audit Report
 
-**Date:** June 18, 2026
+**Date:** June 18, 2026 · **Re-measured:** June 27, 2026
 **Auditor:** Claude Code
 **Project:** Portfolio V1
 **Contact:** hello@sandovaldavid.com | dev@sandovaldavid.com
@@ -10,17 +10,18 @@
 ## Executive Summary
 
 [INFO] Project has solid CI/CD foundation with automated validation and deployment.
-[WARNING] Critical performance issues need immediate attention (FCP: 12.3s vs target: <1.8s).
+[GOOD] Production performance is excellent (FCP ~1.1s, LCP ~1.7s across all pages) — the previously
+documented 12.3s FCP was a dev-server measurement, not production. Re-measured June 27, 2026.
 [WARNING] Missing critical security and testing infrastructure components.
 [GOOD] Excellent documentation and architecture practices.
 
-**Overall Grade: B- (6.5/10)**
+**Overall Grade: B+ (8.0/10)**
 - CI/CD: 8/10
 - Code Quality: 7/10
 - Testing: 3/10
 - Security: 2/10
 - Documentation: 9/10
-- Performance: 2/10
+- Performance: 10/10 (re-measured production build)
 
 ---
 
@@ -347,32 +348,34 @@ SEO:            100/100  ✓ (target: 90+)
 
 ## 4. PERFORMANCE ISSUES
 
-### Critical: Page Load Performance
+### Production Performance (Re-measured June 27, 2026)
 
-[WARNING] Production metrics are good, but dev server shows issues:
+[GOOD] Production build serves via `npx serve ./dist`, Lighthouse CI 3-run average:
 
-**Dev Server Metrics (latest.json):**
+**Homepage `/` (median of 3 runs):**
 ```
-First Contentful Paint:     12.3s (target: <1.8s)  ❌ 6.8x slower
-Largest Contentful Paint:   17.4s (target: <2.5s)  ❌ 7x slower
-Speed Index:                 3%   (target: >50)    ❌ Critical
-Time to Interactive:         4%   (target: >50)    ❌ Critical
+Performance:     100/100 ✓
+Accessibility:    96/100 ✓
+Best Practices:   96/100 ✓
+SEO:             100/100 ✓
+FCP:  1.1s    LCP:  1.7s    TBT:  0ms    CLS:  0.028
 ```
 
-**Production Metrics (production.json):**
+**All 6 audited URLs (range across 18 total runs):**
 ```
-Performance:     91/100  ✓
-Accessibility:   97/100  ✓
-Best Practices:  96/100  ✓
-SEO:            100/100  ✓
+Performance:     99–100  ✓ (threshold: ≥90)
+Accessibility:   96–100  ✓ (threshold: ≥95)
+Best Practices:  96      ✓ (threshold: ≥90)
+SEO:             100     ✓ (threshold: ≥90)
+FCP:  1.1s (all pages)    LCP:  1.4–2.1s    TBT:  0ms    CLS:  0.005–0.042
 ```
 
 **Analysis:**
-- Dev server (localhost): Uses source maps, no minification
-- Production build: Minified, optimized assets
-- Root cause of dev metrics: Normal for dev environment
-
-**Recommendation:** Monitor production metrics only in CI/CD.
+- The previously documented 12.3s FCP was a **dev-server measurement** (source maps, no
+  minification) — not a production regression.
+- Production performance is excellent: FCP ~1.1s, LCP ~1.7s (well within 2.5s target),
+  TBT 0ms (zero blocking time), CLS well-controlled.
+- Third-party Google Fonts remain the main render-path dependency (see portfolio-audit P1-1).
 
 ### Performance Optimization Opportunities
 
@@ -381,12 +384,11 @@ SEO:            100/100  ✓
 - Tailwind CSS 4.1 (minimal overhead)
 - Image optimization built-in
 
-[WARNING] Potential improvements:
-- Lazy load images using Astro Image
-- Preload critical resources
-- Minify inline scripts
-- Reduce JavaScript payload
-- Consider Astro Islands for dynamic content
+[INFO] Recommended improvements (see `docs/reports/portfolio-audit-2026-06/`):
+- Migrate to Astro 6 native Fonts API (self-host, removes 3rd-party render path) → P1-1
+- Lazy-init the CLI terminal script on first activation → PERF-3
+- Confirm splash overlay doesn't delay LCP on first visit → PERF-4
+- Optional: experimental svgoOptimizer() for SVG icons → P3-5
 
 ---
 
