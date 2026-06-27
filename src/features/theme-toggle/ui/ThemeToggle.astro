@@ -83,13 +83,13 @@ const THEMES = [
 			icons.system!.style.display = theme === 'system' ? 'block' : 'none';
 		};
 
-		// Cargo tema guardado (o system por defecto)
-		const saved = localStorage.getItem('theme') || 'system';
+		// Cargo tema guardado (dark por defecto — retro palette)
+		const saved = localStorage.getItem('theme') || 'dark';
 		applyTheme(saved);
 
 		// Si el sistema cambia y el usuario dejó en "system"
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-			if ((localStorage.getItem('theme') || 'system') === 'system') {
+			if ((localStorage.getItem('theme') || 'dark') === 'system') {
 				applyTheme('system');
 			}
 		});
