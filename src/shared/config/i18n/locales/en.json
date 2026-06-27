@@ -6,11 +6,33 @@
 		"title": "Engineering Scalable Systems",
 		"subtitle": "Software Engineer · BiLSTM/OSS Researcher · B.S. Computer Engineering",
 		"credential": "Currently @ Atena (Remote) · Researching OSS abandonment prediction w/ BiLSTM",
+		"banner": "[ SYSTEM STATUS: ACTIVE // PLAYER 1 READY ]",
+		"stats": {
+			"characterStats": "CHARACTER STATS",
+			"online": "ONLINE",
+			"class": "CLASS:",
+			"alignment": "ALIGNMENT:",
+			"specialties": "SPECIALTIES:",
+			"loc": "LOC:",
+			"hpMana": "HP / MANA:",
+			"skillLevel": "SKILL LEVEL:",
+			"systemsArchitect": "Systems Architect",
+			"cleanCode": "Clean Code",
+			"techStack": "Java, Angular, React",
+			"location": "Piura, Peru",
+			"hpValue": "99 / 99",
+			"lvlValue": "Lvl. 99 (Expert)",
+			"expPoints": "EXPERIENCE POINTS:",
+			"expComplete": "100% COMPLETE",
+			"level": "LEVEL 5+ ENGINEER",
+			"player": "P1: DAVID_S"
+		},
 		"cta": {
 			"contact": "Contact me",
 			"view-work": "View Selected Work",
 			"download-resume": "Download Resume",
-			"view-research": "View Research"
+			"view-research": "View Research",
+			"start": "PRESS START // VIEW WORK"
 		}
 	},
 	"nav": {
