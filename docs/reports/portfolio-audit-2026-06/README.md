@@ -123,28 +123,28 @@ These are the highest-leverage moves. Full details and acceptance criteria in
 
 ### Sprint 1 — Completed ✅
 
-| ID | Title | Branch | PR | Status |
-|----|-------|--------|----|:------:|
-| P0-1 | Fix theme FOUC | `fix/theme-fouc` | [#41](https://github.com/sandovaldavid/portfolio-v1/pull/41) | ✅ Merged |
-| P0-3 | Add prefers-reduced-motion | `feat/reduced-motion` | [#42](https://github.com/sandovaldavid/portfolio-v1/pull/42) | ✅ Merged |
-| P0-2 | Re-measure performance | `perf/remeasure-lighthouse` | [#45](https://github.com/sandovaldavid/portfolio-v1/pull/45) | ✅ PR Open |
-| P1-2 | Skip-to-content link | `feat/skip-link` | [#43](https://github.com/sandovaldavid/portfolio-v1/pull/43) | ✅ PR Open |
-| P2-5 | Status colors to tokens | `fix/status-colors-tokens` | [#44](https://github.com/sandovaldavid/portfolio-v1/pull/44) | ✅ PR Open |
+| ID | Title | PR | Status |
+|----|-------|----|:------:|
+| P0-1 | Fix theme FOUC | [#41](https://github.com/sandovaldavid/portfolio-v1/pull/41) | ✅ Merged |
+| P0-3 | Add prefers-reduced-motion | [#42](https://github.com/sandovaldavid/portfolio-v1/pull/42) | ✅ Merged |
+| P0-2 | Re-measure performance | [#45](https://github.com/sandovaldavid/portfolio-v1/pull/45) | ✅ Merged |
+| P1-2 | Skip-to-content link | [#43](https://github.com/sandovaldavid/portfolio-v1/pull/43) | ✅ Merged |
+| P2-5 | Status colors to tokens | [#44](https://github.com/sandovaldavid/portfolio-v1/pull/44) | ✅ Merged |
 
-**Performance re-measurement (P0-2):** Production build scored 99-100 Performance across all 6 URLs. FCP: 1.1s · LCP: 1.4-2.1s · TBT: 0ms · CLS: 0.005-0.042. The previously documented 12.3s FCP was a dev-server measurement.
+**Performance re-measurement:** FCP 1.1s · LCP 1.4-2.1s · TBT 0ms · CLS 0.005-0.042. The 12.3s figure was dev-server only.
 
-### Sprint 2 — In Progress
+### Sprint 2 — Completed ✅
 
-| ID | Title | Branch |
-|----|-------|--------|
-| P1-1 | Astro 6 Fonts API migration | `feat/astro-fonts-api` |
-| P1-3 | Accessibility & contrast scan | `test/a11y-scan` |
-| P1-5 | Hero i18n: translate CTA + stats | `fix/hero-i18n` |
-| P1-4 | Big-tech content gap | `feat/big-tech-content` |
-| P2-1 | Replace @/ with explicit aliases | `refactor/explicit-aliases` |
-| P2-2 | PascalCase component rename | `refactor/pascal-case-components` |
-| P2-3 | Wrap loose widgets | `refactor/loose-widgets` |
-| P2-4 | Emit hreflang alternates | `feat/hreflang` |
+| ID | Title | PR | Status |
+|----|-------|----|:------:|
+| P1-1 | Astro 6 Fonts API migration | [#49](https://github.com/sandovaldavid/portfolio-v1/pull/49) | ✅ Merged |
+| P1-5 | Hero i18n: translate CTA + stats | [#50](https://github.com/sandovaldavid/portfolio-v1/pull/50) | ✅ Merged |
+| P1-4 | Big-tech content gap | [#52](https://github.com/sandovaldavid/portfolio-v1/pull/52) | ✅ Merged |
+| P2-1 | Replace @/ with explicit aliases | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
+| P2-2 | PascalCase component rename | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
+| P2-3 | Wrap loose widgets | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
+| P2-4 | Emit hreflang alternates | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
+| P1-3 | Accessibility & contrast scan | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | 🔄 PR Open |
 
 ### Sprint 3 — Planned
 
@@ -163,6 +163,8 @@ These are the highest-leverage moves. Full details and acceptance criteria in
 | P3-2 | Technical devlog |
 | P3-4 | Configure CSP |
 | P3-5 | SVG optimizer (svgoOptimizer) |
+| P3-6 | Structured data enhancements |
+| P3-7 | Tokenize spacing/shadow + resume/print mode |
 | P3-6 | Structured data enhancements |
 | P3-7 | Tokenize spacing/shadow + resume/print mode |
 

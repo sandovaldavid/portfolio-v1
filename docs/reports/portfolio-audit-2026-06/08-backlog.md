@@ -72,18 +72,23 @@ changed** — this is the to-do list if/when implementation is approved.
 |----|-------|----|:------:|
 | P0-1 | Fix theme FOUC | [#41](https://github.com/sandovaldavid/portfolio-v1/pull/41) | ✅ Merged |
 | P0-3 | Add prefers-reduced-motion | [#42](https://github.com/sandovaldavid/portfolio-v1/pull/42) | ✅ Merged |
-| P0-2 | Re-measure performance | [#45](https://github.com/sandovaldavid/portfolio-v1/pull/45) | ✅ PR Open |
-| P1-2 | Skip-to-content link | [#43](https://github.com/sandovaldavid/portfolio-v1/pull/43) | ✅ PR Open |
-| P2-5 | Status colors to tokens | [#44](https://github.com/sandovaldavid/portfolio-v1/pull/44) | ✅ PR Open |
+| P0-2 | Re-measure performance | [#45](https://github.com/sandovaldavid/portfolio-v1/pull/45) | ✅ Merged |
+| P1-2 | Skip-to-content link | [#43](https://github.com/sandovaldavid/portfolio-v1/pull/43) | ✅ Merged |
+| P2-5 | Status colors to tokens | [#44](https://github.com/sandovaldavid/portfolio-v1/pull/44) | ✅ Merged |
 
-### Sprint 2 — In progress
+### Sprint 2 — ✅ Complete (June 27, 2026)
 
-P1-1 (fonts) · P1-3 (a11y scan) · P1-5 (hero i18n) · P1-4 (content) ·
-P2-1/P2-2/P2-3 (FSD cleanup) · P2-4 (hreflang)
+| ID | Title | PR | Status |
+|----|-------|----|:------:|
+| P1-1 | Astro 6 Fonts API | [#49](https://github.com/sandovaldavid/portfolio-v1/pull/49) | ✅ Merged |
+| P1-5 | Hero i18n: CTA + stats | [#50](https://github.com/sandovaldavid/portfolio-v1/pull/50) | ✅ Merged |
+| P1-4 | Big-tech content gap | [#52](https://github.com/sandovaldavid/portfolio-v1/pull/52) | ✅ Merged |
+| P2-1/2/3/4 | FSD cleanup + hreflang | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
+| P1-3 | A11y scan (axe-core) | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | 🔄 PR Open |
 
 ### Sprint 3 — Planned
 
-P2-6 (View Transitions) · P2-7 (a11y tests in CI) · P3-3 (component tests)
+P2-6 (View Transitions) · P2-7 (a11y tests in CI) · P2-8 (readability) · P3-3 (component tests)
 
 ### Backlog — P3 polish
 
