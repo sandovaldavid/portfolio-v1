@@ -15,11 +15,11 @@ const t = useTranslations(lang);
 		<div
 			class="w-full text-center border-2 border-dashed border-primary-500/60 p-3 font-retro-tag text-xs sm:text-sm text-primary-400 tracking-widest uppercase animate-pulse"
 		>
-			[ SYSTEM STATUS: ACTIVE // PLAYER 1 READY ]
+			{t('hero.banner')}
 		</div>
 
 		<!-- Title Name -->
-		<div class="text-center space-y-3">
+		<div class="text-center space-y-2">
 			<span
 				class="font-retro-tag text-[10px] sm:text-xs uppercase tracking-widest text-primary-500 font-bold block"
 				style="animation: var(--animate-fade-in); animation-delay: 0ms;"
@@ -32,6 +32,18 @@ const t = useTranslations(lang);
 			>
 				David Sandoval
 			</h1>
+			<p
+				class="text-sm sm:text-base text-text-muted font-gaming-mono tracking-wide max-w-xl mx-auto"
+				style="animation: var(--animate-fade-in); animation-delay: 150ms;"
+			>
+				{t('hero.subtitle')}
+			</p>
+			<p
+				class="text-xs sm:text-sm text-primary-500 font-gaming-mono tracking-wide"
+				style="animation: var(--animate-fade-in); animation-delay: 200ms;"
+			>
+				{t('hero.credential')}
+			</p>
 		</div>
 
 		<!-- Character Select Dashboard (Enlarged) -->
@@ -53,12 +65,12 @@ const t = useTranslations(lang);
 					<div
 						class="absolute bottom-0 inset-x-0 bg-primary-500 text-white dark:text-black text-[10px] font-pixel text-center py-1.5 uppercase tracking-widest"
 					>
-						P1: DAVID_S
+						{t('hero.stats.player')}
 					</div>
 				</div>
 				<span
 					class="font-retro-tag text-[10px] text-text-muted mt-4 uppercase tracking-wider"
-					>LEVEL 5+ ENGINEER</span
+					>{t('hero.stats.level')}</span
 				>
 			</div>
 
@@ -70,48 +82,55 @@ const t = useTranslations(lang);
 					<span
 						class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-text-main"
 					>
-						CHARACTER STATS
+						{t('hero.stats.characterStats')}
 					</span>
 					<span
 						class="font-retro-tag text-[10px] bg-success-500 text-black px-2.5 py-1 font-bold animate-pulse uppercase"
 					>
-						ONLINE
+						{t('hero.stats.online')}
 					</span>
 				</div>
 
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-base">
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">CLASS:</span
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>{t('hero.stats.class')}</span
 						>
-						<span class="text-text-main font-semibold">Systems Architect</span>
+						<span class="text-text-main font-semibold"
+							>{t('hero.stats.systemsArchitect')}</span
+						>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
 						<span class="text-text-muted font-bold uppercase tracking-wide"
-							>ALIGNMENT:</span
+							>{t('hero.stats.alignment')}</span
 						>
-						<span class="text-text-main font-semibold">Clean Code</span>
+						<span class="text-text-main font-semibold">{t('hero.stats.cleanCode')}</span
+						>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
 						<span class="text-text-muted font-bold uppercase tracking-wide"
-							>SPECIALTIES:</span
+							>{t('hero.stats.specialties')}</span
 						>
-						<span class="text-text-main font-semibold">Java, Angular, React</span>
-					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide">LOC:</span>
-						<span class="text-text-main font-semibold">Piura, Peru</span>
+						<span class="text-text-main font-semibold">{t('hero.stats.techStack')}</span
+						>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
 						<span class="text-text-muted font-bold uppercase tracking-wide"
-							>HP / MANA:</span
+							>{t('hero.stats.loc')}</span
 						>
-						<span class="text-primary-500 font-bold">99 / 99</span>
+						<span class="text-text-main font-semibold">{t('hero.stats.location')}</span>
 					</div>
 					<div class="flex justify-between border-b border-border-subtle pb-1.5">
 						<span class="text-text-muted font-bold uppercase tracking-wide"
-							>SKILL LEVEL:</span
+							>{t('hero.stats.hpMana')}</span
 						>
-						<span class="text-text-main font-semibold">Lvl. 99 (Expert)</span>
+						<span class="text-primary-500 font-bold">{t('hero.stats.hpValue')}</span>
+					</div>
+					<div class="flex justify-between border-b border-border-subtle pb-1.5">
+						<span class="text-text-muted font-bold uppercase tracking-wide"
+							>{t('hero.stats.skillLevel')}</span
+						>
+						<span class="text-text-main font-semibold">{t('hero.stats.lvlValue')}</span>
 					</div>
 				</div>
 
@@ -120,8 +139,8 @@ const t = useTranslations(lang);
 					<div
 						class="flex justify-between text-xs font-bold uppercase tracking-wider text-text-muted"
 					>
-						<span>EXPERIENCE POINTS:</span>
-						<span>100% COMPLETE</span>
+						<span>{t('hero.stats.expPoints')}</span>
+						<span>{t('hero.stats.expComplete')}</span>
 					</div>
 					<div
 						class="w-full h-5 border-2 border-black dark:border-white bg-black/10 dark:bg-black/30 p-0.5"
@@ -138,7 +157,7 @@ const t = useTranslations(lang);
 				href={getLocalizedPath(lang, '/#experience')}
 				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base sm:text-lg px-9 py-4.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[4px_4px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
 			>
-				PRESS START // VIEW WORK
+				{t('hero.cta.start')}
 			</a>
 		</div>
 	</div>

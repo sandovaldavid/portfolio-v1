@@ -6,11 +6,33 @@
 		"title": "Ingeniería de Sistemas Escalables",
 		"subtitle": "Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática",
 		"credential": "Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM",
+		"banner": "[ ESTADO DEL SISTEMA: ACTIVO // JUGADOR 1 LISTO ]",
+		"stats": {
+			"characterStats": "ESTADÍSTICAS",
+			"online": "EN LÍNEA",
+			"class": "CLASE:",
+			"alignment": "ALINEACIÓN:",
+			"specialties": "ESPECIALIDADES:",
+			"loc": "LOC:",
+			"hpMana": "HP / MANA:",
+			"skillLevel": "NIVEL:",
+			"systemsArchitect": "Arquitecto de Sistemas",
+			"cleanCode": "Código Limpio",
+			"techStack": "Java, Angular, React",
+			"location": "Piura, Perú",
+			"hpValue": "99 / 99",
+			"lvlValue": "Nvl. 99 (Experto)",
+			"expPoints": "PUNTOS DE EXPERIENCIA:",
+			"expComplete": "100% COMPLETO",
+			"level": "INGENIERO NIVEL 5+",
+			"player": "P1: DAVID_S"
+		},
 		"cta": {
 			"contact": "Contáctame",
 			"view-work": "Ver mi Trabajo",
 			"download-resume": "Descargar CV",
-			"view-research": "Ver Investigación"
+			"view-research": "Ver Investigación",
+			"start": "PRESIONA START // VER TRABAJO"
 		}
 	},
 	"nav": {
