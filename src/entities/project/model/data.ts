@@ -1,10 +1,10 @@
 import { TAGS } from '@entities/technology';
 import type { ProjectItem } from './types';
 
-import campusMapImg from '@/assets/projects/project-08-campus-map.webp';
-import madaiImg from '@/assets/projects/project-10-MAD-AI.webp';
-import fluentreadsImg from '@/assets/projects/project-09-fluentreads.webp';
-import auctionsImg from '@/assets/projects/project-02-auctions.webp';
+import campusMapImg from '@assets/projects/project-08-campus-map.webp';
+import madaiImg from '@assets/projects/project-10-MAD-AI.webp';
+import fluentreadsImg from '@assets/projects/project-09-fluentreads.webp';
+import auctionsImg from '@assets/projects/project-02-auctions.webp';
 
 /**
  * Project database

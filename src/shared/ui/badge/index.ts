@@ -1,1 +1,1 @@
-export { default as Badge } from './badge.astro';
+export { default as Badge } from './Badge.astro';

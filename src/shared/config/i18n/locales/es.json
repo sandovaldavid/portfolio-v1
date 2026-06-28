@@ -6,11 +6,33 @@
 		"title": "Ingeniería de Sistemas Escalables",
 		"subtitle": "Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática",
 		"credential": "Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM",
+		"banner": "[ ESTADO DEL SISTEMA: ACTIVO // JUGADOR 1 LISTO ]",
+		"stats": {
+			"characterStats": "ESTADÍSTICAS",
+			"online": "EN LÍNEA",
+			"class": "CLASE:",
+			"alignment": "ALINEACIÓN:",
+			"specialties": "ESPECIALIDADES:",
+			"loc": "LOC:",
+			"hpMana": "HP / MANA:",
+			"skillLevel": "NIVEL:",
+			"systemsArchitect": "Arquitecto de Sistemas",
+			"cleanCode": "Código Limpio",
+			"techStack": "Java, Angular, React",
+			"location": "Piura, Perú",
+			"hpValue": "99 / 99",
+			"lvlValue": "Nvl. 99 (Experto)",
+			"expPoints": "PUNTOS DE EXPERIENCIA:",
+			"expComplete": "100% COMPLETO",
+			"level": "INGENIERO NIVEL 5+",
+			"player": "P1: DAVID_S"
+		},
 		"cta": {
 			"contact": "Contáctame",
 			"view-work": "Ver mi Trabajo",
 			"download-resume": "Descargar CV",
-			"view-research": "Ver Investigación"
+			"view-research": "Ver Investigación",
+			"start": "PRESIONA START // VER TRABAJO"
 		}
 	},
 	"nav": {
@@ -92,8 +114,8 @@
 		"user-record": "[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]",
 		"return-button": "[ RETORNAR AL INICIO ]",
 		"paragraph1": "Ingeniero Informático enfocado en la intersección de arquitecturas empresariales robustas y Deep Learning aplicado. Especialista en el ecosistema <strong>.NET 8 (Clean Architecture/CQRS)</strong> y <strong>Angular 19 (Signals/Zoneless)</strong>. Mi trabajo de investigación se centra en <strong>Mining Software Repositories (MSR)</strong> mediante redes <strong>LSTM</strong>, buscando patrones de evolución y mantenibilidad en repositorios de gran escala.",
-		"paragraph2": "Mi experiencia profesional incluye el desarrollo de sistemas de alta disponibilidad, implementación de arquitecturas reactivas modernas, y aplicación de técnicas de aprendizaje automático para predecir la degradación de la calidad del código. Combino prácticas rigurosas de ingeniería de software con enfoques basados en datos para construir soluciones escalables y mantenibles.",
-		"paragraph3": "Aspiro a seguir empujando los límites tanto del desarrollo de software empresarial como del análisis de repositorios impulsado por IA, contribuyendo a herramientas y metodologías que ayuden a los equipos a construir mejor software.",
+		"paragraph2": "Mi experiencia profesional incluye diseñar y desplegar sistemas de alta disponibilidad que sirven a miles de usuarios finales, implementar arquitecturas reactivas modernas que eliminaron la dependencia de Zone.js, y aplicar machine learning para predecir el abandono de proyectos OSS. Lidero revisiones de código, mentoreo a desarrolladores junior, y tomo decisiones arquitectónicas que equilibran rendimiento con mantenibilidad.",
+		"paragraph3": "Colaboro con equipos multifuncionales — desde producto hasta infraestructura — para entregar funcionalidades que resisten la escala de producción. Mi trabajo abarca todo el stack: APIs REST (CQRS/Clean Architecture), pipelines de datos en tiempo real y optimización de rendimiento UI a nivel de píxel. Combino ingeniería de software rigurosa con enfoques basados en datos para construir sistemas que perduran.",
 		"currently-focused": "Enfocado actualmente en:",
 		"focus1": "BiLSTM para predicción de abandono OSS",
 		"focus2": "Minería de Repositorios de Software (MSR)",

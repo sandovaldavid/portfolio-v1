@@ -1,7 +1,7 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { Font } from 'astro:assets';
 import '@app/styles/global.css';
-import '@fontsource-variable/onest';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
@@ -13,10 +13,17 @@ import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { ContactSidebar } from '@widgets/contact-sidebar';
 import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
-import { SectionContainer, TitleSection } from '@/shared/ui';
+import { SectionContainer, TitleSection } from '@shared/ui';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const canonicalPath =
+	langCode === 'en' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/es/, '') || '/';
+const enUrl = new URL(getRelativeLocaleUrl('en', canonicalPath), siteConfig.url).toString();
+const esUrl = new URL(getRelativeLocaleUrl('es', canonicalPath), siteConfig.url).toString();
 
 interface Props {
 	title: string;
@@ -34,7 +41,6 @@ const {
 	article = false,
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
 } = Astro.props;
-const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 
@@ -124,21 +130,17 @@ const websiteSchema = {
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
 
-		<!-- Fonts: preload to avoid render-blocking -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="preload"
-			as="style"
-			href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap"
-			onload="this.onload=null;this.rel='stylesheet'"
-		/>
-		<noscript>
-			<link
-				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap"
-			/>
-		</noscript>
+		<!-- hreflang alternates for bilingual SEO -->
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="es" href={esUrl} />
+		<link rel="alternate" hreflang="x-default" href={enUrl} />
+
+		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
+		<Font cssVariable="--font-pixel" preload />
+		<Font cssVariable="--font-pixel-clean" preload />
+		<Font cssVariable="--font-retro-tag" />
+		<Font cssVariable="--font-gaming-mono" />
+		<Font cssVariable="--font-mono" />
 
 		<!-- Structured Data (JSON-LD) -->
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
@@ -169,9 +171,15 @@ const websiteSchema = {
 	</head>
 
 	<body class="bg-background text-text-body flex flex-col min-h-screen">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white dark:focus:text-black focus:font-bold focus:uppercase focus:tracking-wider focus:border-2 focus:border-black dark:focus:border-white focus:shadow-[4px_4px_0px_var(--color-border-strong)] focus:rounded-none focus:no-underline"
+		>
+			Skip to main content
+		</a>
 		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
-			<main class="w-full min-h-screen flex flex-col items-center">
+			<main id="main-content" class="w-full min-h-screen flex flex-col items-center">
 				{
 					isHome ? (
 						<div class="pt-[4.5rem]">

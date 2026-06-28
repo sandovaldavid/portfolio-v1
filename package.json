@@ -26,9 +26,6 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",
-		"@fontsource-variable/onest": "^5.2.11",
-		"@fontsource/geist-mono": "^5.2.8",
-		"@fontsource/geist-sans": "^5.2.5",
 		"@tailwindcss/vite": "^4.3.1",
 		"@vercel/analytics": "^1.6.1",
 		"astro": "^6.4.8",
@@ -40,9 +37,12 @@
 		"typescript": "^5.9.3"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.12.1",
 		"@commitlint/cli": "^21.1.0",
 		"@commitlint/config-conventional": "^21.1.0",
 		"@eslint/js": "^10.0.1",
+		"@lhci/cli": "^0.15.1",
+		"@playwright/test": "^1.61.0",
 		"@release-it/conventional-changelog": "^11.0.1",
 		"@typescript-eslint/eslint-plugin": "^8.62.0",
 		"@typescript-eslint/parser": "^8.62.0",
@@ -50,10 +50,9 @@
 		"@vitest/ui": "^3.2.6",
 		"eslint": "^10.6.0",
 		"husky": "^9.1.7",
-		"@playwright/test": "^1.61.1",
 		"release-it": "^20.2.1",
+		"rollup-plugin-visualizer": "^7.0.1",
 		"vite": "^6.4.3",
-		"vitest": "^3.2.6",
-		"rollup-plugin-visualizer": "^7.0.1"
+		"vitest": "^3.2.6"
 	}
 }
