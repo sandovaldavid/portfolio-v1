@@ -57,7 +57,7 @@ export const TAGS: TechnologyTags = {
 	},
 	JAVASCRIPT: {
 		name: 'JavaScript',
-		class: 'bg-yellow-500 text-white',
+		class: 'bg-yellow-500 text-black',
 		icon: JavaScriptIcon,
 	},
 	CSS: {
@@ -137,12 +137,12 @@ export const TAGS: TechnologyTags = {
 	},
 	ANGULAR: {
 		name: 'Angular',
-		class: 'bg-red-200 text-white',
+		class: 'bg-red-600 text-white',
 		icon: AngularIcon,
 	},
 	RXJS: {
 		name: 'RxJS',
-		class: 'bg-red-200 text-white',
+		class: 'bg-red-600 text-white',
 		icon: RxJSIcon,
 	},
 	CSHARP: {

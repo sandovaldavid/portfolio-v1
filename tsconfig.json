@@ -14,5 +14,5 @@
 			"@app/*": ["./src/app/*"]
 		}
 	},
-	"exclude": ["tests/", "playwright.config.ts"]
+	"exclude": ["tests/", "playwright.config.ts", "vitest.config.ts"]
 }
