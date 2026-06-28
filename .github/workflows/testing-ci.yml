@@ -71,8 +71,6 @@ jobs:
   playwright:
     name: Playwright E2E Tests
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.61.0-noble
     outputs:
       pw-url: ${{ steps.upload-pw.outputs.artifact-url }}
       bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
@@ -81,22 +79,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install unzip
-        run: apt-get update && apt-get install -y unzip
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build project
-        run: bun run build
-
-      - name: Run Playwright tests
-        run: bunx playwright test
+      - name: Run E2E tests in Docker Compose
+        run: UID=$(id -u) GID=$(id -g) docker compose run --rm playwright
 
       - name: Upload Playwright report
         id: upload-pw
