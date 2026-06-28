@@ -79,6 +79,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Pre-create directories for Docker volumes
+        run: mkdir -p .docker/node_modules playwright-report test-results
+
       - name: Run E2E tests in Docker Compose
         run: UID=$(id -u) GID=$(id -g) docker compose run --rm playwright
 
