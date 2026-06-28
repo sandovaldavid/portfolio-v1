@@ -32,27 +32,27 @@ import type { TechnologyTags } from './types';
 export const TAGS: TechnologyTags = {
 	JAVA: {
 		name: 'Java',
-		class: 'bg-red-600 text-white',
+		class: 'bg-red-700 text-white',
 		icon: JavaIcon,
 	},
 	PYTHON: {
 		name: 'Python',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: PythonIcon,
 	},
 	DJANGO: {
 		name: 'Django',
-		class: 'bg-green-500 text-white',
+		class: 'bg-green-700 text-white',
 		icon: DjangoIcon,
 	},
 	MARKDOWN: {
 		name: 'Markdown',
-		class: 'bg-gray-500 text-white',
+		class: 'bg-gray-700 text-white',
 		icon: MarkdownIcon,
 	},
 	BOOTSTRAP: {
 		name: 'Bootstrap',
-		class: 'bg-purple-500 text-white',
+		class: 'bg-purple-700 text-white',
 		icon: BootstrapIcon,
 	},
 	JAVASCRIPT: {
@@ -62,22 +62,22 @@ export const TAGS: TechnologyTags = {
 	},
 	CSS: {
 		name: 'CSS',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: CSSIcon,
 	},
 	HTML: {
 		name: 'HTML',
-		class: 'bg-red-500 text-white',
+		class: 'bg-red-700 text-white',
 		icon: HTMLIcon,
 	},
 	TAILWIND: {
 		name: 'Tailwind',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: TailwindIcon,
 	},
 	REACT: {
 		name: 'React',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: ReactIcon,
 	},
 	NEXTJS: {
@@ -87,22 +87,22 @@ export const TAGS: TechnologyTags = {
 	},
 	MYSQL: {
 		name: 'MySQL',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: MySQLIcon,
 	},
 	MATERIALUI: {
 		name: 'Material-UI',
-		class: 'bg-white text-blue-600',
+		class: 'bg-white text-blue-700',
 		icon: MaterialUIIcon,
 	},
 	POSTGRESQL: {
 		name: 'PostgreSQL',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: PostgreSQLIcon,
 	},
 	EXPRESS: {
 		name: 'Express',
-		class: 'bg-black text-white border border-withe',
+		class: 'bg-black text-white border border-white',
 		icon: ExpressIcon,
 	},
 	CLOUDINARY: {
@@ -112,7 +112,7 @@ export const TAGS: TechnologyTags = {
 	},
 	SQLITE: {
 		name: 'SQLite',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: SQLiteIcon,
 	},
 	SANITY: {
@@ -122,7 +122,7 @@ export const TAGS: TechnologyTags = {
 	},
 	CHARTJS: {
 		name: 'Chart.js',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: ChartJsIcon,
 	},
 	ASTRO: {
@@ -132,22 +132,22 @@ export const TAGS: TechnologyTags = {
 	},
 	TYPESCRIPT: {
 		name: 'TypeScript',
-		class: 'bg-blue-500 text-white',
+		class: 'bg-blue-700 text-white',
 		icon: TypescriptIcon,
 	},
 	ANGULAR: {
 		name: 'Angular',
-		class: 'bg-red-600 text-white',
+		class: 'bg-red-700 text-white',
 		icon: AngularIcon,
 	},
 	RXJS: {
 		name: 'RxJS',
-		class: 'bg-red-600 text-white',
+		class: 'bg-red-700 text-white',
 		icon: RxJSIcon,
 	},
 	CSHARP: {
 		name: 'C# / .NET',
-		class: 'bg-purple-600 text-white',
+		class: 'bg-purple-700 text-white',
 		icon: CSharpIcon,
 	},
 } as const;
