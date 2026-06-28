@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.1.0-beta.0...porfolio-dev-v1.2.0-beta.0) (2026-06-28)
+
+
+### Features
+
+* **a11y:** add prefers-reduced-motion support (WCAG 2.3.3) ([#42](https://github.com/sandovaldavid/portfolio-v1/issues/42)) ([d5c829a](https://github.com/sandovaldavid/portfolio-v1/commit/d5c829a373b7d9cd0b5b6d295023fe458adadfc8))
+* **a11y:** add skip-to-content link ([#43](https://github.com/sandovaldavid/portfolio-v1/issues/43)) ([e1d16cb](https://github.com/sandovaldavid/portfolio-v1/commit/e1d16cb83d6338b0766024a0ae2d74c4b3c068e9))
+* **content:** add scale, leadership and system-design signals ([#52](https://github.com/sandovaldavid/portfolio-v1/issues/52)) ([4995992](https://github.com/sandovaldavid/portfolio-v1/commit/49959923fcf65a2d7cfc60c45624446d6fc4c3a5))
+* **fonts:** migrate to native Astro 6 Fonts API ([#49](https://github.com/sandovaldavid/portfolio-v1/issues/49)) ([e9cb420](https://github.com/sandovaldavid/portfolio-v1/commit/e9cb4200ed566212ac2396a1fe2026d117b281cc))
+
+
+### Bug Fixes
+
+* **design:** route hero ONLINE badge to success token ([#44](https://github.com/sandovaldavid/portfolio-v1/issues/44)) ([c97ccbf](https://github.com/sandovaldavid/portfolio-v1/commit/c97ccbf6473477b218dd17b1fc5763ac3114e1c2))
+* **i18n:** translate hero CTA, stats and render unused keys ([#50](https://github.com/sandovaldavid/portfolio-v1/issues/50)) ([5b4717f](https://github.com/sandovaldavid/portfolio-v1/commit/5b4717f9ed3939bacac1a51e2cd5ecd46573ad1d))
+* **theme:** resolve FOUC by reading localStorage before paint ([#41](https://github.com/sandovaldavid/portfolio-v1/issues/41)) ([1ff7eb4](https://github.com/sandovaldavid/portfolio-v1/commit/1ff7eb4888287a44d2b73d0b913dcef9fb8b5900))
+
+
+### Performance Improvements
+
+* **docs:** re-measure performance with Lighthouse CI ([#45](https://github.com/sandovaldavid/portfolio-v1/issues/45)) ([228441b](https://github.com/sandovaldavid/portfolio-v1/commit/228441b8522c1d73a6b2c6febba323cb02b9df15))
+
 ## [1.1.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.0.0-beta.0...porfolio-dev-v1.1.0-beta.0) (2026-06-21)
 
 
