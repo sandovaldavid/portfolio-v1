@@ -42,7 +42,7 @@ test.describe('Visual regression — Key sections', () => {
 
 	test('footer should match baseline', async ({ page }) => {
 		await page.goto('/');
-		const footer = page.locator('footer').first();
+		const footer = page.locator('footer#contact');
 		await footer.scrollIntoViewIfNeeded();
 		await expect(footer).toBeVisible();
 		await expect(footer).toHaveScreenshot('footer.png', {
