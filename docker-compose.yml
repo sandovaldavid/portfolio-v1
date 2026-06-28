@@ -8,7 +8,7 @@ services:
     working_dir: /workspace
     volumes:
       - .:/workspace:z
-      - node_modules:/workspace/node_modules
+      - ./.docker/node_modules:/workspace/node_modules:z
       - bun_data:/home/pwuser/.bun
     environment:
       - CI=${CI:-}
@@ -16,5 +16,4 @@ services:
       - "4321:4321"
 
 volumes:
-  node_modules:
   bun_data:
