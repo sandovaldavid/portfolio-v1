@@ -1,5 +1,6 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { ClientRouter } from 'astro:transitions';
 import { Font } from 'astro:assets';
 import '@app/styles/global.css';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
@@ -167,6 +168,7 @@ const websiteSchema = {
 				})();
 			});
 		</script>
+		<ClientRouter />
 		<Analytics />
 	</head>
 
