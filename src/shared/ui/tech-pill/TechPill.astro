@@ -39,10 +39,13 @@ const stackShadow =
 		: 'shadow-[2.5px_2.5px_0px_var(--color-border-strong)] hover:shadow-[4.5px_4.5px_0px_var(--color-border-strong)] active:shadow-[1px_1px_0px_var(--color-border-strong)]';
 
 // Final classes selection
+const hasBg = additionalClasses.includes('bg-');
+const hasText = additionalClasses.includes('text-');
+
 const containerClasses =
 	variant === 'stack'
 		? `${baseClasses} ${stackPadding} ${stackText} ${stackBg} ${stackAnimation} ${stackShadow}`
-		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-200 font-mono`;
+		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-neutral-900 dark:text-neutral-200'} font-mono`;
 
 const iconClasses = variant === 'stack' ? stackIcon : cardIcon;
 ---
