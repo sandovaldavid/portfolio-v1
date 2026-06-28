@@ -27,6 +27,8 @@ test.describe('Accessibility — axe-core scan (dark theme)', () => {
 				document.documentElement.classList.add('dark');
 			});
 			await page.reload();
+			await page.waitForLoadState('domcontentloaded');
+			await page.waitForLoadState('networkidle');
 
 			// Disable transitions and animations to prevent scanning elements in mid-animation states (e.g. low opacity)
 			await page.addStyleTag({
@@ -69,6 +71,8 @@ test.describe('Accessibility — axe-core scan (light theme)', () => {
 				document.documentElement.classList.remove('dark');
 			});
 			await page.reload();
+			await page.waitForLoadState('domcontentloaded');
+			await page.waitForLoadState('networkidle');
 
 			// Disable transitions and animations to prevent scanning elements in mid-animation states (e.g. low opacity)
 			await page.addStyleTag({
