@@ -22,6 +22,12 @@ test.describe('Accessibility — axe-core scan (dark theme)', () => {
 	for (const { path, name } of KEY_PAGES) {
 		test(`${name} (${path}) should have no serious a11y violations`, async ({ page }) => {
 			await page.goto(path);
+			await page.evaluate(() => {
+				localStorage.setItem('theme', 'dark');
+				document.documentElement.classList.add('dark');
+			});
+			await page.reload();
+
 			const results = await runAxe(page);
 
 			const failures = results.violations.filter(

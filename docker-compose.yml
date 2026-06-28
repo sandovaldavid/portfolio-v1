@@ -1,0 +1,20 @@
+services:
+  playwright:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    image: portfolio-v1-test:latest
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:z
+      - node_modules:/workspace/node_modules
+      - bun_data:/home/pwuser/.bun
+    environment:
+      - CI=${CI:-}
+    ports:
+      - "4321:4321"
+
+volumes:
+  node_modules:
+  bun_data:
