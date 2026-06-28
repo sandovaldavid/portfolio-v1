@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Visual regression — Hero section', () => {
 	test('homepage hero should match baseline (EN dark)', async ({ page }) => {
