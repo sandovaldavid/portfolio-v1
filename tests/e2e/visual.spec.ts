@@ -1,6 +1,4 @@
-import { test, expect } from '@playwright/test';
-
-const ACCEPTABLE_DIFF_RATIO = 0.10;
+import { test, expect } from './fixtures';
 
 test.describe('Visual regression — Hero section', () => {
 	test('homepage hero should match baseline (EN dark)', async ({ page }) => {
@@ -8,7 +6,7 @@ test.describe('Visual regression — Hero section', () => {
 		const hero = page.locator('.hero-gradient').first();
 		await expect(hero).toBeVisible();
 		await expect(hero).toHaveScreenshot('hero-en-dark.png', {
-			maxDiffPixelRatio: ACCEPTABLE_DIFF_RATIO,
+			maxDiffPixelRatio: 0.05,
 		});
 	});
 
@@ -17,7 +15,7 @@ test.describe('Visual regression — Hero section', () => {
 		const hero = page.locator('.hero-gradient').first();
 		await expect(hero).toBeVisible();
 		await expect(hero).toHaveScreenshot('hero-es-dark.png', {
-			maxDiffPixelRatio: ACCEPTABLE_DIFF_RATIO,
+			maxDiffPixelRatio: 0.05,
 		});
 	});
 });
@@ -28,7 +26,7 @@ test.describe('Visual regression — Key sections', () => {
 		const header = page.locator('header').first();
 		await expect(header).toBeVisible();
 		await expect(header).toHaveScreenshot('header-navbar.png', {
-			maxDiffPixelRatio: ACCEPTABLE_DIFF_RATIO,
+			maxDiffPixelRatio: 0.05,
 		});
 	});
 
@@ -38,17 +36,17 @@ test.describe('Visual regression — Key sections', () => {
 		await experience.scrollIntoViewIfNeeded();
 		await expect(experience).toBeVisible();
 		await expect(experience).toHaveScreenshot('experience-section.png', {
-			maxDiffPixelRatio: ACCEPTABLE_DIFF_RATIO,
+			maxDiffPixelRatio: 0.05,
 		});
 	});
 
 	test('footer should match baseline', async ({ page }) => {
 		await page.goto('/');
-		const footer = page.locator('footer').first();
+		const footer = page.locator('footer#contact');
 		await footer.scrollIntoViewIfNeeded();
 		await expect(footer).toBeVisible();
 		await expect(footer).toHaveScreenshot('footer.png', {
-			maxDiffPixelRatio: ACCEPTABLE_DIFF_RATIO,
+			maxDiffPixelRatio: 0.05,
 		});
 	});
 });

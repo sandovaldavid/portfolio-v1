@@ -130,6 +130,58 @@ Este proyecto fue construido usando las siguientes tecnologías:
 | `bun run format`       | Formatea el código con Prettier                            |
 | `bun run format:check` | Verifica el formato del código sin modificar               |
 
+## 🧪 Testing
+
+### Comandos de Test
+
+| Comando | Descripción |
+|---------|-------------|
+| `bun test` | Tests unitarios (Vitest, solo `tests/unit/`) |
+| `bun run test:unit` | Tests unitarios con Vitest |
+| `bun run test:unit:coverage` | Cobertura de tests unitarios |
+| `bun run test:local` | E2E en Chromium, Firefox y Mobile Chrome (recomendado en Fedora/Linux) |
+| `bun run test` | E2E completo en los 5 browsers (requiere webkit deps) |
+| `bun run test:ui` | E2E en modo UI interactivo |
+
+### Tests E2E en Linux / Fedora
+
+`webkit` y `Mobile Safari` necesitan librerías del sistema (`libicu74`, `libwoff1`, `gstreamer1.0-libav`) que no están disponibles en Fedora. Para el desarrollo local usa `bun run test:local` que ejecuta los 3 browsers compatibles.
+
+En CI (Ubuntu) los 5 browsers se ejecutan correctamente de forma automática.
+
+### Regenerar snapshots de webkit y Mobile Safari (Docker)
+
+Cuando cambie el UI y necesites actualizar las imágenes base de webkit/Mobile Safari:
+
+```bash
+# 1. Construir y levantar el preview server
+bun run build
+bun run preview &
+
+# 2. Regenerar snapshots en el contenedor de Playwright (Ubuntu)
+docker run --rm \
+  -v $(pwd):/work \
+  -w /work \
+  --network=host \
+  --security-opt label=disable \
+  mcr.microsoft.com/playwright:v1.61.0-noble \
+  node node_modules/@playwright/test/cli.js test \
+    tests/e2e/visual.spec.ts \
+    --project=webkit --project="Mobile Safari" \
+    --update-snapshots \
+    --output=/tmp/pw-test-results
+
+# 3. Detener el servidor
+kill %1
+
+# 4. Revisar y commitear los nuevos PNGs en tests/e2e/visual.spec.ts-snapshots/
+```
+
+> **Nota:** Si Docker dejó archivos con permisos de root en `test-results/`, ejecuta:
+> `sudo chown -R $USER:$USER test-results/`
+
+---
+
 ## 💡 Retos y Aprendizajes
 
 Este proyecto fue un desafío técnico interesante que me permitió explorar arquitecturas modernas. Algunos aprendizajes clave:
