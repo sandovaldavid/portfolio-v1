@@ -94,7 +94,10 @@
 	--color-badge-brand-text: light-dark(var(--color-primary-600), var(--color-primary-400));
 
 	--color-badge-brand-outline-border: light-dark(rgba(10, 92, 214, 0.4), rgba(0, 176, 255, 0.4));
-	--color-badge-brand-outline-bg-hover: light-dark(rgba(10, 92, 214, 0.1), rgba(0, 176, 255, 0.1));
+	--color-badge-brand-outline-bg-hover: light-dark(
+		rgba(10, 92, 214, 0.1),
+		rgba(0, 176, 255, 0.1)
+	);
 
 	--color-status-success-bg: light-dark(rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.1));
 	--color-status-success-border: light-dark(rgba(16, 185, 129, 0.4), rgba(16, 185, 129, 0.6));
