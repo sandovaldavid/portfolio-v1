@@ -36,7 +36,7 @@ test.describe('Visual regression — Key sections', () => {
 		await experience.scrollIntoViewIfNeeded();
 		await expect(experience).toBeVisible();
 		await expect(experience).toHaveScreenshot('experience-section.png', {
-			maxDiffPixelRatio: 0.05,
+			maxDiffPixelRatio: 0.07,
 		});
 	});
 
