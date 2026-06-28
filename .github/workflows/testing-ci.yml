@@ -83,7 +83,7 @@ jobs:
         run: mkdir -p .docker/node_modules playwright-report test-results
 
       - name: Run E2E tests in Docker Compose
-        run: UID=$(id -u) GID=$(id -g) docker compose run --rm playwright
+        run: env UID=$(id -u) GID=$(id -g) docker compose run --rm playwright
 
       - name: Upload Playwright report
         id: upload-pw
