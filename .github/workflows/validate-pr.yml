@@ -33,7 +33,17 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Security audit
-        run: bun audit --audit-level critical
+        run: |
+          bun audit --audit-level critical > audit.log 2>&1 || {
+            EXIT_CODE=$?
+            cat audit.log
+            if grep -q "audit request failed" audit.log; then
+              echo "⚠️ NPM Registry audit API is unavailable. Skipping audit check."
+              exit 0
+            else
+              exit $EXIT_CODE
+            fi
+          }
 
       - name: Run ESLint
         run: bun run lint
