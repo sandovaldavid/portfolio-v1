@@ -46,6 +46,7 @@ lighthouse-report/
 bundle-analysis/
 *.png
 !src/assets/**/*.png
+!tests/e2e/**/*.png
 
 # playwright
 .auth/
