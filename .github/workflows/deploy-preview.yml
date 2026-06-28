@@ -138,7 +138,6 @@ jobs:
               `| | |`,
               `|---|---|`,
               `| **Preview URL** | [${{ steps.deploy.outputs.preview_url }}](${{ steps.deploy.outputs.preview_url }}) |`,
-              `| **Test Reports** | [sandovaldavid.github.io/portfolio-v1](https://sandovaldavid.github.io/portfolio-v1/) |`,
               `| **Commit** | \`${{ github.sha }}`.slice(0, 47) + '` |',
               '',
               '_Updates automatically on each push._',
