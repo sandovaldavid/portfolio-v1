@@ -91,7 +91,15 @@ jobs:
         run: bun run build
 
       - name: Run Playwright tests
-        run: bunx playwright test
+        run: bunx playwright test --update-snapshots
+
+      - name: Upload snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshots
+          path: tests/e2e/visual.spec.ts-snapshots/
+          retention-days: 7
 
       - name: Upload Playwright report
         if: always()
