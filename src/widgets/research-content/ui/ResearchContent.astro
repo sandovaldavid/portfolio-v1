@@ -231,9 +231,9 @@ const pageDesc = t('research.page-description');
 				</div>
 
 				<!-- Status -->
-				<div class="border-2 border-emerald-500/40 bg-emerald-500/5 p-5">
+				<div class="border-2 border-status-success-border bg-status-success-bg p-5">
 					<h2
-						class="font-gaming-mono text-sm sm:text-base font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider mb-3"
+						class="font-gaming-mono text-sm sm:text-base font-bold text-status-success-text uppercase tracking-wider mb-3"
 					>
 						▸ {labels.status}
 					</h2>
@@ -241,7 +241,7 @@ const pageDesc = t('research.page-description');
 						<span class="w-2.5 h-2.5 bg-emerald-500 animate-pulse rounded-none shrink-0"
 						></span>
 						<span
-							class="font-gaming-mono text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase"
+							class="font-gaming-mono text-xs sm:text-sm font-bold text-status-success-text uppercase"
 							>{t('research.thesis.status')}</span
 						>
 					</div>
@@ -260,7 +260,7 @@ const pageDesc = t('research.page-description');
 					<div class="flex flex-wrap gap-1.5">
 						{
 							keywords.map(kw => (
-								<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-primary-500/40 text-primary-500 px-2 py-0.5 hover:bg-primary-500/10 transition-colors cursor-default font-bold">
+								<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-badge-brand-outline-border text-badge-brand-text px-2 py-0.5 hover:bg-badge-brand-outline-bg-hover transition-colors cursor-default font-bold">
 									{kw}
 								</span>
 							))
