@@ -84,6 +84,18 @@ h6 {
 	}
 }
 
+/* Pixel-font readability: reserve pixel fonts for display, body in legible mono */
+body {
+	font-family: var(--font-mono);
+}
+
+p,
+li,
+.prose,
+.leading-relaxed {
+	font-family: var(--font-mono);
+}
+
 /* CRT page transitions (View Transitions) */
 @keyframes crt-off {
 	to {
