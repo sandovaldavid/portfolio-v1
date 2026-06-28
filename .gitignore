@@ -39,6 +39,7 @@ docs/test-reports/lighthouse/
 docs/test-reports/playwright/
 docs/test-reports/coverage/
 playwright-report/
+test-results/
 test-results.json
 junit-results.xml
 .lighthouseci/
