@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.3.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.2.0-beta.0...porfolio-dev-v1.3.0-beta.0) (2026-06-28)
+
+
+### Features
+
+* **ux:** adopt View Transitions with CRT-wipe animation ([#56](https://github.com/sandovaldavid/portfolio-v1/issues/56)) ([2218eca](https://github.com/sandovaldavid/portfolio-v1/commit/2218ecaf53c7f4b077a4f89658ed5cf1b1caef75))
+
+
+### Bug Fixes
+
+* **a11y:** enforce pixel-font readability rule ([#55](https://github.com/sandovaldavid/portfolio-v1/issues/55)) ([c5ad25f](https://github.com/sandovaldavid/portfolio-v1/commit/c5ad25f1329016b7a47700270b175172952b93cd))
+* **tests:** bypass splash screen and fix visual regression baselines ([#60](https://github.com/sandovaldavid/portfolio-v1/issues/60)) ([d75167a](https://github.com/sandovaldavid/portfolio-v1/commit/d75167aeb385362b8929c04e9be239f5dbfba41f))
+* **tests:** use Ubuntu CI-generated visual regression snapshots ([#61](https://github.com/sandovaldavid/portfolio-v1/issues/61)) ([b3d3e5d](https://github.com/sandovaldavid/portfolio-v1/commit/b3d3e5d9f2a1d6e169c534fb05c841af2e43601d))
+
 ## [1.2.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.1.0-beta.0...porfolio-dev-v1.2.0-beta.0) (2026-06-28)
 
 
