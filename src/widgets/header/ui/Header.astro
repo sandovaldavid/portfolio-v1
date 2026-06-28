@@ -94,44 +94,46 @@ const homeUrl = getLocalizedPath(lang, '/');
 
 <script>
 	// Active link highlighting with Intersection Observer
-	const sections = document.querySelectorAll('section[id]');
-	const navLinks = document.querySelectorAll('header nav a[aria-label]');
+	const setupScrollSpy = () => {
+		const sections = document.querySelectorAll('section[id]');
+		const navLinks = document.querySelectorAll('header nav a[aria-label]');
 
-	const observerCallback = (entries: IntersectionObserverEntry[]) => {
-		entries.forEach((entry: IntersectionObserverEntry) => {
-			if (entry.isIntersecting) {
-				navLinks.forEach(link => {
-					const linkLabel = link.getAttribute('aria-label');
-					const sectionId = entry.target.id;
-
-					if (linkLabel === sectionId) {
-						link.classList.add('active', 'text-primary-500');
-					} else {
-						link.classList.remove('active', 'text-primary-500');
+		const observer = new IntersectionObserver(
+			(entries: IntersectionObserverEntry[]) => {
+				entries.forEach((entry: IntersectionObserverEntry) => {
+					if (entry.isIntersecting) {
+						navLinks.forEach(link => {
+							const linkLabel = link.getAttribute('aria-label');
+							if (linkLabel === entry.target.id) {
+								link.classList.add('active', 'text-primary-500');
+							} else {
+								link.classList.remove('active', 'text-primary-500');
+							}
+						});
 					}
 				});
-			}
-		});
+			},
+			{ root: null, rootMargin: '-30% 0px -70% 0px', threshold: 0 }
+		);
+
+		sections.forEach(section => observer.observe(section));
+		return observer;
 	};
 
-	const observer = new IntersectionObserver(observerCallback, {
-		root: null,
-		rootMargin: '-30% 0px -70% 0px',
-		threshold: 0,
-	});
+	let spyObserver = setupScrollSpy();
 
-	sections.forEach(section => {
-		observer.observe(section);
+	// Re-observe sections after client-side navigation
+	document.addEventListener('astro:page-load', () => {
+		spyObserver.disconnect();
+		spyObserver = setupScrollSpy();
 	});
 
 	// Handle visibility changes
 	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'hidden') {
-			observer.disconnect();
+			spyObserver.disconnect();
 		} else {
-			sections.forEach(section => {
-				observer.observe(section);
-			});
+			setupScrollSpy();
 		}
 	});
 </script>
