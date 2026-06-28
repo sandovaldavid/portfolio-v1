@@ -142,7 +142,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				<span class="ml-3 text-[11px] text-[#00b0ff]/70 tracking-widest uppercase"
 					>portfolio@sandovaldavid:~</span
 				>
-				<span class="ml-auto text-[10px] text-[#00b0ff]/40 hidden sm:block"
+				<span class="ml-auto text-[10px] text-[#00b0ff]/60 hidden sm:block"
 					>[ ESC · close ]</span
 				>
 			</div>
@@ -160,7 +160,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 				<input
 					id="cli-input"
 					type="text"
-					class="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/20 caret-[#00b0ff]"
+					class="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/40 caret-[#00b0ff]"
 					placeholder={cliPlaceholder}
 					autocomplete="off"
 					spellcheck="false"
@@ -168,7 +168,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 						? 'Terminal command input'
 						: 'Entrada de comandos de la terminal'}
 				/>
-				<span class="text-[10px] text-white/20 uppercase tracking-widest hidden sm:block"
+				<span class="text-[10px] text-white/40 uppercase tracking-widest hidden sm:block"
 					>{cliTabHint}</span
 				>
 			</div>
@@ -282,9 +282,9 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 							class="inline-block min-w-[28px] text-center px-2 py-0.5 border border-black/40 dark:border-white/30 bg-neutral-100/50 dark:bg-neutral-800/50 text-[10px] font-bold opacity-50"
 							>??</kbd
 						>
-						<span class="text-text-muted/60 text-[10px] italic">{kbSecretHint}</span>
+						<span class="text-text-muted/80 text-[10px] italic">{kbSecretHint}</span>
 					</div>
-					<div class="text-[10px] text-text-muted/40 italic pl-1">
+					<div class="text-[10px] text-text-muted/60 italic pl-1">
 						{kbSecretMsg}
 					</div>
 				</div>
@@ -292,7 +292,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 		</div>
 
 		<div
-			class="px-5 py-2.5 border-t-2 border-dashed border-border-subtle text-[10px] text-text-muted/50 text-center uppercase tracking-widest"
+			class="px-5 py-2.5 border-t-2 border-dashed border-border-subtle text-[10px] text-text-muted/80 text-center uppercase tracking-widest"
 		>
 			{kbFooter}
 		</div>
@@ -822,8 +822,8 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 			case 'github': {
 				printLine(
 					isEn
-						? '<span class="text-white/40">Fetching live data from GitHub API…</span>'
-						: '<span class="text-white/40">Obteniendo datos en vivo de la API de GitHub…</span>',
+						? '<span class="text-white/60">Fetching live data from GitHub API…</span>'
+						: '<span class="text-white/60">Obteniendo datos en vivo de la API de GitHub…</span>',
 					'muted'
 				);
 				const stats = await fetchGitHubStats();

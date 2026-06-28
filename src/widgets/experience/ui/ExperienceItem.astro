@@ -34,11 +34,11 @@ const t = useTranslations(lang);
 				company && (
 					<>
 						<span class="text-primary-500 dark:text-primary-400">{company}</span>
-						<span class="text-neutral-500 dark:text-neutral-400">·</span>
+						<span class="text-neutral-600 dark:text-neutral-400">·</span>
 					</>
 				)
 			}
-			<span class="text-neutral-500 dark:text-neutral-400">{date}</span>
+			<span class="text-neutral-600 dark:text-neutral-400">{date}</span>
 		</div>
 	</div>
 
@@ -67,7 +67,7 @@ const t = useTranslations(lang);
 				style="animation: var(--animate-slide-up); animation-delay: 150ms;"
 			>
 				{technologyItems.map(tech => (
-					<span class="px-3 py-1.5 rounded-none bg-primary-500/10 text-primary-500 dark:text-primary-400 text-sm font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-[1.5px_1.5px_0px_0px_var(--color-border-strong)] hover:-translate-y-0.5 hover:bg-primary-500/20 transition-all duration-100">
+					<span class="px-3 py-1.5 rounded-none bg-badge-brand-bg text-badge-brand-text text-sm font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:bg-badge-brand-bg-hover transition-all duration-100">
 						{tech}
 					</span>
 				))}
