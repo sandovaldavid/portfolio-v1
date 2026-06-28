@@ -85,6 +85,30 @@
 		var(--color-border-strong-dark)
 	);
 
+	/* Custom accessibility & retro status colors */
+	--color-banner-border: light-dark(rgba(10, 92, 214, 0.6), rgba(0, 216, 255, 0.6));
+	--color-banner-text: light-dark(var(--color-primary-600), var(--color-primary-400));
+
+	--color-badge-brand-bg: light-dark(rgba(10, 92, 214, 0.1), rgba(0, 176, 255, 0.15));
+	--color-badge-brand-bg-hover: light-dark(rgba(10, 92, 214, 0.2), rgba(0, 176, 255, 0.25));
+	--color-badge-brand-text: light-dark(var(--color-primary-600), var(--color-primary-400));
+
+	--color-badge-brand-outline-border: light-dark(rgba(10, 92, 214, 0.4), rgba(0, 176, 255, 0.4));
+	--color-badge-brand-outline-bg-hover: light-dark(rgba(10, 92, 214, 0.1), rgba(0, 176, 255, 0.1));
+
+	--color-status-success-bg: light-dark(rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.1));
+	--color-status-success-border: light-dark(rgba(16, 185, 129, 0.4), rgba(16, 185, 129, 0.6));
+	--color-status-success-text: light-dark(#065f46, #34d399);
+
+	/* Retro 3D offset shadow scale */
+	--shadow-retro-xs: 1px 1px 0px 0px var(--color-border-strong);
+	--shadow-retro-sm: 1.5px 1.5px 0px 0px var(--color-border-strong);
+	--shadow-retro-md: 3px 3px 0px 0px var(--color-border-strong);
+	--shadow-retro-lg: 4px 4px 0px 0px var(--color-border-strong);
+	--shadow-retro-xl: 5px 5px 0px 0px var(--color-border-strong);
+	--shadow-retro-2xl: 6px 6px 0px 0px var(--color-border-strong);
+	--shadow-retro-3xl: 8px 8px 0px 0px var(--color-border-strong);
+
 	/* Animaciones Standard */
 	--animate-fade-in: fade-in 0.4s ease-out forwards;
 	--animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
