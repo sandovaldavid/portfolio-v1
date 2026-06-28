@@ -53,4 +53,4 @@ bundle-analysis/
 .auth/
 
 # lighthouse ci
-.lhci-results/
+.lhci-results/.docker/
