@@ -28,6 +28,19 @@ test.describe('Accessibility — axe-core scan (dark theme)', () => {
 			});
 			await page.reload();
 
+			// Disable transitions and animations to prevent scanning elements in mid-animation states (e.g. low opacity)
+			await page.addStyleTag({
+				content: `
+					*, *::before, *::after {
+						animation-delay: -1ms !important;
+						animation-duration: 0s !important;
+						animation-iteration-count: 1 !important;
+						transition-duration: 0s !important;
+						transition-delay: 0s !important;
+					}
+				`
+			});
+
 			const results = await runAxe(page);
 
 			const failures = results.violations.filter(
@@ -56,6 +69,19 @@ test.describe('Accessibility — axe-core scan (light theme)', () => {
 				document.documentElement.classList.remove('dark');
 			});
 			await page.reload();
+
+			// Disable transitions and animations to prevent scanning elements in mid-animation states (e.g. low opacity)
+			await page.addStyleTag({
+				content: `
+					*, *::before, *::after {
+						animation-delay: -1ms !important;
+						animation-duration: 0s !important;
+						animation-iteration-count: 1 !important;
+						transition-duration: 0s !important;
+						transition-delay: 0s !important;
+					}
+				`
+			});
 
 			const results = await runAxe(page);
 
