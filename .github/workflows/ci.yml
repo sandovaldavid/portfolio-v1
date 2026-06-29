@@ -1,0 +1,383 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Code Quality & Commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run ESLint
+        run: bun run lint
+
+      - name: Check formatting
+        run: bun run format:check
+
+      - name: Validate Conventional Commits
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1 || git fetch origin ${{ github.base_ref }}
+          git log origin/${{ github.base_ref }}..HEAD --format=%H | while read -r sha; do
+            commit_msg=$(git log -1 --format=%B "$sha")
+            echo "Linting commit: $sha"
+            echo "$commit_msg" | bunx commitlint
+          done
+
+  test-unit:
+    name: Unit Tests (Vitest)
+    runs-on: ubuntu-latest
+    outputs:
+      cov-url: ${{ steps.upload-cov.outputs.artifact-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run unit tests with coverage
+        run: bun run test:unit:coverage
+
+      - name: Upload coverage report
+        id: upload-cov
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  build:
+    name: Build & Bundle Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Restore Astro cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .astro
+            dist
+          key: ${{ runner.os }}-astro-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-astro-
+
+      - name: Build project
+        run: bun run build
+
+      - name: Run bundle size analysis
+        run: |
+          mkdir -p bundle-analysis
+          echo "=== JavaScript Bundle Analysis ===" > bundle-analysis/report.txt
+          du -sh dist/_astro/*.js 2>/dev/null | head -20 >> bundle-analysis/report.txt || echo "No JS files" >> bundle-analysis/report.txt
+          echo "" >> bundle-analysis/report.txt
+          echo "=== CSS Bundle Analysis ===" >> bundle-analysis/report.txt
+          du -sh dist/_astro/*.css 2>/dev/null | head -20 >> bundle-analysis/report.txt || echo "No CSS files" >> bundle-analysis/report.txt
+          echo "" >> bundle-analysis/report.txt
+          echo "=== Total Size ===" >> bundle-analysis/report.txt
+          du -sh dist >> bundle-analysis/report.txt
+
+      - name: Upload build output (dist)
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 1
+
+      - name: Upload bundle analysis report
+        id: upload-bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: bundle-analysis/
+          retention-days: 7
+
+      - name: Check bundle size threshold
+        run: |
+          DIST_SIZE=$(du -sb dist | cut -f1)
+          THRESHOLD=$((2 * 1024 * 1024))  # 2MB threshold
+          echo "Total dist size: $(numfmt --to=iec $DIST_SIZE 2>/dev/null || echo "$((DIST_SIZE/1024))KB")"
+          if [ $DIST_SIZE -gt $THRESHOLD ]; then
+            echo "[WARNING] Bundle size ($DIST_SIZE B) exceeds threshold ($THRESHOLD B)"
+          else
+            echo "[OK] Bundle size is within acceptable limits"
+          fi
+
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      lh-url: ${{ steps.upload-lh.outputs.artifact-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: dist
+
+      - name: Collect Lighthouse reports
+        run: bunx lhci collect
+
+      - name: Assert Lighthouse thresholds
+        run: bunx lhci assert
+
+      - name: Upload Lighthouse reports artifact
+        id: upload-lh
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 7
+
+  playwright:
+    name: Playwright E2E Tests (Native)
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      pw-url: ${{ steps.upload-pw.outputs.artifact-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: dist
+
+      - name: Cache Playwright Browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright Browsers & System Deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: bunx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: bunx playwright test
+
+      - name: Upload Playwright HTML report
+        id: upload-pw
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  pr-summary:
+    name: PR Summary Report
+    runs-on: ubuntu-latest
+    needs: [validate, test-unit, build, lighthouse, playwright]
+    if: always() && github.event_name == 'pull_request'
+    steps:
+      - name: Download bundle analysis report
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: bundle-analysis
+          path: ./bundle-analysis
+
+      - name: Download Playwright test results (meta check)
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: ./playwright-report
+
+      - name: Generate and post unified comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const MARKER = '<!-- unified-ci-summary-comment -->';
+            
+            // Estado de Playwright
+            const pwPassed = '${{ needs.playwright.result }}' === 'success';
+            const pwRow = `| ${pwPassed ? '✅' : '❌'} Playwright E2E | Ver reporte de artefacto para detalles |`;
+
+            // Bundle Analysis
+            let bundleReport = '_No disponible_';
+            const bundlePath = './bundle-analysis/report.txt';
+            if (fs.existsSync(bundlePath)) {
+              bundleReport = fs.readFileSync(bundlePath, 'utf8');
+            }
+
+            // URLs seguras de artefactos en GitHub
+            const lhUrl     = '${{ needs.lighthouse.outputs.lh-url }}';
+            const pwUrl     = '${{ needs.playwright.outputs.pw-url }}';
+            const bundleUrl = '${{ needs.build.outputs.bundle-url }}';
+            const covUrl    = '${{ needs.test-unit.outputs.cov-url }}';
+            const runId     = '${{ github.run_id }}';
+            const runUrl    = `https://github.com/${{ github.repository }}/actions/runs/${runId}`;
+
+            const body = [
+              MARKER,
+              '## ⚡ Reporte de Integración Continua (CI)',
+              '',
+              '| Tarea | Estado |',
+              '|---|---|',
+              `| 🔍 Calidad de Código | ${{ needs.validate.result == 'success' && '✅ Aprobado' || '❌ Fallido' }} |`,
+              `| 🧪 Pruebas Unitarias | ${{ needs.test-unit.result == 'success' && '✅ Aprobado' || '❌ Fallido' }} |`,
+              pwRow,
+              `| 🔦 Lighthouse Audits | ${{ needs.lighthouse.result == 'success' && '✅ Completado' || '⚠️ Fallido / No ejecutado' }} |`,
+              `| 📦 Build & Bundles | ${{ needs.build.result == 'success' && '✅ Exitoso' || '❌ Fallido' }} |`,
+              `| 🔗 Detalle del Run | [Ver Run #${runId}](${runUrl}) |`,
+              '',
+              '### 📦 Artefactos del Run (Descarga Segura en GitHub)',
+              'Puedes hacer clic en los siguientes enlaces para ir a la página de descarga oficial del artefacto en GitHub:',
+              '',
+              '| Reporte | Descargar Artefacto |',
+              '|---|---|',
+              pwUrl     ? `| 🎭 Playwright HTML | [playwright-report (ZIP)](${pwUrl}) |`       : '| 🎭 Playwright HTML | _no disponible_ |',
+              lhUrl     ? `| 🔦 Lighthouse Reports | [lighthouse-reports (ZIP)](${lhUrl}) |` : '| 🔦 Lighthouse Reports | _no disponible_ |',
+              covUrl    ? `| 🧪 Vitest Coverage | [coverage-report (ZIP)](${covUrl}) |`        : '| 🧪 Vitest Coverage | _no disponible_ |',
+              bundleUrl ? `| 📦 Bundle Analysis | [bundle-analysis (ZIP)](${bundleUrl}) |` : '| 📦 Bundle Analysis | _no disponible_ |',
+              '',
+              '### 📊 Resumen de Bundle Size',
+              '```',
+              bundleReport,
+              '```',
+              '',
+              '### 📥 Cómo descargar y ejecutar reportes en local',
+              'Si deseas revisar interactivamente los reportes en tu computadora local, ejecuta:',
+              '',
+              '```bash',
+              '# 1. Descarga y extrae todos los artefactos de esta corrida',
+              `gh run download ${runId}`,
+              '',
+              '# 2. Servir reportes locales con npx serve',
+              '# Para ver el reporte de Lighthouse:',
+              'npx serve .lighthouseci/',
+              '',
+              '# Para ver el reporte de Playwright E2E:',
+              'bunx playwright show-report playwright-report',
+              '',
+              '# Para ver el reporte de Cobertura de Vitest:',
+              'npx serve coverage/',
+              '```'
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(MARKER));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }

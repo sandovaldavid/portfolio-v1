@@ -2,12 +2,9 @@ name: Deploy to Vercel Preview
 
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -18,26 +15,26 @@ jobs:
   deploy:
     if: (github.event_name == 'push' || github.event_name == 'pull_request') && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+
+      - name: Cache Bun global store
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Run linter
-        run: bun run lint
-
-      - name: Check formatting
-        run: bun run format:check
-
-      # Create GitHub Deployment so the PR shows the Environments box
       - name: Create GitHub Deployment
         id: gh-deploy
         if: github.event_name == 'pull_request'
@@ -69,17 +66,14 @@ jobs:
               description: 'Deploying to Vercel…',
             });
 
-      - name: Install Vercel CLI
-        run: bun install -g vercel@latest
-
       - name: Pull Vercel Environment
-        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: bunx vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: bunx vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -87,13 +81,12 @@ jobs:
       - name: Deploy to Preview
         id: deploy
         run: |
-          PREVIEW_URL=$(vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
+          PREVIEW_URL=$(bunx vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # Update GitHub Deployment to success with the preview URL
       - name: Set deployment status — success
         if: github.event_name == 'pull_request' && success()
         uses: actions/github-script@v7
@@ -109,7 +102,6 @@ jobs:
               log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
             });
 
-      # Update GitHub Deployment to failure if anything went wrong
       - name: Set deployment status — failure
         if: github.event_name == 'pull_request' && failure()
         uses: actions/github-script@v7
@@ -124,23 +116,23 @@ jobs:
               log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
             });
 
-      # Find existing comment and update it — never spam the PR with duplicates
       - name: Create or update PR comment
         if: github.event_name == 'pull_request' && success()
         uses: actions/github-script@v7
         with:
           script: |
             const MARKER = '<!-- deploy-preview-comment -->';
+            const sha = '${{ github.sha }}'.slice(0, 7);
             const body = [
               MARKER,
-              '### 🚀 Preview Deployment',
+              '### 🚀 Vista Previa de Despliegue',
               '',
-              `| | |`,
+              `| Detalle | Valor |`,
               `|---|---|`,
               `| **Preview URL** | [${{ steps.deploy.outputs.preview_url }}](${{ steps.deploy.outputs.preview_url }}) |`,
-              `| **Commit** | \`${{ github.sha }}`.slice(0, 47) + '` |',
+              `| **Commit** | \`${sha}\` |`,
               '',
-              '_Updates automatically on each push._',
+              '_Se actualiza automáticamente en cada push._',
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
