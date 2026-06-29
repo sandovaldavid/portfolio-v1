@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.1-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.5.0-beta.0...porfolio-dev-v1.5.1-beta.0) (2026-06-29)
+
+
+### Performance Improvements
+
+* **bundle:** optimize assets and reduce dist size by 500K ([#69](https://github.com/sandovaldavid/portfolio-v1/issues/69)) ([d742a0f](https://github.com/sandovaldavid/portfolio-v1/commit/d742a0fb068390f3a8462123bc436e7af7ac251c))
+
 ## [1.5.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.4.0-beta.0...porfolio-dev-v1.5.0-beta.0) (2026-06-29)
 
 

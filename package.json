@@ -1,7 +1,7 @@
 {
 	"name": "porfolio-dev",
 	"type": "module",
-	"version": "1.5.0-beta.0",
+	"version": "1.5.1-beta.0",
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro check && astro build",
@@ -30,7 +30,6 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",
-
 		"@tailwindcss/vite": "^4.3.1",
 		"@vercel/analytics": "^1.6.1",
 		"astro": "^6.4.8",
