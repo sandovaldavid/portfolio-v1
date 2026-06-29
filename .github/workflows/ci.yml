@@ -50,8 +50,7 @@ jobs:
       - name: Validate Conventional Commits
         if: github.event_name == 'pull_request'
         run: |
-          git fetch origin ${{ github.base_ref }} --depth=1 || git fetch origin ${{ github.base_ref }}
-          git log origin/${{ github.base_ref }}..HEAD --no-merges --format=%H | while read -r sha; do
+          git log -n ${{ github.event.pull_request.commits || 1 }} --no-merges --format=%H | while read -r sha; do
             commit_msg=$(git log -1 --format=%B "$sha")
             echo "Linting commit: $sha"
             echo "$commit_msg" | bunx commitlint
