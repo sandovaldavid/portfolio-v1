@@ -22,6 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Setup Bun
@@ -50,7 +51,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1 || git fetch origin ${{ github.base_ref }}
-          git log origin/${{ github.base_ref }}..HEAD --format=%H | while read -r sha; do
+          git log origin/${{ github.base_ref }}..HEAD --no-merges --format=%H | while read -r sha; do
             commit_msg=$(git log -1 --format=%B "$sha")
             echo "Linting commit: $sha"
             echo "$commit_msg" | bunx commitlint
