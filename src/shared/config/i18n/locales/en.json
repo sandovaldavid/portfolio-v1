@@ -38,6 +38,7 @@
 	"nav": {
 		"experience": "Experience",
 		"projects": "Projects",
+		"devlog": "Devlog",
 		"about": "About me",
 		"stack": "Stack",
 		"research": "Research"
@@ -192,6 +193,40 @@
 		"light": "Light",
 		"dark": "Dark",
 		"system": "System"
+	},
+	"devlog": {
+		"label": "DEVLOG",
+		"heading": "Patch Notes",
+		"subheading": "Development log tracking changes, decisions, and progress across portfolio iterations.",
+		"page-title": "Devlog — Patch Notes | David Sandoval",
+		"page-description": "Development log tracking portfolio iterations, technical decisions, and progress.",
+		"read-more": "READ PATCH NOTES",
+		"back": "[ BACK TO DEVLOG ]",
+		"v1-0-0": {
+			"title": "v1.0.0 — Portfolio Launch & Audit",
+			"summary": "Initial production release after a 70+ page audit covering accessibility, performance, SEO, bundle size, and architecture. Complete site rebuild with Astro 5, Tailwind 4, and FSD architecture.",
+			"content": "## Overview\n\nThe portfolio launched on June 15, 2026 after a comprehensive 70+ page audit spanning accessibility (axe-core scans), performance (Lighthouse CI), SEO (structured data audit), and code architecture (FSD compliance).\n\n## Key Changes\n\n- **Framework migration**: Updated from prior Astro version to Astro 5 with full TypeScript strict mode\n- **Architecture**: Migrated to Feature-Sliced Design (FSD) with proper layer hierarchy enforcing import direction\n- **Styling**: Adopted Tailwind CSS 4 with @tailwindcss/vite integration\n- **Theming**: Implemented light/dark/system theme with light-dark() CSS function\n- **Accessibility**: Added skip-link, keyboard navigation, WCAG 2.1 AA compliance, reduced-motion support\n- **Fonts**: Migrated to Astro Font API with retro pixel font stack (Press Start 2P, VT323, Silkscreen)\n- **CI/CD**: Added Lighthouse CI, Playwright E2E, CodeQL, bundle analysis, and Vercel deployment pipelines"
+		},
+		"v1-1-0": {
+			"title": "v1.1.0-beta — Sprint 1: Foundations",
+			"summary": "Fixed theme FOUC, added reduced-motion support, skip-link navigation, status accessibility tokens, and performance baselines.",
+			"content": "## Sprint 1 (June 17-19)\n\nFirst iteration sprint focusing on critical fixes from the audit.\n\n## Completed\n\n- **P0-1**: Fixed theme FOUC by injecting inline theme script before render\n- **P0-3**: Added prefers-reduced-motion support (WCAG 2.3.3) disabling all animations\n- **P1-2**: Implemented skip-link for keyboard-first navigation\n- **P2-5**: Added semantic color tokens for status indicators (success/warning/error)\n- **P0-2**: Established Lighthouse performance baselines at ≥90 across all categories\n\n## Metrics\n\n- 5 PRs merged\n- First Lighthouse pass achieved ≥90 Performance, ≥95 Accessibility, ≥90 Best Practices"
+		},
+		"v1-2-0": {
+			"title": "v1.2.0-beta — Sprint 2: i18n & SEO",
+			"summary": "Bilingual English/Spanish support, hero section internationalization, FSD refactor, hreflang tags, and axe-core accessibility scans.",
+			"content": "## Sprint 2 (June 19-21)\n\nMajor milestone: full internationalization and structural refactor.\n\n## Completed\n\n- **P1-1**: Migrated to Astro 6 Fonts API for automatic font loading\n- **P1-5**: Internationalized hero section (EN/ES)\n- **P1-4**: Translated all 'big-tech' content (experience, projects, about)\n- **P2-1/2/3/4**: FSD migration: path aliases (@/ @app/ @widgets/ etc.), PascalCase components, widget slice extraction, hreflang for SEO\n- **P1-3**: Automated axe-core accessibility scans with serious/critical gate\n\n## Infrastructure\n\n- 8 PRs merged, all with CI validation\n- Added `getStaticPaths()` for dynamic i18n routing\n- ESLint + Prettier enforced on every commit via pre-commit hooks"
+		},
+		"v1-3-0": {
+			"title": "v1.3.0-beta — Sprint 3: Experience & Polish",
+			"summary": "Pixel-font readability improvements, CRT View Transitions, accessibility CI gate, comprehensive component tests, and release automation.",
+			"content": "## Sprint 3 (June 21-23)\n\nFocused on user experience polish and test coverage.\n\n## Completed\n\n- **P2-8**: Pixel-font readability: reserve Press Start 2P for headings, body defaults to JetBrains Mono\n- **P2-6**: View Transitions with CRT scan-line wipe animation (crt-off/crt-on keyframes)\n- **P2-7**: Accessibility CI gate that blocks PRs if axe-core detects serious/critical violations\n- **P3-3**: Comprehensive component and visual tests (78 unit tests + E2E specs)\n\n## Metrics\n\n- 6 PRs merged (including fix baselines and 1.3.0-beta release)\n- 78 unit tests passing with 100% i18n coverage\n- 4 E2E spec files covering critical user flows\n- All CI pipelines green (Validate PR, Lighthouse, CodeQL, Bundle Analysis)"
+		},
+		"phase-3": {
+			"title": "v1.4.0-beta — Phase 3: Backlog Complete",
+			"summary": "SVGO optimization, structured data (BreadcrumbList/ScholarlyArticle), spacing design tokens, print stylesheet, image optimization, project case studies, and developer devlog.",
+			"content": "## Phase 3 (June 28)\n\nFinal phase of the initial audit backlog: performance optimization, content enrichment, and documentation.\n\n## Completed\n\n- **P3-5**: Enabled svgoOptimizer for future SVG assets\n- **P3-6**: Auto-generated BreadcrumbList JSON-LD on all inner pages; ScholarlyArticle on research pages\n- **P3-4**: CSP: cancelled — incompatible with Astro ClientRouter for View Transitions\n- **P3-7**: Added pixel-grid spacing tokens (--space-1 through --space-24), retro shadow scale, and print stylesheet for clean resume output\n- **P3-1**: Project case study pages (boss-fight themed) with dedicated [slug] routes per project\n- **P3-2**: Devlog (patch notes) with version history entries\n\n## Image Optimization\n\n- project-09-fluentreads: 912K → 42K (-95%)\n- project-08-campus-map: 336K PNG → 26K WebP (-92%)\n- project-10-MAD-AI: 181K → 34K (-81%)\n- Total dist: 3.8M → 2.4M"
+		}
 	},
 	"not-found": {
 		"title": "404 - Page not found | David Sandoval",

@@ -1,0 +1,59 @@
+---
+import type { DevlogPost } from '@entities/devlog';
+
+interface Props {
+	post: DevlogPost;
+	readMoreText: string;
+	readMoreLink: string;
+}
+
+const { post, readMoreText, readMoreLink } = Astro.props;
+---
+
+<article
+	class="border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-[3px_3px_0px_0px_var(--color-border-strong)]"
+>
+	<div
+		class="flex items-center gap-2 border-b-2 border-black dark:border-white bg-primary-500/10 px-4 py-2"
+	>
+		<span
+			class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400"
+		>
+			{post.version}
+		</span>
+		<span class="ml-auto font-mono text-xs text-neutral-500 dark:text-neutral-400">
+			#{post.slug}
+		</span>
+	</div>
+	<div class="p-5">
+		<div class="mb-2 flex items-center gap-2">
+			<time
+				class="font-mono text-xs text-neutral-500 dark:text-neutral-400"
+				datetime={post.date}
+			>
+				[{post.date}]
+			</time>
+			{
+				post.tags.map(tag => (
+					<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-[9px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+						{tag}
+					</span>
+				))
+			}
+		</div>
+		<h2
+			class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-neutral-900 dark:text-neutral-50"
+		>
+			{post.title}
+		</h2>
+		<p class="mb-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+			{post.summary}
+		</p>
+		<a
+			href={readMoreLink}
+			class="inline-flex items-center gap-1 font-mono text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400 hover:underline"
+		>
+			{readMoreText} →
+		</a>
+	</div>
+</article>
