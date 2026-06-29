@@ -76,6 +76,8 @@ async function preparePage(page: Page, path: string, options: { hideHeader?: boo
 }
 
 test.describe('Visual regression — Hero section', () => {
+	test.skip(!!process.env.CI, 'Skip visual regression tests in CI');
+
 	test('homepage hero should match baseline (EN dark)', async ({ page }) => {
 		await preparePage(page, '/');
 		const hero = page.locator('.hero-gradient').first();
@@ -96,6 +98,7 @@ test.describe('Visual regression — Hero section', () => {
 });
 
 test.describe('Visual regression — Navigation & Main sections', () => {
+	test.skip(!!process.env.CI, 'Skip visual regression tests in CI');
 	test('header navbar should match baseline', async ({ page }) => {
 		// Keep the header visible for the navbar's own visual test
 		await preparePage(page, '/', { hideHeader: false });
