@@ -12,7 +12,7 @@ Personal portfolio website built with Astro, TypeScript, and Tailwind CSS.
 **Live:** https://devsandoval.me
 
 **Tech Stack:**
-- Astro 5.17.1 (Static Site Generator)
+- Astro 6.4.8 (Static Site Generator)
 - TypeScript 5.9.3 (strict mode)
 - Tailwind CSS 4.1.18 with @tailwindcss/vite
 - Bun 1.3.14 (package manager and runtime)
