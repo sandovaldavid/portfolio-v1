@@ -1,6 +1,7 @@
 ---
 import GitHubIcon from '@assets/technologies/GitHub.astro';
 import LinkIcon from '@assets/icons/Link.astro';
+import BookIcon from '@assets/icons/BookOpen.astro';
 import { LinkButton, TechPill } from '@shared/ui';
 import type { ProjectItem } from '../model';
 import { Image } from 'astro:assets';
@@ -9,6 +10,8 @@ interface Props {
 	project: ProjectItem;
 	codeButtonText: string;
 	previewButtonText: string;
+	caseStudyText?: string;
+	caseStudyLink?: string;
 	variant?: 'primary' | 'secondary';
 	priority?: boolean;
 }
@@ -17,6 +20,8 @@ const {
 	project,
 	codeButtonText,
 	previewButtonText,
+	caseStudyText,
+	caseStudyLink,
 	variant = 'secondary',
 	priority = false,
 } = Astro.props;
@@ -114,6 +119,14 @@ const isPrimary = variant === 'primary';
 						<LinkButton href={link}>
 							<LinkIcon class="size-4" />
 							{previewButtonText}
+						</LinkButton>
+					)
+				}
+				{
+					caseStudyText && caseStudyLink && (
+						<LinkButton href={caseStudyLink}>
+							<BookIcon class="size-4" />
+							{caseStudyText}
 						</LinkButton>
 					)
 				}
