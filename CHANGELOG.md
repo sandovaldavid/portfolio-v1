@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.4.0-beta.0...porfolio-dev-v1.5.0-beta.0) (2026-06-29)
+
+
+### Features
+
+* **blog:** add devlog pages with Playwright regression tests ([77b9a0d](https://github.com/sandovaldavid/portfolio-v1/commit/77b9a0d2e82020ae56ae004dfa2bc8b7f2eb699d))
+* **projects:** P3-1 boss-fight case study pages ([#64](https://github.com/sandovaldavid/portfolio-v1/issues/64)) ([012273c](https://github.com/sandovaldavid/portfolio-v1/commit/012273c22ca114e8de0053adc809c49a2d31d844))
+
 ## [1.4.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.3.0-beta.0...porfolio-dev-v1.4.0-beta.0) (2026-06-29)
 
 
