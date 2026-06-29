@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import GitHubIcon from '@assets/technologies/GitHub.astro';
+import LinkIcon from '@assets/icons/Link.astro';
+import ArrowLeftIcon from '@assets/icons/ArrowLeft.astro';
+import { TechPill, LinkButton, LinkInline } from '@shared/ui';
+import type { ProjectItem } from '@entities/project';
+
+interface Props {
+	project: ProjectItem;
+	backText: string;
+	codeButtonText: string;
+	previewButtonText: string;
+	labelProblem: string;
+	labelApproach: string;
+	labelTradeoffs: string;
+	labelOutcome: string;
+	labelLearnings: string;
+	labelTimeline: string;
+	labelRole: string;
+	backLink: string;
+}
+
+const {
+	project,
+	backText,
+	codeButtonText,
+	previewButtonText,
+	labelProblem,
+	labelApproach,
+	labelTradeoffs,
+	labelOutcome,
+	labelLearnings,
+	labelTimeline,
+	labelRole,
+	backLink,
+} = Astro.props;
+
+const { caseStudy } = project;
+---
+
+<section>
+	<div class="mx-auto max-w-4xl">
+		<LinkInline href={backLink} class="mb-6 inline-flex items-center gap-2 text-sm">
+			<ArrowLeftIcon class="size-4" />
+			{backText}
+		</LinkInline>
+
+		<header class="mb-10">
+			<p
+				class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
+			>
+				BOSS FIGHT // CASE STUDY
+			</p>
+			<h1 class="mb-4 text-3xl font-bold font-pixel-clean tracking-wide md:text-5xl">
+				{project.title}
+			</h1>
+			<p
+				class="mb-6 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-neutral-400"
+			>
+				{project.description}
+			</p>
+
+			<div class="mb-4 flex flex-wrap gap-3">
+				{
+					project.github && (
+						<LinkButton href={project.github}>
+							<GitHubIcon class="size-5" />
+							{codeButtonText}
+						</LinkButton>
+					)
+				}
+				{
+					project.link && (
+						<LinkButton href={project.link}>
+							<LinkIcon class="size-4" />
+							{previewButtonText}
+						</LinkButton>
+					)
+				}
+			</div>
+
+			<div class="flex flex-wrap gap-2">
+				{
+					project.tags.map(tag => (
+						<TechPill
+							label={tag.name}
+							icon={tag.icon}
+							size="sm"
+							variant="card"
+							class={tag.class}
+						/>
+					))
+				}
+			</div>
+		</header>
+
+		<figure class="relative mb-12 overflow-hidden border-2 border-black dark:border-white">
+			<Image
+				src={project.image}
+				width={1200}
+				height={630}
+				class="h-auto w-full object-cover"
+				alt={`${project.title} project screenshot`}
+				loading="eager"
+				decoding="sync"
+			/>
+		</figure>
+
+		{
+			caseStudy && (
+				<div class="space-y-12">
+					<div class="border-l-4 border-red-500 pl-6">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-red-500">
+							{labelProblem}
+						</h2>
+						<p class="text-base leading-relaxed">{caseStudy.problem}</p>
+					</div>
+
+					<div class="border-l-4 border-yellow-500 pl-6">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-yellow-500">
+							{labelApproach}
+						</h2>
+						<p class="text-base leading-relaxed">{caseStudy.approach}</p>
+					</div>
+
+					<div class="border-l-4 border-orange-500 pl-6">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-orange-500">
+							{labelTradeoffs}
+						</h2>
+						<p class="text-base leading-relaxed">{caseStudy.tradeoffs}</p>
+					</div>
+
+					<div class="border-l-4 border-green-500 pl-6">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-green-500">
+							{labelOutcome}
+						</h2>
+						<p class="text-base leading-relaxed">{caseStudy.outcome}</p>
+					</div>
+
+					{(caseStudy.timeline || caseStudy.role) && (
+						<div class="flex flex-wrap gap-6 border-t border-neutral-300 pt-6 dark:border-neutral-700">
+							{caseStudy.timeline && (
+								<div>
+									<span class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+										{labelTimeline}
+									</span>
+									<p class="mt-1 text-sm">{caseStudy.timeline}</p>
+								</div>
+							)}
+							{caseStudy.role && (
+								<div>
+									<span class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+										{labelRole}
+									</span>
+									<p class="mt-1 text-sm">{caseStudy.role}</p>
+								</div>
+							)}
+						</div>
+					)}
+
+					<div>
+						<h2 class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-purple-500">
+							{labelLearnings}
+						</h2>
+						<ul class="space-y-3">
+							{caseStudy.learnings.map(learning => (
+								<li class="flex items-start gap-3">
+									<span
+										class="mt-1 size-2 shrink-0 bg-purple-500"
+										aria-hidden="true"
+									/>
+									<span class="text-sm">{learning}</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
+			)
+		}
+	</div>
+</section>

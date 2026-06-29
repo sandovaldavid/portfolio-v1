@@ -1,2 +1,2 @@
 export { getProjectsData } from './data';
-export type { ProjectItem } from './types';
+export type { ProjectItem, CaseStudy } from './types';
