@@ -427,7 +427,7 @@ If checks fail, fix and re-commit.
 
 ### Bundle Size
 
-[TARGET] dist/ ≤ 2MB
+[TARGET] dist/ ≤ 5MB
 
 When adding:
 - Large libraries → consider tree-shaking
