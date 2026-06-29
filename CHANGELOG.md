@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.3.0-beta.0...porfolio-dev-v1.4.0-beta.0) (2026-06-29)
+
+
+### Features
+
+* **assets:** P3-7 spacing tokens + print mode + image opt ([#63](https://github.com/sandovaldavid/portfolio-v1/issues/63)) ([fd5f29e](https://github.com/sandovaldavid/portfolio-v1/commit/fd5f29e31ba6279663788567691da426d1634d2b))
+* **seo:** add svgoOptimizer and structured data ([#62](https://github.com/sandovaldavid/portfolio-v1/issues/62)) ([e0ca3d1](https://github.com/sandovaldavid/portfolio-v1/commit/e0ca3d17dc507453d75c3509c1aaba1e4abeaf54))
+
 ## [1.3.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.2.0-beta.0...porfolio-dev-v1.3.0-beta.0) (2026-06-28)
 
 
