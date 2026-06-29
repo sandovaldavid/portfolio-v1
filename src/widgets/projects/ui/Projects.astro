@@ -27,6 +27,12 @@ const projectsToDisplay = showAll
 						variant="secondary"
 						codeButtonText={t('projects.code-button')}
 						previewButtonText={t('projects.preview-button')}
+						caseStudyText={project.caseStudy ? t('projects.case.study') : undefined}
+						caseStudyLink={
+							project.caseStudy
+								? getLocalizedPath(lang, `/projects/${project.slug}`)
+								: undefined
+						}
 						priority={i < 2}
 					/>
 				</div>

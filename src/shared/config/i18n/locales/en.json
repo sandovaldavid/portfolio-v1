@@ -138,6 +138,17 @@
 		"code-button": "Code",
 		"preview-button": "Preview",
 		"view-all": "View All Projects",
+		"case": {
+			"study": "Case Study",
+			"back": "[ BACK TO PROJECTS ]",
+			"problem": "THE BOSS // PROBLEM",
+			"approach": "THE STRATEGY // APPROACH",
+			"tradeoffs": "THE SACRIFICE // TRADE-OFFS",
+			"outcome": "VICTORY // OUTCOME",
+			"learnings": "XP GAINED // KEY LEARNINGS",
+			"timeline": "DURATION",
+			"role": "ROLE"
+		},
 		"category": {
 			"machine-learning": "Machine Learning · Thesis Project",
 			"fullstack": "Full-Stack Development",
@@ -149,19 +160,55 @@
 		},
 		"auctions": {
 			"title": "Auctions",
-			"description": "The Auction Site is a web application where users can create, bid on, and manage online auctions. It provides a platform for users to list items for sale, place competitive bids, and interact with the auction community through comments and watchlists."
+			"description": "The Auction Site is a web application where users can create, bid on, and manage online auctions. It provides a platform for users to list items for sale, place competitive bids, and interact with the auction community through comments and watchlists.",
+			"case": {
+				"problem": "Building a Django auction platform from scratch required implementing competitive bidding logic, watchlist management, comment threading, and category-based filtering — all with proper authentication and data integrity constraints.",
+				"approach": "Designed a Django model architecture with separate Listing, Bid, Comment, and Watchlist models connected through foreign keys. Implemented bid validation logic preventing underbidding, auto-closing of expired listings, and category-based discoverability.",
+				"tradeoffs": "Chose server-rendered Django templates over a JavaScript SPA to ship faster and reduce complexity for a monolith educational project. Accepted trade-off in interactivity for simplicity of deployment and testing.",
+				"outcome": "A fully functional auction platform with user authentication, bid management, watchlists, comments, and category browsing. All core auction mechanics work correctly with proper validation and data integrity.",
+				"learning1": "Django ORM relationships and query optimization across related models",
+				"learning2": "Transactional bid logic with concurrency-safe validation",
+				"learning3": "Server-rendered form handling patterns for CRUD-heavy applications"
+			}
 		},
 		"campus-map": {
 			"title": "UNP Campus Map",
-			"description": "A centralized, location-first platform helping students at the National University of Piura to quickly find faculties, pavilions, and academic resources. Built with Next.js 14 and MySQL."
+			"description": "A centralized, location-first platform helping students at the National University of Piura to quickly find faculties, pavilions, and academic resources. Built with Next.js 14 and MySQL.",
+			"case": {
+				"problem": "Students at the National University of Piura had no centralized way to locate faculties, pavilions, or administrative offices. New students spent days getting lost across a sprawling campus. The existing information was scattered across static PDFs and word-of-mouth.",
+				"approach": "Built a location-first SPA with Next.js 14 App Router and a MySQL-backed geolocation engine. Designed an interactive map interface with Cloudinary-hosted markers, search-by-faculty filtering, and progressive disclosure of campus resources.",
+				"tradeoffs": "Chose Cloudinary for image hosting over local assets to keep the bundle lean and enable on-demand transformations. Decided against real-time GPS tracking to focus on the core directory use case first.",
+				"outcome": "Reduced campus orientation time from days to minutes. Serves as the go-to directory for faculty locations, event spaces, and administrative offices across the university.",
+				"learning1": "App Router data fetching patterns (server components + API routes)",
+				"learning2": "Geolocation indexing for campus-scale spatial queries",
+				"learning3": "Cloudinary image transformations for responsive map markers"
+			}
 		},
 		"fluentreads": {
 			"title": "FluentReads",
-			"description": "A modern online store specializing in the sale of English books, international exams, and study packages. It features an interactive catalog, functional shopping cart, and checkout flow, built with Astro Islands architecture for maximum performance."
+			"description": "A modern online store specializing in the sale of English books, international exams, and study packages. It features an interactive catalog, functional shopping cart, and checkout flow, built with Astro Islands architecture for maximum performance.",
+			"case": {
+				"problem": "English learners lacked a dedicated online store for international exam materials and graded readers. Existing options on general e-commerce platforms had poor categorization and no study-package bundling.",
+				"approach": "Architected an Astro Islands storefront with React micro-interactions for the cart and checkout. Implemented a server-side catalog with dynamic filtering, shopping cart with localStorage persistence, and a streamlined checkout flow.",
+				"tradeoffs": "Used Astro Islands for the cart to keep the page lightweight (zero JS on static content). Accepted longer initial development time to build a custom checkout instead of embedding a third-party payment widget.",
+				"outcome": "A fast, SEO-friendly e-commerce site serving English learners with categorized books, exams, and study packages. Lighthouse scores: 95+ Performance, 100 Accessibility.",
+				"learning1": "Astro Islands architecture for progressive hydration of interactive elements",
+				"learning2": "Shopping cart state management across page navigations",
+				"learning3": "SEO optimization strategies for e-commerce product pages"
+			}
 		},
 		"madai": {
 			"title": "MAD AI",
-			"description": "A modern administrative platform built with Angular 20 and Clean Architecture. It incorporates advanced user and role management, secure authentication, notifications, and server-side rendering (SSR) with Express, all styled with the latest version of Tailwind CSS."
+			"description": "A modern administrative platform built with Angular 20 and Clean Architecture. It incorporates advanced user and role management, secure authentication, notifications, and server-side rendering (SSR) with Express, all styled with the latest version of Tailwind CSS.",
+			"case": {
+				"problem": "The client needed a scalable administrative dashboard with fine-grained role-based access control, real-time notifications, and server-side rendering — all within a modern, maintainable architecture.",
+				"approach": "Designed a Clean Architecture monorepo with Angular 20 frontend, Django REST backend, and PostgreSQL. Implemented JWT-based auth with role hierarchies, WebSocket notifications via Django Channels, and Express SSR for Angular Universal.",
+				"tradeoffs": "Chose Django over .NET for faster prototyping of the RBAC and notification systems. Accepted higher server costs for the WebSocket infrastructure to deliver real-time updates without polling.",
+				"outcome": "A production-ready administrative platform with granular role management, real-time notifications, and server-side rendering for fast initial loads. Architecture is framework-agnostic and extensible.",
+				"learning1": "Clean Architecture patterns across full-stack monorepos",
+				"learning2": "WebSocket-based real-time notification systems with Django Channels",
+				"learning3": "Angular Universal SSR configuration for dynamic admin dashboards"
+			}
 		}
 	},
 	"badges": {
