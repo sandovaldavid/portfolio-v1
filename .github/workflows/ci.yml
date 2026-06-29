@@ -251,9 +251,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      - name: Install Playwright Browsers & System Deps
+      - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: bunx playwright install --with-deps
+        run: bunx playwright install
+
+      - name: Install Playwright System Dependencies
+        run: bunx playwright install-deps
 
       - name: Run E2E tests
         run: bunx playwright test
