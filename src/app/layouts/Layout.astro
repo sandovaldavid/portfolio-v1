@@ -3,6 +3,7 @@ import Analytics from '@vercel/analytics/astro';
 import { ClientRouter } from 'astro:transitions';
 import { Font } from 'astro:assets';
 import '@app/styles/global.css';
+import '@app/styles/print.css';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
@@ -50,6 +51,43 @@ const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
 const ogLocale = langCode === 'en' ? 'en_US' : 'es_PE';
 const ogType = article ? 'article' : 'website';
 
+// BreadcrumbList generation
+const breadcrumbLabels: Record<string, string> = {
+	projects: t('nav.projects'),
+	skills: 'Skills Inventory',
+	about: t('nav.about'),
+	research: t('nav.research'),
+	atena: 'Atena',
+};
+const breadcrumbSegments = Astro.url.pathname.replace(/^\/es/, '').split('/').filter(Boolean);
+const breadcrumbItems: { name: string; url: string }[] = [];
+if (breadcrumbSegments.length > 0) {
+	breadcrumbItems.push({ name: 'Home', url: langCode === 'en' ? '/' : '/es/' });
+	breadcrumbSegments.forEach((segment, i) => {
+		const url =
+			langCode === 'en'
+				? '/' + breadcrumbSegments.slice(0, i + 1).join('/')
+				: '/es/' + breadcrumbSegments.slice(0, i + 1).join('/');
+		breadcrumbItems.push({
+			name: breadcrumbLabels[segment] || segment,
+			url,
+		});
+	});
+}
+const breadcrumbSchema =
+	breadcrumbItems.length > 0
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'BreadcrumbList',
+				itemListElement: breadcrumbItems.map((item, i) => ({
+					'@type': 'ListItem',
+					position: i + 1,
+					name: item.name,
+					item: new URL(item.url, siteConfig.url).toString(),
+				})),
+			}
+		: null;
+
 // JSON-LD structured data
 const personSchema = {
 	'@context': 'https://schema.org',
@@ -87,6 +125,20 @@ const websiteSchema = {
 	inLanguage: [langCode],
 	author: { '@type': 'Person', name: siteConfig.fullName },
 };
+const articleSchema = article
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'ScholarlyArticle',
+			name: title,
+			description: description,
+			url: canonicalUrl,
+			author: {
+				'@type': 'Person',
+				name: siteConfig.fullName,
+				url: siteConfig.url,
+			},
+		}
+	: null;
 ---
 
 <!doctype html>
@@ -146,6 +198,24 @@ const websiteSchema = {
 		<!-- Structured Data (JSON-LD) -->
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+		{
+			breadcrumbSchema && (
+				<script
+					is:inline
+					type="application/ld+json"
+					set:html={JSON.stringify(breadcrumbSchema)}
+				/>
+			)
+		}
+		{
+			articleSchema && (
+				<script
+					is:inline
+					type="application/ld+json"
+					set:html={JSON.stringify(articleSchema)}
+				/>
+			)
+		}
 
 		<meta name="generator" content={Astro.generator} />
 		<script is:inline>
