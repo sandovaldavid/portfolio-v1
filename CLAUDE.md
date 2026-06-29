@@ -589,7 +589,7 @@ Runs on: Push, PRs
 Monitors:
 - JS bundle size
 - CSS bundle size
-- Total dist size (2MB threshold)
+- Total dist size (5MB threshold)
 - Comments PR with comparison
 
 ---
@@ -624,7 +624,7 @@ Automatically deployed to Vercel Production on:
 
 ### Bundle Size
 
-[TARGET] dist/ ≤ 2MB
+[TARGET] dist/ ≤ 5MB
 
 Monitor:
 ```bash

@@ -159,7 +159,7 @@ jobs:
       - name: Check bundle size threshold
         run: |
           DIST_SIZE=$(du -sb dist | cut -f1)
-          THRESHOLD=$((2 * 1024 * 1024))  # 2MB threshold
+          THRESHOLD=$((5 * 1024 * 1024))  # 5MB threshold (35 pages with inline SVGs, fonts, images)
           echo "Total dist size: $(numfmt --to=iec $DIST_SIZE 2>/dev/null || echo "$((DIST_SIZE/1024))KB")"
           if [ $DIST_SIZE -gt $THRESHOLD ]; then
             echo "[WARNING] Bundle size ($DIST_SIZE B) exceeds threshold ($THRESHOLD B)"
