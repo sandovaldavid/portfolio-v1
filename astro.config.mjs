@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig, fontProviders, svgoOptimizer } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -7,6 +7,11 @@ import robotsTxt from 'astro-robots-txt';
 
 // https://astro.build/config
 export default defineConfig({
+	experimental: {
+		svgOptimizer: svgoOptimizer({
+			plugins: ['preset-default', 'removeXMLNS'],
+		}),
+	},
 	integrations: [robotsTxt()],
 	site: 'https://sandovaldavid.com',
 	fonts: [
