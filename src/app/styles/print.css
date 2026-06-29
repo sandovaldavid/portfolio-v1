@@ -1,0 +1,81 @@
+@media print {
+	*,
+	*::before,
+	*::after {
+		background: #fff !important;
+		color: #000 !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	@page {
+		margin: 1.5cm;
+	}
+
+	body {
+		font-family: 'Inter', Georgia, serif;
+		font-size: 11pt;
+		line-height: 1.5;
+	}
+
+	header,
+	footer,
+	nav,
+	#theme-toggle,
+	.cli-terminal,
+	.contact-sidebar,
+	.splash-screen,
+	.recruiter-hud,
+	.skip-link,
+	[role='navigation'],
+	.crt-overlay {
+		display: none !important;
+	}
+
+	a[href]::after {
+		content: ' (' attr(href) ')';
+		font-size: 0.8em;
+		font-weight: normal;
+	}
+
+	a[href^='#']::after,
+	a[href^='javascript']::after {
+		content: '';
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: 'Inter', sans-serif;
+		page-break-after: avoid;
+	}
+
+	p,
+	li {
+		orphans: 3;
+		widows: 3;
+	}
+
+	img {
+		max-width: 100% !important;
+		page-break-inside: avoid;
+	}
+
+	table,
+	figure {
+		page-break-inside: avoid;
+	}
+
+	pre,
+	code {
+		font-size: 9pt;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	.container {
+		max-width: none !important;
+		padding: 0 !important;
+	}
+}
