@@ -6,6 +6,7 @@ import BriefcaseIcon from '@assets/icons/Briefcase.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
+import ScrollTextIcon from '@assets/icons/ScrollText.astro';
 import SystemIcon from '@assets/icons/System.astro';
 import type { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
@@ -74,6 +75,7 @@ const { navItems, lang } = Astro.props;
 						{link.icon === 'experience' && <BriefcaseIcon class="size-5" />}
 						{link.icon === 'research' && <BrainIcon class="size-5" />}
 						{link.icon === 'projects' && <CodeIcon class="size-5" />}
+						{link.icon === 'devlog' && <ScrollTextIcon class="size-5" />}
 						{link.icon === 'about-me' && <ProfileCheckIcon class="size-5" />}
 						{link.icon === 'technologies' && <SystemIcon class="size-5" />}
 						<span>{link.title}</span>

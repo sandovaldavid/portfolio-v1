@@ -1,0 +1,36 @@
+---
+import Layout from '@app/layouts/Layout.astro';
+import { DevlogDetail } from '@widgets/devlog';
+import { getDevlogPosts } from '@entities/devlog';
+import { Language } from '@shared/config/i18n';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+
+export function getStaticPaths() {
+	const t = useTranslations(Language.ENGLISH);
+	const posts = getDevlogPosts(t);
+	return posts.map(p => ({
+		params: { slug: p.slug },
+		props: { slug: p.slug },
+	}));
+}
+
+const { slug } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const posts = getDevlogPosts(t);
+const post = posts.find(p => p.slug === slug);
+
+if (!post) {
+	return Astro.redirect('/404');
+}
+---
+
+<Layout
+	title={`${post.title} | Devlog | David Sandoval`}
+	description={post.summary}
+	img_preview="/portfolio_meta-data.webp"
+>
+	<div class="py-16 md:py-24">
+		<DevlogDetail {post} backText={t('devlog.back')} backLink="/devlog" />
+	</div>
+</Layout>
