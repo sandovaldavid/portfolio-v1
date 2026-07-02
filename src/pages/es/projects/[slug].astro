@@ -29,7 +29,12 @@ if (!project) {
 const pageTitle = `${project.title} — Caso de Estudio | David Sandoval`;
 ---
 
-<Layout title={pageTitle} description={project.description} img_preview={project.image.src}>
+<Layout
+	title={pageTitle}
+	description={project.description}
+	img_preview={project.image.src}
+	isHome={false}
+>
 	<div class="py-16 md:py-24">
 		{
 			project.caseStudy && (
