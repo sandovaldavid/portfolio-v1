@@ -56,6 +56,14 @@ jobs:
             echo "$commit_msg" | bunx commitlint
           done
 
+      - name: Validate PR title (squash-merge header)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "${PR_TITLE} (#${PR_NUMBER})" | bunx commitlint
+
   test-unit:
     name: Unit Tests (Vitest)
     runs-on: ubuntu-latest
