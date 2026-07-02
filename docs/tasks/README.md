@@ -24,8 +24,10 @@ The project FSD migration is 100% complete, but historical docs still report 30%
 - [x] Branch 2 merged into `develop` (`src/widgets/index.ts` barrel + adopted in `index.astro`, `es/index.astro`, `Layout.astro`)
 - [x] Branch 3 merged into `develop` (`docs/widgets-catalog.md`, `docs/features-catalog.md`, `docs/TESTING.md` reconciled, `scripts/analyze-bundle.js` fixed)
 - [x] Branch 4 merged into `develop` (see [`testing-verification-2026-07-01.md`](../reports/testing-verification-2026-07-01.md))
-- [ ] Branch 5 (`feat/blog`) implemented, tested, and merged into `develop`
-- [ ] All tasks in `docs/tasks/` marked done
+- [x] Branch 5 (`feat/blog`) implemented, tested, and merged into `develop` (PR #75, squash-merged as `edcd117`).
+      Note: the profile repo's `blog-posts.yml` `feed_list` still needs to be pointed at
+      `https://sandovaldavid.com/rss.xml` — that's a change in a different repository, out of scope here.
+- [x] All tasks in `docs/tasks/` marked done
 - [x] Final `bun run build` passes
 - [ ] Final `bun run test:all` passes — unit tests are 100% green; Playwright is green on
       chromium but WebKit/Mobile Safari can't launch in this sandbox (missing system deps) and a
