@@ -87,7 +87,7 @@ Files cited across this report (for whoever implements the backlog):
 | Naming issues | `src/shared/ui/{avatar,badge,social-pill}/*.astro` | should be PascalCase |
 | Loose widgets | `src/widgets/{AboutContent,ResearchContent}.astro` | not in a slice |
 | Astro config | `astro.config.mjs` | no fonts API / no ClientRouter / no CSP; `site` host check `:11`; i18n `:16-22` |
-| Source of perf numbers | `docs/INFRASTRUCTURE_AUDIT.md` | FCP 12.3s 📄 — re-measure |
+| Source of perf numbers | *(removed — see [`06-performance-seo.md`](./06-performance-seo.md))* | Was `docs/INFRASTRUCTURE_AUDIT.md`, FCP 12.3s 📄; re-measured 2026: FCP 1.1s (production) |
 
 ### Official Astro docs referenced
 

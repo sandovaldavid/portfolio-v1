@@ -40,12 +40,12 @@ const devices = {
 const pages = [
 	// English (default, no prefix)
 	{ url: '/', name: 'home-en' },
-	{ url: '/about-me', name: 'about-en' },
+	{ url: '/about', name: 'about-en' },
 	{ url: '/projects', name: 'projects-en' },
 	// Spanish (/es prefix)
 	{ url: '/es/', name: 'home-es' },
-	{ url: '/es/sobre-mi', name: 'about-es' },
-	{ url: '/es/proyectos', name: 'projects-es' },
+	{ url: '/es/about', name: 'about-es' },
+	{ url: '/es/projects', name: 'projects-es' },
 ];
 
 /**

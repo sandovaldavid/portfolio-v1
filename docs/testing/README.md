@@ -12,7 +12,8 @@ testing/
 │   └── desktop/         # Desktop device screenshots
 └── lighthouse/          # Performance & accessibility reports
     ├── latest.json      # Latest Lighthouse audit (machine-readable)
-    └── latest.html      # Latest Lighthouse audit (human-readable)
+    ├── latest.html      # Latest Lighthouse audit (human-readable)
+    └── production.json  # Lighthouse audit against a production build
 ```
 
 ## Taking Screenshots
@@ -90,6 +91,8 @@ Using Claude Code (when the dev server is running on localhost:4321):
 
 - **latest.json** — Machine-readable format for CI/CD integration and trend analysis
 - **latest.html** — Human-readable interactive report for visual inspection
+- **production.json** — Same format as `latest.json`, captured against a production build for
+  an apples-to-apples comparison with CI's Lighthouse job
 
 ### Understanding Lighthouse Scores
 

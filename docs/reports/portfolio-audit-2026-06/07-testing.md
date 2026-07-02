@@ -2,10 +2,14 @@
 
 [← Back to index](./README.md) · Related: [Backlog](./08-backlog.md)
 
-**Overall: C− 📄.** The tooling is set up well (Vitest + coverage, Playwright across browsers,
-Lighthouse CI), but the actual coverage is thin. Grades and counts below are partly drawn from
-`docs/INFRASTRUCTURE_AUDIT.md` and a scan of `tests/` — **re-confirm counts against the current
-tree** before quoting them externally.
+**Overall: C− 📄 (at audit time — see update below).** The tooling is set up well (Vitest +
+coverage, Playwright across browsers, Lighthouse CI). Grades and counts below were partly drawn
+from `docs/INFRASTRUCTURE_AUDIT.md`, which has since been removed from the repo — treat the
+original grade as historical, not current.
+
+> ✅ **Update 2026-07-02**: several gaps listed below have since been closed — see the inline
+> notes in the table. `@axe-core/playwright` a11y scans (`P1-3`) and component + visual-regression
+> tests (`P3-3`) both merged.
 
 ---
 
@@ -30,10 +34,10 @@ tree** before quoting them externally.
 | Theme toggle | No test for persistence / no-FOUC after the BUG-1 fix | E2E: set Light → navigate → assert no `dark` class flash; assert `localStorage` honored |
 | i18n rendering | Unit tests cover the lib, not the **rendered** output | E2E: visit `/es/`, assert hero CTA/stats are Spanish after BUG-3 fix |
 | CLI terminal | No test for the signature feature | E2E: `:` opens dialog, `whoami`/`goto` work, `Esc` closes, focus restored |
-| Accessibility | Only basic checks | Integration: `@axe-core/playwright` on `/`, `/es/`, `/projects`, `/research` — **both themes** |
-| Components | No component-level tests | Astro **Container API** + Vitest to render widgets in isolation ([docs](https://docs.astro.build/en/guides/testing/#vitest-and-container-api)) |
+| ~~Accessibility~~ | ✅ **Closed** (`P1-3`, merged) — `tests/e2e/a11y.spec.ts` runs `@axe-core/playwright` on 8 key routes (en/es × home/about/projects/research), both themes | — |
+| ~~Components~~ | ✅ **Closed** (`P3-3`, merged, PR #58) — Astro Container API unit tests added under `tests/unit/components.spec.ts` | — |
 | Reduced motion | None | E2E with `prefers-reduced-motion: reduce` emulation → assert animations suppressed |
-| Visual regression | None | Playwright screenshots for hero / key sections (guards the retro look) |
+| ~~Visual regression~~ | ✅ **Closed** (`P3-3`, merged, PR #58) — `tests/e2e/visual.spec.ts` with baseline snapshots across 5 browser/device projects | — |
 | Performance budget | Not gated | Make Lighthouse CI assertions blocking in PRs (FCP/LCP/CLS budgets) |
 
 ---

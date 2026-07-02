@@ -1,6 +1,7 @@
 # Tasks Master Index
 
 > Generated: 2026-07-01
+> Updated: 2026-07-02 (added branch-05: `feat/blog`)
 > Based on audit of `docs/` vs current project state
 
 ## Summary
@@ -15,16 +16,21 @@ The project FSD migration is 100% complete, but historical docs still report 30%
 | `feat/widgets-barrel-export` | **Medium** | Create central widgets barrel for better DX | 3 |
 | `docs/project-documentation` | **Medium-Low** | Catalog current widgets/features, update TESTING.md | 3 |
 | `chore/testing-verification` | **Low** | Run full test suite, record results, report discrepancies | 3 |
+| `feat/blog` | **Medium** | Add native MDX blog (i18n + RSS) that feeds the GitHub profile widget | 7 |
 
 ## Completion Tracking
 
-- [ ] Branch 1 merged into `develop`
-- [ ] Branch 2 merged into `develop`
-- [ ] Branch 3 merged into `develop`
-- [ ] Branch 4 merged into `develop`
+- [x] Branch 1 merged into `develop` (Tasks 1.1/1.2 shipped in `3a296e0`; Task 1.3 — `docs/tools.md` rewritten to a project-specific reference)
+- [x] Branch 2 merged into `develop` (`src/widgets/index.ts` barrel + adopted in `index.astro`, `es/index.astro`, `Layout.astro`)
+- [x] Branch 3 merged into `develop` (`docs/widgets-catalog.md`, `docs/features-catalog.md`, `docs/TESTING.md` reconciled, `scripts/analyze-bundle.js` fixed)
+- [x] Branch 4 merged into `develop` (see [`testing-verification-2026-07-01.md`](../reports/testing-verification-2026-07-01.md))
+- [ ] Branch 5 (`feat/blog`) implemented, tested, and merged into `develop`
 - [ ] All tasks in `docs/tasks/` marked done
-- [ ] Final `bun run build` passes
-- [ ] Final `bun run test:all` passes
+- [x] Final `bun run build` passes
+- [ ] Final `bun run test:all` passes — unit tests are 100% green; Playwright is green on
+      chromium but WebKit/Mobile Safari can't launch in this sandbox (missing system deps) and a
+      few visual-regression snapshots mismatch on firefox/Mobile Chrome — see the verification
+      report for the full breakdown and why this isn't expected to reproduce in CI
 
 ## Files in this folder
 
@@ -32,6 +38,7 @@ The project FSD migration is 100% complete, but historical docs still report 30%
 - `branch-02-widgets-barrel.md` — Central widgets barrel export
 - `branch-03-project-docs.md` — Catalog new widgets/features, reconcile TESTING.md
 - `branch-04-testing-verification.md` — Execute and record test results
+- `branch-05-blog.md` — Native MDX blog: content collection, entity/widget slices, bilingual routes, RSS
 
 ---
 

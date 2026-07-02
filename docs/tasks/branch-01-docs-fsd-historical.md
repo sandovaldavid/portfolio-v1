@@ -14,20 +14,20 @@
 
 ### Checklist
 
-- [ ] Update `00-overview.md`
-  - [ ] Replace `> 📜 **Documento histórico** — ... La migración está **completa**...` with explicit archive notice
-  - [ ] Add `**Status**: ARCHIVED — Migration completed 2025-10. Do not use for current development.`
-- [ ] Update `01-shared-layer.md` with same archive banner
-- [ ] Update `02-entities-layer.md` with same archive banner
-- [ ] Update `03-features-layer.md` with same archive banner
-- [ ] Update `04-widgets-layer.md` with same archive banner
-- [ ] Update `05-pages-migration.md` with same archive banner
-- [ ] Update `06-astro-tips.md` with same archive banner
-- [ ] Update `07-checklist.md` with same archive banner
-- [ ] Update `FSD-IMPLEMENTATION-PLAN.md`
-  - [ ] Change `Current Status: ⚠️ 30% Complete` to `Current Status: ✅ 100% Complete (archived)`
-  - [ ] Add archive banner at top
-  - [ ] Add note: "This document is preserved for historical reference only. The project has fully migrated to FSD."
+- [x] Update `00-overview.md`
+  - [x] Replace `> 📜 **Documento histórico** — ... La migración está **completa**...` with explicit archive notice
+  - [x] Add `**Status**: ARCHIVED — Migration completed 2025-10. Do not use for current development.`
+- [x] Update `01-shared-layer.md` with same archive banner
+- [x] Update `02-entities-layer.md` with same archive banner
+- [x] Update `03-features-layer.md` with same archive banner
+- [x] Update `04-widgets-layer.md` with same archive banner
+- [x] Update `05-pages-migration.md` with same archive banner
+- [x] Update `06-astro-tips.md` with same archive banner
+- [x] Update `07-checklist.md` with same archive banner
+- [x] Update `FSD-IMPLEMENTATION-PLAN.md`
+  - [x] Change `Current Status: ⚠️ 30% Complete` to `Current Status: ✅ 100% Complete (archived)`
+  - [x] Add archive banner at top
+  - [x] Add note: "This document is preserved for historical reference only. The project has fully migrated to FSD."
 
 ### Acceptance Criteria
 
@@ -43,18 +43,18 @@
 
 ### Checklist
 
-- [ ] Update "Migration Actual" section
-  - [ ] Change `🚧 Migración de componentes existentes en progreso` to `✅ Migración completada`
-  - [ ] Change `🚧 Refactoring de imports y dependencias` to `✅ Sin violaciones de importación`
-- [ ] Update "Próximos Pasos"
-  - [ ] Remove items that are already done (e.g., "Migrar componentes de src/components/")
-  - [ ] Replace with current next steps: "Documentar nuevos widgets y features", "Mantener tests actualizados"
-- [ ] Update layer examples to include current slices
-  - [ ] Widgets example: mention `tech-stack`, `recruiter-hud`, `research`, `devlog`, `project-case-study`
-  - [ ] Features example: mention `cli-terminal`, `splash-screen`
-- [ ] Update "Colaboracion / Para Nuevos Colaboradores"
-  - [ ] Remove references to `src/components/`
-  - [ ] Confirm `src/i18n/` is gone (verify it does not exist)
+- [x] Update "Migration Actual" section
+  - [x] Change `🚧 Migración de componentes existentes en progreso` to `✅ Migración completada`
+  - [x] Change `🚧 Refactoring de imports y dependencias` to `✅ Sin violaciones de importación`
+- [x] Update "Próximos Pasos"
+  - [x] Remove items that are already done (e.g., "Migrar componentes de src/components/")
+  - [x] Replace with current next steps: "Documentar nuevos widgets y features", "Mantener tests actualizados"
+- [x] Update layer examples to include current slices
+  - [x] Widgets example: mention `tech-stack`, `recruiter-hud`, `research`, `devlog`, `project-case-study`
+  - [x] Features example: mention `cli-terminal`, `splash-screen`
+- [x] Update "Colaboracion / Para Nuevos Colaboradores"
+  - [x] Remove references to `src/components/`
+  - [x] Confirm `src/i18n/` is gone (verify it does not exist)
 
 ### Acceptance Criteria
 
@@ -70,10 +70,10 @@
 
 ### Checklist
 
-- [ ] Evaluate if `docs/tools.md` provides project-specific value
-  - [ ] If yes: add a header linking it to the portfolio testing setup (`docs/testing/`, CI workflows)
-  - [ ] If no: move to `docs/archive/tools-generic-reference.md` or delete after confirming no links point to it
-- [ ] Ensure no broken internal links from other docs to `tools.md`
+- [x] Evaluate if `docs/tools.md` provides project-specific value
+  - [x] If yes: add a header linking it to the portfolio testing setup (`docs/testing/`, CI workflows)
+  - [ ] ~~If no: move to `docs/archive/tools-generic-reference.md` or delete after confirming no links point to it~~ (not applicable — rewritten in place instead)
+- [x] Ensure no broken internal links from other docs to `tools.md`
 
 ### Acceptance Criteria
 
@@ -94,6 +94,6 @@ docs(docs): archive FSD migration guides and update copilot instructions
 
 ## PR Checklist
 
-- [ ] All modified docs render correctly in Markdown preview
-- [ ] No stale migration references remain
-- [ ] `bun run build` still passes (docs-only change, but verify)
+- [x] All modified docs render correctly in Markdown preview
+- [x] No stale migration references remain
+- [x] `bun run build` still passes (docs-only change, but verify)

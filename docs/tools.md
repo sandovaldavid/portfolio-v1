@@ -1,112 +1,79 @@
-Para armar un buen portafolio y automatizar el testing de tus aplicaciones web (especialmente si usas stacks modernos como Angular), lo ideal es combinar herramientas que tengan **interfaces de línea de comandos (CLI)** potentes y que, además, ofrezcan reportes visuales limpios que puedas mostrar o adjuntar en tus repositorios.
+# Testing & Quality Tools
 
-Aquí tienes las mejores herramientas gratuitas y *open-source* divididas por categorías:
-
----
-
-## 1. El Todo en Uno (SEO, Accesibilidad, Rendimiento, Buenas Prácticas)
-
-### **Lighthouse CLI**
-
-Es el estándar de la industria desarrollado por Google. No solo mide el rendimiento, sino que te da un desglose detallado de accesibilidad, SEO y PWA.
-
-* **Por qué destaca:** Es 100% gratuito, *open-source* y genera reportes HTML interactivos espectaculares que son perfectos para adjuntar en tu portafolio.
-* **Cómo se usa:** Puedes ejecutarlo directamente desde la terminal de Node.js:
-```bash
-bunx lighthouse https://tupagina.com --view
-
-```
-
-
-*(El flag `--view` abre automáticamente el reporte gráfico en tu navegador al terminar).*
+Reference for the tools this project actually uses to test performance, accessibility, and
+cross-browser/device rendering. See [`docs/testing/`](./testing/README.md) for how to run them
+locally and [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) for how they run in CI.
 
 ---
 
-## 2. Accesibilidad Avanzada (a11y)
+## 1. Performance, Accessibility, Best Practices, SEO — Lighthouse CI
 
-Si quieres ir más allá de lo básico que detecta Lighthouse, necesitas herramientas especializadas que sigan las pautas WCAG.
+The project uses **[`@lhci/cli`](https://github.com/GoogleChrome/lighthouse-ci)**, not the
+standalone `lighthouse` CLI, so runs are reproducible and config-driven.
 
-### **axe-core / axe-cli**
+- **Config**: [`.lighthouserc.json`](../.lighthouserc.json) — audits 6 pages (`/`, `/about`,
+  `/projects`, `/es/`, `/es/about`, `/es/projects`), 3 runs averaged per page.
+- **Thresholds** (enforced, `error` severity): Performance ≥ 90, Accessibility ≥ 95,
+  Best Practices ≥ 90, SEO ≥ 90.
+- **Run locally**:
+  ```bash
+  bun run build
+  bun run lighthouse:collect
+  bun run lighthouse:assert
+  ```
+- **In CI**: the `lighthouse` job in `ci.yml` runs this over the prebuilt `dist/`, uploads
+  reports as the `lighthouse-reports` artifact (7-day retention).
 
-Desarrollado por Deque, es el motor de accesibilidad más confiable del mercado (de hecho, Lighthouse lo usa por debajo).
+## 2. Accessibility — `@axe-core/playwright`
 
-* **Por qué destaca:** Cero falsos positivos. Te dice exactamente qué elemento falló, por qué infringe las normas y cómo solucionarlo.
-* **Cómo se usa:**
-```bash
-bunx axe-cli https://tupagina.com
+Accessibility is scanned as part of the Playwright suite, not with a separate axe CLI.
 
-```
+- **Test file**: [`tests/e2e/a11y.spec.ts`](../tests/e2e/a11y.spec.ts) — runs `AxeBuilder` (WCAG
+  2.0/2.1 A+AA tags) against 8 key routes (home, about, projects, research — both EN and ES),
+  once in dark theme and once in light theme.
+- **CI gate**: fails the build on any new `critical` or `serious` violation.
+- **Run locally**: `bun run test tests/e2e/a11y.spec.ts`.
 
+## 3. Cross-browser / cross-device — Playwright
 
+- **Config**: [`playwright.config.ts`](../playwright.config.ts) — 5 projects: Chromium, Firefox,
+  WebKit, Mobile Chrome (Pixel 5), Mobile Safari (iPhone 12).
+- Also used for visual-regression screenshots (`tests/e2e/visual.spec.ts`) and general
+  navigation/smoke tests (`tests/e2e/homepage.spec.ts`, `pages.spec.ts`).
+- **Run locally**:
+  ```bash
+  bun run test          # all projects
+  bun run test:ui       # interactive mode
+  bun run test:local    # chromium + firefox + Mobile Chrome only (faster local loop)
+  ```
 
-### **Pa11y**
+## 4. Unit tests — Vitest
 
-Una herramienta CLI *open-source* diseñada específicamente para diseñadores y desarrolladores que quieren automatizar pruebas de accesibilidad.
+- **Scope**: `src/shared/lib/i18n/**` and `src/shared/config/i18n/**` only (see
+  `vitest.config.ts`) — 90% coverage threshold on lines/functions/branches/statements.
+- **Run locally**: `bun run test:unit` / `bun run test:unit:coverage`.
 
-* **Por qué destaca:** Puedes configurarlo para que simule acciones del usuario antes de testear (ideal para Single Page Applications como Angular donde el contenido cambia dinámicamente). Soporta exportar los resultados a JSON, CSV o HTML.
-* **Cómo se usa:**
-```bash
-bunx pa11y https://tupagina.com
+## 5. Bundle size
 
-```
-
-
-
----
-
-## 3. Responsividad y Multi-dispositivo
-
-### **Playwright (Componente de Emulación)**
-
-Aunque es un framework de pruebas End-to-End (E2E) de Microsoft, Playwright es brutal para testear la responsividad mediante scripts rápidos.
-
-* **Por qué destaca:** Puedes escribir un script de 10 líneas que levante navegadores Chromium, Firefox y WebKit en paralelo, emule dispositivos específicos (iPhone, Pixel, tablets) y tome capturas de pantalla de tu web en todas esas resoluciones automáticamente. Es ideal para documentar visualmente que tu portafolio es *responsive*.
-* **Ejemplo rápido en Node:**
-```javascript
-const { chromium, devices } = require('playwright');
-// Emula un iPhone 14 y toma una captura
-const pixel = devices['iPhone 14'];
-// ... código para guardar la screenshot en una carpeta de reportes
-
-```
-
-
-
-### **Responsive Viewer (Extensión/Herramienta Visual)**
-
-*Si buscas algo más visual de un vistazo antes de automatizar:* Es una extensión de navegador (Chrome/Firefox) opensource que te permite ver tu página web en múltiples pantallas y resoluciones al mismo tiempo de forma síncrona (si haces scroll en una, se mueve en todas).
-
----
-
-## 4. SEO Técnico y Enlaces Rotos
-
-### **LinkChecker**
-
-Una herramienta CLI *open-source* clásica y robusta para comprobar que no tienes enlaces rotos, lo cual destruye el SEO.
-
-* **Por qué destaca:** Escanea todo tu sitio web de forma recursiva buscando *links* caídos (404), redirecciones infinitas o imágenes rotas.
-* **Cómo se usa (vía Python/Pip o Docker):**
-```bash
-linkchecker https://tupagina.com
-
-```
-
-
-
-### **Local SEO / Analizadores de Schema**
-
-Para el SEO de contenido y etiquetas *Open Graph* (cómo se ve tu web en Twitter/LinkedIn/Google), la herramienta CLI de **`structured-data-testing-tool`** o los validadores en línea gratuitos de Schema.org son indispensables para asegurar que tus microdatos e inteligencia de negocio web estén bien estructurados.
+- `astro.config.mjs` wires `rollup-plugin-visualizer` — every `astro build` emits a treemap at
+  `bundle-analysis/index.html`.
+- `bun run bundle:analyze` (`scripts/analyze-bundle.js`) writes a plain-text size breakdown to
+  `bundle-analysis/report.txt` (same logic CI runs inline in the `build` job).
+- CI checks total `dist/` size against a 5MB threshold — logs a warning, does not fail the build.
 
 ---
 
-## 🚀 El "Pro Tip" para tu Portafolio
+## Not used by this project
 
-Si quieres que tu portafolio realmente destaque ante reclutadores o clientes, no te limites a correr estas herramientas en tu máquina local. Configura un **Workflow de GitHub Actions (CI/CD)** gratuito.
+Generic recommendations you'll see elsewhere (standalone `lighthouse`/`axe-cli`/`pa11y` CLIs,
+`LinkChecker`, `structured-data-testing-tool`) are **not** part of this toolchain — the
+equivalents above already cover the same ground in CI. Reach for one of those only if evaluating
+a new tool to replace or complement the current setup.
 
-Puedes hacer que cada vez que subas cambios a tu repositorio:
+---
 
-1. Se ejecute **Lighthouse CI**.
-2. Se corra **Pa11y**.
-3. Si alguna puntuación baja de 90/100, el *build* falle, o bien, que guarde los reportes HTML como artefactos del repositorio.
+## Contact
 
-¡Esto demuestra habilidades de arquitectura de software, automatización y control de calidad de nivel senior! ¿Te interesaría ver un ejemplo de cómo estructurar un archivo de configuración para automatizar Lighthouse en GitHub Actions?
+For questions about this testing setup:
+- Email: hello@sandovaldavid.com
+- Email: dev@sandovaldavid.com
