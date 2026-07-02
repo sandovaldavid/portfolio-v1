@@ -62,6 +62,9 @@ bun run test tests/e2e/homepage.spec.ts
 
 # Run tests by tag
 bun run test --grep @smoke
+
+# Run unit tests + E2E together
+bun run test:all
 ```
 
 Configuration: `playwright.config.ts`
@@ -84,11 +87,16 @@ bun run build
 bun run bundle:analyze
 ```
 
-Output: `bundle-analysis/report.txt`
+Output: `bundle-analysis/report.txt` (`scripts/analyze-bundle.js`, mirrors the same check CI runs
+inline in the `build` job). `astro.config.mjs` also wires `rollup-plugin-visualizer`, so every
+`bun run build` additionally emits an interactive treemap at `bundle-analysis/index.html`.
 
 **Size Thresholds:**
 - Total dist: ≤ 5MB (reported as a warning in CI, does not block the build)
-- Critical JS: ≤ 100KB
+
+[info] Per-page JS/CSS/image budgets are defined in `lighthouse-budget.json` (50-70KB script per
+page) but are not currently wired into any CI assertion — treat them as reference targets, not
+an enforced gate.
 
 ## CI/CD Pipeline
 

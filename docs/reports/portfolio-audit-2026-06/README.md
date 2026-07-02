@@ -144,29 +144,30 @@ These are the highest-leverage moves. Full details and acceptance criteria in
 | P2-2 | PascalCase component rename | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
 | P2-3 | Wrap loose widgets | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
 | P2-4 | Emit hreflang alternates | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
-| P1-3 | Accessibility & contrast scan | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | 🔄 PR Open |
+| P1-3 | Accessibility & contrast scan | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | ✅ Merged |
 
-### Sprint 3 — Planned
+### Sprint 3 — Completed ✅
 
-| ID | Title |
-|----|-------|
-| P2-6 | View Transitions (ClientRouter) |
-| P2-7 | Automated a11y tests in CI |
-| P2-8 | Pixel-font readability rule |
-| P3-3 | Component + visual-regression tests |
+| ID | Title | PR | Status |
+|----|-------|----|:------:|
+| P2-6 | View Transitions (ClientRouter) | [#56](https://github.com/sandovaldavid/portfolio-v1/pull/56) | ✅ Merged |
+| P2-7 | Automated a11y tests in CI | [#57](https://github.com/sandovaldavid/portfolio-v1/pull/57) | ✅ Merged |
+| P2-8 | Pixel-font readability rule | [#55](https://github.com/sandovaldavid/portfolio-v1/pull/55) | ✅ Merged |
+| P3-3 | Component + visual-regression tests | [#58](https://github.com/sandovaldavid/portfolio-v1/pull/58) | ✅ Merged |
 
-### Backlog (P3) — Future
+### Backlog (P3) — Completed / Resolved
 
-| ID | Title |
-|----|-------|
-| P3-1 | Project case-study pages |
-| P3-2 | Technical devlog |
-| P3-4 | Configure CSP |
-| P3-5 | SVG optimizer (svgoOptimizer) |
-| P3-6 | Structured data enhancements |
-| P3-7 | Tokenize spacing/shadow + resume/print mode |
-| P3-6 | Structured data enhancements |
-| P3-7 | Tokenize spacing/shadow + resume/print mode |
+| ID | Title | Status |
+|----|-------|:------:|
+| P3-1 | Project case-study pages | ✅ Merged (#64) |
+| P3-2 | Technical devlog | ✅ Merged |
+| P3-4 | Configure CSP | ❌ Cancelled — incompatible with Astro `<ClientRouter />` (View Transitions) |
+| P3-5 | SVG optimizer (svgoOptimizer) | ✅ Merged (#62) |
+| P3-6 | Structured data enhancements | ✅ Merged (#62) |
+| P3-7 | Tokenize spacing/shadow + resume/print mode | ✅ Merged (#63) |
+
+> Updated 2026-07-02: see [`08-backlog.md`](./08-backlog.md) for the reconciled status — this
+> report originally listed Sprint 3 and the P3 backlog as planned/future work that has since shipped.
 
 ---
 

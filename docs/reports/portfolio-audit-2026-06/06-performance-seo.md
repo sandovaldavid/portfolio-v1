@@ -11,19 +11,15 @@ turn on Astro 6 features the project isn't using yet.
 
 ## Performance
 
-### PERF-1 — The 12.3s FCP figure is documented, not measured 📄 → `P0-2`
+### PERF-1 — The 12.3s FCP figure was documented, not measured ✅ Resolved → `P0-2`
 
-`docs/INFRASTRUCTURE_AUDIT.md` grades performance ~2/10 and cites **FCP ≈ 12.3s** (target
-1.8s). That would be a hard blocker — **but it is a documented number, not a fresh measurement
-of the current build.** Before treating it as truth:
+`docs/INFRASTRUCTURE_AUDIT.md` (since removed from the repo) graded performance ~2/10 and cited
+**FCP ≈ 12.3s** (target 1.8s) — a documented number, not a fresh measurement of the current
+build.
 
-💡 **Action:** run a current pass and record the result:
-```bash
-bun run build && bun run preview      # serve the production build
-bun run lighthouse                     # lhci autorun (config in .lighthouserc.json)
-```
-Capture FCP / LCP / TBT / CLS for `/` and `/es/`. If the regression is real, the likely causes
-are already known (below); if it's stale, update the audit doc.
+✅ **Update 2026-07-02**: re-measured as part of `P0-2` (merged, PR #45). Production numbers:
+**FCP 1.1s · LCP 1.4-2.1s · TBT 0ms · CLS 0.005-0.042.** The 12.3s figure was a dev-server-only
+measurement and does not reflect the production build.
 
 ### PERF-2 — Third-party fonts on the render path ✅ → `P1-1`
 
@@ -119,13 +115,13 @@ and that `siteConfig.url` agrees, or canonicals/OG will point to the wrong host)
 
 ## Astro-6 levers summary
 
-| Lever | Benefit | Ticket |
-|-------|---------|:------:|
-| Native Fonts API (self-host) | Removes 3rd-party render-path dep; optimized fallbacks (↓CLS) | `P1-1` |
-| `<ClientRouter />` View Transitions | SPA-feel nav + **auto** reduced-motion; CRT-wipe theme fit | `P2-6` |
-| `security.csp` | Addresses documented security gap; easier after self-hosting fonts | `P3-4` |
-| `svgoOptimizer()` (exp.) | Smaller SVG assets, no runtime cost | `P3-5` |
-| `getAbsoluteLocaleUrlList()` | Correct hreflang for bilingual SEO | `P2-4` |
+| Lever | Benefit | Ticket | Status |
+|-------|---------|:------:|:------:|
+| Native Fonts API (self-host) | Removes 3rd-party render-path dep; optimized fallbacks (↓CLS) | `P1-1` | ✅ Merged |
+| `<ClientRouter />` View Transitions | SPA-feel nav + **auto** reduced-motion; CRT-wipe theme fit | `P2-6` | ✅ Merged (#56) |
+| `security.csp` | Addresses documented security gap; easier after self-hosting fonts | `P3-4` | ❌ Cancelled — incompatible with `<ClientRouter />` |
+| `svgoOptimizer()` (exp.) | Smaller SVG assets, no runtime cost | `P3-5` | ✅ Merged (#62) |
+| `getAbsoluteLocaleUrlList()` | Correct hreflang for bilingual SEO | `P2-4` | ✅ Merged (#51) |
 
 > ⚠️ Adopting `<ClientRouter />` requires migrating load-time scripts (CLI, splash, theme,
 > header `IntersectionObserver`) to `astro:page-load` / `astro:after-swap`, or they won't

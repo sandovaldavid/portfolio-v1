@@ -84,15 +84,30 @@ changed** — this is the to-do list if/when implementation is approved.
 | P1-5 | Hero i18n: CTA + stats | [#50](https://github.com/sandovaldavid/portfolio-v1/pull/50) | ✅ Merged |
 | P1-4 | Big-tech content gap | [#52](https://github.com/sandovaldavid/portfolio-v1/pull/52) | ✅ Merged |
 | P2-1/2/3/4 | FSD cleanup + hreflang | [#51](https://github.com/sandovaldavid/portfolio-v1/pull/51) | ✅ Merged |
-| P1-3 | A11y scan (axe-core) | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | 🔄 PR Open |
+| P1-3 | A11y scan (axe-core) | [#53](https://github.com/sandovaldavid/portfolio-v1/pull/53) | ✅ Merged |
 
-### Sprint 3 — Planned
+### Sprint 3 — ✅ Complete
 
-P2-6 (View Transitions) · P2-7 (a11y tests in CI) · P2-8 (readability) · P3-3 (component tests)
+| ID | Title | PR | Status |
+|----|-------|----|:------:|
+| P2-6 | View Transitions (`<ClientRouter />`) | [#56](https://github.com/sandovaldavid/portfolio-v1/pull/56) | ✅ Merged |
+| P2-7 | Automated a11y tests in CI | [#57](https://github.com/sandovaldavid/portfolio-v1/pull/57) | ✅ Merged |
+| P2-8 | Pixel-font readability rule | [#55](https://github.com/sandovaldavid/portfolio-v1/pull/55) | ✅ Merged |
+| P3-3 | Component + visual-regression tests | [#58](https://github.com/sandovaldavid/portfolio-v1/pull/58) | ✅ Merged |
 
 ### Backlog — P3 polish
 
-P3-1…P3-7 remaining nice-to-have items.
+| ID | Title | Status |
+|----|-------|:------:|
+| P3-1 | Project case-study ("boss-fight") pages | ✅ Merged (#64) |
+| P3-2 | Technical blog / devlog | ✅ Merged |
+| P3-4 | Configure `security.csp` | ❌ Cancelled — incompatible with Astro `<ClientRouter />` (View Transitions); see the devlog entry for this decision |
+| P3-5 | Enable experimental `svgoOptimizer()` | ✅ Merged (#62) |
+| P3-6 | Extra structured data | ✅ Merged (#62) |
+| P3-7 | Tokenize spacing/shadow scales + résumé/print mode | ✅ Merged (#63) |
+
+> Updated 2026-07-02: this section originally listed the above as "Planned"/"Future" — cross-checked
+> against `git log` and all items except `P3-4` (explicitly cancelled) have since shipped.
 
 ---
 

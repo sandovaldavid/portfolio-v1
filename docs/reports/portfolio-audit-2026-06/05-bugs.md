@@ -6,6 +6,10 @@
 Every item here was **verified by reading the source** unless marked 📄 *documented*. Each maps
 to a backlog ticket in [`08-backlog.md`](./08-backlog.md).
 
+> ✅ **Update 2026-07-02**: BUG-1 through BUG-4 below have all been fixed — their tickets
+> (`P0-1`, `P1-1`, `P1-5`, `P2-5`) are marked `✅ Merged` in [`08-backlog.md`](./08-backlog.md)
+> Sprint 1/2. Kept here as a record of what the audit originally found.
+
 ---
 
 ## BUG-1 — Theme flash of incorrect color (FOUC) ✅ → `P0-1`
@@ -102,8 +106,9 @@ other raw Tailwind color utilities that should be tokens.
 
 These are real but live in [`06-performance-seo.md`](./06-performance-seo.md):
 
-- **PERF-1** 📄 Documented FCP ~12.3s (`INFRASTRUCTURE_AUDIT.md`) — **must be re-measured** with
-  the current build before being treated as fact. → `P0-2`
+- **PERF-1** ✅ Re-measured (`P0-2` merged) — production FCP is **1.1s**. The original 12.3s
+  figure came from `docs/INFRASTRUCTURE_AUDIT.md`, which has since been removed from the repo;
+  it was a dev-server measurement, not production. → `P0-2`
 - **PERF-2** ✅ Third-party Google Fonts on the render path (same root as BUG-2). → `P1-1`
 - **SEO-1** ✅ No `hreflang` alternate links emitted (`prefixDefaultLocale: false` does not
   auto-generate them). → `P2-4`
