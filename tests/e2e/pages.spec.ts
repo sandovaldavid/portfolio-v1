@@ -4,9 +4,11 @@ const pages = [
   { path: '/', name: 'Home (English)' },
   { path: '/about', name: 'About (English)' },
   { path: '/projects', name: 'Projects (English)' },
+  { path: '/blog', name: 'Blog (English)' },
   { path: '/es/', name: 'Home (Spanish)' },
   { path: '/es/about', name: 'About (Spanish)' },
   { path: '/es/projects', name: 'Projects (Spanish)' },
+  { path: '/es/blog', name: 'Blog (Spanish)' },
 ];
 
 pages.forEach(({ path, name }) => {

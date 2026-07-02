@@ -10,6 +10,8 @@ const KEY_PAGES = [
 	{ path: '/es/projects', name: 'Projects ES' },
 	{ path: '/research', name: 'Research EN' },
 	{ path: '/es/research', name: 'Research ES' },
+	{ path: '/blog', name: 'Blog EN' },
+	{ path: '/es/blog', name: 'Blog ES' },
 ] as const;
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] as const;

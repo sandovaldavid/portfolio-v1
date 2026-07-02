@@ -16,13 +16,13 @@
 
 ### Checklist
 
-- [ ] `bun add @astrojs/mdx @astrojs/rss @astrojs/sitemap`
-- [ ] `bun add -d @tailwindcss/typography` (for rendering Markdown bodies with `.prose`)
-- [ ] Register integrations in `astro.config.mjs` `integrations: []` (currently only `robotsTxt()`):
-  - [ ] `mdx()` and `sitemap()` (keep `robotsTxt()`)
-- [ ] Enable the typography plugin the Tailwind v4 way (CSS-first — there is **no** `tailwind.config.*`): add `@plugin "@tailwindcss/typography";` to `src/app/styles/global.css`
-- [ ] Confirm `site: 'https://sandovaldavid.com'` remains set (RSS/sitemap depend on it)
-- [ ] `bun run build` still passes; `bunx vercel build` unaffected
+- [x] `bun add @astrojs/mdx @astrojs/rss @astrojs/sitemap`
+- [x] `bun add -d @tailwindcss/typography` (for rendering Markdown bodies with `.prose`)
+- [x] Register integrations in `astro.config.mjs` `integrations: []` (currently only `robotsTxt()`):
+  - [x] `mdx()` and `sitemap()` (keep `robotsTxt()`)
+- [x] Enable the typography plugin the Tailwind v4 way (CSS-first — there is **no** `tailwind.config.*`): add `@plugin "@tailwindcss/typography";` to `src/app/styles/global.css`
+- [x] Confirm `site: 'https://sandovaldavid.com'` remains set (RSS/sitemap depend on it)
+- [x] `bun run build` still passes; `bunx vercel build` unaffected
 
 ### Acceptance Criteria
 
@@ -38,11 +38,11 @@
 
 ### Checklist
 
-- [ ] Create `src/content.config.ts` (Astro 5/6 location — repo root of `src/`, not `src/content/config.ts`)
-- [ ] Define the `blog` collection with a `glob()` loader over `src/content/blog/**/*.{md,mdx}`
-- [ ] Derive locale from the folder (`en/` vs `es/`) so a post's language is unambiguous
-- [ ] Author folders: `src/content/blog/en/` and `src/content/blog/es/`
-- [ ] Schema follows the existing `ProjectItem` / `DevlogPost` conventions (typed, minimal), but as **frontmatter** instead of i18n keys
+- [x] Create `src/content.config.ts` (Astro 5/6 location — repo root of `src/`, not `src/content/config.ts`)
+- [x] Define the `blog` collection with a `glob()` loader over `src/content/blog/**/*.{md,mdx}`
+- [x] Derive locale from the folder (`en/` vs `es/`) so a post's language is unambiguous
+- [x] Author folders: `src/content/blog/en/` and `src/content/blog/es/`
+- [x] Schema follows the existing `ProjectItem` / `DevlogPost` conventions (typed, minimal), but as **frontmatter** instead of i18n keys
 
 ### Template — collection schema
 
@@ -83,13 +83,13 @@ export const collections = { blog };
 
 ### Checklist
 
-- [ ] `src/entities/blog/model/types.ts` — re-export/derive the post type from the collection (`CollectionEntry<'blog'>`) plus a resolved `BlogPostMeta` for cards
-- [ ] `src/entities/blog/model/queries.ts`:
-  - [ ] `getBlogPosts(lang)` — collection filtered by locale folder, `draft:false` in prod, sorted by `pubDate` desc
-  - [ ] `getBlogPost(lang, slug)` — single entry or `undefined`
-  - [ ] Helper to strip the `en/`|`es/` prefix so slugs map cleanly to routes
-- [ ] `src/entities/blog/index.ts` barrel re-exports the public API (mirror `entities/devlog/index.ts`)
-- [ ] Respect path aliases (`@entities/*`, `@shared/*`) from `tsconfig.json`
+- [x] `src/entities/blog/model/types.ts` — re-export/derive the post type from the collection (`CollectionEntry<'blog'>`) plus a resolved `BlogPostMeta` for cards
+- [x] `src/entities/blog/model/queries.ts`:
+  - [x] `getBlogPosts(lang)` — collection filtered by locale folder, `draft:false` in prod, sorted by `pubDate` desc
+  - [x] `getBlogPost(lang, slug)` — single entry or `undefined`
+  - [x] Helper to strip the `en/`|`es/` prefix so slugs map cleanly to routes
+- [x] `src/entities/blog/index.ts` barrel re-exports the public API (mirror `entities/devlog/index.ts`)
+- [x] Respect path aliases (`@entities/*`, `@shared/*`) from `tsconfig.json`
 
 ### Acceptance Criteria
 
@@ -105,14 +105,14 @@ export const collections = { blog };
 
 ### Checklist
 
-- [ ] `src/widgets/blog/ui/BlogCard.astro` — props `post`, `readMoreText`, `readMoreLink` (mirror `DevlogCard.astro` API)
-  - [ ] Reuse card style: `border-2 border-black dark:border-white`, `shadow-[3px_3px_0px_0px_var(--color-border-strong)]`, `rounded-none`, `font-retro-tag` labels, `font-pixel-clean` heading, `font-mono` date
-  - [ ] Reuse `@shared/ui` `badge` / `tech-pill` for tags, `link-button` for the CTA
-- [ ] `src/widgets/blog/ui/BlogDetail.astro` — props `post`, `Content` (rendered MDX component), `backText`, `backLink`
-  - [ ] Render the MDX body with `<Content />` inside `.prose prose-neutral dark:prose-invert` (real Markdown, unlike `DevlogDetail`'s `whitespace-pre-wrap` plain text)
-  - [ ] Show `pubDate` / `updatedDate` and tags
-- [ ] `src/widgets/blog/ui/index.ts` and `src/widgets/blog/index.ts` sub-barrels
-- [ ] Add `export { BlogCard, BlogDetail } from './blog';` to `src/widgets/index.ts`
+- [x] `src/widgets/blog/ui/BlogCard.astro` — props `post`, `readMoreText`, `readMoreLink` (mirror `DevlogCard.astro` API)
+  - [x] Reuse card style: `border-2 border-black dark:border-white`, `shadow-[3px_3px_0px_0px_var(--color-border-strong)]`, `rounded-none`, `font-retro-tag` labels, `font-pixel-clean` heading, `font-mono` date
+  - [x] Reuse `@shared/ui` `badge` / `tech-pill` for tags, `link-button` for the CTA
+- [x] `src/widgets/blog/ui/BlogDetail.astro` — props `post`, `Content` (rendered MDX component), `backText`, `backLink`
+  - [x] Render the MDX body with `<Content />` inside `.prose prose-neutral dark:prose-invert` (real Markdown, unlike `DevlogDetail`'s `whitespace-pre-wrap` plain text)
+  - [x] Show `pubDate` / `updatedDate` and tags
+- [x] `src/widgets/blog/ui/index.ts` and `src/widgets/blog/index.ts` sub-barrels
+- [x] Add `export { BlogCard, BlogDetail } from './blog';` to `src/widgets/index.ts`
 
 ### Acceptance Criteria
 
@@ -128,12 +128,12 @@ export const collections = { blog };
 
 ### Checklist
 
-- [ ] EN list `src/pages/blog.astro`: `getBlogPosts(Language.ENGLISH)` → `<BlogCard>` with `readMoreLink = /blog/${slug}`
-- [ ] ES list `src/pages/es/blog.astro`: `getBlogPosts(Language.SPANISH)` → `readMoreLink = /es/blog/${slug}` (use `getLocalizedPath`)
-- [ ] EN detail `src/pages/blog/[slug].astro`: `getStaticPaths()` seeds paths from EN posts; find post, `redirect('/404')` if missing; `render(entry)` → pass `Content` to `<BlogDetail>`
-- [ ] ES detail `src/pages/es/blog/[slug].astro`: same, seeded from ES posts
-- [ ] On detail pages, pass `article={true}` + article metadata to `Layout.astro` (it already switches `og:type` to `article` and emits `ScholarlyArticle` JSON-LD; hreflang/canonical are already handled)
-- [ ] Add a "Blog" nav entry (root + `es/`), matching how `devlog`/`research` are linked
+- [x] EN list `src/pages/blog.astro`: `getBlogPosts(Language.ENGLISH)` → `<BlogCard>` with `readMoreLink = /blog/${slug}`
+- [x] ES list `src/pages/es/blog.astro`: `getBlogPosts(Language.SPANISH)` → `readMoreLink = /es/blog/${slug}` (use `getLocalizedPath`)
+- [x] EN detail `src/pages/blog/[slug].astro`: `getStaticPaths()` seeds paths from EN posts; find post, `redirect('/404')` if missing; `render(entry)` → pass `Content` to `<BlogDetail>`
+- [x] ES detail `src/pages/es/blog/[slug].astro`: same, seeded from ES posts
+- [x] On detail pages, pass `article={true}` + article metadata to `Layout.astro` (it already switches `og:type` to `article` and emits `ScholarlyArticle` JSON-LD; hreflang/canonical are already handled)
+- [x] Add a "Blog" nav entry (root + `es/`), matching how `devlog`/`research` are linked
 
 ### Acceptance Criteria
 
@@ -149,11 +149,11 @@ export const collections = { blog };
 
 ### Checklist
 
-- [ ] `src/pages/rss.xml.ts` (EN) → `https://sandovaldavid.com/rss.xml`
-- [ ] `src/pages/es/rss.xml.ts` (ES) → `https://sandovaldavid.com/es/rss.xml`
-- [ ] Populate items from `getBlogPosts(lang)` (title, description, `pubDate`, `link`)
-- [ ] Add `<link rel="alternate" type="application/rss+xml" href="/rss.xml">` in `Layout.astro` `<head>`
-- [ ] Verify `@astrojs/sitemap` includes the new blog routes
+- [x] `src/pages/rss.xml.ts` (EN) → `https://sandovaldavid.com/rss.xml`
+- [x] `src/pages/es/rss.xml.ts` (ES) → `https://sandovaldavid.com/es/rss.xml`
+- [x] Populate items from `getBlogPosts(lang)` (title, description, `pubDate`, `link`)
+- [x] Add `<link rel="alternate" type="application/rss+xml" href="/rss.xml">` in `Layout.astro` `<head>`
+- [x] Verify `@astrojs/sitemap` includes the new blog routes
 
 ### Template — EN feed endpoint
 
@@ -192,11 +192,11 @@ export async function GET(context) {
 
 ### Checklist
 
-- [ ] Add blog UI keys to `en.json` + `es.json`: page title/description, "Read more", "Back to blog", "Published", "Updated", "Tags"
-- [ ] Author 1–2 seed posts in both locales (`src/content/blog/en/*.mdx`, `src/content/blog/es/*.mdx`) with complete frontmatter
-- [ ] Ensure the `language-picker` maps `/blog` ↔ `/es/blog` correctly (check its path logic)
-- [ ] (Optional) Document cross-posting to dev.to / Hashnode with `canonical_url` = the article's `sandovaldavid.com` URL, using the post's `canonicalUrl` frontmatter field
-- [ ] (Cleanup, optional) Remove the unused `astro-i18n` dependency flagged during audit if unrelated to this branch
+- [x] Add blog UI keys to `en.json` + `es.json`: page title/description, "Read more", "Back to blog", "Published", "Updated", "Tags"
+- [x] Author 1–2 seed posts in both locales (`src/content/blog/en/*.mdx`, `src/content/blog/es/*.mdx`) with complete frontmatter
+- [x] Ensure the `language-picker` maps `/blog` ↔ `/es/blog` correctly (check its path logic)
+- [x] (Optional) Document cross-posting to dev.to / Hashnode with `canonical_url` = the article's `sandovaldavid.com` URL, using the post's `canonicalUrl` frontmatter field
+- [x] (Cleanup, optional) Remove the unused `astro-i18n` dependency flagged during audit if unrelated to this branch
 
 ### Acceptance Criteria
 
@@ -220,11 +220,11 @@ feat(blog): add native MDX blog with i18n and RSS
 
 ## PR Checklist
 
-- [ ] `bun run astro check` passes (types across content collection + slices)
-- [ ] `bun run build` passes with all four blog routes generated
-- [ ] `.prose` renders MDX correctly in light + dark
-- [ ] `/rss.xml` and `/es/rss.xml` return valid feeds
-- [ ] hreflang + canonical correct on `/blog/<slug>` and `/es/blog/<slug>`
-- [ ] FSD boundaries respected (widget → feature/entity/shared only)
+- [x] `bun run astro check` passes (types across content collection + slices)
+- [x] `bun run build` passes with all four blog routes generated
+- [x] `.prose` renders MDX correctly in light + dark
+- [x] `/rss.xml` and `/es/rss.xml` return valid feeds
+- [x] hreflang + canonical correct on `/blog/<slug>` and `/es/blog/<slug>`
+- [x] FSD boundaries respected (widget → feature/entity/shared only)
 - [ ] Profile repo `blog-posts.yml` `feed_list` updated to `https://sandovaldavid.com/rss.xml`
 ```

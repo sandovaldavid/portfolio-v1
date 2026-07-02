@@ -1,0 +1,42 @@
+---
+title: 'Building This Portfolio With Astro 6 and Feature-Sliced Design'
+description: 'Why I rebuilt sandovaldavid.com on Astro 6 with a strict Feature-Sliced Design layer hierarchy, and what it bought me in practice.'
+pubDate: 2026-06-30
+tags: ['astro', 'architecture', 'fsd']
+---
+
+## Why FSD for a portfolio?
+
+A personal portfolio is a small codebase, but it grows faster than you'd expect: a hero
+section becomes a widget, then a devlog, then project case studies, then a blog. Without a
+layering rule, "small" projects turn into a pile of components that all import each other.
+
+I adopted [Feature-Sliced Design](https://feature-sliced.design/) with a strict import
+direction:
+
+```
+app → pages → widgets → features → entities → shared
+```
+
+Each layer can only import from layers below it. Widgets can't import other widgets, pages
+can't import other pages, and `shared` never imports from anything above it. It sounds
+pedantic for a portfolio, but it's what let me add an entire devlog section — and now this
+blog — without touching unrelated code.
+
+## What that looks like day to day
+
+- **`shared/ui`** holds the primitives: `Badge`, `TechPill`, `LinkButton`. No business logic.
+- **`entities/`** wrap raw data (projects, devlog posts, and now blog posts) behind query
+  helpers like `getBlogPosts(lang)`, so pages never touch the content collection directly.
+- **`widgets/`** compose entities and shared UI into page sections — `BlogCard`,
+  `ProjectCard`, `DevlogDetail`.
+- **`pages/`** stay thin: fetch data, pass it to a widget, done.
+
+## The payoff
+
+When I added this blog, the diff was almost entirely additive: a new `entities/blog` slice,
+a new `widgets/blog` slice, and four route files. Nothing in `widgets/header` or
+`app/layouts/Layout.astro` needed a rewrite — just a new nav entry and an RSS `<link>` tag.
+
+That's the whole pitch for FSD on a project this size: it costs a little discipline up
+front, and it pays it back every time you add a feature instead of a patch.

@@ -1,6 +1,7 @@
 export { AboutContent } from './about-content';
 export { AboutMe } from './about-me';
 export { Badges } from './badges';
+export { BlogCard, BlogDetail } from './blog';
 export { ContactSidebar } from './contact-sidebar';
 export { DevlogCard, DevlogDetail } from './devlog';
 export { Experience } from './experience';

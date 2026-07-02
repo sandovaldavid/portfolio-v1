@@ -184,6 +184,20 @@ const articleSchema = article
 		<link rel="alternate" hreflang="es" href={esUrl} />
 		<link rel="alternate" hreflang="x-default" href={enUrl} />
 
+		<!-- RSS feeds -->
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${siteConfig.name} — Blog (EN)`}
+			href="/rss.xml"
+		/>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${siteConfig.name} — Blog (ES)`}
+			href="/es/rss.xml"
+		/>
+
 		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
 		<Font cssVariable="--font-pixel" preload />
 		<Font cssVariable="--font-pixel-clean" preload />
