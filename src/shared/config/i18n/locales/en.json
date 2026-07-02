@@ -39,6 +39,7 @@
 		"experience": "Experience",
 		"projects": "Projects",
 		"devlog": "Devlog",
+		"blog": "Blog",
 		"about": "About me",
 		"stack": "Stack",
 		"research": "Research"
@@ -274,6 +275,18 @@
 			"summary": "SVGO optimization, structured data (BreadcrumbList/ScholarlyArticle), spacing design tokens, print stylesheet, image optimization, project case studies, and developer devlog.",
 			"content": "## Phase 3 (June 28)\n\nFinal phase of the initial audit backlog: performance optimization, content enrichment, and documentation.\n\n## Completed\n\n- **P3-5**: Enabled svgoOptimizer for future SVG assets\n- **P3-6**: Auto-generated BreadcrumbList JSON-LD on all inner pages; ScholarlyArticle on research pages\n- **P3-4**: CSP: cancelled — incompatible with Astro ClientRouter for View Transitions\n- **P3-7**: Added pixel-grid spacing tokens (--space-1 through --space-24), retro shadow scale, and print stylesheet for clean resume output\n- **P3-1**: Project case study pages (boss-fight themed) with dedicated [slug] routes per project\n- **P3-2**: Devlog (patch notes) with version history entries\n\n## Image Optimization\n\n- project-09-fluentreads: 912K → 42K (-95%)\n- project-08-campus-map: 336K PNG → 26K WebP (-92%)\n- project-10-MAD-AI: 181K → 34K (-81%)\n- Total dist: 3.8M → 2.4M"
 		}
+	},
+	"blog": {
+		"label": "BLOG",
+		"heading": "Articles",
+		"subheading": "Software engineering, applied AI, and notes from building this portfolio and my BiLSTM thesis research.",
+		"page-title": "Blog | David Sandoval",
+		"page-description": "Articles on software engineering, applied AI, and OSS research by David Sandoval.",
+		"read-more": "READ ARTICLE",
+		"back": "[ BACK TO BLOG ]",
+		"published": "Published",
+		"updated": "Updated",
+		"tags": "Tags"
 	},
 	"not-found": {
 		"title": "404 - Page not found | David Sandoval",

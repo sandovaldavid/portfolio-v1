@@ -4,6 +4,7 @@ import BrainIcon from '@assets/icons/Brain.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import ScrollTextIcon from '@assets/icons/ScrollText.astro';
+import BookOpenIcon from '@assets/icons/BookOpen.astro';
 import SystemIcon from '@assets/icons/System.astro';
 
 interface Props {
@@ -34,6 +35,7 @@ const { navItems } = Astro.props;
 				{link.icon === 'research' && <BrainIcon class="size-4" />}
 				{link.icon === 'projects' && <CodeIcon class="size-4" />}
 				{link.icon === 'devlog' && <ScrollTextIcon class="size-4" />}
+				{link.icon === 'blog' && <BookOpenIcon class="size-4" />}
 				{link.icon === 'about-me' && <ProfileCheckIcon class="size-4" />}
 				{link.icon === 'technologies' && <SystemIcon class="size-4" />}
 				<span>{link.title}</span>

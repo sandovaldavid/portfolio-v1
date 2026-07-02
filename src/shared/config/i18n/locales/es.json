@@ -39,6 +39,7 @@
 		"experience": "Experiencia",
 		"projects": "Proyectos",
 		"devlog": "Devlog",
+		"blog": "Blog",
 		"about": "Sobre mí",
 		"stack": "Stack",
 		"research": "Investigación"
@@ -274,6 +275,18 @@
 			"summary": "Optimización SVGO, datos estructurados (BreadcrumbList/ScholarlyArticle), tokens de espaciado, hoja de estilo de impresión, optimización de imágenes, casos de estudio y devlog.",
 			"content": "## Fase 3 (28 Junio)\n\nFase final del backlog inicial de auditoría: optimización de rendimiento, enriquecimiento de contenido y documentación.\n\n## Completado\n\n- **P3-5**: Activado svgoOptimizer para futuros assets SVG\n- **P3-6**: BreadcrumbList JSON-LD auto-generado en todas las páginas internas; ScholarlyArticle en páginas de investigación\n- **P3-4**: CSP: cancelado — incompatible con Astro ClientRouter para View Transitions\n- **P3-7**: Añadidos tokens de espaciado pixel-grid (--space-1 a --space-24), escala de sombras retro y hoja de estilo de impresión para CV limpio\n- **P3-1**: Páginas de caso de estudio (temática boss-fight) con rutas [slug] dedicadas por proyecto\n- **P3-2**: Devlog (notas de parche) con historial de versiones\n\n## Optimización de Imágenes\n\n- project-09-fluentreads: 912K → 42K (-95%)\n- project-08-campus-map: 336K PNG → 26K WebP (-92%)\n- project-10-MAD-AI: 181K → 34K (-81%)\n- Total dist: 3.8M → 2.4M"
 		}
+	},
+	"blog": {
+		"label": "BLOG",
+		"heading": "Artículos",
+		"subheading": "Ingeniería de software, IA aplicada y notas sobre la construcción de este portafolio y mi investigación de tesis sobre BiLSTM.",
+		"page-title": "Blog | David Sandoval",
+		"page-description": "Artículos sobre ingeniería de software, IA aplicada e investigación OSS por David Sandoval.",
+		"read-more": "LEER ARTÍCULO",
+		"back": "[ VOLVER AL BLOG ]",
+		"published": "Publicado",
+		"updated": "Actualizado",
+		"tags": "Etiquetas"
 	},
 	"not-found": {
 		"title": "404 - Página no encontrada | David Sandoval",

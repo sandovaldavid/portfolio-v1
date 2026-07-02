@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 import robotsTxt from 'astro-robots-txt';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +14,7 @@ export default defineConfig({
 			plugins: ['preset-default', 'removeXMLNS'],
 		}),
 	},
-	integrations: [robotsTxt()],
+	integrations: [robotsTxt(), mdx(), sitemap()],
 	site: 'https://sandovaldavid.com',
 	fonts: [
 		{
