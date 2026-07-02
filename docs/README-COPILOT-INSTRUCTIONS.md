@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions for Technical Portfolio V2
+# GitHub Copilot Instructions for Portfolio V1
 
 Este proyecto utiliza un sistema completo de instrucciones personalizadas para GitHub Copilot que implementa la arquitectura **Feature-Sliced Design (FSD)**. Las instrucciones están organizadas en diferentes niveles para proporcionar contexto específico según el área de trabajo.
 

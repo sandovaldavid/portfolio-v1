@@ -1,5 +1,7 @@
 # Checklist Completo de Migración FSD
 
+> 📜 **Documento histórico** — Guía de la migración a FSD (octubre 2025). La migración está **completa**: 16 widgets, 4 features, 5 entities. Este documento se conserva como referencia del proceso y no refleja el estado actual del proyecto.
+
 ## 📋 Guía Paso a Paso
 
 Usa este checklist para rastrear tu progreso durante la migración a Feature-Sliced Design.

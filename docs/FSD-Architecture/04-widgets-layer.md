@@ -1,5 +1,7 @@
 # Guía de Migración: Widgets Layer
 
+> 📜 **Documento histórico** — Guía de la migración a FSD (octubre 2025). La migración está **completa**: 16 widgets, 4 features, 5 entities. Este documento se conserva como referencia del proceso y no refleja el estado actual del proyecto.
+
 ## 🧩 Widgets Layer - Secciones Completas
 
 Widgets son **bloques UI grandes** que componen Features + Entities para crear secciones completas.

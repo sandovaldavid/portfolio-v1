@@ -213,7 +213,7 @@ src/
 2. **Type Checking**: Always run `astro check` before building
 3. **Build Process**: `bun run build` runs type checking and builds the project
 4. **Preview**: Use `bun run preview` to test the production build locally
-5. **Deployment**: The site deploys automatically to GitHub Pages via GitHub Actions
+5. **Deployment**: The site deploys automatically to Vercel via GitHub Actions (preview on develop/PRs, production on main)
 
 ## Code Standards and Conventions
 
