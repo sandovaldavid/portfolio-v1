@@ -5,6 +5,12 @@
 **Priority**: Medium-Low
 **Why**: The project has grown beyond the original 7 widgets / 2 features / 4 entities documented in 2025. There is no single source of truth for the current architecture.
 
+> [!NOTE]
+> Checklist verified and marked complete on 2026-07-02 (retroactively — `docs/widgets-catalog.md`,
+> `docs/features-catalog.md`, and the `docs/TESTING.md` reconciliation shipped and merged to
+> `develop`, but this file's boxes were never checked at the time). `widgets-catalog.md` has since
+> been updated once more, for the `blog` widget added by `feat/blog`.
+
 ---
 
 ## Task 3.1 — Create `docs/widgets-catalog.md`
@@ -14,22 +20,22 @@
 
 ### Checklist
 
-- [ ] List all widget slices with one-line description
-- [ ] For each widget, document:
-  - [ ] Purpose (what user-visible section it renders)
-  - [ ] Layer dependencies (which features/entities/shared it imports)
-  - [ ] Public API exports (from `index.ts`)
-- [ ] Include new widgets not in original docs:
-  - [ ] `tech-stack`
-  - [ ] `recruiter-hud`
-  - [ ] `contact-sidebar`
-  - [ ] `research`
-  - [ ] `research-content`
-  - [ ] `about-content`
-  - [ ] `devlog`
-  - [ ] `project-case-study`
-  - [ ] `vision`
-- [ ] Mark original 7 widgets for reference
+- [x] List all widget slices with one-line description
+- [x] For each widget, document:
+  - [x] Purpose (what user-visible section it renders)
+  - [x] Layer dependencies (which features/entities/shared it imports)
+  - [x] Public API exports (from `index.ts`)
+- [x] Include new widgets not in original docs:
+  - [x] `tech-stack`
+  - [x] `recruiter-hud`
+  - [x] `contact-sidebar`
+  - [x] `research`
+  - [x] `research-content`
+  - [x] `about-content`
+  - [x] `devlog`
+  - [x] `project-case-study`
+  - [x] `vision`
+- [x] Mark original 7 widgets for reference
 
 ### Template per widget
 
@@ -56,22 +62,22 @@
 
 ### Checklist
 
-- [ ] Document `theme-toggle`
-  - [ ] Purpose: dark/light/system theme switching
-  - [ ] Client-side logic: localStorage, system preference
-  - [ ] Public API exports
-- [ ] Document `language-picker`
-  - [ ] Purpose: language switching (es/en)
-  - [ ] Integration with `@shared/lib/i18n`
-  - [ ] Public API exports
-- [ ] Document `cli-terminal`
-  - [ ] Purpose: interactive terminal UI
-  - [ ] Client-side logic summary
-  - [ ] Public API exports
-- [ ] Document `splash-screen`
-  - [ ] Purpose: initial loading experience
-  - [ ] Public API exports
-- [ ] Add FSD rule reminder: features may import entities and shared only
+- [x] Document `theme-toggle`
+  - [x] Purpose: dark/light/system theme switching
+  - [x] Client-side logic: localStorage, system preference
+  - [x] Public API exports
+- [x] Document `language-picker`
+  - [x] Purpose: language switching (es/en)
+  - [x] Integration with `@shared/lib/i18n`
+  - [x] Public API exports
+- [x] Document `cli-terminal`
+  - [x] Purpose: interactive terminal UI
+  - [x] Client-side logic summary
+  - [x] Public API exports
+- [x] Document `splash-screen`
+  - [x] Purpose: initial loading experience
+  - [x] Public API exports
+- [x] Add FSD rule reminder: features may import entities and shared only
 
 ### Acceptance Criteria
 
@@ -87,21 +93,21 @@
 
 ### Checklist
 
-- [ ] Verify commands listed still exist in `package.json`
-  - [ ] `bun run test`
-  - [ ] `bun run test:ui`
-  - [ ] `bun run test:debug`
-  - [ ] `bun run lighthouse:collect`
-  - [ ] `bun run lighthouse:assert`
-  - [ ] `bun run bundle:analyze`
-- [ ] Verify configuration files still exist
-  - [ ] `.lighthouserc.json`
-  - [ ] `playwright.config.ts`
-  - [ ] `vitest.config.ts`
-- [ ] Update "Test Coverage" section if new features/widgets are missing
-- [ ] Update CI job descriptions if `ci.yml` has changed since doc was written
-- [ ] Add note about `tests/e2e/` and `tests/unit/` directories
-- [ ] Check if `bun run test:all` exists and document it if so
+- [x] Verify commands listed still exist in `package.json`
+  - [x] `bun run test`
+  - [x] `bun run test:ui`
+  - [x] `bun run test:debug`
+  - [x] `bun run lighthouse:collect`
+  - [x] `bun run lighthouse:assert`
+  - [x] `bun run bundle:analyze`
+- [x] Verify configuration files still exist
+  - [x] `.lighthouserc.json`
+  - [x] `playwright.config.ts`
+  - [x] `vitest.config.ts`
+- [x] Update "Test Coverage" section if new features/widgets are missing
+- [x] Update CI job descriptions if `ci.yml` has changed since doc was written
+- [x] Add note about `tests/e2e/` and `tests/unit/` directories
+- [x] Check if `bun run test:all` exists and document it if so
 
 ### Acceptance Criteria
 
@@ -123,7 +129,7 @@ docs(docs): catalog current widgets/features and reconcile testing docs
 
 ## PR Checklist
 
-- [ ] `docs/widgets-catalog.md` renders correctly
-- [ ] `docs/features-catalog.md` renders correctly
-- [ ] `docs/TESTING.md` commands verified against `package.json`
-- [ ] No broken internal links
+- [x] `docs/widgets-catalog.md` renders correctly
+- [x] `docs/features-catalog.md` renders correctly
+- [x] `docs/TESTING.md` commands verified against `package.json`
+- [x] No broken internal links

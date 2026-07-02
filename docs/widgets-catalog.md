@@ -1,8 +1,9 @@
 # Widgets Catalog
 
-Every slice under `src/widgets/` (16 total), what it renders, what it depends on, and where it's
+Every slice under `src/widgets/` (17 total), what it renders, what it depends on, and where it's
 actually used. Generated 2026-07-02 by reading each slice's `index.ts`, imports, and callers —
-see [`docs/tasks/branch-03-project-docs.md`](./tasks/branch-03-project-docs.md).
+see [`docs/tasks/branch-03-project-docs.md`](./tasks/branch-03-project-docs.md). `blog` was added
+afterward by [`docs/tasks/branch-05-blog.md`](./tasks/branch-05-blog.md).
 
 > [!NOTE]
 > Two widgets (`badges`, `vision`) exist and are fully implemented but are **not currently
@@ -34,6 +35,15 @@ see [`docs/tasks/branch-03-project-docs.md`](./tasks/branch-03-project-docs.md).
 - **Used in**: nothing. `src/pages/components.astro` has a "Badges" demo section, but it renders
   the generic `Badge` atom from `@shared/ui`, not this widget. No page currently imports
   `@widgets/badges`.
+
+### `blog`
+
+- **Purpose**: Two components for the blog feature — `BlogCard` (compact list item) and
+  `BlogDetail` (full article view rendering the MDX body via `.prose`).
+- **Dependencies**: `@entities/blog`, `@shared/ui`, `astro:content`
+- **Public API**: `export { BlogCard, BlogDetail } from './ui'`
+- **Used in**: `src/pages/blog.astro` / `es/blog.astro` (`BlogCard`);
+  `src/pages/blog/[slug].astro` / `es/blog/[slug].astro` (`BlogDetail`)
 
 ### `contact-sidebar`
 
@@ -140,6 +150,6 @@ see [`docs/tasks/branch-03-project-docs.md`](./tasks/branch-03-project-docs.md).
 
 Per the archived [`FSD-Architecture/04-widgets-layer.md`](./FSD-Architecture/04-widgets-layer.md),
 the initial FSD migration covered 7 widgets: `hero`, `header`, `footer`, `about-me`, `experience`,
-`projects`, `badges`. All 7 still exist above; the other 9 (`about-content`, `contact-sidebar`,
-`devlog`, `project-case-study`, `recruiter-hud`, `research`, `research-content`, `tech-stack`,
-`vision`) were added afterward and are documented here for the first time.
+`projects`, `badges`. All 7 still exist above; the other 10 (`about-content`, `blog`,
+`contact-sidebar`, `devlog`, `project-case-study`, `recruiter-hud`, `research`, `research-content`,
+`tech-stack`, `vision`) were added afterward and are documented here for the first time.
