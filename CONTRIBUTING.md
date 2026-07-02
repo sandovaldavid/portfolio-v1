@@ -106,7 +106,7 @@ feat(i18n): add French language support
 fix(header): resolve mobile menu toggle issue
 docs: update README with deployment instructions
 test(unit): add coverage for i18n utilities
-chore(deps): update Astro to v5.17.1
+chore(deps): update Astro to v6.4.8
 ci(testing): add CodeQL security scanning
 ```
 

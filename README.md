@@ -12,9 +12,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Astro-6.4.8-FF5D01?style=for-the-badge&logo=astro&logoColor=white" alt="Astro">
   <img src="https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4.1.18-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4.3.1-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Bun-1.3.14-000000?style=for-the-badge&logo=bun&logoColor=white" alt="Bun">
-  <img src="https://img.shields.io/github/license/sandovaldavid/technical-portfolio-v2" alt="Licencia MIT">
+  <img src="https://img.shields.io/github/license/sandovaldavid/portfolio-v1" alt="Licencia MIT">
 </p>
 
 ## 🚀 Demo en Vivo
@@ -42,7 +42,7 @@ Como desarrollador freelance o profesional independiente, necesitas una presenci
 
 Este portafolio es una aplicación web estática construida con tecnologías modernas que centraliza tu marca personal profesional. La solución permite:
 
-- ✅ **Carga ultrarrápida** gracias a Astro (SSG) con un performance score de 100/100
+- ✅ **Carga ultrarrápida** gracias a Astro (SSG) con performance ≥90 garantizado por Lighthouse CI
 - ✅ **Internacionalización** completa (Español/Inglés) con arquitectura escalable
 - ✅ **Modo oscuro/claro** adaptativo según preferencias del usuario
 - ✅ **Arquitectura FSD** (Feature-Sliced Design) para mantenibilidad a largo plazo
@@ -59,14 +59,14 @@ Este portafolio es una aplicación web estática construida con tecnologías mod
 
 Este proyecto fue construido usando las siguientes tecnologías:
 
-- **Framework:** Astro 5.15.3 (Static Site Generator)
-- **Lenguaje:** TypeScript 5.7.2 (Configuración estricta)
-- **Estilos:** Tailwind CSS 4.1.13 con @tailwindcss/vite
+- **Framework:** Astro 6.4.8 (Static Site Generator)
+- **Lenguaje:** TypeScript 5.9.3 (Configuración estricta)
+- **Estilos:** Tailwind CSS 4.3.1 con @tailwindcss/vite
 - **Arquitectura:** Feature-Sliced Design (FSD)
 - **Internacionalización:** Sistema custom con soporte ES/EN
-- **Fuentes:** Onest Variable Font (@fontsource-variable/onest)
-- **Runtime:** Bun 1.2.22 (desarrollo local)
-- **Despliegue:** Vercel con npm (producción)
+- **Fuentes:** Tipografías retro/pixel (VT323, Press Start 2P, Silkscreen) + JetBrains Mono
+- **Runtime:** Bun 1.3.14 (desarrollo local y CI/CD)
+- **Despliegue:** Vercel con Bun (producción)
 - **Formato de Código:** Prettier con prettier-plugin-astro
 - **SEO:** astro-robots-txt
 
@@ -90,8 +90,8 @@ Este proyecto fue construido usando las siguientes tecnologías:
 1. **Clonar el repositorio:**
 
     ```bash
-    git clone https://github.com/sandovaldavid/technical-portfolio-v2.git
-    cd technical-portfolio-v2
+    git clone https://github.com/sandovaldavid/portfolio-v1.git
+    cd portfolio-v1
     ```
 
 2. **Instalar dependencias con Bun:**
@@ -136,7 +136,6 @@ Este proyecto fue construido usando las siguientes tecnologías:
 
 | Comando | Descripción |
 |---------|-------------|
-| `bun test` | Tests unitarios (Vitest, solo `tests/unit/`) |
 | `bun run test:unit` | Tests unitarios con Vitest |
 | `bun run test:unit:coverage` | Cobertura de tests unitarios |
 | `bun run test:local` | E2E en Chromium, Firefox y Mobile Chrome (recomendado en Fedora/Linux) |
@@ -210,19 +209,19 @@ Este proyecto fue un desafío técnico interesante que me permitió explorar arq
 - Agregué progressive sizing para el avatar (`size-32 sm:size-40 md:size-48`)
 - Creé background pattern adaptativo (200%→150%→cover por viewport)
 
-**Resultado:** Performance score de 100/100 en Lighthouse, carga 3x más rápida en móviles.
+**Resultado:** Performance ≥90 verificado en cada PR por Lighthouse CI, carga 3x más rápida en móviles.
 
 ### El Reto: Despliegue en Vercel con Bun
 
-**Problema:** Vercel intentaba usar Bun para el build, causando errores de resolución de módulos (`wrap-ansi` → `string-width`).
+**Problema:** Los primeros builds en Vercel con Bun fallaban por errores de resolución de módulos (`wrap-ansi` → `string-width`), lo que obligó temporalmente a usar npm en CI/CD.
 
 **Solución:**
 
 - Eliminé `@astrojs/tailwind@6.0.2` (conflicto con Tailwind CSS v4)
-- Creé `vercel.json` forzando npm para CI/CD
-- Mantuve Bun localmente para desarrollo rápido
+- Una vez resuelto el conflicto, configuré `vercel.json` con `bun install --frozen-lockfile` y `bun run build`
+- Hoy todo el pipeline (desarrollo, CI y despliegue) usa Bun de forma consistente
 
-**Resultado:** Deployments exitosos, mejor compatibilidad con Vercel.
+**Resultado:** Deployments exitosos y un único runtime en todo el flujo.
 
 ---
 

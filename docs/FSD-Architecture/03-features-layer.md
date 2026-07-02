@@ -1,5 +1,7 @@
 # Guía de Migración: Features Layer
 
+> 📜 **Documento histórico** — Guía de la migración a FSD (octubre 2025). La migración está **completa**: 16 widgets, 4 features, 5 entities. Este documento se conserva como referencia del proceso y no refleja el estado actual del proyecto.
+
 ## ✨ Features Layer - Funcionalidades Interactivas
 
 El Features layer contiene componentes con **lógica de negocio** e **interactividad client-side**. Son reutilizables y proporcionan valor al usuario.

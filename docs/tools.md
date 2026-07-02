@@ -13,7 +13,7 @@ Es el estándar de la industria desarrollado por Google. No solo mide el rendimi
 * **Por qué destaca:** Es 100% gratuito, *open-source* y genera reportes HTML interactivos espectaculares que son perfectos para adjuntar en tu portafolio.
 * **Cómo se usa:** Puedes ejecutarlo directamente desde la terminal de Node.js:
 ```bash
-npx lighthouse https://tupagina.com --view
+bunx lighthouse https://tupagina.com --view
 
 ```
 
@@ -33,7 +33,7 @@ Desarrollado por Deque, es el motor de accesibilidad más confiable del mercado 
 * **Por qué destaca:** Cero falsos positivos. Te dice exactamente qué elemento falló, por qué infringe las normas y cómo solucionarlo.
 * **Cómo se usa:**
 ```bash
-npx axe-cli https://tupagina.com
+bunx axe-cli https://tupagina.com
 
 ```
 
@@ -46,7 +46,7 @@ Una herramienta CLI *open-source* diseñada específicamente para diseñadores y
 * **Por qué destaca:** Puedes configurarlo para que simule acciones del usuario antes de testear (ideal para Single Page Applications como Angular donde el contenido cambia dinámicamente). Soporta exportar los resultados a JSON, CSV o HTML.
 * **Cómo se usa:**
 ```bash
-npx pa11y https://tupagina.com
+bunx pa11y https://tupagina.com
 
 ```
 

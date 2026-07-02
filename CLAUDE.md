@@ -9,15 +9,15 @@ Comprehensive development guidance for Portfolio V1. This file is essential for 
 ## Project Overview
 
 Personal portfolio website built with Astro, TypeScript, and Tailwind CSS. 
-**Live:** https://devsandoval.me
+**Live:** https://sandovaldavid.com
 
 **Tech Stack:**
 - Astro 6.4.8 (Static Site Generator)
 - TypeScript 5.9.3 (strict mode)
-- Tailwind CSS 4.1.18 with @tailwindcss/vite
+- Tailwind CSS 4.3.1 with @tailwindcss/vite
 - Bun 1.3.14 (package manager and runtime)
 - Playwright 1.61.0 (E2E testing)
-- Vitest 2.1.2 (Unit testing)
+- Vitest 4.1.9 (Unit testing)
 
 ---
 
@@ -67,14 +67,20 @@ src/
 │       └── colors.css
 ├── pages/               # Route handlers (astro pages)
 │   ├── index.astro
-│   ├── about-me.astro
-│   ├── projects.astro
-│   └── es/
+│   ├── about.astro
+│   ├── projects.astro   # + projects/ (case studies)
+│   ├── skills.astro
+│   ├── research.astro
+│   ├── devlog.astro     # + devlog/ (posts)
+│   ├── atena.astro
+│   ├── components.astro # dev showcase
+│   ├── 404.astro
+│   └── es/              # Spanish mirrors of all pages
 ├── widgets/             # Large reusable UI blocks
 │   ├── header/
 │   ├── footer/
 │   ├── hero/
-│   └── [13 widgets total]
+│   └── [16 widgets total]
 ├── features/            # Business features
 │   ├── theme-toggle/
 │   ├── language-picker/
@@ -84,12 +90,12 @@ src/
 │   ├── project/
 │   ├── experience/
 │   ├── badge/
-│   └── technology/
+│   ├── technology/
+│   └── devlog/
 └── shared/              # Shared utilities
     ├── ui/              # UI components
     ├── lib/             # Utilities and helpers
-    ├── config/          # Configuration
-    └── api/             # External integrations
+    └── config/          # Configuration
 ```
 
 ### FSD Rules (STRICT)
@@ -288,6 +294,8 @@ bun run test:unit:coverage # Coverage
 
 **Coverage targets:** 90% (lines, functions, branches, statements)
 
+[INFO] Coverage scope is currently limited to the i18n modules (`src/shared/lib/i18n/**`, `src/shared/config/i18n/**`) in `vitest.config.ts` — the 90% threshold applies only to those files.
+
 ### E2E Tests (Playwright)
 
 **Location:** `tests/e2e/**/*.spec.ts`
@@ -328,13 +336,13 @@ bun run test tests/e2e/my.spec.ts  # Specific test
 
 **Location:** `.lighthouserc.json`
 
-[REQUIRED] thresholds:
+[REQUIRED] thresholds (enforced by `.lighthouserc.json`):
 - Performance: ≥90
 - Accessibility: ≥95
 - Best Practices: ≥90
 - SEO: ≥90
-- LCP: ≤2.5s
-- CLS: ≤0.1
+
+[INFO] Resource/timing budgets (LCP ≤2.5s, CLS ≤0.1) are defined in `lighthouse-budget.json` as reference targets — they are not currently wired into the Lighthouse CI assertions.
 
 ```bash
 bun run lighthouse         # Run Lighthouse CI
@@ -513,7 +521,7 @@ feat(i18n): add French language support
 fix(header): resolve mobile menu toggle
 docs: update README with new features
 test(unit): add i18n utility tests
-chore(deps): update Astro to v5.17.1
+chore(deps): update Astro to v6.4.8
 ```
 
 [INFO] Pre-commit hook auto-formats and lints before commit
@@ -537,60 +545,57 @@ feat/* / fix/* / ...
       main   ──→  Producción en Vercel (automático)
 ```
 
-### validate-pr.yml
-
-Runs on: Push to main/develop, Pull requests
-
-Checks:
-1. Security audit (`bun audit`)
-2. ESLint
-3. Prettier format
-4. Unit tests (Vitest)
-5. Type check (Astro check)
-6. Build verification
-
-[REQUIRED] All must pass before merge
-
-### testing-ci.yml
+### ci.yml — Continuous Integration
 
 Runs on: Push to main/develop, Pull requests
 
 Jobs:
-1. Lighthouse CI (6 pages, 3 runs averaged)
-2. Playwright E2E (5 browsers/devices)
-3. Performance summary
+1. **validate** — ESLint, Prettier check, Conventional Commits validation (PRs)
+2. **test-unit** — Vitest with coverage (artifact: `coverage-report`)
+3. **build** — Astro check + build, bundle size analysis (5MB threshold, warning only), uploads `dist` and `bundle-analysis` artifacts
+4. **lighthouse** — Lighthouse CI over the prebuilt dist (artifact: `lighthouse-reports`)
+5. **playwright** — E2E on 5 browsers/devices (artifact: `playwright-report`)
+6. **pr-summary** — posts a unified PR comment with job statuses and direct download links to all artifacts
 
-Reports published to GitHub Pages
+[REQUIRED] All must pass before merge
+
+[INFO] Reports are NOT published to GitHub Pages — they are delivered as run
+artifacts, linked from the unified PR comment. Download locally with
+`gh run download <run-id>`.
 
 ### codeql.yml
 
-Runs on: Push, PRs, weekly schedule
+Runs on: Push, PRs, weekly schedule (Sundays)
 
 Analyzes:
-- JavaScript/TypeScript code
+- JavaScript/TypeScript code (`security-and-quality` queries)
 - Security vulnerabilities
 - Code quality issues
 
-### publish-reports.yml
+### deploy-preview.yml
 
-Triggered by: testing-ci.yml success
+Runs on: Push to develop, Pull requests to main/develop (skips dependabot)
 
-Publishes:
-- Lighthouse reports
-- Playwright reports
-- Test results
+- Builds with `vercel build` and deploys `--prebuilt` to Vercel Preview
+- Creates a GitHub Deployment with full status lifecycle (PRs)
+- Posts/updates a PR comment with the preview URL
 
-Access at: `https://<user>.github.io/portfolio-v1/test-reports/`
+### deploy-production.yml
 
-### bundle-analysis.yml
+Runs on: Push to main
 
-Runs on: Push, PRs
+- Builds with `vercel build --prod` and deploys `--prebuilt --prod` to Vercel Production
 
-Monitors:
-- JS bundle size
-- CSS bundle size
-- Total dist size (5MB threshold)
-- Comments PR with comparison
+### release-please.yml
+
+Runs on: Push to main/develop
+
+- Automates versioning and CHANGELOG via googleapis/release-please-action
+- Dual config: `release-please-config.json` (main) and `release-please-config-develop.json` (develop, beta pre-releases)
+
+### build-devcontainer.yml
+
+Builds and publishes the devcontainer image used for local Playwright testing.
 
 ---
 
@@ -668,9 +673,9 @@ bun run bundle:analyze
 - **CLAUDE.md** - This file (development guide)
 - **CONTRIBUTING.md** - Contributing guidelines
 - **CHANGELOG.md** - Version history
-- **docs/INFRASTRUCTURE_AUDIT.md** - Detailed audit report
 - **docs/TESTING.md** - Testing guide
-- **docs/FSD-Architecture/** - FSD documentation
+- **docs/reports/** - Audit reports (latest: portfolio-audit-2026-06)
+- **docs/FSD-Architecture/** - FSD documentation (historical migration guides)
 
 ### Creating New Docs
 
@@ -772,11 +777,11 @@ Before merging:
 - Email: hello@sandovaldavid.com
 - Email: dev@sandovaldavid.com
 - Create GitHub Discussion
-- Check docs/INFRASTRUCTURE_AUDIT.md for detailed info
+- Check docs/reports/ for detailed audit info
 
 ---
 
-**Last Updated:** June 18, 2026
+**Last Updated:** July 1, 2026
 **Status:** Active Development
 **Maturity:** 4.5/5 (Production Ready)
-**CI/CD:** Validated via test/ci-cd-validation branch
+**CI/CD:** Consolidated in ci.yml + deploy workflows (Vercel via Actions)

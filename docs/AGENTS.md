@@ -16,7 +16,7 @@ AI agents assist with:
 - CI/CD workflow management
 - Performance optimization
 
-**Always refer to:** CLAUDE.md, CONTRIBUTING.md, INFRASTRUCTURE_AUDIT.md
+**Always refer to:** CLAUDE.md, CONTRIBUTING.md, docs/TESTING.md
 
 ---
 
@@ -688,13 +688,13 @@ bun run test
 
 - **CLAUDE.md** - Development guide
 - **CONTRIBUTING.md** - Contribution guidelines
-- **docs/INFRASTRUCTURE_AUDIT.md** - Complete audit
+- **docs/reports/** - Audit reports (latest: portfolio-audit-2026-06)
 - **docs/TESTING.md** - Testing guide
 - **docs/FSD-Architecture/** - FSD details
 - **CHANGELOG.md** - Version history
 
 ---
 
-**Last Updated:** June 18, 2026
+**Last Updated:** July 1, 2026
 **Status:** Active
 **Maintained by:** hello@sandovaldavid.com

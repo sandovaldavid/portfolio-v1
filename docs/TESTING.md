@@ -8,8 +8,9 @@ The project includes comprehensive testing and monitoring:
 
 - **Lighthouse CI**: Performance, accessibility, and best practices audits
 - **Playwright**: End-to-end testing across multiple browsers and devices
+- **Vitest**: Unit tests with coverage (i18n modules)
 - **Bundle Analysis**: Track bundle size and identify optimization opportunities
-- **GitHub Pages Reports**: Published test results available at `/test-reports`
+- **CI Artifacts**: Test reports delivered as workflow run artifacts, linked from the unified PR comment
 
 ## Running Tests Locally
 
@@ -86,51 +87,52 @@ bun run bundle:analyze
 Output: `bundle-analysis/report.txt`
 
 **Size Thresholds:**
-- Total dist: ≤ 2MB
+- Total dist: ≤ 5MB (reported as a warning in CI, does not block the build)
 - Critical JS: ≤ 100KB
 
 ## CI/CD Pipeline
 
-### Testing CI Workflow
+### Continuous Integration Workflow
+
+All testing runs in a single consolidated workflow:
+
+```bash
+.github/workflows/ci.yml
+```
 
 Triggers on:
 - Push to `main` or `develop`
 - Pull requests
 
-Runs:
-1. Lighthouse CI (3 runs, averages score)
-2. Playwright E2E tests (multiple browsers)
-3. Performance summary
+Jobs:
+1. **validate** — ESLint, Prettier check, Conventional Commits validation
+2. **test-unit** — Vitest with coverage
+3. **build** — Astro check + build, bundle size analysis (5MB warning threshold)
+4. **lighthouse** — Lighthouse CI (3 runs, averages score) over the prebuilt dist
+5. **playwright** — E2E tests (5 browsers/devices)
+6. **pr-summary** — unified PR comment with job statuses and artifact links
+
+## Test Reports (CI Artifacts)
+
+Reports are NOT published to GitHub Pages. Each CI run uploads them as
+artifacts, and the unified PR comment links directly to their download pages:
+
+- **coverage-report** — Vitest coverage (7-day retention)
+- **lighthouse-reports** — Lighthouse HTML/JSON reports (7-day retention)
+- **playwright-report** — Playwright HTML report (7-day retention)
+- **bundle-analysis** — bundle size report (7-day retention)
+
+To review them locally:
 
 ```bash
-.github/workflows/testing-ci.yml
+# Download and extract all artifacts from a run
+gh run download <run-id>
+
+# Serve the reports
+npx serve .lighthouseci/
+bunx playwright show-report playwright-report
+npx serve coverage/
 ```
-
-### Publishing Reports
-
-Automatically publishes test results to GitHub Pages after successful Testing CI run.
-
-Access at: `https://<user>.github.io/<repo>/test-reports/`
-
-```bash
-.github/workflows/publish-reports.yml
-```
-
-### Bundle Analysis Workflow
-
-Analyzes bundle size on every push/PR, comments with size comparison.
-
-```bash
-.github/workflows/bundle-analysis.yml
-```
-
-## GitHub Pages Reports
-
-Test reports are automatically published to GitHub Pages:
-
-- **Lighthouse Reports**: `/test-reports/lighthouse/`
-- **Playwright Reports**: `/test-reports/playwright/`
-- **Test Results**: `/test-reports/index.html`
 
 ## Configuration Files
 
@@ -148,11 +150,11 @@ Test reports are automatically published to GitHub Pages:
 [info] Screenshots and videos on failure
 [info] HTML, JSON, and JUnit reports
 
-### Bundle Analysis (`.github/workflows/bundle-analysis.yml`)
+### Bundle Analysis (`.github/workflows/ci.yml`, build job)
 
 [info] Tracks JS and CSS bundle sizes
-[info] Compares sizes in pull requests
-[info] Enforces 2MB total size threshold
+[info] Publishes the size report in the unified PR comment
+[warning] The 5MB total size threshold logs a warning only — it does not fail the build
 
 ## Test Results Interpretation
 

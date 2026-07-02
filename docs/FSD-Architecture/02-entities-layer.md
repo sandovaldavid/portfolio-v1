@@ -1,5 +1,7 @@
 # Guía de Migración: Entities Layer
 
+> 📜 **Documento histórico** — Guía de la migración a FSD (octubre 2025). La migración está **completa**: 16 widgets, 4 features, 5 entities. Este documento se conserva como referencia del proceso y no refleja el estado actual del proyecto.
+
 ## 📊 Entities Layer - Modelos de Datos y Dominio
 
 El Entities layer contiene modelos de datos, tipos TypeScript, y lógica de dominio específica del negocio. NO contienen UI directamente, pero pueden tener componentes de presentación para sus datos.
