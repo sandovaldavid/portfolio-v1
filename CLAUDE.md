@@ -72,6 +72,7 @@ src/
 │   ├── skills.astro
 │   ├── research.astro
 │   ├── devlog.astro     # + devlog/ (posts)
+│   ├── blog.astro       # + blog/ (MDX posts) + rss.xml.ts
 │   ├── atena.astro
 │   ├── components.astro # dev showcase
 │   ├── 404.astro
@@ -80,7 +81,8 @@ src/
 │   ├── header/
 │   ├── footer/
 │   ├── hero/
-│   └── [16 widgets total]
+│   ├── blog/
+│   └── [17 widgets total]
 ├── features/            # Business features
 │   ├── theme-toggle/
 │   ├── language-picker/
@@ -91,7 +93,8 @@ src/
 │   ├── experience/
 │   ├── badge/
 │   ├── technology/
-│   └── devlog/
+│   ├── devlog/
+│   └── blog/            # queries over src/content/blog (MDX collection)
 └── shared/              # Shared utilities
     ├── ui/              # UI components
     ├── lib/             # Utilities and helpers
@@ -674,6 +677,9 @@ bun run bundle:analyze
 - **CONTRIBUTING.md** - Contributing guidelines
 - **CHANGELOG.md** - Version history
 - **docs/TESTING.md** - Testing guide
+- **docs/widgets-catalog.md** - Catalog of the 17 widget slices
+- **docs/features-catalog.md** - Catalog of the 4 feature slices
+- **docs/tasks/** - Task tracking per branch (latest: branch-06, pending)
 - **docs/reports/** - Audit reports (latest: portfolio-audit-2026-06)
 - **docs/FSD-Architecture/** - FSD documentation (historical migration guides)
 
@@ -781,7 +787,7 @@ Before merging:
 
 ---
 
-**Last Updated:** July 1, 2026
+**Last Updated:** July 4, 2026
 **Status:** Active Development
 **Maturity:** 4.5/5 (Production Ready)
 **CI/CD:** Consolidated in ci.yml + deploy workflows (Vercel via Actions)

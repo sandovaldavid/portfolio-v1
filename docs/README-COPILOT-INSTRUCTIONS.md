@@ -193,7 +193,10 @@ La migración a Feature-Sliced Design está **completada al 100%**. El proyecto 
 
 ### Estado Actual
 
-- ✅ Migración FSD completada (16+ widgets, 4+ features, 5+ entities)
+- ✅ Migración FSD completada (17 widgets, 4 features, 6 entities — actualizado 2026-07-04)
+- ✅ Blog MDX bilingüe como slice FSD completo: entity `blog` (queries sobre la content
+  collection `src/content/blog/`), widget `blog` (`BlogCard`, `BlogDetail`), rutas
+  `/blog` + `/es/blog` y feeds RSS (`/rss.xml`, `/es/rss.xml`)
 - ✅ Sin referencias a `src/components/` o `src/i18n/` legacy
 - ✅ APIs públicas (`index.ts`) en todos los slices
 - ✅ 0 violaciones de importación entre capas

@@ -13,6 +13,8 @@ standalone `lighthouse` CLI, so runs are reproducible and config-driven.
 
 - **Config**: [`.lighthouserc.json`](../.lighthouserc.json) — audits 6 pages (`/`, `/about`,
   `/projects`, `/es/`, `/es/about`, `/es/projects`), 3 runs averaged per page.
+  The blog pages (`/blog`, `/es/blog`) are **not yet audited** — tracked in
+  [`docs/tasks/branch-06-blog-test-coverage.md`](./tasks/branch-06-blog-test-coverage.md).
 - **Thresholds** (enforced, `error` severity): Performance ≥ 90, Accessibility ≥ 95,
   Best Practices ≥ 90, SEO ≥ 90.
 - **Run locally**:

@@ -68,7 +68,8 @@ Este proyecto fue construido usando las siguientes tecnologías:
 - **Runtime:** Bun 1.3.14 (desarrollo local y CI/CD)
 - **Despliegue:** Vercel con Bun (producción)
 - **Formato de Código:** Prettier con prettier-plugin-astro
-- **SEO:** astro-robots-txt
+- **Contenido:** Blog MDX con @astrojs/mdx + Content Collections y feeds RSS (@astrojs/rss)
+- **SEO:** astro-robots-txt + @astrojs/sitemap
 
 ## ✨ Características Principales
 
@@ -82,6 +83,8 @@ Este proyecto fue construido usando las siguientes tecnologías:
 - ✅ **Responsive images** con optimización automática
 - ✅ **Scrollbar personalizado** con colores de marca
 - ✅ **Background pattern adaptativo** por viewport
+- ✅ **Blog MDX bilingüe** con Astro Content Collections (`/blog` y `/es/blog`)
+- ✅ **Feeds RSS por idioma** (`/rss.xml` y `/es/rss.xml`) que alimentan el widget del perfil de GitHub
 
 ## 👨‍💻 Instalación y Uso Local
 
