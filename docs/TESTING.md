@@ -77,6 +77,26 @@ Configuration: `playwright.config.ts`
 - Theme toggle
 - Page load performance
 - Language switching (en/es)
+- Blog pages (`/blog`, `/es/blog`) — smoke tests in `tests/e2e/pages.spec.ts` and axe scans in `tests/e2e/a11y.spec.ts`
+
+**E2E spec files** (`tests/e2e/`): `homepage.spec.ts`, `pages.spec.ts`, `a11y.spec.ts`, `visual.spec.ts` (+ shared `fixtures.ts`).
+
+[warning] Known gap: the RSS endpoints (`/rss.xml`, `/es/rss.xml`) have no test coverage, and
+Lighthouse CI does not audit the blog pages — tracked in
+[`docs/tasks/branch-06-blog-test-coverage.md`](./tasks/branch-06-blog-test-coverage.md).
+
+### Unit Tests (Vitest)
+
+```bash
+bun run test:unit           # All unit tests
+bun run test:unit:ui        # Interactive UI
+bun run test:unit:coverage  # Coverage report
+```
+
+Configuration: `vitest.config.ts` (coverage scope limited to the i18n modules, 90% threshold)
+
+**Unit spec files** (`tests/unit/`, 7 files): `i18n.spec.ts`, `components.spec.ts`, and the i18n
+sub-suite `i18n/{translations,url-lang,dictionaries,interpolation,localized-path}.spec.ts`.
 
 ### Bundle Analysis
 
@@ -146,7 +166,8 @@ npx serve coverage/
 
 ### Lighthouse CI (`.lighthouserc.json`)
 
-[info] Audits 6 pages in multiple languages
+[info] Audits 6 pages in multiple languages (`/`, `/about`, `/projects` + `/es` mirrors)
+[warning] Blog pages are not yet in the audit set — see `docs/tasks/branch-06-blog-test-coverage.md`
 [info] Runs 3 audits and averages results for stability
 [info] Checks Core Web Vitals thresholds
 [info] Upload results to temporary storage
