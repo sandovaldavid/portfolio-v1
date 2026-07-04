@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.5.1-beta.0...porfolio-dev-v1.6.0-beta.0) (2026-07-04)
+
+
+### Features
+
+* **blog:** add native MDX blog with i18n and RSS ([#75](https://github.com/sandovaldavid/portfolio-v1/issues/75)) ([edcd117](https://github.com/sandovaldavid/portfolio-v1/commit/edcd11707a89d08f30bf719f965b8a31a877e4f0))
+
+
+### Bug Fixes
+
+* **layout:** pass isHome={false} on devlog and project case-study pages ([#78](https://github.com/sandovaldavid/portfolio-v1/issues/78)) ([1574d1c](https://github.com/sandovaldavid/portfolio-v1/commit/1574d1c21992c448123066abd0d58b6d0646a284))
+
 ## [1.5.1-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.5.0-beta.0...porfolio-dev-v1.5.1-beta.0) (2026-06-29)
 
 
