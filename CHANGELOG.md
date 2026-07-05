@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.2-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.6.1-beta.0...porfolio-dev-v1.6.2-beta.0) (2026-07-05)
+
+
+### Bug Fixes
+
+* **styles:** typography floor, token rename, hierarchy, tests ([#85](https://github.com/sandovaldavid/portfolio-v1/issues/85)) ([c44ec77](https://github.com/sandovaldavid/portfolio-v1/commit/c44ec7795af80ca90dd0143fc104a1cee417bdfe))
+
 ## [1.6.1-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.6.0-beta.0...porfolio-dev-v1.6.1-beta.0) (2026-07-05)
 
 
