@@ -46,10 +46,15 @@ test.describe('Navigation between pages', () => {
     await page.goto('/');
 
     // Actually navigate: /blog is the only page link in the header nav
-    // (the rest are same-page anchors)
+    // (the rest are same-page anchors). On small viewports the desktop nav
+    // link is hidden, so open the mobile menu overlay and click there.
     const blogLink = page.locator('header a[href="/blog"]').first();
-    await expect(blogLink).toBeVisible();
-    await blogLink.click();
+    if (await blogLink.isVisible()) {
+      await blogLink.click();
+    } else {
+      await page.locator('#mobile-menu-btn').click();
+      await page.locator('#mobile-menu a[href="/blog"]').click();
+    }
 
     await expect(page).toHaveURL(/\/blog\/?$/);
     await expect(page.locator('main h1').first()).toBeVisible();
