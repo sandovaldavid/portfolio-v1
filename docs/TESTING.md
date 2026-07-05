@@ -38,6 +38,7 @@ bun run lighthouse:assert
 Configuration: `.lighthouserc.json`
 
 **Thresholds:**
+
 - Performance: ≥ 90
 - Accessibility: ≥ 95
 - Best Practices: ≥ 90
@@ -70,6 +71,7 @@ bun run test:all
 Configuration: `playwright.config.ts`
 
 **Test Coverage:**
+
 - Homepage rendering
 - Navigation functionality
 - Responsive design (mobile, tablet, desktop)
@@ -79,11 +81,13 @@ Configuration: `playwright.config.ts`
 - Language switching (en/es)
 - Blog pages (`/blog`, `/es/blog`) — smoke tests in `tests/e2e/pages.spec.ts` and axe scans in `tests/e2e/a11y.spec.ts`
 
-**E2E spec files** (`tests/e2e/`): `homepage.spec.ts`, `pages.spec.ts`, `a11y.spec.ts`, `visual.spec.ts` (+ shared `fixtures.ts`).
+**E2E spec files** (`tests/e2e/`): `homepage.spec.ts`, `pages.spec.ts`, `a11y.spec.ts`,
+`visual.spec.ts`, `rss.spec.ts` (+ shared `fixtures.ts`).
 
-[warning] Known gap: the RSS endpoints (`/rss.xml`, `/es/rss.xml`) have no test coverage, and
-Lighthouse CI does not audit the blog pages — tracked in
-[`docs/tasks/branch-06-blog-test-coverage.md`](./tasks/branch-06-blog-test-coverage.md).
+- `rss.spec.ts` covers `/rss.xml` and `/es/rss.xml`: HTTP 200, XML content type, RSS 2.0
+  structure, every `<item>` has `title`/`link`/`pubDate`, links point to the correct locale,
+  drafts are excluded from the production feed, and EN/ES feeds don't leak each other's
+  titles (locale isolation).
 
 ### Unit Tests (Vitest)
 
@@ -112,6 +116,7 @@ inline in the `build` job). `astro.config.mjs` also wires `rollup-plugin-visuali
 `bun run build` additionally emits an interactive treemap at `bundle-analysis/index.html`.
 
 **Size Thresholds:**
+
 - Total dist: ≤ 5MB (reported as a warning in CI, does not block the build)
 
 [info] Per-page JS/CSS/image budgets are defined in `lighthouse-budget.json` (50-70KB script per
@@ -129,10 +134,12 @@ All testing runs in a single consolidated workflow:
 ```
 
 Triggers on:
+
 - Push to `main` or `develop`
 - Pull requests
 
 Jobs:
+
 1. **validate** — ESLint, Prettier check, Conventional Commits validation
 2. **test-unit** — Vitest with coverage
 3. **build** — Astro check + build, bundle size analysis (5MB warning threshold)
@@ -166,8 +173,7 @@ npx serve coverage/
 
 ### Lighthouse CI (`.lighthouserc.json`)
 
-[info] Audits 6 pages in multiple languages (`/`, `/about`, `/projects` + `/es` mirrors)
-[warning] Blog pages are not yet in the audit set — see `docs/tasks/branch-06-blog-test-coverage.md`
+[info] Audits 10 pages in multiple languages (`/`, `/about`, `/projects`, `/blog`, one blog article detail page + `/es` mirrors)
 [info] Runs 3 audits and averages results for stability
 [info] Checks Core Web Vitals thresholds
 [info] Upload results to temporary storage
@@ -216,6 +222,7 @@ lhci collect --verbose
 ### Playwright Tests Timeout
 
 [warning] Increase timeout in playwright.config.ts:
+
 ```typescript
 use: {
   navigationTimeout: 30000,
@@ -224,6 +231,7 @@ use: {
 ```
 
 [warning] Check if dev server is running:
+
 ```bash
 bun run preview
 ```
@@ -231,12 +239,14 @@ bun run preview
 ### Bundle Size Exceeds Threshold
 
 [info] Analyze large files:
+
 ```bash
 # Check individual file sizes
 du -sh dist/_astro/*
 ```
 
 [warning] Consider:
+
 - Code splitting
 - Lazy loading components
 - Removing unused dependencies
@@ -252,5 +262,6 @@ du -sh dist/_astro/*
 ## Contact
 
 For issues or questions:
+
 - Email: hello@sandovaldavid.com
 - Email: dev@sandovaldavid.com

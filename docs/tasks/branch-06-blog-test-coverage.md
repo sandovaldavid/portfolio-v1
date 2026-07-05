@@ -14,12 +14,12 @@
 
 ### Checklist
 
-- [ ] Add `tests/e2e/rss.spec.ts` (or extend `pages.spec.ts`) requesting `/rss.xml` and `/es/rss.xml`
-- [ ] Assert HTTP 200 and an XML/RSS content type
-- [ ] Assert the feed parses as XML with a `<channel>` containing `<title>` and at least one `<item>`
-- [ ] Assert each `<item>` has `title`, `link`, and `pubDate`, and that links point to `/blog/…` (EN) / `/es/blog/…` (ES)
-- [ ] Assert draft posts (`draft: true`) never appear in the production feed
-- [ ] Verify the ES feed only contains ES posts and vice versa (locale isolation)
+- [x] Add `tests/e2e/rss.spec.ts` (or extend `pages.spec.ts`) requesting `/rss.xml` and `/es/rss.xml`
+- [x] Assert HTTP 200 and an XML/RSS content type
+- [x] Assert the feed parses as XML with a `<channel>` containing `<title>` and at least one `<item>`
+- [x] Assert each `<item>` has `title`, `link`, and `pubDate`, and that links point to `/blog/…` (EN) / `/es/blog/…` (ES)
+- [x] Assert draft posts (`draft: true`) never appear in the production feed
+- [x] Verify the ES feed only contains ES posts and vice versa (locale isolation)
 
 ### Acceptance Criteria
 
@@ -35,10 +35,10 @@
 
 ### Checklist
 
-- [ ] Add `http://localhost:4321/blog` and `http://localhost:4321/es/blog` to `ci.collect.url` in `.lighthouserc.json`
-- [ ] (Optional) Add one article detail page (e.g. `/blog/building-this-portfolio-with-astro-and-fsd`) to catch `.prose`/MDX regressions
-- [ ] Run `bun run build && bun run lighthouse` locally and confirm all thresholds pass on the new URLs
-- [ ] Update `docs/tools.md` and `docs/TESTING.md` with the new audited page count
+- [x] Add `http://localhost:4321/blog` and `http://localhost:4321/es/blog` to `ci.collect.url` in `.lighthouserc.json`
+- [x] (Optional) Add one article detail page (e.g. `/blog/building-this-portfolio-with-astro-and-fsd`) to catch `.prose`/MDX regressions
+- [x] Run `bun run build && bun run lighthouse` locally and confirm all thresholds pass on the new URLs
+- [x] Update `docs/tools.md` and `docs/TESTING.md` with the new audited page count
 
 ### Acceptance Criteria
 
@@ -60,7 +60,7 @@ test(blog): cover RSS endpoints and audit blog pages in Lighthouse CI
 
 ## PR Checklist
 
-- [ ] `bun run test` passes with the new RSS spec
-- [ ] `bun run lighthouse` passes locally with the extended URL set
-- [ ] `docs/tools.md` / `docs/TESTING.md` updated
-- [ ] No source changes outside `tests/`, `.lighthouserc.json`, and docs
+- [x] `bun run test` passes with the new RSS spec
+- [x] `bun run lighthouse` passes locally with the extended URL set
+- [x] `docs/tools.md` / `docs/TESTING.md` updated
+- [x] No source changes outside `tests/`, `.lighthouserc.json`, and docs
