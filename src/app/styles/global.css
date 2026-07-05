@@ -97,36 +97,6 @@ li,
 	font-family: var(--font-mono);
 }
 
-/* CRT page transitions (View Transitions) */
-@keyframes crt-off {
-	to {
-		opacity: 0;
-		transform: scaleY(0.01);
-		filter: blur(2px) brightness(3);
-	}
-}
-
-@keyframes crt-on {
-	from {
-		opacity: 0;
-		transform: scaleY(0.01);
-		filter: blur(2px) brightness(3);
-	}
-	to {
-		opacity: 1;
-		transform: scaleY(1);
-		filter: none;
-	}
-}
-
-::view-transition-old(root) {
-	animation: crt-off 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-::view-transition-new(root) {
-	animation: crt-on 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
-}
-
 /* Respect user motion preference (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
 	*,

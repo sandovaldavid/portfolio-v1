@@ -1,2 +1,2 @@
 export type { DevlogPost } from './types';
-export { getDevlogPosts } from './data';
+export { getDevlogPosts, getDevlogPost, getDevlogSlug } from './queries';

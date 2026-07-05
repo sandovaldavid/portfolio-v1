@@ -11,7 +11,6 @@
  * - Features: ThemeToggle, LanguagePicker
  */
 
-import { LanguagePicker } from '@features/language-picker';
 import { LinkButton } from '@shared/ui';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
 import { siteConfig } from '@shared/config/site.config';
@@ -40,12 +39,6 @@ const navItems = [
 		label: 'projects',
 		icon: 'projects',
 		url: getLocalizedPath(lang, '/#projects'),
-	},
-	{
-		title: t('nav.devlog'),
-		label: 'devlog',
-		icon: 'devlog',
-		url: getLocalizedPath(lang, '/devlog'),
 	},
 	{
 		title: t('nav.blog'),
@@ -94,7 +87,6 @@ const homeUrl = getLocalizedPath(lang, '/');
 			>
 				Resume
 			</LinkButton>
-			<LanguagePicker currentLang={lang} />
 		</div>
 
 		<!-- Mobile Menu Button -->
