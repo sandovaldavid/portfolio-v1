@@ -23,7 +23,7 @@ const { title, summary, pubDate, version, tags } = post.data;
 		</LinkInline>
 
 		<div
-			class="mb-3 flex items-center gap-2 font-mono text-xs text-neutral-500 dark:text-neutral-400"
+			class="mb-3 flex items-center gap-2 font-mono text-xs text-content-muted"
 		>
 			<time datetime={pubDate.toISOString()}>[{pubDate.toISOString().split('T')[0]}]</time>
 			<span
@@ -43,7 +43,7 @@ const { title, summary, pubDate, version, tags } = post.data;
 		<h1 class="mb-4 text-3xl font-bold font-pixel-clean tracking-wide md:text-4xl">
 			{title}
 		</h1>
-		<p class="max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
+		<p class="max-w-2xl text-base leading-relaxed text-content-muted">
 			{summary}
 		</p>
 	</header>

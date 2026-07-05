@@ -30,7 +30,7 @@ const stackPadding = size === 'sm' ? 'px-2.5 py-1.5 gap-1.5' : 'px-4 md:px-5 py-
 const stackText = size === 'sm' ? 'text-xs' : 'text-xs md:text-sm';
 const stackIcon = size === 'sm' ? 'w-4 h-4 mr-0.5' : 'w-5 h-5 mr-1';
 const stackBg =
-	'bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 hover:dark:bg-neutral-700 text-neutral-900 dark:text-neutral-300 font-bold uppercase tracking-wider backdrop-blur-sm';
+	'bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 hover:dark:bg-neutral-700 text-content-strong font-bold uppercase tracking-wider backdrop-blur-sm';
 const stackAnimation =
 	'hover:border-primary-500 hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-default';
 const stackShadow =
@@ -45,7 +45,7 @@ const hasText = additionalClasses.includes('text-');
 const containerClasses =
 	variant === 'stack'
 		? `${baseClasses} ${stackPadding} ${stackText} ${stackBg} ${stackAnimation} ${stackShadow}`
-		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-neutral-900 dark:text-neutral-200'} font-mono`;
+		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-content-strong'} font-mono`;
 
 const iconClasses = variant === 'stack' ? stackIcon : cardIcon;
 ---

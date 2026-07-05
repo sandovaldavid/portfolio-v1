@@ -55,7 +55,7 @@ const returnBtn = t('about-me.return-button');
 				<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
 					<!-- Text Content -->
 					<div
-						class="flex-1 space-y-4 [&>p]:text-neutral-700 dark:[&>p]:text-neutral-300 [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty font-mono text-base leading-relaxed"
+						class="flex-1 space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty font-mono text-base leading-relaxed"
 					>
 						<p set:html={t('about-me.paragraph1')} />
 						<p set:html={t('about-me.paragraph2')} />
@@ -93,7 +93,7 @@ const returnBtn = t('about-me.return-button');
 								style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
 							>
 								<span class="shrink-0 w-2.5 h-2.5 rounded-none bg-primary-500 dark:bg-primary-400 mt-1.5" />
-								<span class="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+								<span class="text-content leading-relaxed">
 									{area}
 								</span>
 							</li>

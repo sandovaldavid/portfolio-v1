@@ -98,13 +98,13 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 			>
 				<span>{activeQuest}</span>
 				<span
-					class="animate-pulse bg-emerald-500/20 text-emerald-400 px-1 py-0.5 text-xs border border-emerald-500/40 font-semibold"
+					class="animate-pulse bg-success-500/20 text-success-500 px-1 py-0.5 text-xs border border-success-500/40 font-semibold"
 					>[ IN PROGRESS ]</span
 				>
 			</div>
 			<span class="font-bold text-content-strong text-sm">{questName}</span>
 			<span class="text-content-muted mt-1">{questGoal}</span>
-			<span class="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-semibold"
+			<span class="text-xs text-status-success-text mt-1 font-semibold"
 				>{questReward}</span
 			>
 		</div>
@@ -339,7 +339,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 				const floatText = document.createElement('span');
 				floatText.innerText = '+100 XP / COPIED!';
 				floatText.className =
-					'absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-2 py-0.5 border border-black text-xs font-bold uppercase tracking-widest whitespace-nowrap animate-float-fade';
+					'absolute -top-8 left-1/2 -translate-x-1/2 bg-success-500 text-black px-2 py-0.5 border border-black text-xs font-bold uppercase tracking-widest whitespace-nowrap animate-float-fade';
 				floatText.style.animation = 'float-up-fade 1.2s ease-out forwards';
 
 				copyBtn.appendChild(floatText);
@@ -486,7 +486,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 						`;
 					} else {
 						githubContent.innerHTML =
-							'<span class="text-red-400">API unavailable</span>';
+							'<span class="text-error-500">API unavailable</span>';
 					}
 				}
 			} else {
@@ -531,7 +531,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 					window.scrollTo({ top: 0, behavior: 'smooth' });
 					const popup = document.createElement('div');
 					popup.className =
-						'fixed top-[15%] left-1/2 -translate-x-1/2 bg-emerald-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-edge-strong)] z-50 font-bold uppercase tracking-widest text-xs';
+						'fixed top-[15%] left-1/2 -translate-x-1/2 bg-success-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-edge-strong)] z-50 font-bold uppercase tracking-widest text-xs';
 					popup.innerText = 'TOUR COMPLETE! PLAYER 1 READY!';
 					document.body.appendChild(popup);
 					setTimeout(() => popup.remove(), 3000);

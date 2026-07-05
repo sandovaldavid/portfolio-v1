@@ -56,7 +56,7 @@ const { caseStudy } = project;
 				{project.title}
 			</h1>
 			<p
-				class="mb-6 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-neutral-400"
+				class="mb-6 max-w-2xl text-base leading-relaxed text-content-muted"
 			>
 				{project.description}
 			</p>
@@ -111,14 +111,14 @@ const { caseStudy } = project;
 			caseStudy && (
 				<div class="space-y-12">
 					<div class="border-l-4 border-red-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-red-500">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500">
 							{labelProblem}
 						</h2>
 						<p class="text-base leading-relaxed">{caseStudy.problem}</p>
 					</div>
 
 					<div class="border-l-4 border-yellow-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-yellow-500">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-warning-500">
 							{labelApproach}
 						</h2>
 						<p class="text-base leading-relaxed">{caseStudy.approach}</p>
@@ -132,7 +132,7 @@ const { caseStudy } = project;
 					</div>
 
 					<div class="border-l-4 border-green-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-green-500">
+						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-success-500">
 							{labelOutcome}
 						</h2>
 						<p class="text-base leading-relaxed">{caseStudy.outcome}</p>
