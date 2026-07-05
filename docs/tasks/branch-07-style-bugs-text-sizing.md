@@ -65,10 +65,10 @@ arbitrary shadows).
 
 ### Checklist
 
-- [ ] Tokens renamed in `colors.css` (including `-light`/`-dark` component vars)
-- [ ] `global.css` scrollbar refs updated
-- [ ] Mass replace in `src`: `text-text-*` → `text-content*`, `border-border-*` → `border-edge-*`, `var(--color-border-strong)` → `var(--color-edge-strong)`
-- [ ] `grep -rn 'text-text-\|border-border-\|--color-text-\|--color-border-' src` returns 0 matches
+- [x] Tokens renamed in `colors.css` (including `-light`/`-dark` component vars)
+- [x] `global.css` scrollbar refs updated
+- [x] Mass replace in `src`: `text-text-*` → `text-content*`, `border-border-*` → `border-edge-*`, `var(--color-border-strong)` → `var(--color-edge-strong)`
+- [x] `grep -rn 'text-text-\|border-border-\|--color-text-\|--color-border-' src` returns 0 matches
 
 ### Acceptance Criteria
 
@@ -82,10 +82,10 @@ labels → `text-xs`; delete every `text-[8px]/[9px]/[10px]/[11px]`.
 
 ### Checklist
 
-- [ ] All §3.1 body-copy findings at `text-base` (HUD/terminal reading text `text-sm` per VT323 exception table)
-- [ ] All §3.2 labels at `text-xs` minimum; zero arbitrary sub-12px sizes in `src`
-- [ ] `atena.astro` EN/ES mirrors identical
-- [ ] HUD and terminal layouts verified at 1280px and 375px
+- [x] All §3.1 body-copy findings at `text-base` (HUD/terminal reading text `text-sm` per VT323 exception table)
+- [x] All §3.2 labels at `text-xs` minimum; zero arbitrary sub-12px sizes in `src`
+- [x] `atena.astro` EN/ES mirrors identical
+- [x] HUD and terminal layouts verified at 1280px and 375px
 
 ### Acceptance Criteria
 
@@ -100,9 +100,9 @@ labels → `text-xs`; delete every `text-[8px]/[9px]/[10px]/[11px]`.
 
 ### Checklist
 
-- [ ] §2 table applied (incl. `TitleSection` + dead `font-semibold` removed)
-- [ ] §3 status colors tokenized (incl. JS strings in RecruiterHUD)
-- [ ] §4 contrast fixes applied
+- [x] §2 table applied (incl. `TitleSection` + dead `font-semibold` removed)
+- [x] §3 status colors tokenized (incl. JS strings in RecruiterHUD)
+- [x] §4 contrast fixes applied
 
 ### Acceptance Criteria
 
@@ -116,9 +116,9 @@ labels → `text-xs`; delete every `text-[8px]/[9px]/[10px]/[11px]`.
 
 ### Checklist
 
-- [ ] One `h1` per page across EN+ES key pages
-- [ ] No skipped levels (verify after card demotions)
-- [ ] ResearchContent headings larger than their body text at all breakpoints
+- [x] One `h1` per page across EN+ES key pages
+- [x] No skipped levels (verify after card demotions)
+- [x] ResearchContent headings larger than their body text at all breakpoints
 
 ### Acceptance Criteria
 
@@ -128,11 +128,11 @@ labels → `text-xs`; delete every `text-[8px]/[9px]/[10px]/[11px]`.
 
 ### Checklist
 
-- [ ] `bun run build` (astro check) green
-- [ ] `typography.spec.ts` green (chromium); repaired `homepage`/`pages` specs green; `a11y.spec.ts` chromium not worse
-- [ ] `bun run lint` + `bun run format`
-- [ ] Visual snapshot baselines: regenerate or document as known-stale (CI skips them)
-- [ ] Conventional commits (docs / test / refactor / fix split); push; draft PR → `develop`
+- [x] `bun run build` (astro check) green
+- [x] `typography.spec.ts` green (chromium); repaired `homepage`/`pages` specs green; `a11y.spec.ts` chromium not worse
+- [x] `bun run lint` + `bun run format`
+- [x] Visual snapshot baselines: regenerated for chromium + Mobile Chrome (18 green); firefox/webkit/Mobile Safari baselines are known-stale (those browsers cannot run in this sandbox) — regenerate with `bun run test:snapshots:all` on a full local setup
+- [x] Conventional commits (docs / test / refactor / fix split); push; draft PR → `develop`
 
 ---
 
