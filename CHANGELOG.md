@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.1-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.6.0-beta.0...porfolio-dev-v1.6.1-beta.0) (2026-07-05)
+
+
+### Bug Fixes
+
+* **portfolio:** resolve hud/splash bugs and render devlog markdown ([#83](https://github.com/sandovaldavid/portfolio-v1/issues/83)) ([e5ab091](https://github.com/sandovaldavid/portfolio-v1/commit/e5ab0917a05fdbf2ae10cbc39b0ec0b331945a0f))
+
 ## [1.6.0-beta.0](https://github.com/sandovaldavid/portfolio-v1/compare/porfolio-dev-v1.5.1-beta.0...porfolio-dev-v1.6.0-beta.0) (2026-07-04)
 
 
