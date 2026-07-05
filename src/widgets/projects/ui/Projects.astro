@@ -25,6 +25,7 @@ const projectsToDisplay = showAll
 					<ProjectCard
 						project={project}
 						variant="secondary"
+						headingLevel={showAll ? 'h2' : 'h3'}
 						codeButtonText={t('projects.code-button')}
 						previewButtonText={t('projects.preview-button')}
 						caseStudyText={project.caseStudy ? t('projects.case.study') : undefined}
