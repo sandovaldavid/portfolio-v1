@@ -31,6 +31,12 @@ const KEY_PAGES = [
 	{ path: '/es/blog', name: 'Blog (ES)' },
 	{ path: '/es/devlog', name: 'Devlog (ES)' },
 	{ path: '/es/atena', name: 'Atena (ES)' },
+	{ path: '/projects/mad-ai', name: 'Project detail (EN)' },
+	{ path: '/es/projects/mad-ai', name: 'Project detail (ES)' },
+	{ path: '/blog/building-this-portfolio-with-astro-and-fsd', name: 'Blog detail (EN)' },
+	{ path: '/es/blog/building-this-portfolio-with-astro-and-fsd', name: 'Blog detail (ES)' },
+	{ path: '/devlog/v1-3-0-beta', name: 'Devlog detail (EN)' },
+	{ path: '/es/devlog/v1-3-0-beta', name: 'Devlog detail (ES)' },
 ];
 
 const VIEWPORTS = [

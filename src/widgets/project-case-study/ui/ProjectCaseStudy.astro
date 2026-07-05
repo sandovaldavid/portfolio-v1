@@ -47,11 +47,11 @@ const { caseStudy } = project;
 		</LinkInline>
 
 		<header class="mb-10">
-			<p
+			<div
 				class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
 			>
 				BOSS FIGHT // CASE STUDY
-			</p>
+			</div>
 			<h1 class="mb-4 text-3xl font-bold font-pixel-clean tracking-wide md:text-5xl">
 				{project.title}
 			</h1>
@@ -109,30 +109,30 @@ const { caseStudy } = project;
 			caseStudy && (
 				<div class="space-y-12">
 					<div class="border-l-4 border-red-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500">
+						<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500">
 							{labelProblem}
-						</h2>
+						</div>
 						<p class="text-base leading-relaxed">{caseStudy.problem}</p>
 					</div>
 
 					<div class="border-l-4 border-yellow-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-warning-500">
+						<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-warning-500">
 							{labelApproach}
-						</h2>
+						</div>
 						<p class="text-base leading-relaxed">{caseStudy.approach}</p>
 					</div>
 
 					<div class="border-l-4 border-orange-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-orange-500">
+						<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-orange-500">
 							{labelTradeoffs}
-						</h2>
+						</div>
 						<p class="text-base leading-relaxed">{caseStudy.tradeoffs}</p>
 					</div>
 
 					<div class="border-l-4 border-green-500 pl-6">
-						<h2 class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-success-500">
+						<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-success-500">
 							{labelOutcome}
-						</h2>
+						</div>
 						<p class="text-base leading-relaxed">{caseStudy.outcome}</p>
 					</div>
 
@@ -158,9 +158,9 @@ const { caseStudy } = project;
 					)}
 
 					<div>
-						<h2 class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-purple-500">
+						<div class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-purple-500">
 							{labelLearnings}
-						</h2>
+						</div>
 						<ul class="space-y-3">
 							{caseStudy.learnings.map(learning => (
 								<li class="flex items-start gap-3">
