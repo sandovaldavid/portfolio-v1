@@ -7,9 +7,10 @@ test.describe('Homepage', () => {
     // Verify page title
     await expect(page).toHaveTitle(/David Sandoval|Portfolio/i);
 
-    // Check main heading exists
-    const heading = page.locator('h1, h2').first();
+    // The Hero renders the page's single h1
+    const heading = page.locator('h1');
     await expect(heading).toBeVisible();
+    await expect(heading).toHaveText(/David Sandoval/i);
   });
 
   test('should have working navigation', async ({ page }) => {
@@ -25,7 +26,7 @@ test.describe('Homepage', () => {
   });
 
   test('should be responsive on mobile', async ({ page }) => {
-    page.setViewportSize({ width: 375, height: 667 });
+    await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
 
     // Verify content is visible on mobile
@@ -41,7 +42,7 @@ test.describe('Homepage', () => {
     const count = await imagesWithoutAlt.count();
     expect(count).toBe(0);
 
-    // Check for proper heading hierarchy
+    // Heading hierarchy (one h1, no level skips) is enforced in typography.spec.ts
     const headings = page.locator('h1, h2, h3, h4, h5, h6');
     await expect(headings.first()).toBeVisible();
   });
@@ -49,12 +50,21 @@ test.describe('Homepage', () => {
   test('should have theme toggle functionality', async ({ page }) => {
     await page.goto('/');
 
-    // Check if theme toggle exists
-    const themeToggle = page.locator('[aria-label*="theme"], [aria-label*="dark"], [aria-label*="light"]').first();
-    if (await themeToggle.isVisible()) {
-      await themeToggle.click();
-      await page.waitForTimeout(500);
-    }
+    // The toggle must exist — a missing toggle is a failure, not a skip
+    const themeToggle = page.locator('.theme-toggle-btn').first();
+    await expect(themeToggle).toBeVisible();
+
+    const html = page.locator('html');
+
+    // Selecting "light" removes the dark class from <html>
+    await themeToggle.click();
+    await page.locator('.themes-menu-option[data-theme="light"]').first().click();
+    await expect(html).not.toHaveClass(/dark/);
+
+    // Selecting "dark" restores it
+    await themeToggle.click();
+    await page.locator('.themes-menu-option[data-theme="dark"]').first().click();
+    await expect(html).toHaveClass(/dark/);
   });
 });
 

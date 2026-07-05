@@ -37,10 +37,18 @@ evidence.
 
 ### Checklist
 
-- [ ] `tests/e2e/typography.spec.ts`: ≥12px floor, content `p` ≥16px, one `h1`, no level skips, heading ≥ body — EN+ES key pages, desktop + mobile viewports, chromium-only
-- [ ] Record the red run (failures against unfixed components) in this file
-- [ ] `homepage.spec.ts`: theme-toggle test asserts the `dark` class flip; `await setViewportSize`; assert the Hero `h1` specifically
-- [ ] `pages.spec.ts`: navigation test actually navigates; links test cannot pass with 0 assertions
+- [x] `tests/e2e/typography.spec.ts`: ≥12px floor, content `p` ≥16px, one `h1`, no level skips, heading ≥ body — EN+ES key pages, desktop + mobile viewports, chromium-only
+- [x] Record the red run (failures against unfixed components) in this file
+- [x] `homepage.spec.ts`: theme-toggle test asserts the `dark` class flip; `await setViewportSize`; assert the Hero `h1` specifically
+- [x] `pages.spec.ts`: navigation test actually navigates; links test cannot pass with 0 assertions
+
+**TDD red run (against base `4dba60c`, chromium): 50 failed / 14 passed.**
+Failure classes matched the audit exactly — 16× "expected exactly one h1, got 0" (every
+sub-page EN+ES, both viewports), sub-12px floor violations (project-card tags 9px, feature
+chips 8px, blog/devlog tag chips 9px, hero/atena labels 10px), and reading copy at 14px
+(About bio, hero credential). The run also surfaced offenders the static sweep missed:
+devlog timeline `sprint`/`release` labels (9px) and version numbers (10px), and
+Experience "COMPANY / ORGANIZATION" labels (10px) — added to the 7.4 fix scope.
 
 ### Acceptance Criteria
 

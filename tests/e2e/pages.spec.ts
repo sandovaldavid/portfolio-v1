@@ -45,31 +45,40 @@ test.describe('Navigation between pages', () => {
   test('should navigate between English pages', async ({ page }) => {
     await page.goto('/');
 
-    // Try to find and click navigation links
-    const links = page.locator('a[href]');
-    const count = await links.count();
-    expect(count).toBeGreaterThan(0);
+    // Actually navigate: follow the Projects nav link and land on its page
+    const projectsLink = page.locator('header a[href="/projects"]').first();
+    await expect(projectsLink).toBeVisible();
+    await projectsLink.click();
+
+    await expect(page).toHaveURL(/\/projects\/?$/);
+    await expect(page.locator('main h1, main h2').first()).toBeVisible();
   });
 
   test('should have working links', async ({ page }) => {
     await page.goto('/');
 
-    // Get all links
-    const links = page.locator('a[href^="/"]');
-    const linkCount = await links.count();
+    // Collect distinct internal page hrefs (skip pure anchors) up front
+    const hrefs = await page.locator('a[href^="/"]').evaluateAll(anchors =>
+      Array.from(
+        new Set(
+          anchors
+            .map(a => a.getAttribute('href') ?? '')
+            .filter(href => href !== '' && href !== '#')
+            .map(href => href.split('#')[0] || '/')
+        )
+      )
+    );
+    expect(hrefs.length).toBeGreaterThan(0);
 
-    // Test first few internal links
-    for (let i = 0; i < Math.min(3, linkCount); i++) {
-      const link = links.nth(i);
-      const href = await link.getAttribute('href');
-
-      if (href && href !== '#') {
-        const response = await page.goto(href || '/');
-        // response is null when navigating to the same URL — skip those
-        if (response !== null) {
-          expect(response.status()).toBeLessThan(400);
-        }
+    // Every checked link must resolve — a null response (same-URL) counts as checked-and-ok
+    let checked = 0;
+    for (const href of hrefs.slice(0, 5)) {
+      const response = await page.goto(href);
+      if (response !== null) {
+        expect(response.status(), `${href} returned ${response?.status()}`).toBeLessThan(400);
+        checked++;
       }
     }
+    expect(checked).toBeGreaterThan(0);
   });
 });
