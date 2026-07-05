@@ -68,7 +68,7 @@ const pageDesc = t('research.page-description');
 				<BrainIcon class="w-8 h-8 text-white dark:text-black shrink-0 mt-1" />
 				<div class="flex-1">
 					<p
-						class="font-gaming-mono text-xs sm:text-sm uppercase tracking-wider text-white dark:text-black/90 mb-1 font-bold"
+						class="font-gaming-mono text-sm uppercase tracking-wider text-white dark:text-black/90 mb-1 font-bold"
 					>
 						{t('research.thesis.institution')} · {t('research.thesis.label')}
 					</p>
@@ -97,7 +97,7 @@ const pageDesc = t('research.page-description');
 					>
 						▸ {labels.problem}
 					</h2>
-					<p class="text-sm leading-relaxed text-content-strong">
+					<p class="text-base leading-relaxed text-content-strong">
 						{t('research.thesis.problem')}
 					</p>
 				</div>
@@ -109,7 +109,7 @@ const pageDesc = t('research.page-description');
 					>
 						▸ {labels.hypothesis}
 					</h2>
-					<p class="text-sm leading-relaxed italic text-content-strong">
+					<p class="text-base leading-relaxed italic text-content-strong">
 						"{t('research.thesis.hypothesis')}"
 					</p>
 				</div>
@@ -121,14 +121,14 @@ const pageDesc = t('research.page-description');
 					>
 						▸ {labels.approach}
 					</h2>
-					<p class="text-sm leading-relaxed text-content-strong mb-4">
+					<p class="text-base leading-relaxed text-content-strong mb-4">
 						{t('research.thesis.approach')}
 					</p>
 
 					<!-- Pipeline flow -->
 					<div class="mt-4">
 						<p
-							class="font-gaming-mono text-xs sm:text-sm text-content-muted uppercase tracking-wider mb-2 font-bold"
+							class="font-gaming-mono text-sm text-content-muted uppercase tracking-wider mb-2 font-bold"
 						>
 							{labels.pipeline}
 						</p>
@@ -162,7 +162,7 @@ const pageDesc = t('research.page-description');
 						{
 							features.map((feat, i) => (
 								<div class="flex items-start gap-2 text-sm text-content-strong">
-									<span class="font-pixel-clean text-[8px] font-bold bg-primary-500/20 text-primary-600 dark:text-primary-400 px-1.5 py-0.5 shrink-0 mt-0.5 min-w-[28px] text-center">
+									<span class="font-pixel-clean text-xs font-bold bg-primary-500/20 text-primary-600 dark:text-primary-400 px-1.5 py-0.5 shrink-0 mt-0.5 min-w-[28px] text-center">
 										F{String(i + 1).padStart(2, '0')}
 									</span>
 									<span class="leading-snug">{feat}</span>
@@ -179,7 +179,7 @@ const pageDesc = t('research.page-description');
 					>
 						▸ {labels.dataset}
 					</h2>
-					<p class="text-sm leading-relaxed text-content-strong">
+					<p class="text-base leading-relaxed text-content-strong">
 						{t('research.thesis.dataset')}
 					</p>
 				</div>
@@ -246,7 +246,7 @@ const pageDesc = t('research.page-description');
 							>{t('research.thesis.status')}</span
 						>
 					</div>
-					<p class="text-sm text-content-muted leading-relaxed">
+					<p class="text-base text-content-muted leading-relaxed">
 						{t('research.current-status')}
 					</p>
 				</div>
@@ -288,7 +288,7 @@ const pageDesc = t('research.page-description');
 						>
 							{labels.contact}
 						</h2>
-						<p class="text-xs text-white/90 dark:text-black/90 leading-snug">
+						<p class="text-sm text-white/90 dark:text-black/90 leading-snug">
 							{t('research.contact-cta')}
 						</p>
 					</div>

@@ -34,7 +34,7 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
 			</span>
 			{
 				updatedDate && (
-					<span class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+					<span class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
 						{updatedLabel}
 						<time datetime={updatedDate.toISOString()}>
 							{updatedDate.toISOString().split('T')[0]}
@@ -47,7 +47,7 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
 					<span class="flex flex-wrap items-center gap-2">
 						<span class="sr-only">{tagsLabel}</span>
 						{tags.map(tag => (
-							<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-[9px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+							<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
 								{tag}
 							</span>
 						))}

@@ -61,7 +61,7 @@ const isPrimary = variant === 'primary';
 				class="size-3 border border-black dark:border-white bg-green-500"
 				aria-hidden="true"></span>
 			<span
-				class="ml-auto font-retro-tag text-[9px] uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-bold"
+				class="ml-auto font-retro-tag text-xs uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-bold"
 				>{isPrimary ? 'Feature' : 'Project'}</span
 			>
 		</div>
@@ -73,7 +73,7 @@ const isPrimary = variant === 'primary';
 		>
 			{
 				category && (
-					<p class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+					<p class="font-retro-tag text-sm font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
 						{category}
 					</p>
 				)
@@ -85,7 +85,7 @@ const isPrimary = variant === 'primary';
 			>
 				{title}
 			</h3>
-			<p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed line-clamp-3">
+			<p class="text-base text-neutral-700 dark:text-neutral-300 leading-relaxed line-clamp-3">
 				{description}
 			</p>
 
