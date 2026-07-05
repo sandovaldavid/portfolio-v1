@@ -1,4 +1,4 @@
-# Style Guide — Typography, Color Tokens & Headings
+# Style Guide — Typography, Color Tokens, Headings & Shadows
 
 Prescriptive standard for all UI work in this repository. Established 2026-07-05 from the
 findings in [`reports/style-audit-2026-07/`](./reports/style-audit-2026-07/README.md).
@@ -6,7 +6,8 @@ Enforced by `tests/e2e/typography.spec.ts`.
 
 **Tech context:** Tailwind CSS 4 (`@theme` in `src/app/styles/colors.css`, no
 `tailwind.config.js`). Every `--color-<name>` token generates `text-<name>`, `bg-<name>`,
-`border-<name>` utilities.
+`border-<name>` utilities; every `--shadow-<name>` token generates `shadow-<name>` utilities;
+every `--animate-<name>` token generates `animate-<name>` utilities.
 
 ---
 
@@ -95,3 +96,49 @@ after a CSS property.** `--color-text-main` produced the stutter `text-text-main
   mobile viewports.
 - Review checklist: new UI must cite which scale role each text element uses.
 - `grep -rn 'text-\[8px\]\|text-\[9px\]\|text-\[10px\]\|text-\[11px\]' src` must stay empty.
+- `grep -rn 'shadow-\[.*var\(--color-edge-strong\)' src` must stay empty.
+
+## 5. Shadow scale
+
+The retro 3D offset shadow is the design system's signature. Tokens live in
+`src/app/styles/colors.css` inside `@theme` — Tailwind 4 generates `shadow-retro-*` utilities
+automatically from them.
+
+| Token | Utility | Offset | Used for |
+|---|---|---|---|
+| `--shadow-retro-xs` | `shadow-retro-xs` | `1px 1px 0 0` | kbd keys, micro-chips, pressed-button residual |
+| `--shadow-retro-sm` | `shadow-retro-sm` | `1.5px 1.5px 0 0` | small pills, badges, tooltips, mobile nav rest state |
+| `--shadow-retro-md` | `shadow-retro-md` | `3px 3px 0 0` | cards (BlogCard, DevlogCard, TechStack), panels, default retro border |
+| `--shadow-retro-lg` | `shadow-retro-lg` | `4px 4px 0 0` | primary/feature ProjectCard, About section cards, hero avatar, splash button |
+| `--shadow-retro-xl` | `shadow-retro-xl` | `5px 5px 0 0` | hover state of retro-md/lg elements (the lift), CTA buttons |
+| `--shadow-retro-2xl` | `shadow-retro-2xl` | `6px 6px 0 0` | Research panel, Atena main card, interactive primary hover |
+| `--shadow-retro-3xl` | `shadow-retro-3xl` | `8px 8px 0 0` | Hero HUD, CLITerminal — the largest interactive surfaces |
+
+### Hard rules
+
+1. **Retro shadows are always `shadow-retro-*`** — never `shadow-[Npx_Npx_0_var(--color-edge-strong)]`
+   arbitrary literals. The token guarantees the offset lands on the same color the border uses,
+   so light/dark never drift out of sync.
+2. **Responsive hover/active ladder is monotonic**: rest at size N, hover at the next size up,
+   active back at size N or below. e.g. `shadow-retro-md hover:shadow-retro-xl active:shadow-retro-xs`.
+   Lifting on hover, settling on press.
+3. **No opacity on retro shadows**: the offset is a solid edge-color block; alpha reduces the
+   retro read. Use `shadow-none` to remove, never `/opacity`.
+4. **Off-scale offsets are forbidden** — no `text-[2px]`-style `shadow-[2.5px_2.5px_…]`. If a
+   surface needs a value between two tokens, pick the **larger** token (not the smaller): an
+   under-shadow looks like a render bug; an over-shadow looks intentional. The half-pixel
+   offsets previously used (1.5px, 2.5px, 3.5px, 4.5px) were normalized to `sm` / `sm` / `md` /
+   `lg` respectively — visually identical on integer-DPR screens and crisper on HiDPI.
+
+### Documented exceptions (kept as `shadow-[…]`)
+
+These intentionally use a color **other** than `--color-edge-strong` and so cannot map to the
+retro scale. They stay as arbitrary `shadow-[..var(--color-<other>)]` literals:
+
+- **Primary glow** — `shadow-[Npx_Npx_0_var(--color-primary-500)]` on Skills cards
+  (`src/pages/skills.astro`, `src/pages/es/skills.astro`), ContactSidebar, Footer CTA,
+  ExperienceItem — the blue accent shadow that signals "interactive primary".
+- **Phosphor glow** — `shadow-[0_0_30px_rgba(0,176,255,0.35)]` on the CLITerminal CRT border
+  (`src/features/cli-terminal/ui/CLITerminal.astro:129`).
+- 💡 **Follow-up**: if more than 2 surfaces need the same primary-glow offset, promote it to a
+  `--shadow-glow-*` scale before the arbitrary count grows again.
