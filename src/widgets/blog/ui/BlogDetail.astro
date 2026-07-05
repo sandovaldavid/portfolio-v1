@@ -25,9 +25,7 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
 			{backText}
 		</LinkInline>
 
-		<div
-			class="mb-3 flex flex-wrap items-center gap-2 font-mono text-xs text-content-muted"
-		>
+		<div class="mb-3 flex flex-wrap items-center gap-2 font-mono text-xs text-content-muted">
 			<span>
 				{publishedLabel}
 				<time datetime={pubDate.toISOString()}>{pubDate.toISOString().split('T')[0]}</time>

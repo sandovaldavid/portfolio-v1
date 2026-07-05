@@ -31,10 +31,7 @@ const slug = getDevlogSlug(post);
 	</div>
 	<div class="p-5">
 		<div class="mb-2 flex items-center gap-2">
-			<time
-				class="font-mono text-xs text-content-muted"
-				datetime={pubDate.toISOString()}
-			>
+			<time class="font-mono text-xs text-content-muted" datetime={pubDate.toISOString()}>
 				[{formattedDate}]
 			</time>
 			{
@@ -45,9 +42,7 @@ const slug = getDevlogSlug(post);
 				))
 			}
 		</div>
-		<h2
-			class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong"
-		>
+		<h2 class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong">
 			{title}
 		</h2>
 		<p class="mb-4 text-base leading-relaxed text-content-muted">

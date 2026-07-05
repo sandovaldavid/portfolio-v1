@@ -72,18 +72,18 @@
 		var(--color-surface-highlight-dark)
 	);
 
-	--color-content-strong: light-dark(var(--color-content-strong-light), var(--color-content-strong-dark));
+	--color-content-strong: light-dark(
+		var(--color-content-strong-light),
+		var(--color-content-strong-dark)
+	);
 	--color-content: light-dark(var(--color-content-light), var(--color-content-dark));
-	--color-content-muted: light-dark(var(--color-content-muted-light), var(--color-content-muted-dark));
+	--color-content-muted: light-dark(
+		var(--color-content-muted-light),
+		var(--color-content-muted-dark)
+	);
 
-	--color-edge-subtle: light-dark(
-		var(--color-edge-subtle-light),
-		var(--color-edge-subtle-dark)
-	);
-	--color-edge-strong: light-dark(
-		var(--color-edge-strong-light),
-		var(--color-edge-strong-dark)
-	);
+	--color-edge-subtle: light-dark(var(--color-edge-subtle-light), var(--color-edge-subtle-dark));
+	--color-edge-strong: light-dark(var(--color-edge-strong-light), var(--color-edge-strong-dark));
 
 	/* Custom accessibility & retro status colors */
 	--color-banner-border: light-dark(rgba(10, 92, 214, 0.6), rgba(0, 216, 255, 0.6));

@@ -23,10 +23,7 @@ const formattedDate = pubDate.toISOString().split('T')[0];
 		>
 			BLOG
 		</span>
-		<time
-			class="ml-auto font-mono text-xs text-content-muted"
-			datetime={pubDate.toISOString()}
-		>
+		<time class="ml-auto font-mono text-xs text-content-muted" datetime={pubDate.toISOString()}>
 			[{formattedDate}]
 		</time>
 	</div>
@@ -40,9 +37,7 @@ const formattedDate = pubDate.toISOString().split('T')[0];
 				))
 			}
 		</div>
-		<h2
-			class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong"
-		>
+		<h2 class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong">
 			{title}
 		</h2>
 		<p class="mb-4 text-base leading-relaxed text-content-muted">

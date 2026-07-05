@@ -22,9 +22,7 @@ const { title, summary, pubDate, version, tags } = post.data;
 			{backText}
 		</LinkInline>
 
-		<div
-			class="mb-3 flex items-center gap-2 font-mono text-xs text-content-muted"
-		>
+		<div class="mb-3 flex items-center gap-2 font-mono text-xs text-content-muted">
 			<time datetime={pubDate.toISOString()}>[{pubDate.toISOString().split('T')[0]}]</time>
 			<span
 				class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
