@@ -11,18 +11,18 @@ locally and [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) for how th
 The project uses **[`@lhci/cli`](https://github.com/GoogleChrome/lighthouse-ci)**, not the
 standalone `lighthouse` CLI, so runs are reproducible and config-driven.
 
-- **Config**: [`.lighthouserc.json`](../.lighthouserc.json) — audits 6 pages (`/`, `/about`,
-  `/projects`, `/es/`, `/es/about`, `/es/projects`), 3 runs averaged per page.
-  The blog pages (`/blog`, `/es/blog`) are **not yet audited** — tracked in
-  [`docs/tasks/branch-06-blog-test-coverage.md`](./tasks/branch-06-blog-test-coverage.md).
+- **Config**: [`.lighthouserc.json`](../.lighthouserc.json) — audits 10 pages (`/`, `/about`,
+  `/projects`, `/blog`, `/blog/building-this-portfolio-with-astro-and-fsd/` + `/es` mirrors),
+  3 runs averaged per page. Blog list and one article detail page per locale are in the audit
+  set to catch `.prose`/MDX render regressions.
 - **Thresholds** (enforced, `error` severity): Performance ≥ 90, Accessibility ≥ 95,
   Best Practices ≥ 90, SEO ≥ 90.
 - **Run locally**:
-  ```bash
-  bun run build
-  bun run lighthouse:collect
-  bun run lighthouse:assert
-  ```
+    ```bash
+    bun run build
+    bun run lighthouse:collect
+    bun run lighthouse:assert
+    ```
 - **In CI**: the `lighthouse` job in `ci.yml` runs this over the prebuilt `dist/`, uploads
   reports as the `lighthouse-reports` artifact (7-day retention).
 
@@ -43,11 +43,11 @@ Accessibility is scanned as part of the Playwright suite, not with a separate ax
 - Also used for visual-regression screenshots (`tests/e2e/visual.spec.ts`) and general
   navigation/smoke tests (`tests/e2e/homepage.spec.ts`, `pages.spec.ts`).
 - **Run locally**:
-  ```bash
-  bun run test          # all projects
-  bun run test:ui       # interactive mode
-  bun run test:local    # chromium + firefox + Mobile Chrome only (faster local loop)
-  ```
+    ```bash
+    bun run test          # all projects
+    bun run test:ui       # interactive mode
+    bun run test:local    # chromium + firefox + Mobile Chrome only (faster local loop)
+    ```
 
 ## 4. Unit tests — Vitest
 
@@ -77,5 +77,6 @@ a new tool to replace or complement the current setup.
 ## Contact
 
 For questions about this testing setup:
+
 - Email: hello@sandovaldavid.com
 - Email: dev@sandovaldavid.com
