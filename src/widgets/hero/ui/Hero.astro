@@ -33,7 +33,7 @@ const t = useTranslations(lang);
 				David Sandoval
 			</h1>
 			<p
-				class="text-sm sm:text-base text-text-muted font-gaming-mono tracking-wide max-w-xl mx-auto"
+				class="text-sm sm:text-base text-content-muted font-gaming-mono tracking-wide max-w-xl mx-auto"
 				style="animation: var(--animate-fade-in); animation-delay: 150ms;"
 			>
 				{t('hero.subtitle')}
@@ -48,14 +48,14 @@ const t = useTranslations(lang);
 
 		<!-- Character Select Dashboard (Enlarged) -->
 		<div
-			class="w-full grid grid-cols-1 md:grid-cols-3 border-2 border-black dark:border-white bg-surface shadow-[8px_8px_0px_0px_var(--color-border-strong)] rounded-none overflow-hidden font-mono mt-2"
+			class="w-full grid grid-cols-1 md:grid-cols-3 border-2 border-black dark:border-white bg-surface shadow-[8px_8px_0px_0px_var(--color-edge-strong)] rounded-none overflow-hidden font-mono mt-2"
 		>
 			<!-- Column 1: Avatar Portrait (Enlarged) -->
 			<div
 				class="flex flex-col items-center justify-center p-8 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-white bg-neutral-100/50 dark:bg-black/20 shrink-0"
 			>
 				<div
-					class="relative w-48 h-48 md:w-56 md:h-56 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-border-strong)] overflow-hidden bg-black"
+					class="relative w-48 h-48 md:w-56 md:h-56 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-edge-strong)] overflow-hidden bg-black"
 				>
 					<img
 						src="/profile/perfil.webp"
@@ -69,7 +69,7 @@ const t = useTranslations(lang);
 					</div>
 				</div>
 				<span
-					class="font-retro-tag text-[10px] text-text-muted mt-4 uppercase tracking-wider"
+					class="font-retro-tag text-[10px] text-content-muted mt-4 uppercase tracking-wider"
 					>{t('hero.stats.level')}</span
 				>
 			</div>
@@ -77,10 +77,10 @@ const t = useTranslations(lang);
 			<!-- Column 2 & 3: Stats Details (Enlarged) -->
 			<div class="col-span-2 p-8 md:p-10 flex flex-col justify-between gap-6 bg-surface">
 				<div
-					class="w-full border-b-2 border-dashed border-border-subtle pb-3 flex justify-between items-center"
+					class="w-full border-b-2 border-dashed border-edge-subtle pb-3 flex justify-between items-center"
 				>
 					<span
-						class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-text-main"
+						class="font-pixel-clean text-3xl md:text-4xl font-bold uppercase tracking-wider text-content-strong"
 					>
 						{t('hero.stats.characterStats')}
 					</span>
@@ -92,52 +92,52 @@ const t = useTranslations(lang);
 				</div>
 
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-base">
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.class')}</span
 						>
-						<span class="text-text-main font-semibold"
+						<span class="text-content-strong font-semibold"
 							>{t('hero.stats.systemsArchitect')}</span
 						>
 					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.alignment')}</span
 						>
-						<span class="text-text-main font-semibold">{t('hero.stats.cleanCode')}</span
+						<span class="text-content-strong font-semibold">{t('hero.stats.cleanCode')}</span
 						>
 					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.specialties')}</span
 						>
-						<span class="text-text-main font-semibold">{t('hero.stats.techStack')}</span
+						<span class="text-content-strong font-semibold">{t('hero.stats.techStack')}</span
 						>
 					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.loc')}</span
 						>
-						<span class="text-text-main font-semibold">{t('hero.stats.location')}</span>
+						<span class="text-content-strong font-semibold">{t('hero.stats.location')}</span>
 					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.hpMana')}</span
 						>
 						<span class="text-primary-500 font-bold">{t('hero.stats.hpValue')}</span>
 					</div>
-					<div class="flex justify-between border-b border-border-subtle pb-1.5">
-						<span class="text-text-muted font-bold uppercase tracking-wide"
+					<div class="flex justify-between border-b border-edge-subtle pb-1.5">
+						<span class="text-content-muted font-bold uppercase tracking-wide"
 							>{t('hero.stats.skillLevel')}</span
 						>
-						<span class="text-text-main font-semibold">{t('hero.stats.lvlValue')}</span>
+						<span class="text-content-strong font-semibold">{t('hero.stats.lvlValue')}</span>
 					</div>
 				</div>
 
 				<!-- Stats Progress Bar -->
 				<div class="space-y-2">
 					<div
-						class="flex justify-between text-xs font-bold uppercase tracking-wider text-text-muted"
+						class="flex justify-between text-xs font-bold uppercase tracking-wider text-content-muted"
 					>
 						<span>{t('hero.stats.expPoints')}</span>
 						<span>{t('hero.stats.expComplete')}</span>
@@ -155,7 +155,7 @@ const t = useTranslations(lang);
 		<div class="mt-4">
 			<a
 				href={getLocalizedPath(lang, '/#experience')}
-				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base sm:text-lg px-9 py-4.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[4px_4px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base sm:text-lg px-9 py-4.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[4px_4px_0px_0px_var(--color-edge-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-edge-strong)]"
 			>
 				{t('hero.cta.start')}
 			</a>

@@ -54,7 +54,7 @@ const pageDesc = t('research.page-description');
 		<!-- Back button -->
 		<a
 			href={backHref}
-			class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-text-muted hover:text-primary-500 transition-colors group"
+			class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-content-muted hover:text-primary-500 transition-colors group"
 		>
 			<span class="group-hover:-translate-x-1 transition-transform">◀</span>
 			{t('research.back-button')}
@@ -62,7 +62,7 @@ const pageDesc = t('research.page-description');
 
 		<!-- Header -->
 		<div
-			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-5 mb-8 shadow-[6px_6px_0px_0px_var(--color-border-strong)]"
+			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-5 mb-8 shadow-[6px_6px_0px_0px_var(--color-edge-strong)]"
 		>
 			<div class="flex items-start gap-4">
 				<BrainIcon class="w-8 h-8 text-white dark:text-black shrink-0 mt-1" />
@@ -91,13 +91,13 @@ const pageDesc = t('research.page-description');
 			<!-- Left column (3/5) -->
 			<div class="lg:col-span-3 flex flex-col gap-6">
 				<!-- Problem -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
 						▸ {labels.problem}
 					</h2>
-					<p class="text-sm leading-relaxed text-text-main">
+					<p class="text-sm leading-relaxed text-content-strong">
 						{t('research.thesis.problem')}
 					</p>
 				</div>
@@ -109,26 +109,26 @@ const pageDesc = t('research.page-description');
 					>
 						▸ {labels.hypothesis}
 					</h2>
-					<p class="text-sm leading-relaxed italic text-text-main">
+					<p class="text-sm leading-relaxed italic text-content-strong">
 						"{t('research.thesis.hypothesis')}"
 					</p>
 				</div>
 
 				<!-- Methodology -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
 						▸ {labels.approach}
 					</h2>
-					<p class="text-sm leading-relaxed text-text-main mb-4">
+					<p class="text-sm leading-relaxed text-content-strong mb-4">
 						{t('research.thesis.approach')}
 					</p>
 
 					<!-- Pipeline flow -->
 					<div class="mt-4">
 						<p
-							class="font-gaming-mono text-xs sm:text-sm text-text-muted uppercase tracking-wider mb-2 font-bold"
+							class="font-gaming-mono text-xs sm:text-sm text-content-muted uppercase tracking-wider mb-2 font-bold"
 						>
 							{labels.pipeline}
 						</p>
@@ -152,7 +152,7 @@ const pageDesc = t('research.page-description');
 				</div>
 
 				<!-- Feature engineering -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
@@ -161,7 +161,7 @@ const pageDesc = t('research.page-description');
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
 						{
 							features.map((feat, i) => (
-								<div class="flex items-start gap-2 text-sm text-text-main">
+								<div class="flex items-start gap-2 text-sm text-content-strong">
 									<span class="font-pixel-clean text-[8px] font-bold bg-primary-500/20 text-primary-600 dark:text-primary-400 px-1.5 py-0.5 shrink-0 mt-0.5 min-w-[28px] text-center">
 										F{String(i + 1).padStart(2, '0')}
 									</span>
@@ -173,13 +173,13 @@ const pageDesc = t('research.page-description');
 				</div>
 
 				<!-- Dataset -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
 						▸ {labels.dataset}
 					</h2>
-					<p class="text-sm leading-relaxed text-text-main">
+					<p class="text-sm leading-relaxed text-content-strong">
 						{t('research.thesis.dataset')}
 					</p>
 				</div>
@@ -188,7 +188,7 @@ const pageDesc = t('research.page-description');
 			<!-- Right column (2/5) -->
 			<div class="lg:col-span-2 flex flex-col gap-6">
 				<!-- Model Architecture -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
@@ -197,11 +197,11 @@ const pageDesc = t('research.page-description');
 					<div class="flex flex-col gap-2">
 						{
 							archDetails.map((item: any) => (
-								<div class="border border-border-subtle p-2.5 text-sm flex justify-between items-start gap-4">
+								<div class="border border-edge-subtle p-2.5 text-sm flex justify-between items-start gap-4">
 									<span class="font-bold text-primary-500 uppercase tracking-wider shrink-0 text-xs sm:text-sm font-gaming-mono">
 										{item.label}
 									</span>
-									<span class="text-text-main leading-snug text-right">
+									<span class="text-content-strong leading-snug text-right">
 										{item.value}
 									</span>
 								</div>
@@ -211,7 +211,7 @@ const pageDesc = t('research.page-description');
 				</div>
 
 				<!-- Metrics -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
 						class="font-gaming-mono text-sm sm:text-base font-bold text-primary-500 uppercase tracking-wider mb-3"
 					>
@@ -224,7 +224,7 @@ const pageDesc = t('research.page-description');
 									<span class="shrink-0 font-pixel-clean text-sm font-bold bg-primary-500 text-white dark:text-black px-2 py-1 mt-0.5 uppercase min-w-[36px] text-center">
 										{prefix}
 									</span>
-									<span class="text-sm text-text-main leading-snug">{text}</span>
+									<span class="text-sm text-content-strong leading-snug">{text}</span>
 								</div>
 							))
 						}
@@ -246,15 +246,15 @@ const pageDesc = t('research.page-description');
 							>{t('research.thesis.status')}</span
 						>
 					</div>
-					<p class="text-sm text-text-muted leading-relaxed">
+					<p class="text-sm text-content-muted leading-relaxed">
 						{t('research.current-status')}
 					</p>
 				</div>
 
 				<!-- Keywords -->
-				<div class="border-2 border-border-subtle bg-surface p-5">
+				<div class="border-2 border-edge-subtle bg-surface p-5">
 					<h2
-						class="font-gaming-mono text-sm sm:text-base font-bold text-text-muted uppercase tracking-wider mb-3"
+						class="font-gaming-mono text-sm sm:text-base font-bold text-content-muted uppercase tracking-wider mb-3"
 					>
 						{labels.keywords}
 					</h2>
@@ -273,7 +273,7 @@ const pageDesc = t('research.page-description');
 
 		<!-- Contact CTA — horizontal bar (full width, outside grid like header) -->
 		<div
-			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-4 mt-8 shadow-[6px_6px_0px_0px_var(--color-border-strong)]"
+			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-4 mt-8 shadow-[6px_6px_0px_0px_var(--color-edge-strong)]"
 		>
 			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 				<!-- Left: icon + label + description -->

@@ -27,7 +27,7 @@ const { navItems, lang } = Astro.props;
 <nav class="flex md:hidden w-full items-center justify-between">
 	<button
 		id="mobile-menu-btn"
-		class="p-2 rounded-none border-2 border-black dark:border-white bg-surface shadow-[2px_2px_0px_var(--color-border-strong)] text-text-main focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-100 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+		class="p-2 rounded-none border-2 border-black dark:border-white bg-surface shadow-[2px_2px_0px_var(--color-edge-strong)] text-content-strong focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-100 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
 		aria-label="Toggle menu"
 		aria-expanded="false"
 	>
@@ -44,7 +44,7 @@ const { navItems, lang } = Astro.props;
 		<!-- Close Button -->
 		<button
 			id="mobile-menu-close"
-			class="absolute top-6 right-6 p-2 rounded-none bg-surface border-2 border-border-strong text-text-main hover:bg-surface-highlight transition-all duration-100 shadow-[2px_2px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--color-border-strong)]"
+			class="absolute top-6 right-6 p-2 rounded-none bg-surface border-2 border-edge-strong text-content-strong hover:bg-surface-highlight transition-all duration-100 shadow-[2px_2px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--color-edge-strong)]"
 			aria-label="Close menu"
 		>
 			<svg
@@ -67,7 +67,7 @@ const { navItems, lang } = Astro.props;
 			{
 				navItems.map(link => (
 					<a
-						class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-none text-base font-bold uppercase tracking-wider font-mono text-text-main hover:text-primary-500 hover:bg-surface-highlight border-2 border-transparent hover:border-border-strong transition-all duration-100 whitespace-nowrap"
+						class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-none text-base font-bold uppercase tracking-wider font-mono text-content-strong hover:text-primary-500 hover:bg-surface-highlight border-2 border-transparent hover:border-edge-strong transition-all duration-100 whitespace-nowrap"
 						aria-label={link.label}
 						href={link.url}
 						data-close-menu="true"

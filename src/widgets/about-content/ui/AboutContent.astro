@@ -38,11 +38,11 @@ const returnBtn = t('about-me.return-button');
 		<!-- Page Header -->
 		<div class="text-center space-y-3">
 			<h2
-				class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide"
+				class="text-4xl md:text-5xl font-bold font-pixel-clean text-content-strong uppercase tracking-wide"
 			>
 				{bioTitle}
 			</h2>
-			<p class="text-text-muted font-mono text-sm uppercase">
+			<p class="text-content-muted font-mono text-sm uppercase">
 				{userRecord}
 			</p>
 		</div>
@@ -50,7 +50,7 @@ const returnBtn = t('about-me.return-button');
 		<div class="space-y-6">
 			<!-- First Card: Detailed Story and Image -->
 			<article
-				class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+				class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-edge-strong)] transition-all duration-100"
 			>
 				<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
 					<!-- Text Content -->
@@ -69,7 +69,7 @@ const returnBtn = t('about-me.return-button');
 							height="240"
 							src="/profile/perfil.webp"
 							alt={personalImageAlt}
-							class="w-56 h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_var(--color-border-strong)]"
+							class="w-56 h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_var(--color-edge-strong)]"
 							style="object-position: 50% 50%"
 						/>
 					</div>
@@ -78,10 +78,10 @@ const returnBtn = t('about-me.return-button');
 
 			<!-- Second Card: Focus Areas -->
 			<article
-				class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+				class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-edge-strong)] transition-all duration-100"
 			>
 				<h3
-					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-border-subtle pb-2"
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-edge-subtle pb-2"
 				>
 					{t('about-me.currently-focused')}
 				</h3>
@@ -107,7 +107,7 @@ const returnBtn = t('about-me.return-button');
 		<div class="w-full flex justify-center mt-4">
 			<a
 				href={getLocalizedPath(lang, '/')}
-				class="inline-flex items-center justify-center rounded-none bg-surface text-text-main border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+				class="inline-flex items-center justify-center rounded-none bg-surface text-content-strong border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-edge-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-edge-strong)]"
 			>
 				{returnBtn}
 			</a>
