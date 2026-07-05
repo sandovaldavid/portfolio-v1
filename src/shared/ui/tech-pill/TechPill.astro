@@ -23,7 +23,7 @@ const baseClasses = `inline-flex items-center rounded-none border-2 border-black
 const cardPadding = 'px-3 py-1';
 const cardText = size === 'sm' ? 'text-xs' : 'text-sm';
 const cardIcon = 'mr-1.5 h-4 w-4';
-const cardShadow = 'shadow-[1.5px_1.5px_0px_0px_var(--color-edge-strong)]';
+const cardShadow = 'shadow-retro-sm';
 
 // Size-specific classes for Stack variant
 const stackPadding = size === 'sm' ? 'px-2.5 py-1.5 gap-1.5' : 'px-4 md:px-5 py-2.5 md:py-3 gap-2';
@@ -35,8 +35,8 @@ const stackAnimation =
 	'hover:border-primary-500 hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-default';
 const stackShadow =
 	size === 'sm'
-		? 'shadow-[1.5px_1.5px_0px_var(--color-edge-strong)] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:shadow-[1px_1px_0px_var(--color-edge-strong)]'
-		: 'shadow-[2.5px_2.5px_0px_var(--color-edge-strong)] hover:shadow-[4.5px_4.5px_0px_var(--color-edge-strong)] active:shadow-[1px_1px_0px_var(--color-edge-strong)]';
+		? 'shadow-retro-sm hover:shadow-retro-md active:shadow-retro-xs'
+		: 'shadow-retro-sm hover:shadow-retro-lg active:shadow-retro-xs';
 
 // Final classes selection
 const hasBg = additionalClasses.includes('bg-');

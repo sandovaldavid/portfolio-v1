@@ -36,7 +36,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	<!-- Mini Mascot Speech Bubble (Initial Hint) -->
 	<div
 		id="hud-hint"
-		class="absolute bottom-16 right-0 bg-surface border-2 border-black dark:border-white p-3 shadow-[2.5px_2.5px_0px_var(--color-edge-strong)] text-xs font-bold uppercase tracking-wide text-content-strong whitespace-nowrap opacity-0 pointer-events-none translate-y-2 transition-all duration-300 flex items-center gap-2"
+		class="absolute bottom-16 right-0 bg-surface border-2 border-black dark:border-white p-3 shadow-retro-sm text-xs font-bold uppercase tracking-wide text-content-strong whitespace-nowrap opacity-0 pointer-events-none translate-y-2 transition-all duration-300 flex items-center gap-2"
 	>
 		<span class="w-2.5 h-2.5 bg-primary-500 animate-ping rounded-none shrink-0"></span>
 		<span>[!] CLICK HERE FOR RECRUITER CHEATS & LINKS</span>
@@ -45,7 +45,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	<!-- Toggle Button -->
 	<button
 		id="hud-toggle-btn"
-		class="flex items-center gap-2.5 px-4 py-3 bg-primary-500 hover:bg-primary-400 dark:bg-primary-500 dark:hover:bg-primary-400 text-white dark:text-black border-2 border-black dark:border-white font-bold uppercase tracking-wider shadow-[3px_3px_0px_var(--color-edge-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4.5px_4.5px_0px_var(--color-edge-strong)] active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-[1px_1px_0px_var(--color-edge-strong)] transition-all cursor-pointer"
+		class="flex items-center gap-2.5 px-4 py-3 bg-primary-500 hover:bg-primary-400 dark:bg-primary-500 dark:hover:bg-primary-400 text-white dark:text-black border-2 border-black dark:border-white font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-lg active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-retro-xs transition-all cursor-pointer"
 		aria-label="Toggle Recruiter HUD"
 		aria-expanded="false"
 	>
@@ -70,7 +70,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 	<!-- Main HUD Panel -->
 	<div
 		id="hud-panel"
-		class="absolute bottom-16 right-0 w-[330px] sm:w-[350px] bg-surface border-2 border-black dark:border-white p-5 shadow-[6px_6px_0px_var(--color-edge-strong)] hidden flex-col gap-4 transition-all duration-200"
+		class="absolute bottom-16 right-0 w-[330px] sm:w-[350px] bg-surface border-2 border-black dark:border-white p-5 shadow-retro-2xl hidden flex-col gap-4 transition-all duration-200"
 	>
 		<!-- Panel Header -->
 		<div
@@ -112,7 +112,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 			<!-- Send Email -->
 			<a
 				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
-				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black hover:bg-primary-400 dark:hover:bg-primary-300 font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-edge-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
+				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black hover:bg-primary-400 dark:hover:bg-primary-300 font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
 			>
 				{btnEmail}
 			</a>
@@ -122,7 +122,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 				<a
 					href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es}
 					target="_blank"
-					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-content-strong font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-edge-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
+					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-content-strong font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all block"
 				>
 					{btnResume}
 				</a>
@@ -130,7 +130,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 				<button
 					id="hud-copy-btn"
 					data-email={siteConfig.email}
-					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-content-strong font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-edge-strong)] hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer relative"
+					class="text-center px-3 py-2 bg-surface hover:bg-surface-highlight text-content-strong font-bold text-xs uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm hover:-translate-x-[0.5px] hover:-translate-y-[0.5px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer relative"
 				>
 					{btnCopy}
 				</button>
@@ -514,7 +514,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 						// Floating indicator bubble
 						const popup = document.createElement('div');
 						popup.className =
-							'fixed top-[15%] left-1/2 -translate-x-1/2 bg-primary-500 text-white dark:text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-edge-strong)] z-50 font-bold uppercase tracking-widest text-xs animate-pulse';
+							'fixed top-[15%] left-1/2 -translate-x-1/2 bg-primary-500 text-white dark:text-black px-6 py-3 border-2 border-black dark:border-white shadow-retro-lg z-50 font-bold uppercase tracking-widest text-xs animate-pulse';
 						popup.innerText = `AUTOPILOT: EXPLORING ${selector.slice(1).toUpperCase()}`;
 						document.body.appendChild(popup);
 
@@ -529,7 +529,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 					window.scrollTo({ top: 0, behavior: 'smooth' });
 					const popup = document.createElement('div');
 					popup.className =
-						'fixed top-[15%] left-1/2 -translate-x-1/2 bg-success-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-[4px_4px_0px_var(--color-edge-strong)] z-50 font-bold uppercase tracking-widest text-xs';
+						'fixed top-[15%] left-1/2 -translate-x-1/2 bg-success-500 text-black px-6 py-3 border-2 border-black dark:border-white shadow-retro-lg z-50 font-bold uppercase tracking-widest text-xs';
 					popup.innerText = 'TOUR COMPLETE! PLAYER 1 READY!';
 					document.body.appendChild(popup);
 					setTimeout(() => popup.remove(), 3000);
