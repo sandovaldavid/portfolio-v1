@@ -1,0 +1,14 @@
+---
+title: 'RSS Draft Exclusion Fixture'
+description: 'Test-only post used by tests/e2e/rss.spec.ts to assert draft entries never reach the production RSS feed. Never published.'
+pubDate: 2026-07-04
+tags: ['test', 'fixture']
+draft: true
+---
+
+This file is a test fixture consumed by `tests/e2e/rss.spec.ts`. It is
+marked `draft: true`, so `getBlogPosts()` filters it out of production
+builds (`import.meta.env.PROD` branch in `src/entities/blog/model/queries.ts`).
+
+If this post ever appears in `/rss.xml` or renders a page under
+`/blog/_draft-rss-test/`, the draft-exclusion logic is broken.
