@@ -1,6 +1,5 @@
 ---
 import { LinkButton } from '@shared/ui';
-import { LanguagePicker } from '@features/language-picker';
 import MenuIcon from '@assets/icons/MenuIcon.astro';
 import BriefcaseIcon from '@assets/icons/Briefcase.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
@@ -86,7 +85,7 @@ const { navItems, lang } = Astro.props;
 			}
 		</nav>
 
-		<!-- Actions: Resume + LanguagePicker -->
+		<!-- Actions: Resume -->
 		<div class="flex flex-col items-center gap-4 mt-6 w-full">
 			<LinkButton
 				href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es}
@@ -95,7 +94,6 @@ const { navItems, lang } = Astro.props;
 			>
 				Resume
 			</LinkButton>
-			<LanguagePicker currentLang={lang} />
 		</div>
 	</div>
 </div>

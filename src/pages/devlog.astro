@@ -1,12 +1,12 @@
 ---
 import Layout from '@app/layouts/Layout.astro';
 import { DevlogCard } from '@widgets/devlog';
-import { getDevlogPosts } from '@entities/devlog';
+import { getDevlogPosts, getDevlogSlug } from '@entities/devlog';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const posts = getDevlogPosts(t);
+const posts = await getDevlogPosts(lang);
 ---
 
 <Layout
@@ -39,7 +39,7 @@ const posts = getDevlogPosts(t);
 						<DevlogCard
 							post={post}
 							readMoreText={t('devlog.read-more')}
-							readMoreLink={`/devlog/${post.slug}`}
+							readMoreLink={`/devlog/${getDevlogSlug(post)}`}
 						/>
 					))
 				}

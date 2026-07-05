@@ -23,7 +23,7 @@ const handleUpper = siteConfig.handle.toUpperCase();
 	class="fixed inset-0 w-screen h-screen bg-[#07090e] z-[9999] flex flex-col items-center justify-center font-mono text-primary-500 overflow-hidden select-none"
 >
 	<!-- Blocking inline script to prevent Flash of Uninitialized Splash Screen (FOSS) -->
-	<script is:inline>
+	<script is:inline data-astro-rerun>
 		try {
 			if (sessionStorage.getItem('pf_booted') === 'true') {
 				document.getElementById('splash-screen').style.display = 'none';
@@ -70,7 +70,7 @@ const handleUpper = siteConfig.handle.toUpperCase();
 	</div>
 </div>
 
-<script>
+<script data-astro-rerun>
 	const splash = document.getElementById('splash-screen');
 
 	// Only execute boot scripts if the splash screen is active and visible

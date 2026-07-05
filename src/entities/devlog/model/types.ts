@@ -1,9 +1,3 @@
-export interface DevlogPost {
-	slug: string;
-	title: string;
-	date: string;
-	summary: string;
-	content: string;
-	tags: string[];
-	version: string;
-}
+import type { CollectionEntry } from 'astro:content';
+
+export type DevlogPost = CollectionEntry<'devlog'>;

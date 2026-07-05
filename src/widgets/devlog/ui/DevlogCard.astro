@@ -1,5 +1,6 @@
 ---
 import type { DevlogPost } from '@entities/devlog';
+import { getDevlogSlug } from '@entities/devlog';
 
 interface Props {
 	post: DevlogPost;
@@ -8,6 +9,9 @@ interface Props {
 }
 
 const { post, readMoreText, readMoreLink } = Astro.props;
+const { title, summary, pubDate, version, tags } = post.data;
+const formattedDate = pubDate.toISOString().split('T')[0];
+const slug = getDevlogSlug(post);
 ---
 
 <article
@@ -19,22 +23,22 @@ const { post, readMoreText, readMoreLink } = Astro.props;
 		<span
 			class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400"
 		>
-			{post.version}
+			{version}
 		</span>
 		<span class="ml-auto font-mono text-xs text-neutral-500 dark:text-neutral-400">
-			#{post.slug}
+			#{slug}
 		</span>
 	</div>
 	<div class="p-5">
 		<div class="mb-2 flex items-center gap-2">
 			<time
 				class="font-mono text-xs text-neutral-500 dark:text-neutral-400"
-				datetime={post.date}
+				datetime={pubDate.toISOString()}
 			>
-				[{post.date}]
+				[{formattedDate}]
 			</time>
 			{
-				post.tags.map(tag => (
+				tags.map(tag => (
 					<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-[9px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
 						{tag}
 					</span>
@@ -44,10 +48,10 @@ const { post, readMoreText, readMoreLink } = Astro.props;
 		<h2
 			class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-neutral-900 dark:text-neutral-50"
 		>
-			{post.title}
+			{title}
 		</h2>
 		<p class="mb-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-			{post.summary}
+			{summary}
 		</p>
 		<a
 			href={readMoreLink}

@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
 import { siteConfig } from '@shared/config/site.config';
 import MailIcon from '@assets/icons/Mail.astro';
 import LinkedInIcon from '@assets/social-networks/LinkedIn.astro';
@@ -87,6 +87,13 @@ const socialLinks = [
 			{t('footer.built-with')}
 			<CodeIcon class="w-4 h-4 text-primary-500" />
 			<span class="text-neutral-600 dark:text-neutral-400">v2.0.0</span>
+			<span aria-hidden="true">·</span>
+			<a
+				href={getLocalizedPath(lang, '/devlog')}
+				class="underline decoration-dotted underline-offset-2 hover:text-primary-500 transition-colors"
+			>
+				{t('nav.devlog')}
+			</a>
 		</p>
 	</div>
 </footer>

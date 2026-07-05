@@ -249,32 +249,7 @@
 		"page-title": "Devlog — Notas de Parche | David Sandoval",
 		"page-description": "Registro de desarrollo que documenta iteraciones del portafolio, decisiones técnicas y progreso.",
 		"read-more": "LEER NOTAS",
-		"back": "[ VOLVER AL DEVLOG ]",
-		"v1-0-0": {
-			"title": "v1.0.0 — Lanzamiento y Auditoría",
-			"summary": "Lanzamiento inicial de producción tras una auditoría de 70+ páginas que cubre accesibilidad, rendimiento, SEO, tamaño de bundle y arquitectura. Reconstrucción completa del sitio con Astro 5, Tailwind 4 y arquitectura FSD.",
-			"content": "## Resumen\n\nEl portafolio se lanzó el 15 de junio de 2026 tras una auditoría exhaustiva de 70+ páginas que abarcó accesibilidad (escaneos axe-core), rendimiento (Lighthouse CI), SEO (auditoría de datos estructurados) y arquitectura de código (cumplimiento FSD).\n\n## Cambios Principales\n\n- **Migración de framework**: Actualizado a Astro 5 con modo estricto TypeScript\n- **Arquitectura**: Migrado a Feature-Sliced Design (FSD) con jerarquía de capas que impone dirección de importación\n- **Estilos**: Adoptado Tailwind CSS 4 con integración @tailwindcss/vite\n- **Temas**: Implementado tema claro/oscuro/sistema con función CSS light-dark()\n- **Accesibilidad**: Añadido skip-link, navegación por teclado, cumplimiento WCAG 2.1 AA, soporte reduced-motion\n- **Fuentes**: Migrado a Astro Font API con stack de fuentes retro pixel (Press Start 2P, VT323, Silkscreen)\n- **CI/CD**: Añadido Lighthouse CI, Playwright E2E, CodeQL, análisis de bundle y pipelines de despliegue Vercel"
-		},
-		"v1-1-0": {
-			"title": "v1.1.0-beta — Sprint 1: Fundamentos",
-			"summary": "Corregido FOUC de tema, añadido soporte reduced-motion, skip-link, tokens de accesibilidad de estado y líneas base de rendimiento.",
-			"content": "## Sprint 1 (17-19 Junio)\n\nPrimer sprint de iteración enfocado en correcciones críticas de la auditoría.\n\n## Completado\n\n- **P0-1**: Corregido FOUC de tema inyectando script de tema inline antes del renderizado\n- **P0-3**: Añadido soporte prefers-reduced-motion (WCAG 2.3.3) desactivando todas las animaciones\n- **P1-2**: Implementado skip-link para navegación primero-teclado\n- **P2-5**: Añadidos tokens de color semánticos para indicadores de estado (éxito/advertencia/error)\n- **P0-2**: Establecidas líneas base de rendimiento Lighthouse ≥90 en todas las categorías\n\n## Métricas\n\n- 5 PRs fusionados\n- Primer pase Lighthouse logró ≥90 Rendimiento, ≥95 Accesibilidad, ≥90 Buenas Prácticas"
-		},
-		"v1-2-0": {
-			"title": "v1.2.0-beta — Sprint 2: i18n y SEO",
-			"summary": "Soporte bilingüe inglés/español, internacionalización del héroe, refactor FSD, etiquetas hreflang y escaneos de accesibilidad axe-core.",
-			"content": "## Sprint 2 (19-21 Junio)\n\nHito importante: internacionalización completa y refactor estructural.\n\n## Completado\n\n- **P1-1**: Migrado a Astro 6 Fonts API para carga automática de fuentes\n- **P1-5**: Internacionalizada sección héroe (EN/ES)\n- **P1-4**: Traducido todo el contenido 'big-tech' (experiencia, proyectos, sobre mí)\n- **P2-1/2/3/4**: Migración FSD: alias de rutas (@/ @app/ @widgets/ etc.), componentes PascalCase, extracción de widgets, hreflang para SEO\n- **P1-3**: Automatizados escaneos de accesibilidad axe-core con puerta serious/critical\n\n## Infraestructura\n\n- 8 PRs fusionados, todos con validación CI\n- Añadido getStaticPaths() para enrutamiento i18n dinámico\n- ESLint + Prettier aplicados en cada commit mediante pre-commit hooks"
-		},
-		"v1-3-0": {
-			"title": "v1.3.0-beta — Sprint 3: Experiencia y Pulido",
-			"summary": "Mejoras de legibilidad de fuentes pixel, transiciones CRT, puerta CI de accesibilidad, pruebas integrales de componentes y automatización de releases.",
-			"content": "## Sprint 3 (21-23 Junio)\n\nEnfocado en pulido de experiencia de usuario y cobertura de pruebas.\n\n## Completado\n\n- **P2-8**: Legibilidad de fuentes pixel: Press Start 2P reservado para títulos, cuerpo usa JetBrains Mono\n- **P2-6**: View Transitions con animación CRT scan-line (keyframes crt-off/crt-on)\n- **P2-7**: Puerta CI de accesibilidad que bloquea PRs si axe-core detecta violaciones serious/critical\n- **P3-3**: Pruebas integrales de componentes y visuales (78 tests unitarios + specs E2E)\n\n## Métricas\n\n- 6 PRs fusionados (incluyendo corrección de baselines y release 1.3.0-beta)\n- 78 pruebas unitarias pasando con 100% de cobertura i18n\n- 4 archivos de especificaciones E2E cubriendo flujos críticos de usuario\n- Todos los pipelines CI verdes (Validate PR, Lighthouse, CodeQL, Bundle Analysis)"
-		},
-		"phase-3": {
-			"title": "v1.4.0-beta — Fase 3: Backlog Completo",
-			"summary": "Optimización SVGO, datos estructurados (BreadcrumbList/ScholarlyArticle), tokens de espaciado, hoja de estilo de impresión, optimización de imágenes, casos de estudio y devlog.",
-			"content": "## Fase 3 (28 Junio)\n\nFase final del backlog inicial de auditoría: optimización de rendimiento, enriquecimiento de contenido y documentación.\n\n## Completado\n\n- **P3-5**: Activado svgoOptimizer para futuros assets SVG\n- **P3-6**: BreadcrumbList JSON-LD auto-generado en todas las páginas internas; ScholarlyArticle en páginas de investigación\n- **P3-4**: CSP: cancelado — incompatible con Astro ClientRouter para View Transitions\n- **P3-7**: Añadidos tokens de espaciado pixel-grid (--space-1 a --space-24), escala de sombras retro y hoja de estilo de impresión para CV limpio\n- **P3-1**: Páginas de caso de estudio (temática boss-fight) con rutas [slug] dedicadas por proyecto\n- **P3-2**: Devlog (notas de parche) con historial de versiones\n\n## Optimización de Imágenes\n\n- project-09-fluentreads: 912K → 42K (-95%)\n- project-08-campus-map: 336K PNG → 26K WebP (-92%)\n- project-10-MAD-AI: 181K → 34K (-81%)\n- Total dist: 3.8M → 2.4M"
-		}
+		"back": "[ VOLVER AL DEVLOG ]"
 	},
 	"blog": {
 		"label": "BLOG",

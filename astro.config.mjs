@@ -18,39 +18,75 @@ export default defineConfig({
 	site: 'https://sandovaldavid.com',
 	fonts: [
 		{
-			provider: fontProviders.google(),
+			provider: fontProviders.local(),
 			name: 'Press Start 2P',
 			cssVariable: '--font-pixel',
-			weights: ['400'],
 			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{
+						weight: '400',
+						style: 'normal',
+						src: ['./src/assets/fonts/press-start-2p-400.woff2'],
+					},
+				],
+			},
 		},
 		{
-			provider: fontProviders.google(),
+			provider: fontProviders.local(),
 			name: 'VT323',
 			cssVariable: '--font-pixel-clean',
-			weights: ['400'],
 			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{ weight: '400', style: 'normal', src: ['./src/assets/fonts/vt323-400.woff2'] },
+				],
+			},
 		},
 		{
-			provider: fontProviders.google(),
+			provider: fontProviders.local(),
 			name: 'Silkscreen',
 			cssVariable: '--font-retro-tag',
-			weights: ['400'],
 			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{
+						weight: '400',
+						style: 'normal',
+						src: ['./src/assets/fonts/silkscreen-400.woff2'],
+					},
+				],
+			},
 		},
 		{
-			provider: fontProviders.google(),
+			provider: fontProviders.local(),
 			name: 'Share Tech Mono',
 			cssVariable: '--font-gaming-mono',
-			weights: ['400'],
 			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{
+						weight: '400',
+						style: 'normal',
+						src: ['./src/assets/fonts/share-tech-mono-400.woff2'],
+					},
+				],
+			},
 		},
 		{
-			provider: fontProviders.google(),
+			provider: fontProviders.local(),
 			name: 'JetBrains Mono',
 			cssVariable: '--font-mono',
-			weights: ['400'],
 			fallbacks: ['monospace'],
+			options: {
+				variants: [
+					{
+						weight: '400',
+						style: 'normal',
+						src: ['./src/assets/fonts/jetbrains-mono-400.woff2'],
+					},
+				],
+			},
 		},
 	],
 	vite: {

@@ -1,2 +1,2 @@
-export { getDevlogPosts } from './model';
 export type { DevlogPost } from './model';
+export { getDevlogPosts, getDevlogPost, getDevlogSlug } from './model';
