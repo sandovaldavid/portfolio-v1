@@ -45,13 +45,14 @@ test.describe('Navigation between pages', () => {
   test('should navigate between English pages', async ({ page }) => {
     await page.goto('/');
 
-    // Actually navigate: follow the Projects nav link and land on its page
-    const projectsLink = page.locator('header a[href="/projects"]').first();
-    await expect(projectsLink).toBeVisible();
-    await projectsLink.click();
+    // Actually navigate: /blog is the only page link in the header nav
+    // (the rest are same-page anchors)
+    const blogLink = page.locator('header a[href="/blog"]').first();
+    await expect(blogLink).toBeVisible();
+    await blogLink.click();
 
-    await expect(page).toHaveURL(/\/projects\/?$/);
-    await expect(page.locator('main h1, main h2').first()).toBeVisible();
+    await expect(page).toHaveURL(/\/blog\/?$/);
+    await expect(page.locator('main h1').first()).toBeVisible();
   });
 
   test('should have working links', async ({ page }) => {

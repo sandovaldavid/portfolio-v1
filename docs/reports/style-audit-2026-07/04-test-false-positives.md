@@ -41,7 +41,21 @@ All findings ✅ verified at base commit `4dba60c`.
 in this branch (changing CI behavior is a separate decision). The 45 committed PNG baselines
 will be stale after the typography fixes; regenerate with `bun run test:snapshots`.
 
-## 4. New enforcement added (TDD)
+## 4. Bug the false positive was hiding: no theme-toggle UI exists
+
+Repairing the theme-toggle test (§1) exposed why it was written assertion-free: **the
+`ThemeToggle` feature slice (`src/features/theme-toggle/`) is dead code — it is imported
+nowhere.** `Header.astro:11` still documents "Features: ThemeToggle, LanguagePicker" but
+renders neither; the LanguagePicker was intentionally moved into the RecruiterHUD panel
+(PR #83), while the ThemeToggle was never mounted after the FSD migration. The site applies
+the persisted theme via `Layout.astro`'s inline script, but ships **no UI to change it**.
+
+The repaired test now asserts the mechanism that actually exists (localStorage → `dark`
+class on load). 💡 **Follow-up decision for the owner:** mount `ThemeToggle` (e.g. in the
+header actions or the HUD panel, next to the language picker) or delete the dead slice and
+update `docs/features-catalog.md` + the `Header.astro` comment.
+
+## 5. New enforcement added (TDD)
 
 `tests/e2e/typography.spec.ts` (written **before** the component fixes; red against base
 commit, green after):
