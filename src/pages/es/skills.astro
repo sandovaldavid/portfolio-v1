@@ -43,12 +43,12 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 >
 	<SectionContainer id="all-skills" class="w-full max-w-5xl px-4 flex flex-col gap-8">
 		<div class="text-center space-y-3 mb-4">
-			<h2
-				class="text-4xl md:text-5xl font-bold font-pixel-clean text-text-main uppercase tracking-wide"
+			<h1
+				class="text-4xl md:text-5xl font-bold font-pixel-clean text-content-strong uppercase tracking-wide"
 			>
 				Inventario de Habilidades
-			</h2>
-			<p class="text-text-muted font-mono text-sm uppercase">
+			</h1>
+			<p class="text-content-muted font-mono text-base uppercase">
 				[ Carga de Habilidades: 100% Completado // Personaje de Clase Ingeniero de Sistemas
 				]
 			</p>
@@ -59,21 +59,21 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 			<article
 				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4"
 			>
-				<h3
-					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				<h2
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-edge-subtle pb-2"
 				>
 					[ FRONTEND SPELLS ]
-				</h3>
+				</h2>
 				<div class="grid grid-cols-2 gap-2">
 					{
 						frontendTechs.map(tech => {
 							const Icon = tech.icon;
 							return (
-								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
+								<div class="flex items-center gap-2 p-2 border border-edge-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
 									{Icon && (
 										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
 									)}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-content-strong font-bold">
 										{tech.name}
 									</span>
 								</div>
@@ -87,21 +87,21 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 			<article
 				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4"
 			>
-				<h3
-					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				<h2
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-edge-subtle pb-2"
 				>
 					[ BACKEND RUNES ]
-				</h3>
+				</h2>
 				<div class="grid grid-cols-2 gap-2">
 					{
 						backendTechs.map(tech => {
 							const Icon = tech.icon;
 							return (
-								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
+								<div class="flex items-center gap-2 p-2 border border-edge-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
 									{Icon && (
 										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
 									)}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-content-strong font-bold">
 										{tech.name}
 									</span>
 								</div>
@@ -115,21 +115,21 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 			<article
 				class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-y-1 hover:shadow-[5px_5px_0px_var(--color-primary-500)] transition-all duration-150 flex flex-col gap-4 md:col-span-2 lg:col-span-1"
 			>
-				<h3
-					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-border-subtle pb-2"
+				<h2
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-edge-subtle pb-2"
 				>
 					[ UTILITIES & ITEMS ]
-				</h3>
+				</h2>
 				<div class="grid grid-cols-2 gap-2">
 					{
 						toolsTechs.map(tech => {
 							const Icon = tech.icon;
 							return (
-								<div class="flex items-center gap-2 p-2 border border-border-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
+								<div class="flex items-center gap-2 p-2 border border-edge-subtle bg-surface/50 hover:bg-primary-500/5 hover:border-primary-500/30 transition-all duration-150 group cursor-default">
 									{Icon && (
 										<Icon class="w-4 h-4 text-primary-500 dark:text-primary-400 shrink-0" />
 									)}
-									<span class="font-gaming-mono text-xs uppercase tracking-wider text-text-main font-bold">
+									<span class="font-gaming-mono text-xs uppercase tracking-wider text-content-strong font-bold">
 										{tech.name}
 									</span>
 								</div>
@@ -144,7 +144,7 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 		<div class="w-full flex justify-center mt-8">
 			<a
 				href={getLocalizedPath(lang, '/')}
-				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-border-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-[3px_3px_0px_0px_var(--color-edge-strong)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
 			>
 				[ RETORNAR AL INICIO ]
 			</a>

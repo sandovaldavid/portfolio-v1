@@ -244,14 +244,20 @@ const { title, description } = Astro.props;
 
 - Primary: Tailwind CSS utility classes
 - Mobile-first responsive design
-- Support dark mode with `dark:` prefix
+- Support dark mode with `dark:` prefix (semantic tokens already handle it via `light-dark()`)
 - Prefer scoped styles over global
-- Use semantic color tokens from colors.css
+- Use semantic color tokens from colors.css (`text-content`, `text-content-strong`, `text-content-muted`, `border-edge-subtle`, `bg-surface`) — never raw `gray-*`/`neutral-*` on text
+- **Typography scale (REQUIRED)** — see [docs/STYLE-GUIDE.md](docs/STYLE-GUIDE.md):
+  - Body copy: `text-base` (16px) minimum
+  - Secondary text (metadata, nav, captions): `text-sm` (14px) minimum
+  - Decorative labels/badges: `text-xs` (12px) **absolute floor**
+  - Arbitrary sizes below 12px (`text-[8px]`…`text-[11px]`) are banned
+  - Reading text in pixel fonts (VT323 etc.) uses one step larger than its role
 
 ```astro
-<div class="text-sm dark:text-gray-300 md:text-base">
-  Content
-</div>
+<p class="text-base text-content md:text-lg">
+  Body copy uses the 16px floor and a semantic token.
+</p>
 ```
 
 ### File Naming
@@ -663,7 +669,7 @@ bun run bundle:analyze
 - Support keyboard navigation
 - Have proper alt text
 - Use semantic HTML
-- Maintain heading hierarchy
+- Maintain heading hierarchy: exactly one `h1` per page, no skipped levels, heading visually ≥ its body text (enforced by `tests/e2e/typography.spec.ts`)
 - Pass WCAG 2.1 Level AA
 - Not rely on color alone
 

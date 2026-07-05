@@ -33,7 +33,7 @@ const visionItems = [
 
 <section class="space-y-6">
 	<div>
-		<p class="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
+		<p class="text-sm font-medium text-content-muted mb-2">
 			{t('vision.subtitle')}
 		</p>
 	</div>
@@ -50,18 +50,14 @@ const visionItems = [
 							<item.icon class="w-5 h-5 text-primary-500 dark:text-primary-400" />
 						</div>
 						<div class="flex-1">
-							<h3 class="text-lg font-bold text-neutral-900 dark:text-neutral-50 mb-2">
-								{item.title}
-							</h3>
+							<h3 class="text-lg font-bold text-content-strong mb-2">{item.title}</h3>
 						</div>
 					</div>
 
-					<p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-4">
-						{item.description}
-					</p>
+					<p class="text-sm text-content leading-relaxed mb-4">{item.description}</p>
 
 					{item.link === '#' ? (
-						<span class="inline-flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 italic">
+						<span class="inline-flex items-center gap-2 text-sm font-medium text-content-muted italic">
 							<span class="w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
 							{t('vision.coming-soon')}
 						</span>

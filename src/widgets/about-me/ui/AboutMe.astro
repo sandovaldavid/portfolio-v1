@@ -11,7 +11,7 @@ const personalImageAlt = 'Juan David';
 <div class="space-y-6">
 	<!-- First Card: Text Content and Profile Image -->
 	<article
-		class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-edge-strong)] transition-all duration-100"
 	>
 		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
 			<!-- Text Content -->
@@ -22,14 +22,14 @@ const personalImageAlt = 'Juan David';
 					{t('about-me.profile.title')}
 				</h3>
 				<div
-					class="space-y-4 [&>p]:text-neutral-700 dark:[&>p]:text-neutral-300 [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
+					class="space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
 				>
 					<p set:html={t('about-me.paragraph1')} />
 				</div>
 				<div class="pt-2">
 					<a
 						href={getLocalizedPath(lang, '/about')}
-						class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-[2.5px_2.5px_0px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3.5px_3.5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+						class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-[2.5px_2.5px_0px_0px_var(--color-edge-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3.5px_3.5px_0px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-edge-strong)]"
 					>
 						{t('about-me.read-more')}
 					</a>
@@ -56,7 +56,7 @@ const personalImageAlt = 'Juan David';
 
 	<!-- Atena Current Work Card -->
 	<article
-		class="rounded-none bg-surface border-2 border-border-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-border-strong)] transition-all duration-100"
+		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-[4px_4px_0px_0px_var(--color-edge-strong)] transition-all duration-100"
 	>
 		<div class="space-y-4">
 			<h3
@@ -65,13 +65,13 @@ const personalImageAlt = 'Juan David';
 				{t('about-me.atena.title')}
 			</h3>
 			<p
-				class="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed text-pretty"
+				class="text-content text-base leading-relaxed text-pretty"
 				set:html={t('about-me.atena.summary')}
 			/>
 			<div class="pt-2">
 				<a
 					href={getLocalizedPath(lang, '/atena')}
-					class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-[2.5px_2.5px_0px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3.5px_3.5px_0px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-border-strong)]"
+					class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-[2.5px_2.5px_0px_0px_var(--color-edge-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3.5px_3.5px_0px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_var(--color-edge-strong)]"
 				>
 					{t('about-me.atena.button')}
 				</a>

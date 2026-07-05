@@ -22,17 +22,14 @@ const THEMES = [
 		aria-label={t('theme.select')}
 	>
 		<span class="sr-only">{t('theme.select')}</span>
-		<SunIcon
-			data-icon="light"
-			class="theme-icon absolute size-5 transition-all text-neutral-700 dark:text-neutral-300"
-		/>
+		<SunIcon data-icon="light" class="theme-icon absolute size-5 transition-all text-content" />
 		<MoonIcon
 			data-icon="dark"
-			class="theme-icon hidden absolute size-5 transition-all text-neutral-700 dark:text-neutral-300"
+			class="theme-icon hidden absolute size-5 transition-all text-content"
 		/>
 		<SystemIcon
 			data-icon="system"
-			class="theme-icon hidden absolute size-5 transition-all text-neutral-700 dark:text-neutral-300"
+			class="theme-icon hidden absolute size-5 transition-all text-content"
 		/>
 	</button>
 
@@ -44,7 +41,7 @@ const THEMES = [
 				THEMES.map(theme => (
 					<li
 						data-theme={theme.id}
-						class="themes-menu-option px-3 py-2 cursor-pointer rounded-lg text-neutral-700 dark:text-neutral-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/70 transition-all duration-200 font-medium"
+						class="themes-menu-option px-3 py-2 cursor-pointer rounded-lg text-content hover:text-primary-600 dark:hover:text-primary-400 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/70 transition-all duration-200 font-medium"
 					>
 						{theme.name}
 					</li>

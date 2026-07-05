@@ -13,20 +13,17 @@ const formattedDate = pubDate.toISOString().split('T')[0];
 ---
 
 <article
-	class="border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-[3px_3px_0px_0px_var(--color-border-strong)]"
+	class="border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-[3px_3px_0px_0px_var(--color-edge-strong)]"
 >
 	<div
 		class="flex items-center gap-2 border-b-2 border-black dark:border-white bg-primary-500/10 px-4 py-2"
 	>
 		<span
-			class="font-retro-tag text-[10px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400"
+			class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400"
 		>
 			BLOG
 		</span>
-		<time
-			class="ml-auto font-mono text-xs text-neutral-700 dark:text-neutral-400"
-			datetime={pubDate.toISOString()}
-		>
+		<time class="ml-auto font-mono text-xs text-content-muted" datetime={pubDate.toISOString()}>
 			[{formattedDate}]
 		</time>
 	</div>
@@ -34,18 +31,16 @@ const formattedDate = pubDate.toISOString().split('T')[0];
 		<div class="mb-2 flex flex-wrap items-center gap-2">
 			{
 				tags.map(tag => (
-					<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-[9px] font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+					<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
 						{tag}
 					</span>
 				))
 			}
 		</div>
-		<h2
-			class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-neutral-900 dark:text-neutral-50"
-		>
+		<h2 class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong">
 			{title}
 		</h2>
-		<p class="mb-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+		<p class="mb-4 text-base leading-relaxed text-content-muted">
 			{description}
 		</p>
 		<a

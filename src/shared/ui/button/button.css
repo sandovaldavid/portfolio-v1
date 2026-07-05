@@ -10,17 +10,17 @@
 	@apply focus-visible:ring-2 focus-visible:ring-primary-500;
 
 	/* Retro 3D offset shadow */
-	box-shadow: 3px 3px 0px 0px var(--color-border-strong);
+	box-shadow: 3px 3px 0px 0px var(--color-edge-strong);
 }
 
 .btn-base:hover {
 	@apply -translate-x-[2px] -translate-y-[2px];
-	box-shadow: 5px 5px 0px 0px var(--color-border-strong);
+	box-shadow: 5px 5px 0px 0px var(--color-edge-strong);
 }
 
 .btn-base:active {
 	@apply translate-x-[1px] translate-y-[1px];
-	box-shadow: 1px 1px 0px 0px var(--color-border-strong);
+	box-shadow: 1px 1px 0px 0px var(--color-edge-strong);
 }
 
 /* Primary variant - Neon Brand style */

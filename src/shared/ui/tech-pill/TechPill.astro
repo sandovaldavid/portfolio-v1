@@ -23,20 +23,20 @@ const baseClasses = `inline-flex items-center rounded-none border-2 border-black
 const cardPadding = 'px-3 py-1';
 const cardText = size === 'sm' ? 'text-xs' : 'text-sm';
 const cardIcon = 'mr-1.5 h-4 w-4';
-const cardShadow = 'shadow-[1.5px_1.5px_0px_0px_var(--color-border-strong)]';
+const cardShadow = 'shadow-[1.5px_1.5px_0px_0px_var(--color-edge-strong)]';
 
 // Size-specific classes for Stack variant
 const stackPadding = size === 'sm' ? 'px-2.5 py-1.5 gap-1.5' : 'px-4 md:px-5 py-2.5 md:py-3 gap-2';
-const stackText = size === 'sm' ? 'text-[11px] md:text-xs' : 'text-xs md:text-sm';
+const stackText = size === 'sm' ? 'text-xs' : 'text-xs md:text-sm';
 const stackIcon = size === 'sm' ? 'w-4 h-4 mr-0.5' : 'w-5 h-5 mr-1';
 const stackBg =
-	'bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 hover:dark:bg-neutral-700 text-neutral-900 dark:text-neutral-300 font-bold uppercase tracking-wider backdrop-blur-sm';
+	'bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 hover:dark:bg-neutral-700 text-content-strong font-bold uppercase tracking-wider backdrop-blur-sm';
 const stackAnimation =
 	'hover:border-primary-500 hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-default';
 const stackShadow =
 	size === 'sm'
-		? 'shadow-[1.5px_1.5px_0px_var(--color-border-strong)] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:shadow-[1px_1px_0px_var(--color-border-strong)]'
-		: 'shadow-[2.5px_2.5px_0px_var(--color-border-strong)] hover:shadow-[4.5px_4.5px_0px_var(--color-border-strong)] active:shadow-[1px_1px_0px_var(--color-border-strong)]';
+		? 'shadow-[1.5px_1.5px_0px_var(--color-edge-strong)] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:shadow-[1px_1px_0px_var(--color-edge-strong)]'
+		: 'shadow-[2.5px_2.5px_0px_var(--color-edge-strong)] hover:shadow-[4.5px_4.5px_0px_var(--color-edge-strong)] active:shadow-[1px_1px_0px_var(--color-edge-strong)]';
 
 // Final classes selection
 const hasBg = additionalClasses.includes('bg-');
@@ -45,7 +45,7 @@ const hasText = additionalClasses.includes('text-');
 const containerClasses =
 	variant === 'stack'
 		? `${baseClasses} ${stackPadding} ${stackText} ${stackBg} ${stackAnimation} ${stackShadow}`
-		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-neutral-900 dark:text-neutral-200'} font-mono`;
+		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-content-strong'} font-mono`;
 
 const iconClasses = variant === 'stack' ? stackIcon : cardIcon;
 ---

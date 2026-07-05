@@ -18,6 +18,7 @@ The project FSD migration is 100% complete, but historical docs still report 30%
 | `chore/testing-verification`      | **Low**        | Run full test suite, record results, report discrepancies             | 3     | ✅     |
 | `feat/blog`                       | **Medium**     | Add native MDX blog (i18n + RSS) that feeds the GitHub profile widget | 7     | ✅     |
 | `test/blog-rss-lighthouse`        | **Low**        | Cover RSS endpoints with E2E tests, add blog pages to Lighthouse CI   | 2     | ✅     |
+| `claude/style-bugs-text-sizing-fg813f` | **High**  | Style-bug audit + fixes: typography floor, token rename, headings, TDD specs | 7 | 🔄     |
 
 ## Completion Tracking
 
@@ -48,6 +49,7 @@ The project FSD migration is 100% complete, but historical docs still report 30%
 - `branch-04-testing-verification.md` — Execute and record test results
 - `branch-05-blog.md` — Native MDX blog: content collection, entity/widget slices, bilingual routes, RSS
 - `branch-06-blog-test-coverage.md` — RSS endpoint E2E tests + blog pages in Lighthouse CI (✅ verified locally)
+- `branch-07-style-bugs-text-sizing.md` — Style audit 2026-07: typography floor (16/14/12), semantic-token rename, heading hierarchy, TDD typography spec
 
 ---
 

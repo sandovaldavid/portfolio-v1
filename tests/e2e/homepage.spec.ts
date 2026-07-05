@@ -7,9 +7,10 @@ test.describe('Homepage', () => {
     // Verify page title
     await expect(page).toHaveTitle(/David Sandoval|Portfolio/i);
 
-    // Check main heading exists
-    const heading = page.locator('h1, h2').first();
+    // The Hero renders the page's single h1
+    const heading = page.locator('h1');
     await expect(heading).toBeVisible();
+    await expect(heading).toHaveText(/David Sandoval/i);
   });
 
   test('should have working navigation', async ({ page }) => {
@@ -25,7 +26,7 @@ test.describe('Homepage', () => {
   });
 
   test('should be responsive on mobile', async ({ page }) => {
-    page.setViewportSize({ width: 375, height: 667 });
+    await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
 
     // Verify content is visible on mobile
@@ -41,20 +42,27 @@ test.describe('Homepage', () => {
     const count = await imagesWithoutAlt.count();
     expect(count).toBe(0);
 
-    // Check for proper heading hierarchy
+    // Heading hierarchy (one h1, no level skips) is enforced in typography.spec.ts
     const headings = page.locator('h1, h2, h3, h4, h5, h6');
     await expect(headings.first()).toBeVisible();
   });
 
-  test('should have theme toggle functionality', async ({ page }) => {
-    await page.goto('/');
+  test('should apply the persisted theme', async ({ page }) => {
+    // NOTE: the site currently ships no theme-toggle UI (the ThemeToggle
+    // feature slice is unmounted dead code — see
+    // docs/reports/style-audit-2026-07/04-test-false-positives.md §5).
+    // This asserts the actual mechanism: Layout's inline script applies
+    // the theme persisted in localStorage on every load.
+    const html = page.locator('html');
 
-    // Check if theme toggle exists
-    const themeToggle = page.locator('[aria-label*="theme"], [aria-label*="dark"], [aria-label*="light"]').first();
-    if (await themeToggle.isVisible()) {
-      await themeToggle.click();
-      await page.waitForTimeout(500);
-    }
+    // Default (no stored preference) is dark
+    await page.goto('/');
+    await expect(html).toHaveClass(/dark/);
+
+    // A stored "light" preference removes the dark class on load
+    await page.addInitScript(() => localStorage.setItem('theme', 'light'));
+    await page.goto('/');
+    await expect(html).not.toHaveClass(/dark/);
   });
 });
 

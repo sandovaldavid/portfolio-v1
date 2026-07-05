@@ -27,12 +27,12 @@ h6 {
 
 ::-webkit-scrollbar-track {
 	background: var(--color-background);
-	border-left: 2px solid var(--color-border-strong);
+	border-left: 2px solid var(--color-edge-strong);
 }
 
 ::-webkit-scrollbar-thumb {
 	background: var(--color-primary-500);
-	border: 2px solid var(--color-border-strong);
+	border: 2px solid var(--color-edge-strong);
 }
 
 ::-webkit-scrollbar-thumb:hover {

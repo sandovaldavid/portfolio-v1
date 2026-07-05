@@ -45,24 +45,24 @@
 	--color-surface-light: #ffffff;
 	--color-surface-highlight-light: #e8eef9;
 
-	--color-text-main-light: #0f172a;
-	--color-text-body-light: #334155;
-	--color-text-muted-light: #475569;
+	--color-content-strong-light: #0f172a;
+	--color-content-light: #334155;
+	--color-content-muted-light: #475569;
 
-	--color-border-subtle-light: #cbd5e1;
-	--color-border-strong-light: #0f172a;
+	--color-edge-subtle-light: #cbd5e1;
+	--color-edge-strong-light: #0f172a;
 
 	/* Dark mode colors */
 	--color-background-dark: #020408;
 	--color-surface-dark: #0a0d14;
 	--color-surface-highlight-dark: #141b29;
 
-	--color-text-main-dark: #f1f5f9;
-	--color-text-body-dark: #cbd5e1;
-	--color-text-muted-dark: #94a3b8;
+	--color-content-strong-dark: #f1f5f9;
+	--color-content-dark: #cbd5e1;
+	--color-content-muted-dark: #94a3b8;
 
-	--color-border-subtle-dark: #1e293b;
-	--color-border-strong-dark: #cbd5e1;
+	--color-edge-subtle-dark: #1e293b;
+	--color-edge-strong-dark: #cbd5e1;
 
 	/* Semantic tokens with light-dark() */
 	--color-background: light-dark(var(--color-background-light), var(--color-background-dark));
@@ -72,18 +72,18 @@
 		var(--color-surface-highlight-dark)
 	);
 
-	--color-text-main: light-dark(var(--color-text-main-light), var(--color-text-main-dark));
-	--color-text-body: light-dark(var(--color-text-body-light), var(--color-text-body-dark));
-	--color-text-muted: light-dark(var(--color-text-muted-light), var(--color-text-muted-dark));
+	--color-content-strong: light-dark(
+		var(--color-content-strong-light),
+		var(--color-content-strong-dark)
+	);
+	--color-content: light-dark(var(--color-content-light), var(--color-content-dark));
+	--color-content-muted: light-dark(
+		var(--color-content-muted-light),
+		var(--color-content-muted-dark)
+	);
 
-	--color-border-subtle: light-dark(
-		var(--color-border-subtle-light),
-		var(--color-border-subtle-dark)
-	);
-	--color-border-strong: light-dark(
-		var(--color-border-strong-light),
-		var(--color-border-strong-dark)
-	);
+	--color-edge-subtle: light-dark(var(--color-edge-subtle-light), var(--color-edge-subtle-dark));
+	--color-edge-strong: light-dark(var(--color-edge-strong-light), var(--color-edge-strong-dark));
 
 	/* Custom accessibility & retro status colors */
 	--color-banner-border: light-dark(rgba(10, 92, 214, 0.6), rgba(0, 216, 255, 0.6));
@@ -104,13 +104,13 @@
 	--color-status-success-text: light-dark(#065f46, #34d399);
 
 	/* Retro 3D offset shadow scale */
-	--shadow-retro-xs: 1px 1px 0px 0px var(--color-border-strong);
-	--shadow-retro-sm: 1.5px 1.5px 0px 0px var(--color-border-strong);
-	--shadow-retro-md: 3px 3px 0px 0px var(--color-border-strong);
-	--shadow-retro-lg: 4px 4px 0px 0px var(--color-border-strong);
-	--shadow-retro-xl: 5px 5px 0px 0px var(--color-border-strong);
-	--shadow-retro-2xl: 6px 6px 0px 0px var(--color-border-strong);
-	--shadow-retro-3xl: 8px 8px 0px 0px var(--color-border-strong);
+	--shadow-retro-xs: 1px 1px 0px 0px var(--color-edge-strong);
+	--shadow-retro-sm: 1.5px 1.5px 0px 0px var(--color-edge-strong);
+	--shadow-retro-md: 3px 3px 0px 0px var(--color-edge-strong);
+	--shadow-retro-lg: 4px 4px 0px 0px var(--color-edge-strong);
+	--shadow-retro-xl: 5px 5px 0px 0px var(--color-edge-strong);
+	--shadow-retro-2xl: 6px 6px 0px 0px var(--color-edge-strong);
+	--shadow-retro-3xl: 8px 8px 0px 0px var(--color-edge-strong);
 
 	/* Pixel-grid spacing scale (4px increments) */
 	--space-1: 0.25rem;
@@ -160,7 +160,7 @@
 
 body {
 	background-color: var(--color-background);
-	color: var(--color-text-body);
+	color: var(--color-content);
 	-webkit-font-smoothing: antialiased;
 }
 

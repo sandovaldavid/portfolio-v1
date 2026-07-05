@@ -13,7 +13,7 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 
 <section class="w-full h-full flex items-center justify-center px-4 py-6">
 	<article
-		class="w-full max-w-3xl border-2 border-black dark:border-white bg-surface shadow-[6px_6px_0px_0px_var(--color-border-strong)] font-mono overflow-hidden"
+		class="w-full max-w-3xl border-2 border-black dark:border-white bg-surface shadow-[6px_6px_0px_0px_var(--color-edge-strong)] font-mono overflow-hidden"
 	>
 		<!-- Header Bar -->
 		<div
@@ -23,19 +23,19 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 				<BrainIcon class="w-5 h-5 text-white dark:text-black shrink-0 mt-0.5" />
 				<div>
 					<p
-						class="font-retro-tag text-xs uppercase tracking-widest text-white/90 dark:text-black/90 leading-none"
+						class="font-retro-tag text-sm uppercase tracking-widest text-white/90 dark:text-black/90 leading-none"
 					>
 						{t('research.thesis.institution')} · {t('research.thesis.label')}
 					</p>
 					<h3
-						class="font-pixel-clean text-base sm:text-lg font-bold text-white dark:text-black uppercase leading-tight mt-1"
+						class="font-pixel-clean text-lg sm:text-xl font-bold text-white dark:text-black uppercase leading-tight mt-1"
 					>
 						{t('research.thesis.title')}
 					</h3>
 				</div>
 			</div>
 			<span
-				class="shrink-0 font-retro-tag text-[10px] bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2.5 py-1 font-bold uppercase tracking-widest animate-pulse whitespace-nowrap"
+				class="shrink-0 font-retro-tag text-xs bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2.5 py-1 font-bold uppercase tracking-widest animate-pulse whitespace-nowrap"
 			>
 				{t('research.thesis.status')}
 			</span>
@@ -44,7 +44,7 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 		<!-- Body -->
 		<div class="px-5 py-5 space-y-5">
 			<!-- Summary -->
-			<p class="text-sm sm:text-base leading-relaxed text-text-main">
+			<p class="text-base leading-relaxed text-content-strong">
 				{summary}
 			</p>
 
@@ -68,14 +68,14 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 
 			<!-- CTA -->
 			<div
-				class="border-t-2 border-dashed border-border-subtle pt-4 flex items-center justify-between gap-4"
+				class="border-t-2 border-dashed border-edge-subtle pt-4 flex items-center justify-between gap-4"
 			>
-				<p class="text-xs text-text-muted leading-snug">
+				<p class="text-sm text-content-muted leading-snug">
 					{t('research.full-methodology')}
 				</p>
 				<a
 					href={getLocalizedPath(lang, '/research')}
-					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-xs font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-border-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-border-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap"
+					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-xs font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-[2px_2px_0px_var(--color-edge-strong)] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[3px_3px_0px_var(--color-edge-strong)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap"
 				>
 					{t('research.view-full-button')}
 				</a>
