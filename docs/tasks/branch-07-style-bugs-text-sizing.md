@@ -111,14 +111,25 @@ labels → `text-xs`; delete every `text-[8px]/[9px]/[10px]/[11px]`.
 ## Task 7.6 — Heading hierarchy
 
 **Scope**: files listed in [`03-headings.md`](../reports/style-audit-2026-07/03-headings.md)
-**Action**: promote the top heading of each sub-page (EN+ES) to `h1`; BlogCard/DevlogCard
-`h2` → `h3`; ResearchContent `h2` sizes → `text-xl sm:text-2xl`.
+**Action**: promote the top heading of each sub-page (EN+ES) to `h1`; keep BlogCard/DevlogCard
+as `h2` (see decision below); ResearchContent `h2` sizes → `text-xl sm:text-2xl`.
 
 ### Checklist
 
 - [x] One `h1` per page across EN+ES key pages
-- [x] No skipped levels (verify after card demotions)
+- [x] No skipped levels (verified: cards kept at `h2`)
 - [x] ResearchContent headings larger than their body text at all breakpoints
+
+### Decision: BlogCard / DevlogCard stay at `h2`
+
+The audit (03-headings §3) recommended demoting card titles to `h3` under the assumption
+that a page-level `h2` sits above them. Verified against the rendered pages
+(`src/pages/blog.astro`, `src/pages/devlog.astro` + ES mirrors): the page header renders an
+`h1` and **no `h2` section heading** — the cards live directly under the `h1`. Demoting to
+`h3` would skip a level (`h1 → h3`) and break the `typography.spec.ts` "no level skips" gate.
+The cards are kept at `h2`; the audit recommendation is recorded as not-applicable for this
+layout. The page `h1` (`text-3xl md:text-5xl`) and card `h2` (`text-xl`) sit 2.25rem apart, so
+visual hierarchy is preserved without a level skip.
 
 ### Acceptance Criteria
 
