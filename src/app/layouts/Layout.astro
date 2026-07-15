@@ -333,7 +333,9 @@ const articleSchema = article
 			</main>
 			<Footer />
 			<RecruiterHUD />
-			<CLITerminal />
+			<div transition:persist="cli-terminal">
+				<CLITerminal />
+			</div>
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
 		</div>

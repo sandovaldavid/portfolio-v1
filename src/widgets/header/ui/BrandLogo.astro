@@ -16,24 +16,32 @@ const { href = '/', class: className = '' } = Astro.props;
 </a>
 
 <script>
-	const logoLinks = document.querySelectorAll('.brand-logo-link');
-	logoLinks.forEach(link => {
-		const typingElement = link.querySelector('.logo-typing') as HTMLElement;
-		if (!typingElement) return;
+	// Re-wire hover animation on first load and after every client-side
+	// navigation (Astro view transitions replace the DOM). Guarded per element.
+	const setupBrandLogo = () => {
+		document.querySelectorAll<HTMLElement>('.brand-logo-link').forEach(link => {
+			if (link.dataset.logoReady === 'true') return;
+			link.dataset.logoReady = 'true';
 
-		link.addEventListener('mouseenter', () => {
-			typingElement.style.animation = 'none';
-			void typingElement.offsetWidth; // Force reflow
-			typingElement.style.animation =
-				'typing-hover 1.2s steps(17) 1 forwards, blink-caret 0.75s step-end infinite, glitch 0.3s steps(2) infinite';
-		});
+			const typingElement = link.querySelector<HTMLElement>('.logo-typing');
+			if (!typingElement) return;
 
-		link.addEventListener('mouseleave', () => {
-			typingElement.style.animation = 'none';
-			void typingElement.offsetWidth; // Force reflow
-			typingElement.style.animation = 'blink-caret 0.75s step-end infinite';
+			link.addEventListener('mouseenter', () => {
+				typingElement.style.animation = 'none';
+				void typingElement.offsetWidth; // Force reflow
+				typingElement.style.animation =
+					'typing-hover 1.2s steps(17) 1 forwards, blink-caret 0.75s step-end infinite, glitch 0.3s steps(2) infinite';
+			});
+
+			link.addEventListener('mouseleave', () => {
+				typingElement.style.animation = 'none';
+				void typingElement.offsetWidth; // Force reflow
+				typingElement.style.animation = 'blink-caret 0.75s step-end infinite';
+			});
 		});
-	});
+	};
+
+	document.addEventListener('astro:page-load', setupBrandLogo);
 </script>
 
 <style>

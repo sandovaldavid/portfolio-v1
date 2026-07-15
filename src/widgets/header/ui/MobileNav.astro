@@ -99,54 +99,59 @@ const { navItems, lang } = Astro.props;
 </div>
 
 <script>
-	// Mobile menu interaction
-	const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-	const mobileMenu = document.getElementById('mobile-menu');
-	const mobileMenuClose = document.getElementById('mobile-menu-close');
+	// The header is re-rendered on every client-side navigation, so the open/
+	// close listeners are (re)wired on astro:page-load. Document-level listeners
+	// are attached once and resolve the current elements live.
+	const closeMobileMenu = () => {
+		const menu = document.getElementById('mobile-menu');
+		const btn = document.getElementById('mobile-menu-btn');
+		menu?.classList.add('hidden');
+		menu?.classList.remove('flex');
+		btn?.setAttribute('aria-expanded', 'false');
+	};
 
-	if (mobileMenuBtn && mobileMenu) {
-		// Open menu
-		mobileMenuBtn.addEventListener('click', e => {
-			e.stopPropagation();
-			mobileMenu.classList.remove('hidden');
-			mobileMenu.classList.add('flex');
-			mobileMenuBtn.setAttribute('aria-expanded', 'true');
-		});
-	}
+	const setupMobileNav = () => {
+		const btn = document.getElementById('mobile-menu-btn');
+		const menu = document.getElementById('mobile-menu');
+		const close = document.getElementById('mobile-menu-close');
+		if (!btn || !menu) return;
 
-	if (mobileMenuClose && mobileMenu) {
-		// Close button
-		mobileMenuClose.addEventListener('click', e => {
-			e.stopPropagation();
-			mobileMenu.classList.add('hidden');
-			mobileMenu.classList.remove('flex');
-			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
-		});
-	}
+		if (btn.dataset.navReady !== 'true') {
+			btn.dataset.navReady = 'true';
+			btn.addEventListener('click', e => {
+				e.stopPropagation();
+				menu.classList.remove('hidden');
+				menu.classList.add('flex');
+				btn.setAttribute('aria-expanded', 'true');
+			});
+		}
 
-	// Close menu on nav item click
+		if (close && close.dataset.navReady !== 'true') {
+			close.dataset.navReady = 'true';
+			close.addEventListener('click', e => {
+				e.stopPropagation();
+				closeMobileMenu();
+			});
+		}
+	};
+
+	// Close menu on nav item click (attached once).
 	document.addEventListener('click', e => {
 		const target = e.target as HTMLElement;
-		if (target.getAttribute('data-close-menu') === 'true') {
-			mobileMenu?.classList.add('hidden');
-			mobileMenu?.classList.remove('flex');
-			mobileMenuBtn?.setAttribute('aria-expanded', 'false');
-		}
+		if (target?.getAttribute?.('data-close-menu') === 'true') closeMobileMenu();
 	});
 
-	// Close menu on outside click
+	// Close menu on outside click (attached once, resolves elements live).
 	document.addEventListener('click', e => {
-		if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+		const menu = document.getElementById('mobile-menu');
+		const btn = document.getElementById('mobile-menu-btn');
+		if (menu && !menu.classList.contains('hidden')) {
 			const target = e.target;
-			if (
-				target instanceof Node &&
-				!mobileMenu.contains(target) &&
-				target !== mobileMenuBtn
-			) {
-				mobileMenu.classList.add('hidden');
-				mobileMenu.classList.remove('flex');
-				mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+			if (target instanceof Node && !menu.contains(target) && target !== btn) {
+				closeMobileMenu();
 			}
 		}
 	});
+
+	document.addEventListener('astro:page-load', setupMobileNav);
 </script>
