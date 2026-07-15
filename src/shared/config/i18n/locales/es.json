@@ -50,8 +50,8 @@
 	"experience": {
 		"learn-more": "Saber más",
 		"atena": {
-			"date": "Presente - Remoto",
-			"title": "Desarrollador Full-Stack Junior",
+			"date": "Ene 2026 – Presente",
+			"title": "Ingeniero de Software — Full-Stack",
 			"company": "Atena",
 			"description": [
 				"Implementé la migración de módulos críticos a Angular 19 Signals, reduciendo la carga del Event Loop al eliminar la dependencia de Zone.js en componentes de visualización de datos",

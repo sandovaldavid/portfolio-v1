@@ -50,8 +50,8 @@
 	"experience": {
 		"learn-more": "Learn more",
 		"atena": {
-			"date": "Present - Remote",
-			"title": "Junior Full-Stack Developer",
+			"date": "Jan 2026 – Present",
+			"title": "Software Engineer — Full-Stack",
 			"company": "Atena",
 			"description": [
 				"Implemented migration of critical modules to Angular 19 Signals, reducing Event Loop load by eliminating Zone.js dependency in data visualization components",

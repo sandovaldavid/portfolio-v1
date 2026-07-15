@@ -12,7 +12,7 @@ export const siteConfig = {
 	fullName: 'Juan David Sandoval Salvador',
 	handle: 'sandovaldavid',
 	role: 'Software Engineer · BiLSTM/OSS Researcher',
-	location: 'Piura, Peru',
+	location: 'Lima, Peru',
 	currentCompany: 'Atena',
 	availability: true,
 
