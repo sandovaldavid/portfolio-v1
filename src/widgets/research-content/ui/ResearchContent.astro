@@ -1,5 +1,4 @@
 ---
-import Layout from '@app/layouts/Layout.astro';
 import { useTranslations, useTranslationsList } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
@@ -16,7 +15,10 @@ const tList = useTranslationsList(lang);
 
 const keywords = tList('research.thesis.keywords') as string[];
 const pipelineSteps = tList('research.pipeline-steps') as string[];
-const archDetails = tList('research.arch-details') as any;
+const archDetails = tList('research.arch-details') as unknown as Array<{
+	label: string;
+	value: string;
+}>;
 const features = tList('research.engineered-features') as string[];
 
 const labels = {
@@ -38,272 +40,257 @@ const metrics = [
 	{ prefix: 'AUC', text: t('research.thesis.metrics.auc') },
 	{ prefix: 'LOSS', text: t('research.thesis.metrics.loss') },
 ];
-
-const pageTitle = t('research.page-title');
-const pageDesc = t('research.page-description');
 ---
 
-<Layout
-	title={pageTitle}
-	description={pageDesc}
-	img_preview="/projects/portfolio.webp"
-	isHome={false}
-	article={true}
->
-	<div class="w-full max-w-5xl mx-auto px-4 font-mono">
-		<!-- Back button -->
-		<a
-			href={backHref}
-			class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-content-muted hover:text-primary-500 transition-colors group"
-		>
-			<span class="group-hover:-translate-x-1 transition-transform">◀</span>
-			{t('research.back-button')}
-		</a>
+<div class="w-full max-w-5xl mx-auto px-4 font-mono">
+	<!-- Back button -->
+	<a
+		href={backHref}
+		class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-content-muted hover:text-primary-500 transition-colors group"
+	>
+		<span class="group-hover:-translate-x-1 transition-transform">◀</span>
+		{t('research.back-button')}
+	</a>
 
-		<!-- Header -->
-		<div
-			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-5 mb-8 shadow-retro-2xl"
-		>
-			<div class="flex items-start gap-4">
-				<BrainIcon class="w-8 h-8 text-white dark:text-black shrink-0 mt-1" />
-				<div class="flex-1">
+	<!-- Header -->
+	<div
+		class="border-2 border-black dark:border-white bg-primary-500 px-6 py-5 mb-8 shadow-retro-2xl"
+	>
+		<div class="flex items-start gap-4">
+			<BrainIcon class="w-8 h-8 text-white dark:text-black shrink-0 mt-1" />
+			<div class="flex-1">
+				<p
+					class="font-gaming-mono text-sm uppercase tracking-wider text-white dark:text-black/90 mb-1 font-bold"
+				>
+					{t('research.thesis.institution')} · {t('research.thesis.label')}
+				</p>
+				<h1
+					class="font-pixel-clean text-xl sm:text-3xl font-bold text-white dark:text-black uppercase leading-snug"
+				>
+					{t('research.thesis.title')}
+				</h1>
+			</div>
+			<span
+				class="shrink-0 font-gaming-mono text-xs bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2.5 py-1 font-bold uppercase tracking-wider animate-pulse whitespace-nowrap self-start"
+			>
+				{t('research.thesis.status')}
+			</span>
+		</div>
+	</div>
+
+	<!-- Main grid -->
+	<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+		<!-- Left column (3/5) -->
+		<div class="lg:col-span-3 flex flex-col gap-6">
+			<!-- Problem -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
+				>
+					▸ {labels.problem}
+				</h2>
+				<p class="text-base leading-relaxed text-content-strong">
+					{t('research.thesis.problem')}
+				</p>
+			</div>
+
+			<!-- Hypothesis -->
+			<div class="border-2 border-primary-500/40 bg-primary-500/5 p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
+				>
+					▸ {labels.hypothesis}
+				</h2>
+				<p class="text-base leading-relaxed italic text-content-strong">
+					"{t('research.thesis.hypothesis')}"
+				</p>
+			</div>
+
+			<!-- Methodology -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
+				>
+					▸ {labels.approach}
+				</h2>
+				<p class="text-base leading-relaxed text-content-strong mb-4">
+					{t('research.thesis.approach')}
+				</p>
+
+				<!-- Pipeline flow -->
+				<div class="mt-4">
 					<p
-						class="font-gaming-mono text-sm uppercase tracking-wider text-white dark:text-black/90 mb-1 font-bold"
+						class="font-gaming-mono text-sm text-content-muted uppercase tracking-wider mb-2 font-bold"
 					>
-						{t('research.thesis.institution')} · {t('research.thesis.label')}
+						{labels.pipeline}
 					</p>
-					<h1
-						class="font-pixel-clean text-xl sm:text-3xl font-bold text-white dark:text-black uppercase leading-snug"
-					>
-						{t('research.thesis.title')}
-					</h1>
+					<div class="flex flex-wrap items-center gap-1">
+						{
+							pipelineSteps.map((step, i) => (
+								<>
+									<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-primary-500/50 text-primary-500 px-2.5 py-1.5 bg-primary-500/5 font-bold">
+										{step}
+									</span>
+									{i < pipelineSteps.length - 1 && (
+										<span class="text-primary-500 font-bold text-xs">→</span>
+									)}
+								</>
+							))
+						}
+					</div>
 				</div>
-				<span
-					class="shrink-0 font-gaming-mono text-xs bg-white dark:bg-black text-primary-600 dark:text-primary-400 px-2.5 py-1 font-bold uppercase tracking-wider animate-pulse whitespace-nowrap self-start"
+			</div>
+
+			<!-- Feature engineering -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
 				>
-					{t('research.thesis.status')}
-				</span>
-			</div>
-		</div>
-
-		<!-- Main grid -->
-		<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-			<!-- Left column (3/5) -->
-			<div class="lg:col-span-3 flex flex-col gap-6">
-				<!-- Problem -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.problem}
-					</h2>
-					<p class="text-base leading-relaxed text-content-strong">
-						{t('research.thesis.problem')}
-					</p>
-				</div>
-
-				<!-- Hypothesis -->
-				<div class="border-2 border-primary-500/40 bg-primary-500/5 p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.hypothesis}
-					</h2>
-					<p class="text-base leading-relaxed italic text-content-strong">
-						"{t('research.thesis.hypothesis')}"
-					</p>
-				</div>
-
-				<!-- Methodology -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.approach}
-					</h2>
-					<p class="text-base leading-relaxed text-content-strong mb-4">
-						{t('research.thesis.approach')}
-					</p>
-
-					<!-- Pipeline flow -->
-					<div class="mt-4">
-						<p
-							class="font-gaming-mono text-sm text-content-muted uppercase tracking-wider mb-2 font-bold"
-						>
-							{labels.pipeline}
-						</p>
-						<div class="flex flex-wrap items-center gap-1">
-							{
-								pipelineSteps.map((step, i) => (
-									<>
-										<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-primary-500/50 text-primary-500 px-2.5 py-1.5 bg-primary-500/5 font-bold">
-											{step}
-										</span>
-										{i < pipelineSteps.length - 1 && (
-											<span class="text-primary-500 font-bold text-xs">
-												→
-											</span>
-										)}
-									</>
-								))
-							}
-						</div>
-					</div>
-				</div>
-
-				<!-- Feature engineering -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {t('research.labels.engineered-features')}
-					</h2>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-						{
-							features.map((feat, i) => (
-								<div class="flex items-start gap-2 text-sm text-content-strong">
-									<span class="font-pixel-clean text-xs font-bold bg-primary-500/20 text-primary-600 dark:text-primary-400 px-1.5 py-0.5 shrink-0 mt-0.5 min-w-[28px] text-center">
-										F{String(i + 1).padStart(2, '0')}
-									</span>
-									<span class="leading-snug">{feat}</span>
-								</div>
-							))
-						}
-					</div>
-				</div>
-
-				<!-- Dataset -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.dataset}
-					</h2>
-					<p class="text-base leading-relaxed text-content-strong">
-						{t('research.thesis.dataset')}
-					</p>
-				</div>
-			</div>
-
-			<!-- Right column (2/5) -->
-			<div class="lg:col-span-2 flex flex-col gap-6">
-				<!-- Model Architecture -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.arch}
-					</h2>
-					<div class="flex flex-col gap-2">
-						{
-							archDetails.map((item: any) => (
-								<div class="border border-edge-subtle p-2.5 text-sm flex justify-between items-start gap-4">
-									<span class="font-bold text-primary-500 uppercase tracking-wider shrink-0 text-xs sm:text-sm font-gaming-mono">
-										{item.label}
-									</span>
-									<span class="text-content-strong leading-snug text-right">
-										{item.value}
-									</span>
-								</div>
-							))
-						}
-					</div>
-				</div>
-
-				<!-- Metrics -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
-					>
-						▸ {labels.metrics}
-					</h2>
-					<div class="flex flex-col gap-2">
-						{
-							metrics.map(({ prefix, text }) => (
-								<div class="flex items-start gap-2">
-									<span class="shrink-0 font-pixel-clean text-sm font-bold bg-primary-500 text-white dark:text-black px-2 py-1 mt-0.5 uppercase min-w-[36px] text-center">
-										{prefix}
-									</span>
-									<span class="text-sm text-content-strong leading-snug">
-										{text}
-									</span>
-								</div>
-							))
-						}
-					</div>
-				</div>
-
-				<!-- Status -->
-				<div class="border-2 border-status-success-border bg-status-success-bg p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-status-success-text uppercase tracking-wider mb-3"
-					>
-						▸ {labels.status}
-					</h2>
-					<div class="flex items-center gap-2 mb-2">
-						<span class="w-2.5 h-2.5 bg-emerald-500 animate-pulse rounded-none shrink-0"
-						></span>
-						<span
-							class="font-gaming-mono text-xs sm:text-sm font-bold text-status-success-text uppercase"
-							>{t('research.thesis.status')}</span
-						>
-					</div>
-					<p class="text-base text-content-muted leading-relaxed">
-						{t('research.current-status')}
-					</p>
-				</div>
-
-				<!-- Keywords -->
-				<div class="border-2 border-edge-subtle bg-surface p-5">
-					<h2
-						class="font-gaming-mono text-xl sm:text-2xl font-bold text-content-muted uppercase tracking-wider mb-3"
-					>
-						{labels.keywords}
-					</h2>
-					<div class="flex flex-wrap gap-1.5">
-						{
-							keywords.map(kw => (
-								<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-badge-brand-outline-border text-badge-brand-text px-2 py-0.5 hover:bg-badge-brand-outline-bg-hover transition-colors cursor-default font-bold">
-									{kw}
+					▸ {t('research.labels.engineered-features')}
+				</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+					{
+						features.map((feat, i) => (
+							<div class="flex items-start gap-2 text-sm text-content-strong">
+								<span class="font-pixel-clean text-xs font-bold bg-primary-500/20 text-primary-600 dark:text-primary-400 px-1.5 py-0.5 shrink-0 mt-0.5 min-w-[28px] text-center">
+									F{String(i + 1).padStart(2, '0')}
 								</span>
-							))
-						}
-					</div>
+								<span class="leading-snug">{feat}</span>
+							</div>
+						))
+					}
 				</div>
+			</div>
+
+			<!-- Dataset -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
+				>
+					▸ {labels.dataset}
+				</h2>
+				<p class="text-base leading-relaxed text-content-strong">
+					{t('research.thesis.dataset')}
+				</p>
 			</div>
 		</div>
 
-		<!-- Contact CTA — horizontal bar (full width, outside grid like header) -->
-		<div
-			class="border-2 border-black dark:border-white bg-primary-500 px-6 py-4 mt-8 shadow-retro-2xl"
-		>
-			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-				<!-- Left: icon + label + description -->
-				<div class="flex items-center gap-3 flex-1 min-w-0">
-					<span
-						class="shrink-0 font-gaming-mono text-lg text-white dark:text-black"
-						aria-hidden="true">✉</span
-					>
-					<div class="flex flex-col gap-0.5 min-w-0">
-						<h2
-							class="font-gaming-mono text-lg sm:text-xl font-bold text-white dark:text-black/90 uppercase tracking-wider"
-						>
-							{labels.contact}
-						</h2>
-						<p class="text-sm text-white/90 dark:text-black/90 leading-snug">
-							{t('research.contact-cta')}
-						</p>
-					</div>
-				</div>
-				<!-- Right: CTA button -->
-				<a
-					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(t('research.contact-button'))}`}
-					class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
+		<!-- Right column (2/5) -->
+		<div class="lg:col-span-2 flex flex-col gap-6">
+			<!-- Model Architecture -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
 				>
-					<span aria-hidden="true">→</span>
-					{t('research.contact-button')}
-				</a>
+					▸ {labels.arch}
+				</h2>
+				<div class="flex flex-col gap-2">
+					{
+						archDetails.map(item => (
+							<div class="border border-edge-subtle p-2.5 text-sm flex justify-between items-start gap-4">
+								<span class="font-bold text-primary-500 uppercase tracking-wider shrink-0 text-xs sm:text-sm font-gaming-mono">
+									{item.label}
+								</span>
+								<span class="text-content-strong leading-snug text-right">
+									{item.value}
+								</span>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+			<!-- Metrics -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-primary-500 uppercase tracking-wider mb-3"
+				>
+					▸ {labels.metrics}
+				</h2>
+				<div class="flex flex-col gap-2">
+					{
+						metrics.map(({ prefix, text }) => (
+							<div class="flex items-start gap-2">
+								<span class="shrink-0 font-pixel-clean text-sm font-bold bg-primary-500 text-white dark:text-black px-2 py-1 mt-0.5 uppercase min-w-[36px] text-center">
+									{prefix}
+								</span>
+								<span class="text-sm text-content-strong leading-snug">{text}</span>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+			<!-- Status -->
+			<div class="border-2 border-status-success-border bg-status-success-bg p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-status-success-text uppercase tracking-wider mb-3"
+				>
+					▸ {labels.status}
+				</h2>
+				<div class="flex items-center gap-2 mb-2">
+					<span class="w-2.5 h-2.5 bg-emerald-500 animate-pulse rounded-none shrink-0"
+					></span>
+					<span
+						class="font-gaming-mono text-xs sm:text-sm font-bold text-status-success-text uppercase"
+						>{t('research.thesis.status')}</span
+					>
+				</div>
+				<p class="text-base text-content-muted leading-relaxed">
+					{t('research.current-status')}
+				</p>
+			</div>
+
+			<!-- Keywords -->
+			<div class="border-2 border-edge-subtle bg-surface p-5">
+				<h2
+					class="font-gaming-mono text-xl sm:text-2xl font-bold text-content-muted uppercase tracking-wider mb-3"
+				>
+					{labels.keywords}
+				</h2>
+				<div class="flex flex-wrap gap-1.5">
+					{
+						keywords.map(kw => (
+							<span class="font-gaming-mono text-xs sm:text-sm uppercase border border-badge-brand-outline-border text-badge-brand-text px-2 py-0.5 hover:bg-badge-brand-outline-bg-hover transition-colors cursor-default font-bold">
+								{kw}
+							</span>
+						))
+					}
+				</div>
 			</div>
 		</div>
 	</div>
-</Layout>
+
+	<!-- Contact CTA — horizontal bar (full width, outside grid like header) -->
+	<div
+		class="border-2 border-black dark:border-white bg-primary-500 px-6 py-4 mt-8 shadow-retro-2xl"
+	>
+		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+			<!-- Left: icon + label + description -->
+			<div class="flex items-center gap-3 flex-1 min-w-0">
+				<span
+					class="shrink-0 font-gaming-mono text-lg text-white dark:text-black"
+					aria-hidden="true">✉</span
+				>
+				<div class="flex flex-col gap-0.5 min-w-0">
+					<h2
+						class="font-gaming-mono text-lg sm:text-xl font-bold text-white dark:text-black/90 uppercase tracking-wider"
+					>
+						{labels.contact}
+					</h2>
+					<p class="text-sm text-white/90 dark:text-black/90 leading-snug">
+						{t('research.contact-cta')}
+					</p>
+				</div>
+			</div>
+			<!-- Right: CTA button -->
+			<a
+				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(t('research.contact-button'))}`}
+				class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
+			>
+				<span aria-hidden="true">→</span>
+				{t('research.contact-button')}
+			</a>
+		</div>
+	</div>
+</div>
