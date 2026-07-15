@@ -112,6 +112,14 @@ src/
 5. Each slice has `index.ts` exporting public API
 6. No circular dependencies
 
+> **Sanctioned exception — `technology` catalog:** the `technology` entity is a
+> shared vocabulary catalog (tag tokens + display metadata, no behavior), not a
+> behavioral domain entity. Other entities — currently only `project` — may
+> import `@entities/technology` for its `TAGS`/`Technology` types. This is the
+> **only** allowed entity→entity reference; do not introduce others. A future
+> refactor may relocate this catalog to `@shared` (tracked in the backlog); until
+> then this reference is intentional and must not be flagged as a violation.
+
 **Example - Correct:**
 ```typescript
 // ✓ Widget importing from Entity
