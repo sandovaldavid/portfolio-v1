@@ -16,6 +16,11 @@ export default defineConfig({
 	},
 	integrations: [robotsTxt(), mdx(), sitemap()],
 	site: 'https://sandovaldavid.com',
+	// Eagerly prefetch internal links; pairs with <ClientRouter /> for snappy nav.
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: 'hover',
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),
@@ -90,8 +95,17 @@ export default defineConfig({
 		},
 	],
 	vite: {
-		// @ts-ignore - Tailwind CSS and visualizer type compatibility
-		plugins: [tailwindcss(), visualizer({ filename: 'bundle-analysis/index.html', title: 'Análisis de Bundle - Portafolio', template: 'treemap', gzipSize: true, brotliSize: true })],
+		plugins: [
+			// @ts-ignore - Tailwind CSS and visualizer type compatibility
+			tailwindcss(),
+			visualizer({
+				filename: 'bundle-analysis/index.html',
+				title: 'Análisis de Bundle - Portafolio',
+				template: 'treemap',
+				gzipSize: true,
+				brotliSize: true,
+			}),
+		],
 	},
 	i18n: {
 		defaultLocale: 'en',
