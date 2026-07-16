@@ -76,19 +76,25 @@ const EXPERIENCE = getExperienceData(tList);
 		</div>
 	</div>
 
-	<script is:inline>
-		// Basic ARIA-compliant tabs behavior
-		const tablist = document.getElementById('experience-tablist');
-		if (tablist) {
-			const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
-			const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+	<script>
+		// ARIA-compliant tabs. Bundled + astro:page-load so the tabs stay
+		// interactive after client-side navigation (the previous is:inline
+		// version silently died once the DOM was swapped).
+		const setupExperienceTabs = () => {
+			const tablist = document.getElementById('experience-tablist');
+			if (!tablist || tablist.dataset.tabsReady === 'true') return;
+			tablist.dataset.tabsReady = 'true';
 
-			function updatePanelAnimations(index) {
+			const tabs = Array.from(tablist.querySelectorAll<HTMLElement>('[role="tab"]'));
+			const panels = Array.from(document.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+			const updatePanelAnimations = (index: number) => {
 				panels.forEach((panel, i) => {
 					panel.dataset.active = String(i === index);
 				});
-			}
-			function activateTab(index, opts = { focus: false }) {
+			};
+
+			const activateTab = (index: number, opts = { focus: false }) => {
 				tabs.forEach((tab, i) => {
 					const selected = i === index;
 					tab.setAttribute('aria-selected', String(selected));
@@ -107,15 +113,9 @@ const EXPERIENCE = getExperienceData(tList);
 				});
 				updatePanelAnimations(index);
 				if (opts.focus) {
-					if (typeof tabs[index]?.focus === 'function') {
-						try {
-							tabs[index].focus({ preventScroll: true });
-						} catch {
-							tabs[index].focus();
-						}
-					}
+					tabs[index]?.focus({ preventScroll: true });
 				}
-			}
+			};
 
 			tabs.forEach((tab, i) => {
 				tab.addEventListener('click', () => activateTab(i, { focus: false }));
@@ -135,13 +135,16 @@ const EXPERIENCE = getExperienceData(tList);
 						)
 					) {
 						e.preventDefault();
-						tabs[next].focus({ preventScroll: true });
+						tabs[next]?.focus({ preventScroll: true });
 					}
 				});
 			});
-			// Set initial active state without focusing (prevents scroll jump)
+
+			// Set initial active state without focusing (prevents scroll jump).
 			activateTab(0, { focus: false });
 			updatePanelAnimations(0);
-		}
+		};
+
+		document.addEventListener('astro:page-load', setupExperienceTabs);
 	</script>
 </section>

@@ -97,7 +97,7 @@ const personSchema = {
 	sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 	jobTitle: 'Software Engineer',
 	worksFor: { '@type': 'Organization', name: siteConfig.currentCompany },
-	address: { '@type': 'PostalAddress', addressLocality: 'Piura', addressCountry: 'PE' },
+	address: { '@type': 'PostalAddress', addressLocality: 'Lima', addressCountry: 'PE' },
 	email: siteConfig.email,
 	knowsAbout: [
 		'.NET 8',
@@ -156,6 +156,7 @@ const articleSchema = article
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="theme-color" content="#0096ff" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="apple-mobile-web-app-title" content="DevSandoval" />
 
@@ -333,7 +334,9 @@ const articleSchema = article
 			</main>
 			<Footer />
 			<RecruiterHUD />
-			<CLITerminal />
+			<div transition:persist="cli-terminal">
+				<CLITerminal />
+			</div>
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
 		</div>
