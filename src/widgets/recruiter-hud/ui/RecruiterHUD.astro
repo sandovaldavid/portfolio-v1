@@ -30,6 +30,11 @@ const cheatGithub = lang === 'en' ? 'LIVE GITHUB STATS' : 'STATS GITHUB EN VIVO'
 
 const secStatsTitle = lang === 'en' ? 'SECRET STATUS' : 'ESTADO SECRETO';
 const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS EN VIVO';
+
+const hudHint =
+	lang === 'en'
+		? '[!] CLICK HERE FOR RECRUITER CHEATS & LINKS'
+		: '[!] CLIC AQUÍ PARA TRUCOS Y ENLACES DE RECLUTADOR';
 ---
 
 <div class="fixed bottom-6 right-6 z-50 font-mono">
@@ -39,7 +44,7 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 		class="absolute bottom-16 right-0 bg-surface border-2 border-black dark:border-white p-3 shadow-retro-sm text-xs font-bold uppercase tracking-wide text-content-strong whitespace-nowrap opacity-0 pointer-events-none translate-y-2 transition-all duration-300 flex items-center gap-2"
 	>
 		<span class="w-2.5 h-2.5 bg-primary-500 animate-ping rounded-none shrink-0"></span>
-		<span>[!] CLICK HERE FOR RECRUITER CHEATS & LINKS</span>
+		<span>{hudHint}</span>
 	</div>
 
 	<!-- Toggle Button -->
@@ -458,7 +463,8 @@ const ghStatsTitle = lang === 'en' ? 'GITHUB — LIVE DATA' : 'GITHUB — DATOS 
 						>
 					).__portfolioGitHub;
 					const stats = await ghApi?.fetch?.();
-					githubContent.dataset.loaded = 'true';
+					// Only mark as loaded on success so a failed fetch retries on reopen.
+					if (stats) githubContent.dataset.loaded = 'true';
 					if (stats) {
 						githubContent.innerHTML = `
 							<div class="flex justify-between border-b border-edge-subtle/40 pb-1">
