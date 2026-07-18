@@ -1,7 +1,9 @@
 {
-	"name": "porfolio-dev",
+	"name": "portfolio-v1",
+	"private": true,
 	"type": "module",
 	"version": "1.6.2-beta.0",
+	"packageManager": "bun@1.3.14",
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro check && astro build",
@@ -29,7 +31,6 @@
 		"bundle:analyze": "node scripts/analyze-bundle.js"
 	},
 	"dependencies": {
-		"@astrojs/check": "0.9.6",
 		"@astrojs/mdx": "6.0.3",
 		"@astrojs/rss": "^4.0.19",
 		"@astrojs/sitemap": "^3.7.3",
@@ -37,12 +38,10 @@
 		"@vercel/analytics": "^1.6.1",
 		"astro": "^6.4.8",
 		"astro-robots-txt": "1.0.0",
-		"prettier": "^3.9.5",
-		"prettier-plugin-astro": "^0.14.1",
-		"tailwindcss": "^4.3.2",
-		"typescript": "^5.9.3"
+		"tailwindcss": "^4.3.2"
 	},
 	"devDependencies": {
+		"@astrojs/check": "0.9.6",
 		"@axe-core/playwright": "^4.12.1",
 		"@commitlint/cli": "^21.2.1",
 		"@commitlint/config-conventional": "^21.2.0",
@@ -56,8 +55,10 @@
 		"eslint": "^10.7.0",
 		"husky": "^9.1.7",
 		"lightningcss": "1.30.2",
-		"playwright": "^1.61.1",
+		"prettier": "^3.9.5",
+		"prettier-plugin-astro": "^0.14.1",
 		"rollup-plugin-visualizer": "^7.0.1",
+		"typescript": "^5.9.3",
 		"vite": "^7.3.6",
 		"vitest": "^4.1.10"
 	}
