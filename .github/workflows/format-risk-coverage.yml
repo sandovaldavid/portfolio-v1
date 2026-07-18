@@ -1,0 +1,53 @@
+name: Format risk-based coverage changes
+
+on:
+    push:
+        branches: [test/risk-based-coverage]
+        paths: [.github/workflows/format-risk-coverage.yml]
+
+permissions:
+    contents: write
+
+jobs:
+    format:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout branch
+              uses: actions/checkout@v7
+              with:
+                  ref: test/risk-based-coverage
+                  fetch-depth: 0
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3.14
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Format coverage changes
+              run: |
+                  bunx prettier --write \
+                    AGENTS.md \
+                    README.md \
+                    README.es.md \
+                    docs/TESTING.md \
+                    docs/testing/UNIT-COVERAGE.md \
+                    docs/tools.md \
+                    package.json \
+                    src/entities/blog/model/queries.ts \
+                    src/entities/devlog/model/queries.ts \
+                    src/shared/lib/content/index.ts \
+                    src/shared/lib/content/locale-content-id.ts \
+                    tests/unit/content/locale-content-id.spec.ts \
+                    vitest.config.ts
+                  rm .github/workflows/format-risk-coverage.yml
+
+            - name: Commit formatted files
+              run: |
+                  git config user.name github-actions[bot]
+                  git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+                  git add AGENTS.md README.md README.es.md docs package.json src tests vitest.config.ts .github/workflows/format-risk-coverage.yml
+                  git commit -m "style(coverage): format risk-based coverage changes"
+                  git push origin HEAD:test/risk-based-coverage
