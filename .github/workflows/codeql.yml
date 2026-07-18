@@ -23,30 +23,18 @@ jobs:
         with:
           bun-version: 1.3.14
 
-      - name: Regenerate lockfile
+      - name: Regenerate and verify lockfile
         run: |
           bun install --lockfile-only
           bun install --frozen-lockfile
 
-      - name: Restore final workflows with pinned Bun
-        run: |
-          for workflow in ci.yml codeql.yml deploy-preview.yml deploy-production.yml; do
-            git show "origin/develop:.github/workflows/${workflow}" > ".github/workflows/${workflow}"
-            sed -i 's/uses: oven-sh\/setup-bun@v1/uses: oven-sh\/setup-bun@v2/g' ".github/workflows/${workflow}"
-            sed -i 's/bun-version: latest/bun-version: 1.3.14/g' ".github/workflows/${workflow}"
-          done
-          rm -f .github/workflows/toolchain-migration.yml
-
-      - name: Format changed configuration
-        run: bunx prettier --write package.json release-please-config.json README.md docs/TOOLCHAIN.md .github/workflows/ci.yml .github/workflows/codeql.yml .github/workflows/deploy-preview.yml .github/workflows/deploy-production.yml
-
       - name: Verify build
         run: bun run build
 
-      - name: Commit final migration
+      - name: Publish generated lockfile
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add package.json bun.lock release-please-config.json README.md docs/TOOLCHAIN.md .github/workflows
-          git commit -m 'chore(tooling): standardize project toolchain'
+          git add bun.lock
+          git commit -m 'chore(tooling): synchronize Bun lockfile'
           git push origin HEAD:agent/standardize-project-toolchain
