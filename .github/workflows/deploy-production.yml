@@ -4,18 +4,47 @@ on:
     push:
         branches:
             - main
+    repository_dispatch:
+        types:
+            - resume-assets-updated
+    workflow_dispatch:
 
 permissions:
     contents: read
     deployments: write
+
+concurrency:
+    group: portfolio-production
+    cancel-in-progress: true
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout code
+            - name: Checkout portfolio source
               uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event_name == 'repository_dispatch' && 'main' || github.ref }}
+
+            - name: Checkout canonical resume assets
+              uses: actions/checkout@v7
+              with:
+                  ref: resume-assets
+                  path: .resume-assets
+                  sparse-checkout: public/resume
+                  sparse-checkout-cone-mode: false
+
+            - name: Install and validate resume assets
+              run: |
+                  rm -rf public/resume
+                  mkdir -p public/resume
+                  cp .resume-assets/public/resume/david-sandoval-resume.pdf public/resume/
+                  cp .resume-assets/public/resume/david-sandoval-resume-es.pdf public/resume/
+                  cp .resume-assets/public/resume/manifest.json public/resume/
+
+                  test "$(head -c 5 public/resume/david-sandoval-resume.pdf)" = "%PDF-"
+                  test "$(head -c 5 public/resume/david-sandoval-resume-es.pdf)" = "%PDF-"
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -49,21 +78,64 @@ jobs:
               id: deploy
               run: |
                   DEPLOYMENT_URL=$(bunx vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
-                  echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
-                  echo "✅ Successfully deployed to production: $DEPLOYMENT_URL"
+                  echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+                  echo "Successfully deployed to production: $DEPLOYMENT_URL"
               env:
                   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
                   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+            - name: Verify canonical resume URLs
+              shell: bash
+              run: |
+                  set -euo pipefail
+
+                  verify_pdf() {
+                      local url="$1"
+                      local filename="$2"
+                      local headers
+                      local body
+                      headers=$(mktemp)
+                      body=$(mktemp)
+
+                      for attempt in $(seq 1 30); do
+                          if curl --fail --silent --show-error \
+                              --dump-header "$headers" \
+                              --output "$body" \
+                              "$url"; then
+                              tr -d '\r' < "$headers" > "${headers}.normalized"
+
+                              if grep -qi '^content-type: application/pdf' "${headers}.normalized" \
+                                  && grep -qi "^content-disposition: attachment; filename=\"${filename}\"" "${headers}.normalized" \
+                                  && [ "$(head -c 5 "$body")" = "%PDF-" ]; then
+                                  echo "Verified $url"
+                                  rm -f "$headers" "${headers}.normalized" "$body"
+                                  return 0
+                              fi
+                          fi
+
+                          echo "Attempt ${attempt}/30: waiting for $url"
+                          sleep 10
+                      done
+
+                      echo "::error::Canonical resume URL failed validation: $url"
+                      cat "${headers}.normalized" 2>/dev/null || true
+                      rm -f "$headers" "${headers}.normalized" "$body"
+                      return 1
+                  }
+
+                  verify_pdf \
+                      "https://sandovaldavid.com/resume/david-sandoval-resume.pdf" \
+                      "david-sandoval-resume.pdf"
+                  verify_pdf \
+                      "https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf" \
+                      "david-sandoval-resume-es.pdf"
+
             - name: Summary
               if: always()
               run: |
-                  echo "## 🎉 Production Deployment" >> $GITHUB_STEP_SUMMARY
-                  echo "" >> $GITHUB_STEP_SUMMARY
-                  echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-                  if [ "${{ job.status }}" == "success" ]; then
-                    echo "✅ Successfully deployed to production!" >> $GITHUB_STEP_SUMMARY
-                    echo "URL: https://sandovaldavid.com" >> $GITHUB_STEP_SUMMARY
-                  else
-                    echo "❌ Deployment failed. Please check the logs above." >> $GITHUB_STEP_SUMMARY
-                  fi
+                  echo "## Production Deployment" >> "$GITHUB_STEP_SUMMARY"
+                  echo "" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Status: ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Deployment: ${{ steps.deploy.outputs.deployment_url }}" >> "$GITHUB_STEP_SUMMARY"
+                  echo "English resume: https://sandovaldavid.com/resume/david-sandoval-resume.pdf" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Spanish resume: https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf" >> "$GITHUB_STEP_SUMMARY"
