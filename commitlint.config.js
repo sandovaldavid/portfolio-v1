@@ -1,6 +1,6 @@
 export default {
 	ignores: [
-		(message) =>
+		message =>
 			message.includes('Signed-off-by: dependabot[bot]') &&
 			/^(chore\(deps\)|ci\(actions\)):/.test(message),
 	],
