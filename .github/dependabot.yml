@@ -1,19 +1,17 @@
 version: 2
 updates:
-    # NPM dependencies
+    # npm dependencies managed through package.json and bun.lock
     - package-ecosystem: 'npm'
       directory: '/'
       schedule:
           interval: 'weekly'
           day: 'monday'
           time: '09:00'
-      allow:
-          - dependency-type: 'direct'
-          - dependency-type: 'indirect'
       pull-request-branch-name:
           separator: '/'
       commit-message:
-          prefix: 'chore(deps)'
+          prefix: 'chore'
+          prefix-development: 'chore'
           include: 'scope'
       reviewers:
           - 'sandovaldavid'
@@ -22,22 +20,25 @@ updates:
       open-pull-requests-limit: 5
       rebase-strategy: 'auto'
       groups:
-          critical-dependencies:
-              dependency-types:
-                  - 'direct'
+          security-updates:
+              applies-to: 'security-updates'
+              patterns:
+                  - '*'
+          production-minor-patch:
+              dependency-type: 'production'
+              update-types:
+                  - 'minor'
+                  - 'patch'
+          development-minor-patch:
+              dependency-type: 'development'
+              update-types:
+                  - 'minor'
+                  - 'patch'
+          major-updates:
               update-types:
                   - 'major'
-          security-updates:
-              patterns:
-                  - 'security*'
-          dev-dependencies:
-              dependency-types:
-                  - 'direct'
-                  - 'indirect'
-              dependency-groups:
-                  - 'dev-dependencies'
 
-    # GitHub Actions
+    # GitHub Actions dependencies
     - package-ecosystem: 'github-actions'
       directory: '/'
       schedule:
@@ -48,6 +49,9 @@ updates:
           separator: '/'
       commit-message:
           prefix: 'ci(actions)'
-          include: 'scope'
       reviewers:
           - 'sandovaldavid'
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
