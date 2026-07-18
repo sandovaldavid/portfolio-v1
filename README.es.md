@@ -49,6 +49,10 @@ El repositorio incluye automatización para:
 - auditorías con Lighthouse;
 - builds y previews de despliegue.
 
+`bun run check` es el control canónico para desarrollo local y CI. Verifica el formato del repositorio, analiza JavaScript, TypeScript y componentes Astro, ejecuta los diagnósticos de Astro y comprueba los tipos de tests, scripts y configuraciones soportadas.
+
+Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos.
+
 ## Tecnologías principales
 
 - Astro
@@ -80,16 +84,18 @@ El servidor estará disponible en `http://localhost:4321`.
 ### Comandos frecuentes
 
 ```bash
-bun run dev
-bun run build
-bun run preview
-bun run format:check
-bun run lint
-bun run test:unit
-bun run test:unit:coverage
-bun run test:local
-bun run test
-bun run lighthouse
+bun run dev                 # servidor de desarrollo
+bun run check               # formato, lint y type-check completo
+bun run typecheck           # Astro más tests y tooling
+bun run build               # validación Astro y build de producción
+bun run preview             # previsualización del build
+bun run format:check        # formato del repositorio
+bun run lint                # JavaScript, TypeScript y Astro
+bun run test:unit           # pruebas unitarias
+bun run test:unit:coverage  # cobertura unitaria
+bun run test:local          # Chromium, Firefox y Mobile Chrome
+bun run test                # matriz completa de Playwright
+bun run lighthouse          # Lighthouse CI
 ```
 
 La política de versiones y clasificación de dependencias está documentada en [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md).
