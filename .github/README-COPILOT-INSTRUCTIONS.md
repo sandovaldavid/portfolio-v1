@@ -104,6 +104,7 @@ Estándares para mensajes de commit usando Conventional Commits format.
 ## 📝 Comenzar a Trabajar
 
 Antes de escribir código:
+
 1. **Revisa las instrucciones de la capa correspondiente** en [.github/instructions/](./instructions/)
 2. **Entiende la estructura FSD** leyendo [docs/architecture/](../docs/architecture/)
 3. **Sigue las convenciones de commits** de [01-conventional-commits.prompt.md](./instructions/01-conventional-commits.prompt.md)

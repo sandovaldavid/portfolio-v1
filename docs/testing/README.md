@@ -38,6 +38,7 @@ bash docs/testing/generate-reports.sh
 ```
 
 **Captured device sizes:**
+
 - **Mobile**: iPhone 12 Pro (390x844)
 - **Tablet**: iPad Pro (1024x1366)
 - **Desktop**: 1920x1080
@@ -105,6 +106,7 @@ Lighthouse audits measure:
 - **PWA** (0-100): Progressive Web App capabilities
 
 **Target scores**:
+
 - Performance: ≥ 90
 - Accessibility: ≥ 95
 - Best Practices: ≥ 90
