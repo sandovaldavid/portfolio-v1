@@ -49,11 +49,17 @@ Accessibility is scanned as part of the Playwright suite, not with a separate ax
     bun run test:local    # chromium + firefox + Mobile Chrome only (faster local loop)
     ```
 
-## 4. Unit tests — Vitest
+## 4. Risk-based unit coverage — Vitest
 
-- **Scope**: `src/shared/lib/i18n/**` and `src/shared/config/i18n/**` only (see
-  `vitest.config.ts`) — 90% coverage threshold on lines/functions/branches/statements.
+- **Measured scope**: deterministic shared i18n behavior and content-ID locale helpers selected
+  in `unitCoverageScope` inside [`vitest.config.ts`](../vitest.config.ts).
+- **Thresholds**: 90% for lines, functions, branches and statements within that measured scope.
+- **Meaning**: the percentage is not whole-repository coverage and does not include Astro
+  components, browser interaction, static content or runtime-bound Content Collection queries.
+- **Policy and behavior inventory**:
+  [`docs/testing/UNIT-COVERAGE.md`](./testing/UNIT-COVERAGE.md).
 - **Run locally**: `bun run test:unit` / `bun run test:unit:coverage`.
+- **CI artifact**: `coverage-report`, retained for 7 days.
 
 ## 5. Bundle size
 
