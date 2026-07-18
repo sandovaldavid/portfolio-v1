@@ -11,8 +11,8 @@ export const siteConfig = {
 	name: 'David Sandoval',
 	fullName: 'Juan David Sandoval Salvador',
 	handle: 'sandovaldavid',
-	role: 'Software Engineer · BiLSTM/OSS Researcher',
-	location: 'Lima, Peru',
+	role: 'Software Engineer · Angular, .NET & TypeScript',
+	location: 'Lima, Peru (UTC-5)',
 	currentCompany: 'Atena',
 	availability: true,
 
@@ -22,15 +22,15 @@ export const siteConfig = {
 	get canonicalBase() {
 		return this.url;
 	},
-	defaultTitle: 'David Sandoval — Software Engineer & BiLSTM Researcher',
+	defaultTitle: 'David Sandoval — Software Engineer',
 	defaultDescription:
-		'Portfolio of David Sandoval, Software Engineer specialized in .NET 8, Angular 19 and OSS abandonment prediction using BiLSTM neural networks. Available for hire.',
+		'Portfolio of David Sandoval, a Software Engineer building reliable web products with Angular, .NET and TypeScript. Based in Lima and open to remote opportunities across Europe and Latin America.',
 	defaultImage: '/projects/portfolio.webp',
 	twitterCard: 'summary_large_image' as const,
 
 	// ─── Contact ─────────────────────────────────────────────────
 	email: 'hello@sandovaldavid.com',
-	emailSubjectRecruiter: 'Opportunity at our Company',
+	emailSubjectRecruiter: 'Software engineering opportunity',
 
 	// ─── Social Networks ─────────────────────────────────────────
 	social: {
