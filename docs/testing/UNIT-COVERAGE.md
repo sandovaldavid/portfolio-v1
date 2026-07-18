@@ -47,7 +47,7 @@ Before expanding the glob, add tests for the newly eligible behavior and run the
 bun run test:unit:coverage
 ```
 
-The command prints an explicit scope notice before the Vitest summary. CI uploads `coverage-report` for seven days with HTML, LCOV, JSON and JSON-summary output.
+The command prints an explicit scope notice before the Vitest summary. CI uploads the `coverage-report` artifact for seven days with HTML, LCOV, JSON and JSON-summary output.
 
 Interpret the percentages as:
 
