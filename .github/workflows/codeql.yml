@@ -38,7 +38,7 @@ jobs:
           rm -f .github/workflows/toolchain-migration.yml
 
       - name: Format changed configuration
-        run: bunx prettier --write package.json bun.lock release-please-config.json README.md docs/TOOLCHAIN.md .github/workflows/ci.yml .github/workflows/codeql.yml .github/workflows/deploy-preview.yml .github/workflows/deploy-production.yml
+        run: bunx prettier --write package.json release-please-config.json README.md docs/TOOLCHAIN.md .github/workflows/ci.yml .github/workflows/codeql.yml .github/workflows/deploy-preview.yml .github/workflows/deploy-production.yml
 
       - name: Verify build
         run: bun run build
