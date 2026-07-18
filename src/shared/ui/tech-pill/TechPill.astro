@@ -1,7 +1,9 @@
 ---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
 interface Props {
 	label: string;
-	icon?: any; // Astro component for optional icon
+	icon?: AstroComponentFactory; // Astro component for optional icon
 	href?: string; // Optional link for the pill
 	size?: 'sm' | 'md';
 	variant?: 'card' | 'stack';

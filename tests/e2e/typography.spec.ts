@@ -168,9 +168,7 @@ for (const { path, name } of KEY_PAGES) {
 				).toEqual([]);
 			});
 
-			test('heading structure (one h1, no level skips, heading > body)', async ({
-				page,
-			}) => {
+			test('heading structure (one h1, no level skips, heading > body)', async ({ page }) => {
 				const metrics = (await page.evaluate(collectMetrics)) as PageMetrics;
 
 				const h1s = metrics.headings.filter(h => h.level === 1);

@@ -9,6 +9,7 @@ Comprehensive guidelines for AI agents (Claude Code, Copilot, etc.) working on P
 ## Agent Role & Responsibilities
 
 AI agents assist with:
+
 - Code implementation following FSD architecture
 - Testing (unit, E2E, performance)
 - Documentation and guides
@@ -27,24 +28,27 @@ AI agents assist with:
 [REQUIRED] All code must follow FSD rules:
 
 ✓ **Correct layer imports:**
+
 ```typescript
 // Component in feature layer
-import { ProjectCard } from '@entities/project';  // ✓ From layer below
-import { Button } from '@shared/ui';              // ✓ From shared
+import { ProjectCard } from '@entities/project'; // ✓ From layer below
+import { Button } from '@shared/ui'; // ✓ From shared
 ```
 
 ✗ **Incorrect layer imports:**
+
 ```typescript
 // Feature importing another feature
-import { LanguagePicker } from '@features/language-picker';  // ✗ WRONG
+import { LanguagePicker } from '@features/language-picker'; // ✗ WRONG
 
 // Widget importing widget
-import { Header } from '@widgets/header';  // ✗ WRONG
+import { Header } from '@widgets/header'; // ✗ WRONG
 ```
 
 ### 2. TypeScript Standards
 
 [REQUIRED] Always:
+
 - Type all function parameters
 - Type all return values
 - Use `interface` for object shapes
@@ -54,17 +58,18 @@ import { Header } from '@widgets/header';  // ✗ WRONG
 ```typescript
 // ✓ Correct
 interface GetUserOptions {
-  id: string;
-  includeProjects?: boolean;
+	id: string;
+	includeProjects?: boolean;
 }
 
 function getUser(options: GetUserOptions): Promise<User | null> {
-  // Implementation
+	// Implementation
 }
 
 // ✗ Incorrect
-function getUser(options) {  // No types!
-  return null as any;        // Type: any
+function getUser(options) {
+	// No types!
+	return null as any; // Type: any
 }
 ```
 
@@ -80,8 +85,8 @@ import { MyComponent } from '@entities/my-entity';
 
 // 2. Type interface
 interface Props {
-  title: string;
-  description?: string;
+	title: string;
+	description?: string;
 }
 
 // 3. Extract props
@@ -92,16 +97,16 @@ const processed = description?.trim() || 'Default';
 ---
 
 <!-- 5. Template -->
-<Layout title={title}>
-  <h1>{title}</h1>
-  {description && <p>{processed}</p>}
+<Layout {title}>
+	<h1>{title}</h1>
+	{description && <p>{processed}</p>}
 </Layout>
 
 <!-- 6. Optional scoped styles -->
 <style>
-  h1 {
-    color: var(--text-main);
-  }
+	h1 {
+		color: var(--text-main);
+	}
 </style>
 ```
 
@@ -109,24 +114,24 @@ const processed = description?.trim() || 'Default';
 
 ```typescript
 // Components: PascalCase
-src/features/my-feature/ui/MyFeature.astro
-src/widgets/header/ui/Header.astro
+src / features / my - feature / ui / MyFeature.astro;
+src / widgets / header / ui / Header.astro;
 
 // Pages: kebab-case
-src/pages/about-me.astro
-src/pages/projects.astro
+src / pages / about - me.astro;
+src / pages / projects.astro;
 
 // Utilities: camelCase
-src/shared/lib/getLocalizedPath.ts
-src/shared/lib/useTranslations.ts
+src / shared / lib / getLocalizedPath.ts;
+src / shared / lib / useTranslations.ts;
 
 // Constants: UPPER_SNAKE_CASE
 const MAX_PROJECTS = 10;
 const DEFAULT_LANGUAGE = 'en';
 
 // Types/Interfaces: PascalCase
-interface ProjectItem { }
-type HeaderConfig = { }
+interface ProjectItem {}
+type HeaderConfig = {};
 ```
 
 ### 5. Index File Pattern
@@ -147,12 +152,14 @@ export { getFeatureConfig } from './model/config';
 ### When to Add Tests
 
 [REQUIRED] Unit tests for:
+
 - Utility functions
 - Data transformations
 - Business logic
 - Helper functions
 
 [REQUIRED] E2E tests for:
+
 - New user-facing features
 - Page navigation
 - Form submissions
@@ -160,6 +167,7 @@ export { getFeatureConfig } from './model/config';
 - Critical user flows
 
 [REQUIRED] Lighthouse audits for:
+
 - New pages
 - Major layout changes
 - Performance-critical features
@@ -183,44 +191,46 @@ tests/
 ### Test Coverage Template
 
 **Unit Test (Vitest):**
+
 ```typescript
 import { describe, it, expect } from 'vitest';
 import { myFunction } from '@shared/lib/my-lib';
 
 describe('myFunction', () => {
-  it('should return expected value', () => {
-    const result = myFunction('input');
-    expect(result).toBe('expected');
-  });
+	it('should return expected value', () => {
+		const result = myFunction('input');
+		expect(result).toBe('expected');
+	});
 
-  it('should handle edge cases', () => {
-    const result = myFunction('');
-    expect(result).toBe(null);
-  });
+	it('should handle edge cases', () => {
+		const result = myFunction('');
+		expect(result).toBe(null);
+	});
 });
 ```
 
 **E2E Test (Playwright):**
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
 test.describe('MyFeature', () => {
-  test('should render correctly', async ({ page }) => {
-    await page.goto('/');
-    
-    const element = page.locator('[data-testid="my-feature"]');
-    await expect(element).toBeVisible();
-  });
+	test('should render correctly', async ({ page }) => {
+		await page.goto('/');
 
-  test('should be interactive', async ({ page }) => {
-    await page.goto('/');
-    
-    const button = page.locator('button').first();
-    await button.click();
-    
-    const result = page.locator('[data-result]');
-    await expect(result).toContainText('Success');
-  });
+		const element = page.locator('[data-testid="my-feature"]');
+		await expect(element).toBeVisible();
+	});
+
+	test('should be interactive', async ({ page }) => {
+		await page.goto('/');
+
+		const button = page.locator('button').first();
+		await button.click();
+
+		const result = page.locator('[data-result]');
+		await expect(result).toContainText('Success');
+	});
 });
 ```
 
@@ -246,6 +256,7 @@ bun run test:unit:coverage
 ### Coverage Targets
 
 [TARGET] Minimum 90% coverage:
+
 - Lines: ≥90%
 - Functions: ≥90%
 - Branches: ≥90%
@@ -258,6 +269,7 @@ bun run test:unit:coverage
 ### When to Document
 
 [REQUIRED] Document:
+
 - New FSD slices (purpose, dependencies)
 - Public APIs (parameters, return types)
 - Complex algorithms
@@ -265,6 +277,7 @@ bun run test:unit:coverage
 - Testing strategy
 
 [OPTIONAL] Document:
+
 - Simple getters/setters
 - Self-explanatory code
 - Standard patterns
@@ -283,7 +296,7 @@ bun run test:unit:coverage
  * getLocalizedPath('/projects', 'en')  // '/projects'
  */
 export function getLocalizedPath(path: string, lang: Language): string {
-  // Implementation
+	// Implementation
 }
 ```
 
@@ -293,10 +306,10 @@ export function getLocalizedPath(path: string, lang: Language): string {
 
 ```typescript
 // ✗ Bad: States what code does
-const count = items.length;  // Get length of items
+const count = items.length; // Get length of items
 
 // ✓ Good: Explains why
-const count = items.length;  // Filter out inactive items for display
+const count = items.length; // Filter out inactive items for display
 
 // ✓ Good: Explains complex logic
 // Cache projection to avoid recalculation in hot loop
@@ -319,12 +332,14 @@ main
 ```
 
 **Reglas estrictas:**
+
 1. **Todas las ramas nuevas salen de `develop`**, nunca de `main`
 2. **Las PRs van siempre a `develop`**, nunca directamente a `main`
 3. **Solo `develop` hace PR a `main`** para desplegar a producción
 4. **Nunca trabajar directamente** en `main` ni en `develop`
 
 **Flujo que debe seguir el agente:**
+
 ```bash
 # 1. Asegurarse de estar en develop actualizado
 git checkout develop
@@ -344,18 +359,18 @@ git push origin feat/my-feature
 
 **Prefijos obligatorios según el tipo de cambio:**
 
-| Prefijo | Cuándo usarlo |
-|---------|--------------|
-| `feat/` | Nueva funcionalidad |
-| `fix/` | Corrección de bug |
-| `docs/` | Solo documentación |
+| Prefijo     | Cuándo usarlo                                |
+| ----------- | -------------------------------------------- |
+| `feat/`     | Nueva funcionalidad                          |
+| `fix/`      | Corrección de bug                            |
+| `docs/`     | Solo documentación                           |
 | `refactor/` | Refactorización sin cambio de comportamiento |
-| `perf/` | Mejora de performance |
-| `test/` | Agregar o corregir tests |
-| `chore/` | Mantenimiento, tooling |
-| `ci/` | Cambios en CI/CD |
-| `deps/` | Actualización de dependencias |
-| `security/` | Correcciones de seguridad |
+| `perf/`     | Mejora de performance                        |
+| `test/`     | Agregar o corregir tests                     |
+| `chore/`    | Mantenimiento, tooling                       |
+| `ci/`       | Cambios en CI/CD                             |
+| `deps/`     | Actualización de dependencias                |
+| `security/` | Correcciones de seguridad                    |
 
 ### Commit Messages
 
@@ -370,6 +385,7 @@ git push origin feat/my-feature
 ```
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation
@@ -382,6 +398,7 @@ git push origin feat/my-feature
 - `security` - Security
 
 **Examples:**
+
 ```
 feat(features): add CLI terminal component
 
@@ -415,6 +432,7 @@ chore/maintenance           # Maintenance
 ### Pre-commit Checks
 
 [AUTOMATIC] Pre-commit hook runs:
+
 1. `bun run format`
 2. `bun run lint:fix`
 3. Stages changes
@@ -430,6 +448,7 @@ If checks fail, fix and re-commit.
 [TARGET] dist/ ≤ 5MB
 
 When adding:
+
 - Large libraries → consider tree-shaking
 - New fonts → use variable fonts
 - Images → optimize to WebP
@@ -438,6 +457,7 @@ When adding:
 ### Lighthouse Targets
 
 [TARGET] All pages:
+
 ```
 Performance:     ≥90
 Accessibility:   ≥95
@@ -451,6 +471,7 @@ FID:             ≤100ms
 ### Performance Budgets
 
 See `lighthouse-budget.json` for page-specific budgets:
+
 - Homepage: 200KB total
 - About page: 250KB total
 - Projects page: 300KB total
@@ -464,38 +485,43 @@ See `lighthouse-budget.json` for page-specific budgets:
 [REQUIRED] When text is user-facing:
 
 1. Add to `src/shared/config/i18n/locales/en.json`:
-   ```json
-   {
-     "feature.myFeature.title": "Feature Title",
-     "feature.myFeature.description": "Feature description"
-   }
-   ```
+
+    ```json
+    {
+    	"feature.myFeature.title": "Feature Title",
+    	"feature.myFeature.description": "Feature description"
+    }
+    ```
 
 2. Add to `src/shared/config/i18n/locales/es.json`:
-   ```json
-   {
-     "feature.myFeature.title": "Título Feature",
-     "feature.myFeature.description": "Descripción feature"
-   }
-   ```
+
+    ```json
+    {
+    	"feature.myFeature.title": "Título Feature",
+    	"feature.myFeature.description": "Descripción feature"
+    }
+    ```
 
 3. Use in component:
-   ```astro
-   ---
-   import { useTranslations } from '@shared/lib/i18n';
-   const t = useTranslations(lang);
-   ---
-   <h1>{t('feature.myFeature.title')}</h1>
-   ```
+    ```astro
+    ---
+    import { useTranslations } from '@shared/lib/i18n';
+    const t = useTranslations(lang);
+    ---
+
+    <h1>{t('feature.myFeature.title')}</h1>
+    ```
 
 ### Translation Keys
 
 [CONVENTION] Use dot notation:
+
 ```
 <domain>.<feature>.<element>.<property>
 ```
 
 Examples:
+
 - `navigation.home.label`
 - `feature.themeToggle.darkMode`
 - `entity.project.title`
@@ -508,42 +534,49 @@ Examples:
 When reviewing changes, verify:
 
 ### Architecture
+
 - [ ] Correct FSD layer used
 - [ ] Imports follow layer hierarchy
 - [ ] No circular dependencies
 - [ ] Public APIs properly exported
 
 ### Code Quality
+
 - [ ] TypeScript strict mode
 - [ ] No `any` types
 - [ ] Proper error handling
 - [ ] No console logs (except errors)
 
 ### Testing
+
 - [ ] Unit tests added (if logic)
 - [ ] E2E tests added (if UI)
 - [ ] Tests cover happy path + edge cases
 - [ ] Coverage ≥90%
 
 ### Documentation
+
 - [ ] README updated (if user-facing)
 - [ ] Code comments (if complex)
 - [ ] Types properly documented
 - [ ] No stale comments
 
 ### Performance
+
 - [ ] No performance regressions
 - [ ] Bundle size within limits
 - [ ] Images optimized
 - [ ] Lighthouse checks pass
 
 ### Accessibility
+
 - [ ] Keyboard navigation works
 - [ ] Alt text for images
 - [ ] Color contrast ≥4.5:1
 - [ ] WCAG 2.1 AA compliant
 
 ### i18n
+
 - [ ] Translations added for all languages
 - [ ] No hardcoded strings
 - [ ] Consistent key naming
@@ -600,7 +633,7 @@ src/shared/lib/my-lib/
 
 ```typescript
 // ✗ Wrong
-import from '@features/header';
+import { Header } from '@features/header';
 
 // ✓ Correct
 import { Header } from '@widgets/header';
@@ -613,10 +646,10 @@ import { Header } from '@widgets/header';
 
 ```typescript
 // ✗ Wrong
-function myFunc(param) { }
+function myFunc(param) {}
 
 // ✓ Correct
-function myFunc(param: string): void { }
+function myFunc(param: string): void {}
 ```
 
 ### Issue: Tests failing with "Cannot find module"

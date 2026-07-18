@@ -422,7 +422,7 @@ const resumeUrl = isEn ? siteConfig.resume.en : siteConfig.resume.es;
 	const eggClose = document.getElementById('egg-close')!;
 
 	// ── State ────────────────────────────────────────────────────────────
-	let cliHistory: string[] = [];
+	const cliHistory: string[] = [];
 	let cliHistoryIndex = -1;
 	let cliBooted = false;
 	let githubCache: GitHubStats | null = null;

@@ -1,5 +1,6 @@
 import { test, expect } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
+import type { Page } from '@playwright/test';
 
 const KEY_PAGES = [
 	{ path: '/', name: 'Homepage EN' },
@@ -16,7 +17,7 @@ const KEY_PAGES = [
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] as const;
 
-function runAxe(page: Awaited<ReturnType<typeof AxeBuilder.prototype.analyze>>['page']) {
+function runAxe(page: Page) {
 	return new AxeBuilder({ page }).withTags([...WCAG_TAGS]).analyze();
 }
 
@@ -42,19 +43,19 @@ test.describe('Accessibility — axe-core scan (dark theme)', () => {
 						transition-duration: 0s !important;
 						transition-delay: 0s !important;
 					}
-				`
+				`,
 			});
 
 			const results = await runAxe(page);
 
 			const failures = results.violations.filter(
-				(v) => v.impact === 'critical' || v.impact === 'serious'
+				v => v.impact === 'critical' || v.impact === 'serious'
 			);
 
 			if (failures.length > 0) {
 				console.log(
 					`[${name}] ${failures.length} serious/critical violation(s):`,
-					failures.map((f) => `${f.id}: ${f.help} (${f.impact})`).join('; ')
+					failures.map(f => `${f.id}: ${f.help} (${f.impact})`).join('; ')
 				);
 			}
 			expect(failures).toEqual([]);
@@ -86,19 +87,19 @@ test.describe('Accessibility — axe-core scan (light theme)', () => {
 						transition-duration: 0s !important;
 						transition-delay: 0s !important;
 					}
-				`
+				`,
 			});
 
 			const results = await runAxe(page);
 
 			const failures = results.violations.filter(
-				(v) => v.impact === 'critical' || v.impact === 'serious'
+				v => v.impact === 'critical' || v.impact === 'serious'
 			);
 
 			if (failures.length > 0) {
 				console.log(
 					`[${name}] ${failures.length} serious/critical violation(s):`,
-					failures.map((f) => `${f.id}: ${f.help} (${f.impact})`).join('; ')
+					failures.map(f => `${f.id}: ${f.help} (${f.impact})`).join('; ')
 				);
 			}
 			expect(failures).toEqual([]);
@@ -140,7 +141,7 @@ test.describe('Accessibility — focus-visible', () => {
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 		const focused = page.locator(':focus');
-		const outline = await focused.evaluate((el) => getComputedStyle(el).outlineStyle);
+		const outline = await focused.evaluate(el => getComputedStyle(el).outlineStyle);
 		expect(outline).not.toBe('none');
 	});
 });
@@ -156,7 +157,7 @@ test.describe('Accessibility — reduced-motion', () => {
 		for (let i = 0; i < count; i++) {
 			const duration = await animatedElements
 				.nth(i)
-				.evaluate((el) => getComputedStyle(el).animationDuration);
+				.evaluate(el => getComputedStyle(el).animationDuration);
 			expect(parseFloat(duration)).toBeLessThan(0.02);
 		}
 	});
@@ -167,7 +168,7 @@ test.describe('Accessibility — CI gate (smoke)', () => {
 	test('homepage should have zero critical violations', async ({ page }) => {
 		await page.goto('/');
 		const results = await runAxe(page);
-		const critical = results.violations.filter((v) => v.impact === 'critical');
+		const critical = results.violations.filter(v => v.impact === 'critical');
 		expect(critical).toEqual([]);
 	});
 });
