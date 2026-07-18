@@ -1,275 +1,147 @@
-<!-- Banner -->
-<p align="center">
-  <img src="https://sandovaldavid.com/projects/portfolio.webp" alt="Banner DevSandoval Portfolio">
-</p>
+# David Sandoval — Software Engineering Portfolio
 
-<h1 align="center">DevSandoval - Portfolio Personal</h1>
+[![Live portfolio](https://img.shields.io/badge/live-sandovaldavid.com-0096ff)](https://sandovaldavid.com)
+[![CI](https://github.com/sandovaldavid/portfolio-v1/actions/workflows/ci.yml/badge.svg)](https://github.com/sandovaldavid/portfolio-v1/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-<p align="center">
-  <strong>Un portafolio web moderno que demuestra habilidades técnicas y resuelve la necesidad de visibilidad profesional.</strong>
-</p>
+A bilingual portfolio built with Astro, TypeScript and Tailwind CSS to present professional experience, engineering case studies and software-engineering research.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Astro-6.4.8-FF5D01?style=for-the-badge&logo=astro&logoColor=white" alt="Astro">
-  <img src="https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4.3.1-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Bun-1.3.14-000000?style=for-the-badge&logo=bun&logoColor=white" alt="Bun">
-  <img src="https://img.shields.io/github/license/sandovaldavid/portfolio-v1" alt="Licencia MIT">
-</p>
+**Primary profile:** Software Engineer focused on Angular, .NET and TypeScript. Based in Lima, Peru (UTC-5), and open to remote opportunities across Europe and Latin America.
 
-## 🚀 Demo en Vivo
+- **Live site:** https://sandovaldavid.com
+- **English resume:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_EN.pdf
+- **Spanish resume:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_ES.pdf
+- **Spanish documentation:** [README.es.md](README.es.md)
 
-Puedes explorar mi portafolio desplegado y ver la solución en acción directamente aquí:
+## What this repository demonstrates
 
-<p align="center">
-  <a href="https://sandovaldavid.com" target="_blank">
-    <img src="https://img.shields.io/badge/Ver_Portfolio_en_Vivo-sandovaldavid.com-brightgreen?style=for-the-badge&logo=rocket" alt="Ver Demo en Vivo">
-  </a>
-</p>
+### Astro application architecture
 
-## 🎯 El Problema y la Solución
+The site uses Astro for static generation and progressive enhancement. Interactive behavior is isolated to the controls that need it, while professional content remains available without waiting for a client-side application to initialize.
 
-### El Problema
+The source follows a pragmatic Feature-Sliced Design hierarchy:
 
-Como desarrollador freelance o profesional independiente, necesitas una presencia digital que:
-
-- ✅ Muestre tus proyectos y habilidades de forma profesional
-- ✅ Sea fácil de actualizar y mantener
-- ✅ Funcione rápido y se vea bien en cualquier dispositivo
-- ✅ Soporte múltiples idiomas para alcance internacional
-
-### La Solución
-
-Este portafolio es una aplicación web estática construida con tecnologías modernas que centraliza tu marca personal profesional. La solución permite:
-
-- ✅ **Carga ultrarrápida** gracias a Astro (SSG) con performance ≥90 garantizado por Lighthouse CI
-- ✅ **Internacionalización** completa (Español/Inglés) con arquitectura escalable
-- ✅ **Modo oscuro/claro** adaptativo según preferencias del usuario
-- ✅ **Arquitectura FSD** (Feature-Sliced Design) para mantenibilidad a largo plazo
-- ✅ **100% responsive** con diseño mobile-first
-- ✅ **Type-safe** con TypeScript estricto
-
-## 📸 Vistazo Rápido
-
-<p align="center">
-  <img src="https://sandovaldavid.com/projects/portfolio.webp" alt="Vista del Portfolio DevSandoval" width="80%">
-</p>
-
-## 🛠️ Stack Tecnológico
-
-Este proyecto fue construido usando las siguientes tecnologías:
-
-- **Framework:** Astro 6.4.8 (Static Site Generator)
-- **Lenguaje:** TypeScript 5.9.3 (Configuración estricta)
-- **Estilos:** Tailwind CSS 4.3.1 con @tailwindcss/vite
-- **Arquitectura:** Feature-Sliced Design (FSD)
-- **Internacionalización:** Sistema custom con soporte ES/EN
-- **Fuentes:** Tipografías retro/pixel (VT323, Press Start 2P, Silkscreen) + JetBrains Mono
-- **Runtime:** Bun 1.3.14 (desarrollo local y CI/CD)
-- **Despliegue:** Vercel con Bun (producción)
-- **Formato de Código:** Prettier con prettier-plugin-astro
-- **Contenido:** Blog MDX con @astrojs/mdx + Content Collections y feeds RSS (@astrojs/rss)
-- **SEO:** astro-robots-txt + @astrojs/sitemap
-
-## ✨ Características Principales
-
-- ✅ **Arquitectura FSD completa** (Shared → Entities → Features → Widgets → Pages → App)
-- ✅ **Sistema de i18n moderno** con funciones getter y type safety
-- ✅ **Tema adaptativo** con persistencia en localStorage
-- ✅ **Navegación inteligente** con detección de scroll y glass morphism
-- ✅ **Sistema de colores OKLCH** para consistencia visual
-- ✅ **Path aliases optimizados** para imports limpios
-- ✅ **Componentes reutilizables** con Public API pattern
-- ✅ **Responsive images** con optimización automática
-- ✅ **Scrollbar personalizado** con colores de marca
-- ✅ **Background pattern adaptativo** por viewport
-- ✅ **Blog MDX bilingüe** con Astro Content Collections (`/blog` y `/es/blog`)
-- ✅ **Feeds RSS por idioma** (`/rss.xml` y `/es/rss.xml`) que alimentan el widget del perfil de GitHub
-
-## 👨‍💻 Instalación y Uso Local
-
-¿Quieres correr este proyecto en tu máquina local? ¡Sigue estos pasos!
-
-1. **Clonar el repositorio:**
-
-    ```bash
-    git clone https://github.com/sandovaldavid/portfolio-v1.git
-    cd portfolio-v1
-    ```
-
-2. **Instalar dependencias con Bun:**
-
-    ```bash
-    bun install
-    ```
-
-3. **Ejecutar en modo desarrollo:**
-
-    ```bash
-    bun run dev
-    ```
-
-    La aplicación estará disponible en `http://localhost:4321`
-
-4. **Construir para producción:**
-
-    ```bash
-    bun run build
-    ```
-
-5. **Previsualizar build de producción:**
-    ```bash
-    bun run preview
-    ```
-
-### Comandos Disponibles
-
-| Comando                | Acción                                                     |
-| :--------------------- | :--------------------------------------------------------- |
-| `bun install`          | Instala las dependencias                                   |
-| `bun run dev`          | Inicia el servidor de desarrollo en `localhost:4321`       |
-| `bun run build`        | Ejecuta type checking y construye el sitio de producción   |
-| `bun run preview`      | Previsualiza tu construcción localmente antes de desplegar |
-| `bun run format`       | Formatea el código con Prettier                            |
-| `bun run format:check` | Verifica el formato del código sin modificar               |
-
-## 🧪 Testing
-
-### Comandos de Test
-
-| Comando | Descripción |
-|---------|-------------|
-| `bun run test:unit` | Tests unitarios con Vitest |
-| `bun run test:unit:coverage` | Cobertura de tests unitarios |
-| `bun run test:local` | E2E en Chromium, Firefox y Mobile Chrome (recomendado en Fedora/Linux) |
-| `bun run test` | E2E completo en los 5 browsers (requiere webkit deps) |
-| `bun run test:ui` | E2E en modo UI interactivo |
-
-### Tests E2E en Linux / Fedora
-
-`webkit` y `Mobile Safari` necesitan librerías del sistema (`libicu74`, `libwoff1`, `gstreamer1.0-libav`) que no están disponibles en Fedora. Para el desarrollo local usa `bun run test:local` que ejecuta los 3 browsers compatibles.
-
-En CI (Ubuntu) los 5 browsers se ejecutan correctamente de forma automática.
-
-### Regenerar snapshots de webkit y Mobile Safari (Docker)
-
-Cuando cambie el UI y necesites actualizar las imágenes base de webkit/Mobile Safari:
-
-```bash
-# 1. Construir y levantar el preview server
-bun run build
-bun run preview &
-
-# 2. Regenerar snapshots en el contenedor de Playwright (Ubuntu)
-docker run --rm \
-  -v $(pwd):/work \
-  -w /work \
-  --network=host \
-  --security-opt label=disable \
-  mcr.microsoft.com/playwright:v1.61.0-noble \
-  node node_modules/@playwright/test/cli.js test \
-    tests/e2e/visual.spec.ts \
-    --project=webkit --project="Mobile Safari" \
-    --update-snapshots \
-    --output=/tmp/pw-test-results
-
-# 3. Detener el servidor
-kill %1
-
-# 4. Revisar y commitear los nuevos PNGs en tests/e2e/visual.spec.ts-snapshots/
+```text
+app → pages → widgets → features → entities → shared
 ```
 
-> **Nota:** Si Docker dejó archivos con permisos de root en `test-results/`, ejecuta:
-> `sudo chown -R $USER:$USER test-results/`
+Public APIs are exposed through slice entry points, and cross-layer imports use explicit aliases.
 
----
+### Internationalization and content
 
-## 💡 Retos y Aprendizajes
+- English is the default locale.
+- Spanish routes use the `/es` prefix.
+- Project case studies describe the problem, approach, trade-offs, outcome and lessons learned.
+- Blog and devlog content use Astro Content Collections and MDX/Markdown.
+- RSS feeds are generated for both languages.
 
-Este proyecto fue un desafío técnico interesante que me permitió explorar arquitecturas modernas. Algunos aprendizajes clave:
+### Recruiter-focused experience
 
-### El Reto: Migración a FSD y Modern i18n
+The default first visit exposes the role, core stack, selected work, email, resume, GitHub and LinkedIn immediately. The retro boot sequence is an optional experience available through the `Launch retro mode` action instead of blocking access to the portfolio.
 
-**Problema:** El proyecto inicial tenía componentes legacy con traducciones inline (`PROJECTS_DATA: {es[], en[]}`), lo que dificultaba el mantenimiento y escalabilidad.
+### Quality gates
 
-**Solución:** Implementé una migración completa a Feature-Sliced Design con un sistema de i18n moderno:
+The repository includes automated checks for:
 
-- Creé funciones getter (`getProjectsData(t)`, `getBadgesData(t)`) que reciben la función de traducción
-- Centralicé todas las traducciones en `src/shared/config/i18n/dictionaries/`
-- Eliminé duplicación de código con el patrón `getLocalizedPath(lang, path)`
-- Refactoricé 100% de los componentes siguiendo las reglas de importación de FSD
+- Astro and TypeScript validation;
+- formatting and linting;
+- unit tests with Vitest;
+- browser flows with Playwright;
+- accessibility checks with Axe;
+- Lighthouse audits;
+- production builds and deployment previews.
 
-**Resultado:** Código 40% más limpio, type-safe al 100%, y preparado para agregar nuevos idiomas en minutos.
+The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Reports are uploaded as CI artifacts where applicable.
 
-### El Reto: Responsiveness y Performance
+## Main technologies
 
-**Problema:** Las imágenes de proyectos (1600x900px) causaban overflow en móviles y afectaban el performance.
+- Astro
+- TypeScript
+- Tailwind CSS
+- Bun
+- Vitest
+- Playwright
+- Axe
+- Lighthouse CI
+- Vercel
 
-**Solución:**
+## Repository structure
 
-- Optimicé las dimensiones a 800x450px (50% de reducción)
-- Implementé clases responsive (`w-full h-auto aspect-video`)
-- Agregué progressive sizing para el avatar (`size-32 sm:size-40 md:size-48`)
-- Creé background pattern adaptativo (200%→150%→cover por viewport)
+```text
+src/
+├── app/          # layouts and global styles
+├── pages/        # Astro routes and locale mirrors
+├── widgets/      # page-level interface sections
+├── features/     # interactive user capabilities
+├── entities/     # project, experience and content models
+├── shared/       # reusable UI, configuration and utilities
+└── content/      # blog and devlog collections
 
-**Resultado:** Performance ≥90 verificado en cada PR por Lighthouse CI, carga 3x más rápida en móviles.
+tests/
+├── unit/
+└── e2e/
 
-### El Reto: Despliegue en Vercel con Bun
+docs/
+├── architecture and testing references
+├── active implementation tasks
+└── archived audits and migration notes
+```
 
-**Problema:** Los primeros builds en Vercel con Bun fallaban por errores de resolución de módulos (`wrap-ansi` → `string-width`), lo que obligó temporalmente a usar npm en CI/CD.
+## Local development
 
-**Solución:**
+### Requirements
 
-- Eliminé `@astrojs/tailwind@6.0.2` (conflicto con Tailwind CSS v4)
-- Una vez resuelto el conflicto, configuré `vercel.json` con `bun install --frozen-lockfile` y `bun run build`
-- Hoy todo el pipeline (desarrollo, CI y despliegue) usa Bun de forma consistente
+- Bun
+- Git
 
-**Resultado:** Deployments exitosos y un único runtime en todo el flujo.
+### Setup
 
----
+```bash
+git clone https://github.com/sandovaldavid/portfolio-v1.git
+cd portfolio-v1
+bun install
+bun run dev
+```
 
-## 📧 Contacto | Hablemos
+The development server is available at `http://localhost:4321`.
 
-¡Gracias por revisar este proyecto!
+### Common commands
 
-Soy **DevSandoval** (Juan David Sandoval Salvador), Ingeniero Informático. Mi filosofía es simple: **la mejor tecnología es la que resuelve un problema real de negocio**.
+```bash
+bun run dev                 # development server
+bun run build               # Astro check and production build
+bun run preview             # preview the production build
+bun run format:check        # verify formatting
+bun run lint                # run ESLint
+bun run test:unit           # unit tests
+bun run test:unit:coverage  # unit coverage report
+bun run test:local          # Chromium, Firefox and Mobile Chrome
+bun run test                # complete Playwright matrix
+bun run lighthouse          # Lighthouse CI
+```
 
----
+## Engineering decisions
 
-### 🚀 ¿Tienes un proyecto o reto de negocio?
+### Static-first delivery
 
-Si buscas un desarrollador que entiende tanto el código como tus objetivos de negocio, me encantaría conocer tu proyecto.
+Professional content is rendered as HTML by Astro. JavaScript is used for progressive enhancements such as navigation controls, theme persistence and optional retro interactions.
 
-<p align="left">
-  <a href="https://sandovaldavid.com" target="_blank">
-    <img src="https://img.shields.io/badge/Portafolio_Web-sandovaldavid.com-8b5cf6?style=for-the-badge&logo=rocket" alt="Ver mi Portafolio Web">
-  </a>
-  <a href="mailto:hello@sandovaldavid.com" target="_blank">
-    <img src="https://img.shields.io/badge/Email-hello@sandovaldavid.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Enviar Email">
-  </a>
-</p>
+### Optional retro interface
 
-### 👨‍💻 ¿Eres Dev o quieres conectar?
+The retro visual system is part of the portfolio identity, but it is not a prerequisite for accessing essential information. This keeps the distinctive design while reducing first-visit friction for recruiters and hiring managers.
 
-Si eres desarrollador, estás aprendiendo o simplemente quieres conectar, ¡me encantaría que fueras parte de la comunidad!
+### Bilingual routing
 
-<p align="left">
-  <a href="https://linkedin.com/in/devsandoval" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-DevSandoval-0A66C2?style=for-the-badge&logo=linkedin" alt="Mi Perfil de LinkedIn">
-  </a>
-  <a href="https://github.com/sandovaldavid" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-sandovaldavid-181717?style=for-the-badge&logo=github" alt="Mi GitHub">
-  </a>
-</p>
+English and Spanish share the same component architecture while exposing locale-specific routes, metadata, RSS feeds and content.
 
----
+### Automated regression checks
 
-## 📄 Licencia
+Critical navigation, responsive behavior, accessibility and client-navigation lifecycles are tested in browsers. Changes to interactive components should include a regression test that covers both initial load and Astro client navigation when relevant.
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+## Contributing
 
----
+This is a personal portfolio, but issues and constructive reviews are welcome. Development conventions and agent guidance live in [AGENTS.md](AGENTS.md). Active technical decisions should be documented close to the relevant code or as concise ADRs.
 
-<p align="center">
-  Desarrollado por <a href="https://linkdevs.social">DevSandoval</a>
-</p>
+## License
+
+[MIT](LICENSE)
