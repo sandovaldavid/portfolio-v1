@@ -25,7 +25,7 @@ jobs:
             - name: Checkout portfolio source
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event_name == 'repository_dispatch' && 'main' || github.ref }}
+                  ref: ${{ github.event_name == 'push' && github.sha || 'main' }}
 
             - name: Checkout canonical resume assets
               uses: actions/checkout@v7
