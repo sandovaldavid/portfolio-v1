@@ -11,7 +11,9 @@ test.describe('Homepage', () => {
 		await expect(page.getByRole('link', { name: /contact me/i })).toBeVisible();
 		await expect(page.getByRole('link', { name: /download resume/i })).toBeVisible();
 		await expect(page.getByRole('link', { name: 'GitHub', exact: true }).first()).toBeVisible();
-		await expect(page.getByRole('link', { name: 'LinkedIn', exact: true }).first()).toBeVisible();
+		await expect(
+			page.getByRole('link', { name: 'LinkedIn', exact: true }).first()
+		).toBeVisible();
 	});
 
 	test('does not block the default first visit', async ({ page }) => {

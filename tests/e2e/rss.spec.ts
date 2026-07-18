@@ -61,7 +61,9 @@ test.describe('RSS — EN feed (/rss.xml)', () => {
 		const { parsed } = await fetchFeed(page, PATH);
 		expect(parsed.isRss, 'root element should be <rss>').toBe(true);
 		expect(parsed.version, 'rss version should be 2.0').toBe('2.0');
-		expect(parsed.channelTitle, 'channel title should match siteConfig').toBe(EXPECTED_CHANNEL_TITLE);
+		expect(parsed.channelTitle, 'channel title should match siteConfig').toBe(
+			EXPECTED_CHANNEL_TITLE
+		);
 		expect(parsed.description, 'channel description should be non-empty').toBeTruthy();
 	});
 
@@ -84,22 +86,24 @@ test.describe('RSS — EN feed (/rss.xml)', () => {
 		for (const [i, item] of parsed.items.entries()) {
 			expect(
 				item.link,
-				`item[${i}] link "${item.link}" should contain "${EN_POST_LINK_PREFIX}"`,
+				`item[${i}] link "${item.link}" should contain "${EN_POST_LINK_PREFIX}"`
 			).toContain(EN_POST_LINK_PREFIX);
 			expect(
 				item.link,
-				`item[${i}] link "${item.link}" must NOT point at the ES locale`,
+				`item[${i}] link "${item.link}" must NOT point at the ES locale`
 			).not.toContain(ES_POST_LINK_PREFIX);
 		}
 	});
 
 	test('excludes draft posts from the production feed', async ({ page }) => {
 		const { parsed } = await fetchFeed(page, PATH);
-		const drafts = parsed.items.filter((i) => i.title === DRAFT_TITLE);
+		const drafts = parsed.items.filter(i => i.title === DRAFT_TITLE);
 		expect(drafts, 'draft fixture must not appear in the production feed').toEqual([]);
 	});
 
-	test('feed item count matches the known published EN posts (draft excluded)', async ({ page }) => {
+	test('feed item count matches the known published EN posts (draft excluded)', async ({
+		page,
+	}) => {
 		const { parsed } = await fetchFeed(page, PATH);
 		// 2 published EN posts live under src/content/blog/en/ as of 2026-07-04;
 		// the _draft-rss-test fixture is draft:true and must be excluded.
@@ -110,7 +114,7 @@ test.describe('RSS — EN feed (/rss.xml)', () => {
 		const { parsed } = await fetchFeed(page, PATH);
 		const esOnlyTitles = ['Construyendo Este Portfolio Con Astro 6 y Feature-Sliced Design'];
 		for (const title of esOnlyTitles) {
-			const found = parsed.items.some((i) => i.title === title);
+			const found = parsed.items.some(i => i.title === title);
 			expect(found, `EN feed must not include ES-only title "${title}"`).toBe(false);
 		}
 	});
@@ -121,7 +125,6 @@ test.describe('RSS — ES feed (/es/rss.xml)', () => {
 	const EXPECTED_CHANNEL_TITLE = 'David Sandoval — Blog';
 	const DRAFT_TITLE = 'RSS Draft Exclusion Fixture';
 	const ES_POST_LINK_PREFIX = '/es/blog/';
-	const EN_POST_LINK_PREFIX = '/blog/';
 
 	test('returns 200 with an XML content type', async ({ page }) => {
 		const { status, contentType } = await fetchFeed(page, PATH);
@@ -133,7 +136,9 @@ test.describe('RSS — ES feed (/es/rss.xml)', () => {
 		const { parsed } = await fetchFeed(page, PATH);
 		expect(parsed.isRss, 'root element should be <rss>').toBe(true);
 		expect(parsed.version, 'rss version should be 2.0').toBe('2.0');
-		expect(parsed.channelTitle, 'channel title should match siteConfig').toBe(EXPECTED_CHANNEL_TITLE);
+		expect(parsed.channelTitle, 'channel title should match siteConfig').toBe(
+			EXPECTED_CHANNEL_TITLE
+		);
 		expect(parsed.description, 'channel description should be non-empty').toBeTruthy();
 	});
 
@@ -156,22 +161,24 @@ test.describe('RSS — ES feed (/es/rss.xml)', () => {
 		for (const [i, item] of parsed.items.entries()) {
 			expect(
 				item.link,
-				`item[${i}] link "${item.link}" should contain "${ES_POST_LINK_PREFIX}"`,
+				`item[${i}] link "${item.link}" should contain "${ES_POST_LINK_PREFIX}"`
 			).toContain(ES_POST_LINK_PREFIX);
 			expect(
 				item.link,
-				`item[${i}] link must NOT point at the EN-only /blog/ path (without /es/ prefix)`,
+				`item[${i}] link must NOT point at the EN-only /blog/ path (without /es/ prefix)`
 			).not.toMatch(/^https?:\/\/[^/]*\/blog\//);
 		}
 	});
 
 	test('excludes draft posts from the production feed', async ({ page }) => {
 		const { parsed } = await fetchFeed(page, PATH);
-		const drafts = parsed.items.filter((i) => i.title === DRAFT_TITLE);
+		const drafts = parsed.items.filter(i => i.title === DRAFT_TITLE);
 		expect(drafts, 'draft fixture must not appear in the production feed').toEqual([]);
 	});
 
-	test('feed item count matches the known published ES posts (draft excluded)', async ({ page }) => {
+	test('feed item count matches the known published ES posts (draft excluded)', async ({
+		page,
+	}) => {
 		const { parsed } = await fetchFeed(page, PATH);
 		// 2 published ES posts live under src/content/blog/es/ as of 2026-07-04.
 		expect(parsed.itemCount, 'ES feed should list exactly the 2 published ES posts').toBe(2);
@@ -181,7 +188,7 @@ test.describe('RSS — ES feed (/es/rss.xml)', () => {
 		const { parsed } = await fetchFeed(page, PATH);
 		const enOnlyTitles = ['Building This Portfolio With Astro 6 and Feature-Sliced Design'];
 		for (const title of enOnlyTitles) {
-			const found = parsed.items.some((i) => i.title === title);
+			const found = parsed.items.some(i => i.title === title);
 			expect(found, `ES feed must not include EN-only title "${title}"`).toBe(false);
 		}
 	});
@@ -200,6 +207,8 @@ test.describe('RSS — EN and ES feeds are structurally consistent', () => {
 	test('EN and ES feeds list symmetric post counts', async ({ page }) => {
 		const { parsed: en } = await fetchFeed(page, '/rss.xml');
 		const { parsed: es } = await fetchFeed(page, '/es/rss.xml');
-		expect(en.itemCount, 'EN and ES feeds should list the same number of posts').toBe(es.itemCount);
+		expect(en.itemCount, 'EN and ES feeds should list the same number of posts').toBe(
+			es.itemCount
+		);
 	});
 });

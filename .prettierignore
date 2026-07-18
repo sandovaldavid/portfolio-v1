@@ -1,16 +1,35 @@
-# Ignorar directorios de dependencias
 node_modules/
 dist/
 .astro/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+bundle-analysis/
+.lighthouseci/
+.cache/
 
-# Ignorar archivos generados
+# Generated or imported agent knowledge
+.agent/
+.agents/
+.claude/
+.github/instructions/
+
+# Historical audits, migration plans, and completed task notes
+docs/FSD-Architecture/
+docs/reports/
+docs/tasks/
+
 *.min.js
 *.min.css
 
-# Ignorar archivos de bloqueo de paquetes
+test-results.json
+junit-results.xml
+bundle-stats.html
+
 package-lock.json
 yarn.lock
+bun.lock
 bun.lockb
 
-# Otros archivos a ignorar
 .DS_Store

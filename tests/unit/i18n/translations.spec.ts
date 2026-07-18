@@ -40,12 +40,9 @@ describe('useTranslations', () => {
 
 	it('returns the key and warns when translation is missing', () => {
 		const t = useTranslations(Language.ENGLISH);
-		// @ts-expect-error testing missing key
 		const result = t('non.existent.key');
 		expect(result).toBe('non.existent.key');
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('Missing translation')
-		);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Missing translation'));
 	});
 
 	it('returns first element when value is an array', () => {
@@ -102,7 +99,6 @@ describe('useTranslationsList', () => {
 
 	it('returns key and warns when translation is missing', () => {
 		const tList = useTranslationsList(Language.ENGLISH);
-		// @ts-expect-error testing missing key
 		const result = tList('non.existent.key');
 		expect(result).toBe('non.existent.key');
 		expect(warnSpy).toHaveBeenCalled();

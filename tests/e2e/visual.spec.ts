@@ -22,9 +22,9 @@ async function preparePage(page: Page, path: string, options: { hideHeader?: boo
 	await page.evaluate(async () => {
 		const images = Array.from(document.querySelectorAll('img'));
 		await Promise.all(
-			images.map((img) => {
+			images.map(img => {
 				if (img.complete) return Promise.resolve();
-				return new Promise((resolve) => {
+				return new Promise(resolve => {
 					img.addEventListener('load', resolve);
 					img.addEventListener('error', resolve);
 				});
