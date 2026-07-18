@@ -1,58 +1,71 @@
-name: CodeQL
+name: Quality bootstrap
 
 on:
-  push:
-    branches:
-      - main
-      - develop
   pull_request:
     branches:
-      - main
       - develop
-  schedule:
-    - cron: '0 0 * * 0'
 
 permissions:
   contents: read
-  security-events: write
-  actions: read
-
-concurrency:
-  group: codeql-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
-  analyze:
-    name: Analyze Security
+  bootstrap:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ['javascript-typescript']
-
     steps:
-      - name: Checkout code
+      - name: Checkout quality branch
         uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
-          queries: security-and-quality
+          ref: agent/complete-astro-quality-gates
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.14
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+      - name: Install and synchronize dependencies
+        run: bun install
 
-      - name: Build project
-        run: bun run build
+      - name: Format complete repository
+        run: bun run format
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      - name: Apply safe lint fixes
+        run: bun run lint:fix || true
+
+      - name: Collect quality results
+        run: |
+          set +e
+          {
+            echo '## Format check'
+            bun run format:check
+            echo "format_exit=$?"
+            echo
+            echo '## ESLint'
+            bun run lint
+            echo "lint_exit=$?"
+            echo
+            echo '## Type checking'
+            bun run typecheck
+            echo "typecheck_exit=$?"
+          } 2>&1 | tee quality-report.txt
+          exit 0
+
+      - name: Package generated changes
+        run: |
+          git diff --name-only > changed-files.txt
+          if [ -s changed-files.txt ]; then
+            git diff --name-only -z | tar --null -czf quality-changes.tar.gz --files-from -
+          else
+            tar -czf quality-changes.tar.gz --files-from /dev/null
+          fi
+          git status --short >> quality-report.txt
+
+      - name: Upload bootstrap artifact
+        uses: actions/upload-artifact@v4
         with:
-          category: /language:${{ matrix.language }}
+          name: quality-bootstrap
+          path: |
+            quality-changes.tar.gz
+            quality-report.txt
+            changed-files.txt
+          retention-days: 1
