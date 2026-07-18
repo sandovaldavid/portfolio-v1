@@ -11,9 +11,10 @@ const rootDir = process.cwd();
 const sourceDir = path.join(rootDir, 'src');
 const sourceExtensions = new Set(['.astro', '.cjs', '.js', '.mjs', '.ts', '.tsx']);
 
-/** @param {string} directory */
+/** @param {string} directory @returns {Promise<string[]>} */
 async function collectSourceFiles(directory) {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
+	/** @type {string[][]} */
 	const nestedFiles = await Promise.all(
 		entries.map(async entry => {
 			const target = path.join(directory, entry.name);

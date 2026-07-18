@@ -1,6 +1,7 @@
 import path from 'node:path';
 import ts from 'typescript';
 
+/** @type {Readonly<Record<string, number>>} */
 export const ARCHITECTURE_LAYERS = Object.freeze({
 	pages: 5,
 	app: 4,
@@ -84,7 +85,7 @@ export function getAliasInfo(specifier) {
 	);
 }
 
-/** @param {string} specifier */
+/** @param {string} specifier @param {string} alias */
 function getAliasSegments(specifier, alias) {
 	return specifier.slice(alias.length).split('/').filter(Boolean);
 }
