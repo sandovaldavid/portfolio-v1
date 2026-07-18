@@ -3,7 +3,7 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "package-name": "porfolio-dev",
+      "package-name": "portfolio-v1",
       "initial-version": "1.0.0",
       "changelog-path": "CHANGELOG.md",
       "prerelease": true,
