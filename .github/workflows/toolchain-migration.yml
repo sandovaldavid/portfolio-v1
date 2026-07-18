@@ -1,0 +1,109 @@
+name: Toolchain migration
+
+on:
+  push:
+    branches:
+      - agent/standardize-project-toolchain
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/standardize-project-toolchain
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Apply toolchain standardization
+        run: |
+          python <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.')
+          package_path = root / 'package.json'
+          package = json.loads(package_path.read_text())
+          package['name'] = 'portfolio-v1'
+          package['private'] = True
+          package['packageManager'] = 'bun@1.3.14'
+
+          dependencies = package['dependencies']
+          dev_dependencies = package['devDependencies']
+          for name in ('@astrojs/check', 'prettier', 'prettier-plugin-astro', 'typescript'):
+              dev_dependencies[name] = dependencies.pop(name)
+          dev_dependencies.pop('playwright', None)
+          package['dependencies'] = dict(sorted(dependencies.items()))
+          package['devDependencies'] = dict(sorted(dev_dependencies.items()))
+          package_path.write_text(json.dumps(package, indent='\t') + '\n')
+
+          release_path = root / 'release-please-config.json'
+          release = json.loads(release_path.read_text())
+          release['packages']['.']['package-name'] = 'portfolio-v1'
+          release_path.write_text(json.dumps(release, indent=2) + '\n')
+
+          for workflow in (root / '.github/workflows').glob('*.yml'):
+              if workflow.name == 'toolchain-migration.yml':
+                  continue
+              text = workflow.read_text()
+              text = text.replace('uses: oven-sh/setup-bun@v1', 'uses: oven-sh/setup-bun@v2')
+              text = text.replace('bun-version: latest', 'bun-version: 1.3.14')
+              workflow.write_text(text)
+
+          readme = root / 'README.md'
+          text = readme.read_text()
+          text = text.replace('- Bun\n- Git', '- Bun 1.3.14 (declared by `packageManager` in `package.json`)\n- Git')
+          readme.write_text(text)
+
+          readme_es = root / 'README.es.md'
+          text = readme_es.read_text()
+          text = text.replace('- Bun\n- Git', '- Bun 1.3.14 (declarado en `packageManager` dentro de `package.json`)\n- Git')
+          readme_es.write_text(text)
+
+          contributing = root / 'CONTRIBUTING.md'
+          text = contributing.read_text()
+          text = text.replace('- Bun ≥1.3.14', '- Bun 1.3.14 (use the version declared in `package.json`)')
+          policy = '''### Toolchain and dependency policy
+
+- Bun is pinned exactly through `packageManager` and every GitHub Actions workflow.
+- `package.json` uses compatible ranges for routine dependencies and exact versions for compatibility-sensitive packages.
+- Build, formatting, type-checking and test-only packages belong in `devDependencies`.
+- `bun.lock` is committed and CI installs with `bun install --frozen-lockfile`.
+- Historical `porfolio-dev-*` tags remain unchanged; future releases use the corrected `portfolio-v1` identifier.
+
+'''
+          marker = '---\n\n## Development Workflow'
+          if policy not in text:
+              text = text.replace(marker, policy + marker)
+          contributing.write_text(text)
+          PY
+
+      - name: Refresh lockfile
+        run: bun install --lockfile-only
+
+      - name: Format changed configuration
+        run: bunx prettier --write package.json bun.lock release-please-config.json README.md README.es.md CONTRIBUTING.md .github/workflows/ci.yml .github/workflows/codeql.yml .github/workflows/deploy-preview.yml .github/workflows/deploy-production.yml
+
+      - name: Verify frozen installation
+        run: bun install --frozen-lockfile
+
+      - name: Verify build
+        run: bun run build
+
+      - name: Commit migration result
+        run: |
+          rm .github/workflows/toolchain-migration.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json bun.lock release-please-config.json README.md README.es.md CONTRIBUTING.md .github/workflows
+          git commit -m 'chore(tooling): standardize project toolchain'
+          git push origin HEAD:agent/standardize-project-toolchain
