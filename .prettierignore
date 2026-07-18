@@ -1,16 +1,24 @@
-# Ignorar directorios de dependencias
 node_modules/
 dist/
 .astro/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+bundle-analysis/
+.lighthouseci/
+.cache/
 
-# Ignorar archivos generados
 *.min.js
 *.min.css
 
-# Ignorar archivos de bloqueo de paquetes
+test-results.json
+junit-results.xml
+bundle-stats.html
+
 package-lock.json
 yarn.lock
+bun.lock
 bun.lockb
 
-# Otros archivos a ignorar
 .DS_Store
