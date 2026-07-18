@@ -60,4 +60,6 @@ bun run lint
 bun run check
 ```
 
+`bun run check` also validates the checker itself through the strict `tsconfig.tooling.json` project. Do not bypass checker typing with broad casts or suppression comments.
+
 When the checker reports a violation, move shared behavior downward or import through the target slice's public API. Do not add ad hoc exclusions.
