@@ -51,7 +51,9 @@ The repository includes automated checks for:
 - Lighthouse audits;
 - production builds and deployment previews.
 
-The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Reports are uploaded as CI artifacts where applicable.
+`bun run check` is the canonical local and CI quality gate. It checks repository-wide formatting, lints JavaScript, TypeScript and Astro files, runs Astro diagnostics, and type-checks tests, scripts and supported configuration files.
+
+The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Generated output, imported agent knowledge and historical audit material are explicitly excluded from formatting; maintained source, tests, tooling, configuration and documentation remain covered. Reports are uploaded as CI artifacts where applicable.
 
 ## Main technologies
 
@@ -109,10 +111,12 @@ The development server is available at `http://localhost:4321`.
 
 ```bash
 bun run dev                 # development server
+bun run check               # complete formatting, lint and type-check gate
+bun run typecheck           # Astro plus tests/tooling type-checking
 bun run build               # Astro check and production build
 bun run preview             # preview the production build
-bun run format:check        # verify formatting
-bun run lint                # run ESLint
+bun run format:check        # verify repository formatting
+bun run lint                # lint JavaScript, TypeScript and Astro
 bun run test:unit           # unit tests
 bun run test:unit:coverage  # unit coverage report
 bun run test:local          # Chromium, Firefox and Mobile Chrome
