@@ -1,0 +1,47 @@
+name: Diagnose final quality gate
+
+on:
+    pull_request:
+        branches:
+            - develop
+
+permissions:
+    contents: read
+
+jobs:
+    diagnose:
+        if: github.head_ref == 'refactor/enforce-fsd-boundaries'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout branch
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3.14
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Normalize diagnostic workflow formatting
+              run: bunx prettier --write .github/workflows/diagnose-quality.yml
+
+            - name: Capture quality output
+              shell: bash
+              run: |
+                  set +e
+                  bun run check > /tmp/check.log 2>&1
+                  echo $? > /tmp/check.exit-code
+                  exit 0
+
+            - name: Upload quality diagnostics
+              uses: actions/upload-artifact@v7
+              with:
+                  name: final-quality-diagnostics
+                  path: |
+                      /tmp/check.log
+                      /tmp/check.exit-code
+                  retention-days: 1
