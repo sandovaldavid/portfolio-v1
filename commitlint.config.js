@@ -1,3 +1,4 @@
+// Temporary synchronization marker for PR title validation.
 export default {
 	ignores: [
 		message =>
