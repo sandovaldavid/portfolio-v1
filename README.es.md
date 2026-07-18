@@ -51,7 +51,7 @@ El repositorio incluye automatización para:
 
 `bun run check` es el control canónico para desarrollo local y CI. Verifica el formato del repositorio, analiza JavaScript, TypeScript y componentes Astro, ejecuta los diagnósticos de Astro y comprueba los tipos de tests, scripts y configuraciones soportadas.
 
-Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos.
+Los porcentajes de Vitest corresponden al [alcance unitario basado en riesgo](docs/testing/UNIT-COVERAGE.md), no a todo el repositorio. Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos.
 
 ## Tecnologías principales
 
@@ -92,7 +92,7 @@ bun run preview             # previsualización del build
 bun run format:check        # formato del repositorio
 bun run lint                # JavaScript, TypeScript y Astro
 bun run test:unit           # pruebas unitarias
-bun run test:unit:coverage  # cobertura unitaria
+bun run test:unit:coverage  # cobertura unitaria basada en riesgo
 bun run test:local          # Chromium, Firefox y Mobile Chrome
 bun run test                # matriz completa de Playwright
 bun run lighthouse          # Lighthouse CI
