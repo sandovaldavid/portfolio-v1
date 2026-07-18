@@ -91,7 +91,7 @@ docs/
 
 ### Requirements
 
-- Bun
+- Bun 1.3.14, declared by `packageManager` in `package.json`
 - Git
 
 ### Setup
@@ -119,6 +119,8 @@ bun run test:local          # Chromium, Firefox and Mobile Chrome
 bun run test                # complete Playwright matrix
 bun run lighthouse          # Lighthouse CI
 ```
+
+The versioning and dependency-classification rules are documented in [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md).
 
 ## Engineering decisions
 

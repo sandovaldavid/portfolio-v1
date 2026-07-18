@@ -63,6 +63,11 @@ El repositorio incluye automatización para:
 
 ## Desarrollo local
 
+### Requisitos
+
+- Bun 1.3.14, declarado mediante `packageManager` en `package.json`
+- Git
+
 ```bash
 git clone https://github.com/sandovaldavid/portfolio-v1.git
 cd portfolio-v1
@@ -86,6 +91,8 @@ bun run test:local
 bun run test
 bun run lighthouse
 ```
+
+La política de versiones y clasificación de dependencias está documentada en [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md).
 
 ## Decisiones técnicas
 
