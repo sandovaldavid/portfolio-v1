@@ -1,212 +1,58 @@
-name: Quality bootstrap
+name: CodeQL
 
 on:
-  pull_request:
-    branches:
-      - develop
+    push:
+        branches:
+            - main
+            - develop
+    pull_request:
+        branches:
+            - main
+            - develop
+    schedule:
+        - cron: '0 0 * * 0'
 
 permissions:
-  contents: write
+    contents: read
+    security-events: write
+    actions: read
 
 concurrency:
-  group: quality-bootstrap-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+    group: codeql-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  bootstrap:
-    if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout quality branch
-        uses: actions/checkout@v4
-        with:
-          ref: agent/complete-astro-quality-gates
-          fetch-depth: 0
+    analyze:
+        name: Analyze Security
+        runs-on: ubuntu-latest
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.14
+        strategy:
+            fail-fast: false
+            matrix:
+                language: ['javascript-typescript']
 
-      - name: Install and synchronize dependencies
-        run: bun install
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Repair maintained examples and typed tooling
-        run: |
-          python - <<'PY'
-          from pathlib import Path
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v3
+              with:
+                  languages: ${{ matrix.language }}
+                  queries: security-and-quality
 
-          def replace(path: str, old: str, new: str) -> None:
-              target = Path(path)
-              content = target.read_text()
-              if old not in content:
-                  raise RuntimeError(f'Expected text not found in {path}: {old[:80]!r}')
-              target.write_text(content.replace(old, new, 1))
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3.14
 
-          replace(
-              'AGENTS.md',
-              "import from '@features/header';",
-              "import { Header } from '@features/header';",
-          )
-          replace(
-              'docs/TESTING.md',
-              "```typescript\nuse: {\n  navigationTimeout: 30000,\n  actionTimeout: 10000,\n}\n```",
-              "```typescript\nconst useOptions = {\n\tnavigationTimeout: 30000,\n\tactionTimeout: 10000,\n};\n```",
-          )
-          replace(
-              'src/shared/ui/badge/README.md',
-              "```css\n/* Variants adapt to theme automatically */\n- Gray (default): Neutral, low emphasis",
-              "```text\nVariants adapt to the active theme automatically:\n\n- Gray (default): Neutral, low emphasis",
-          )
-          replace(
-              'docs/testing/capture-screenshots.mjs',
-              "import { chromium } from 'playwright';",
-              "import { chromium } from '@playwright/test';",
-          )
-          replace(
-              'docs/testing/capture-screenshots.mjs',
-              " * Ensure directory exists\n */\nfunction ensureDir(dir) {",
-              " * Ensure directory exists.\n * @param {string} dir\n */\nfunction ensureDir(dir) {",
-          )
-          replace(
-              'docs/testing/capture-screenshots.mjs',
-              " * Capture screenshot for a page at a specific device size\n */\nasync function captureScreenshot(page, device, pageConfig) {",
-              " * Capture screenshot for a page at a specific device size.\n * @param {import('@playwright/test').Page} page\n * @param {{ width: number; height: number; name: string; dir: string }} device\n * @param {{ url: string; name: string }} pageConfig\n */\nasync function captureScreenshot(page, device, pageConfig) {",
-          )
-          replace(
-              'docs/testing/capture-screenshots.mjs',
-              "\t} catch (error) {\n\t\tconsole.error(`✗ ${device.name.padEnd(10)} | ${pageConfig.name.padEnd(10)} | Error: ${error.message}`);",
-              "\t} catch (error) {\n\t\tconst message = error instanceof Error ? error.message : String(error);\n\t\tconsole.error(`✗ ${device.name.padEnd(10)} | ${pageConfig.name.padEnd(10)} | Error: ${message}`);",
-          )
-          replace(
-              'docs/testing/capture-screenshots.mjs',
-              "\t} catch (error) {\n\t\tconsole.error('❌ Error:', error.message);",
-              "\t} catch (error) {\n\t\tconst message = error instanceof Error ? error.message : String(error);\n\t\tconsole.error('❌ Error:', message);",
-          )
-          replace(
-              'scripts/analyze-bundle.js',
-              "function humanSize(bytes) {",
-              "/** @param {number} bytes */\nfunction humanSize(bytes) {",
-          )
-          replace(
-              'scripts/analyze-bundle.js',
-              "function listFiles(dir, extension) {",
-              "/**\n * @param {string} dir\n * @param {string} extension\n */\nfunction listFiles(dir, extension) {",
-          )
-          replace(
-              'scripts/analyze-bundle.js',
-              "function dirSize(dir) {",
-              "/** @param {string} dir */\nfunction dirSize(dir) {",
-          )
-          replace(
-              'tests/e2e/a11y.spec.ts',
-              "import { test, expect } from './fixtures';\nimport AxeBuilder from '@axe-core/playwright';",
-              "import { test, expect } from './fixtures';\nimport AxeBuilder from '@axe-core/playwright';\nimport type { Page } from '@playwright/test';",
-          )
-          replace(
-              'tests/e2e/a11y.spec.ts',
-              "function runAxe(page: Awaited<ReturnType<typeof AxeBuilder.prototype.analyze>>['page']) {",
-              "function runAxe(page: Page) {",
-          )
-          translations = Path('tests/unit/i18n/translations.spec.ts')
-          translations.write_text(
-              translations.read_text().replace("\t\t// @ts-expect-error testing missing key\n", '')
-          )
-          replace(
-              'tests/e2e/rss.spec.ts',
-              "\tconst EN_POST_LINK_PREFIX = '/blog/';\n",
-              '',
-          )
-          replace(
-              'src/shared/ui/tech-pill/TechPill.astro',
-              "---\ninterface Props {",
-              "---\nimport type { AstroComponentFactory } from 'astro/runtime/server/index.js';\n\ninterface Props {",
-          )
-          replace(
-              'src/shared/ui/tech-pill/TechPill.astro',
-              "\ticon?: any; // Astro component for optional icon",
-              "\ticon?: AstroComponentFactory; // Astro component for optional icon",
-          )
-          PY
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
 
-      - name: Format complete repository
-        id: format
-        continue-on-error: true
-        run: bun run format 2>&1 | tee format.log
+            - name: Build project
+              run: bun run build
 
-      - name: Apply safe lint fixes
-        id: lint-fix
-        continue-on-error: true
-        run: bun run lint:fix 2>&1 | tee lint-fix.log
-
-      - name: Verify complete quality command
-        id: quality
-        continue-on-error: true
-        run: bun run check 2>&1 | tee quality.log
-
-      - name: Package migration output
-        if: always()
-        run: |
-          git diff --name-only > changed-files.txt
-          git diff --name-only -z | tar --null -czf quality-changes.tar.gz --files-from -
-
-      - name: Upload migration artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: quality-migration
-          path: |
-            quality-changes.tar.gz
-            changed-files.txt
-            format.log
-            lint-fix.log
-            quality.log
-          retention-days: 1
-
-      - name: Publish non-workflow files
-        if: steps.quality.outcome == 'success'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
-          BRANCH: agent/complete-astro-quality-gates
-        run: |
-          while IFS= read -r file; do
-            case "$file" in
-              .github/workflows/*) continue ;;
-            esac
-
-            FILE_SHA=$(curl --fail --silent --show-error \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/${REPOSITORY}/contents/${file}?ref=${BRANCH}" | jq -r '.sha')
-
-            export FILE_SHA FILE_PATH="$file"
-            python - <<'PY'
-          import base64
-          import json
-          import os
-          from pathlib import Path
-
-          path = Path(os.environ['FILE_PATH'])
-          payload = {
-              'message': f"chore(quality): format and validate {path.as_posix()}",
-              'content': base64.b64encode(path.read_bytes()).decode(),
-              'sha': os.environ['FILE_SHA'],
-              'branch': os.environ['BRANCH'],
-          }
-          Path('payload.json').write_text(json.dumps(payload))
-          PY
-
-            curl --fail --silent --show-error \
-              -X PUT \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              --data-binary @payload.json \
-              "https://api.github.com/repos/${REPOSITORY}/contents/${file}" > /dev/null
-          done < changed-files.txt
-
-      - name: Fail when quality validation failed
-        if: steps.quality.outcome != 'success'
-        run: exit 1
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@v3
+              with:
+                  category: /language:${{ matrix.language }}
