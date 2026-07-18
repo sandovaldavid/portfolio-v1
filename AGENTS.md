@@ -253,14 +253,18 @@ bun run test:unit tests/unit/my-feature.spec.ts
 bun run test:unit:coverage
 ```
 
-### Coverage Targets
+### Coverage Policy
 
-[TARGET] Minimum 90% coverage:
+[TARGET] Minimum 90% within the risk-based pure-unit scope defined in
+`vitest.config.ts`:
 
 - Lines: ≥90%
 - Functions: ≥90%
 - Branches: ≥90%
 - Statements: ≥90%
+
+These percentages are not whole-repository coverage. Follow
+`docs/testing/UNIT-COVERAGE.md` when adding behavior, tests or exclusions.
 
 ---
 
@@ -552,7 +556,7 @@ When reviewing changes, verify:
 - [ ] Unit tests added (if logic)
 - [ ] E2E tests added (if UI)
 - [ ] Tests cover happy path + edge cases
-- [ ] Coverage ≥90%
+- [ ] Risk-based unit coverage thresholds pass for the documented scope
 
 ### Documentation
 
@@ -728,6 +732,6 @@ bun run test
 
 ---
 
-**Last Updated:** July 1, 2026
+**Last Updated:** July 18, 2026
 **Status:** Active
 **Maintained by:** hello@sandovaldavid.com

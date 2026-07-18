@@ -56,7 +56,7 @@ The repository includes automated checks for:
 
 `bun run check` is the canonical local and CI quality gate. It checks repository-wide formatting, lints JavaScript, TypeScript and Astro files, runs Astro diagnostics, and type-checks tests, scripts and supported configuration files.
 
-The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Generated output, imported agent knowledge and historical audit material are explicitly excluded from formatting; maintained source, tests, tooling, configuration and documentation remain covered. Reports are uploaded as CI artifacts where applicable.
+The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Vitest percentages cover the [risk-based pure-unit scope](docs/testing/UNIT-COVERAGE.md), not the whole repository. Generated output, imported agent knowledge and historical audit material are explicitly excluded from formatting; maintained source, tests, tooling, configuration and documentation remain covered. Reports are uploaded as CI artifacts where applicable.
 
 ## Main technologies
 
@@ -121,7 +121,7 @@ bun run preview             # preview the production build
 bun run format:check        # verify repository formatting
 bun run lint                # lint JavaScript, TypeScript and Astro
 bun run test:unit           # unit tests
-bun run test:unit:coverage  # unit coverage report
+bun run test:unit:coverage  # risk-based unit coverage report
 bun run test:local          # Chromium, Firefox and Mobile Chrome
 bun run test                # complete Playwright matrix
 bun run lighthouse          # Lighthouse CI

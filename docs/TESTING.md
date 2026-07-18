@@ -8,7 +8,7 @@ The project includes comprehensive testing and monitoring:
 
 - **Lighthouse CI**: Performance, accessibility, and best practices audits
 - **Playwright**: End-to-end testing across multiple browsers and devices
-- **Vitest**: Unit tests with coverage (i18n modules)
+- **Vitest**: Risk-based unit coverage for deterministic shared logic
 - **Bundle Analysis**: Track bundle size and identify optimization opportunities
 - **CI Artifacts**: Test reports delivered as workflow run artifacts, linked from the unified PR comment
 
@@ -97,10 +97,11 @@ bun run test:unit:ui        # Interactive UI
 bun run test:unit:coverage  # Coverage report
 ```
 
-Configuration: `vitest.config.ts` (coverage scope limited to the i18n modules, 90% threshold)
+Configuration: `vitest.config.ts`. The 90% thresholds apply only to the risk-based pure-unit scope documented in [`docs/testing/UNIT-COVERAGE.md`](testing/UNIT-COVERAGE.md), not to the whole repository.
 
-**Unit spec files** (`tests/unit/`, 7 files): `i18n.spec.ts`, `components.spec.ts`, and the i18n
-sub-suite `i18n/{translations,url-lang,dictionaries,interpolation,localized-path}.spec.ts`.
+**Unit spec files** (`tests/unit/`, 8 files): `i18n.spec.ts`, `components.spec.ts`,
+`content/locale-content-id.spec.ts`, and the i18n sub-suite
+`i18n/{translations,url-lang,dictionaries,interpolation,localized-path}.spec.ts`.
 
 ### Bundle Analysis
 
@@ -141,7 +142,7 @@ Triggers on:
 Jobs:
 
 1. **validate** — ESLint, Prettier check, Conventional Commits validation
-2. **test-unit** — Vitest with coverage
+2. **test-unit** — Vitest with explicitly scoped risk-based coverage
 3. **build** — Astro check + build, bundle size analysis (5MB warning threshold)
 4. **lighthouse** — Lighthouse CI (3 runs, averages score) over the prebuilt dist
 5. **playwright** — E2E tests (5 browsers/devices)
@@ -152,7 +153,7 @@ Jobs:
 Reports are NOT published to GitHub Pages. Each CI run uploads them as
 artifacts, and the unified PR comment links directly to their download pages:
 
-- **coverage-report** — Vitest coverage (7-day retention)
+- **coverage-report** — scoped Vitest HTML/LCOV/JSON coverage (7-day retention)
 - **lighthouse-reports** — Lighthouse HTML/JSON reports (7-day retention)
 - **playwright-report** — Playwright HTML report (7-day retention)
 - **bundle-analysis** — bundle size report (7-day retention)
@@ -164,7 +165,7 @@ To review them locally:
 gh run download <run-id>
 
 # Serve the reports
-npx serve .lighthouseci/
+npx serve lighthouse-reports/
 bunx playwright show-report playwright-report
 npx serve coverage/
 ```
