@@ -24,6 +24,8 @@ Branch protection should require these stable PR check names:
 
 `PR Summary Report` is informational and should not be required. Update branch protection only after the renamed workflow has completed successfully on a representative pull request.
 
+The required job names are an external contract with branch protection and must not change without a coordinated ruleset update.
+
 ## Main integration policy
 
 A pull request targeting `main` runs `Main Quality` before merge. The same workflow runs again after the merge commit lands on `main`, providing validation on both sides of production integration. Production deployment remains a separate workflow and must not replace these quality checks.
