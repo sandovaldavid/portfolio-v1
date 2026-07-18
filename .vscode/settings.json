@@ -30,13 +30,7 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"eslint.validate": [
-		"astro",
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact"
-	],
+	"eslint.validate": ["astro", "javascript", "javascriptreact", "typescript", "typescriptreact"],
 
 	// File Exclusions from Explorer & Search to improve performance
 	"files.exclude": {
@@ -82,7 +76,7 @@
 	},
 	"tailwindCSS.experimental.classRegex": [
 		["class:\\s*['\"`]([^'\"`]*?)['\"`]", "([^\\s]+)"],
-		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" ]
+		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
 	],
 
 	// TypeScript path completions
