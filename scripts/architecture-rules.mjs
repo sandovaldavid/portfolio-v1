@@ -56,7 +56,9 @@ function normalizePath(value) {
 /** @param {string} filePath */
 export function getLayerFromFile(filePath) {
 	const normalized = normalizePath(filePath);
-	const match = normalized.match(/(?:^|\/)src\/(pages|app|widgets|features|entities|shared)(?:\/|$)/);
+	const match = normalized.match(
+		/(?:^|\/)src\/(pages|app|widgets|features|entities|shared)(?:\/|$)/
+	);
 	return match?.[1] ?? null;
 }
 
@@ -77,23 +79,21 @@ export function getSliceFromFile(filePath) {
 /** @param {string} specifier */
 export function getAliasInfo(specifier) {
 	return (
-		ALIASES.find(({ alias }) => specifier === alias || specifier.startsWith(`${alias}/`)) ?? null
+		ALIASES.find(({ alias }) => specifier === alias || specifier.startsWith(`${alias}/`)) ??
+		null
 	);
 }
 
 /** @param {string} specifier */
 function getAliasSegments(specifier, alias) {
-	return specifier
-		.slice(alias.length)
-		.split('/')
-		.filter(Boolean);
+	return specifier.slice(alias.length).split('/').filter(Boolean);
 }
 
 /** @param {string} source @param {string} filePath */
 export function extractImportSpecifiers(source, filePath) {
 	const isAstro = filePath.endsWith('.astro');
 	const frontmatter = isAstro
-		? source.match(/^\s*---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? ''
+		? (source.match(/^\s*---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '')
 		: source;
 	const lineOffset = isAstro ? 1 : 0;
 	const scriptKind = filePath.endsWith('.tsx')
@@ -157,7 +157,9 @@ export function validateImport({ importer, specifier, rootDir = process.cwd() })
 	}
 
 	if (specifier === '@widgets') {
-		problems.push('The root @widgets barrel is forbidden; import from a widget slice public API.');
+		problems.push(
+			'The root @widgets barrel is forbidden; import from a widget slice public API.'
+		);
 	}
 
 	const aliasInfo = getAliasInfo(specifier);
@@ -208,7 +210,9 @@ export function validateImport({ importer, specifier, rootDir = process.cwd() })
 		const targetLayer = getLayerFromFile(relativeTarget);
 
 		if (targetLayer && targetLayer !== importerLayer) {
-			problems.push('Relative imports cannot cross architecture layers; use a semantic alias.');
+			problems.push(
+				'Relative imports cannot cross architecture layers; use a semantic alias.'
+			);
 		}
 
 		if (

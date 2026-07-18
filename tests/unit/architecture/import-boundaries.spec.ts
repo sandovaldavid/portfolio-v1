@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-	extractImportSpecifiers,
-	validateImport,
-} from '../../../scripts/architecture-rules.mjs';
+import { extractImportSpecifiers, validateImport } from '../../../scripts/architecture-rules.mjs';
 
 const validate = (importer: string, specifier: string): string[] =>
 	validateImport({ importer, specifier, rootDir: process.cwd() });
@@ -47,7 +44,9 @@ describe('architecture import boundaries', () => {
 	it('allows the supported downward dependency flow', () => {
 		expect(validate('src/pages/index.astro', '@app/layouts/Layout.astro')).toEqual([]);
 		expect(validate('src/app/layouts/Layout.astro', '@widgets/header')).toEqual([]);
-		expect(validate('src/widgets/header/ui/Header.astro', '@features/theme-toggle')).toEqual([]);
+		expect(validate('src/widgets/header/ui/Header.astro', '@features/theme-toggle')).toEqual(
+			[]
+		);
 		expect(validate('src/entities/project/model/data.ts', '@shared/config/technology')).toEqual(
 			[]
 		);

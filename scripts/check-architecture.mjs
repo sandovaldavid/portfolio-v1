@@ -83,9 +83,7 @@ for (const absoluteFile of files) {
 }
 
 if (violations.length > 0) {
-	console.error('
-Architecture boundary check failed:
-');
+	console.error('\nArchitecture boundary check failed:\n');
 	for (const violation of violations) {
 		console.error(
 			`- ${violation.file}:${violation.line} -> ${violation.specifier}
