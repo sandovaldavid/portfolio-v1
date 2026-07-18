@@ -27,7 +27,7 @@
 		"test:debug": "bunx playwright test --debug",
 		"test:unit": "vitest",
 		"test:unit:ui": "vitest --ui",
-		"test:unit:coverage": "vitest --coverage",
+		"test:unit:coverage": "echo 'Unit coverage scope: shared i18n and content-ID utilities only; not whole-repository coverage.' && vitest run --coverage",
 		"test:all": "bun run test:unit && bun run test",
 		"lighthouse": "lhci autorun",
 		"lighthouse:collect": "lhci collect",
