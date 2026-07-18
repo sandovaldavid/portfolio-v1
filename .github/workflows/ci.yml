@@ -20,7 +20,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   ref: ${{ github.event.pull_request.head.sha || github.sha }}
                   fetch-depth: 0
@@ -31,7 +31,7 @@ jobs:
                   bun-version: 1.3.14
 
             - name: Cache Bun global store
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -71,7 +71,7 @@ jobs:
             cov-url: ${{ steps.upload-cov.outputs.artifact-url }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -79,7 +79,7 @@ jobs:
                   bun-version: 1.3.14
 
             - name: Cache Bun global store
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -95,7 +95,7 @@ jobs:
             - name: Upload coverage report
               id: upload-cov
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: coverage-report
                   path: coverage/
@@ -108,7 +108,7 @@ jobs:
             bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -116,7 +116,7 @@ jobs:
                   bun-version: 1.3.14
 
             - name: Cache Bun global store
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -125,7 +125,7 @@ jobs:
               run: bun install --frozen-lockfile
 
             - name: Restore Astro cache
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: |
                       .astro
@@ -150,7 +150,7 @@ jobs:
                   du -sh dist >> bundle-analysis/report.txt
 
             - name: Upload build output (dist)
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: build-output
                   path: dist/
@@ -158,7 +158,7 @@ jobs:
 
             - name: Upload bundle analysis report
               id: upload-bundle
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: bundle-analysis
                   path: bundle-analysis/
@@ -183,7 +183,7 @@ jobs:
             lh-url: ${{ steps.upload-lh.outputs.artifact-url }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -191,7 +191,7 @@ jobs:
                   bun-version: 1.3.14
 
             - name: Cache Bun global store
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -200,7 +200,7 @@ jobs:
               run: bun install --frozen-lockfile
 
             - name: Download build output
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: build-output
                   path: dist
@@ -223,7 +223,7 @@ jobs:
             - name: Upload Lighthouse reports artifact
               id: upload-lh
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: lighthouse-reports
                   path: lighthouse-reports/
@@ -238,7 +238,7 @@ jobs:
             pw-url: ${{ steps.upload-pw.outputs.artifact-url }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -246,7 +246,7 @@ jobs:
                   bun-version: 1.3.14
 
             - name: Cache Bun global store
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.bun/install/cache
                   key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
@@ -255,14 +255,14 @@ jobs:
               run: bun install --frozen-lockfile
 
             - name: Download build output
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: build-output
                   path: dist
 
             - name: Cache Playwright Browsers
               id: playwright-cache
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.cache/ms-playwright
                   key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
@@ -282,7 +282,7 @@ jobs:
             - name: Upload Playwright HTML report
               id: upload-pw
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: playwright-report
                   path: playwright-report/
@@ -296,20 +296,20 @@ jobs:
         steps:
             - name: Download bundle analysis report
               continue-on-error: true
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: bundle-analysis
                   path: ./bundle-analysis
 
             - name: Download Playwright test results (meta check)
               continue-on-error: true
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: playwright-report
                   path: ./playwright-report
 
             - name: Generate and post unified comment
-              uses: actions/github-script@v7
+              uses: actions/github-script@v9
               with:
                   script: |
                       const fs = require('fs');
