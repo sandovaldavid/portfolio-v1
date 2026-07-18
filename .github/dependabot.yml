@@ -1,7 +1,7 @@
 version: 2
 updates:
-    # npm dependencies managed through package.json and bun.lock
-    - package-ecosystem: 'npm'
+    # Bun dependencies managed through package.json and bun.lock
+    - package-ecosystem: 'bun'
       directory: '/'
       schedule:
           interval: 'weekly'
@@ -10,9 +10,7 @@ updates:
       pull-request-branch-name:
           separator: '/'
       commit-message:
-          prefix: 'chore'
-          prefix-development: 'chore'
-          include: 'scope'
+          prefix: 'chore(deps)'
       reviewers:
           - 'sandovaldavid'
       assignees:
@@ -24,13 +22,7 @@ updates:
               applies-to: 'security-updates'
               patterns:
                   - '*'
-          production-minor-patch:
-              dependency-type: 'production'
-              update-types:
-                  - 'minor'
-                  - 'patch'
-          development-minor-patch:
-              dependency-type: 'development'
+          minor-patch-updates:
               update-types:
                   - 'minor'
                   - 'patch'
