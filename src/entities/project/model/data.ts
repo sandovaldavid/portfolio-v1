@@ -1,4 +1,4 @@
-import { TAGS } from '@entities/technology';
+import { TAGS } from '@shared/config/technology';
 import type { ProjectItem } from './types';
 
 import campusMapImg from '@assets/projects/project-08-campus-map.webp';

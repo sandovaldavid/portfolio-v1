@@ -50,7 +50,6 @@ export default defineConfig({
 			'@widgets': path.resolve(root, 'src/widgets'),
 			'@app': path.resolve(root, 'src/app'),
 			'@assets': path.resolve(root, 'src/assets'),
-			'@': path.resolve(root, 'src'),
 		},
 	},
 });

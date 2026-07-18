@@ -25,7 +25,7 @@ AI agents assist with:
 
 ### 1. Architecture Compliance
 
-[REQUIRED] All code must follow FSD rules:
+[REQUIRED] All code must follow the executable rules in `docs/ARCHITECTURE.md`. `bun run lint:architecture` is part of the canonical lint and CI gate:
 
 ✓ **Correct layer imports:**
 
@@ -727,7 +727,8 @@ bun run test
 - **CONTRIBUTING.md** - Contribution guidelines
 - **docs/reports/** - Audit reports (latest: portfolio-audit-2026-06)
 - **docs/TESTING.md** - Testing guide
-- **docs/FSD-Architecture/** - FSD details
+- **docs/ARCHITECTURE.md** - Active executable architecture rules
+- **docs/FSD-Architecture/** - Archived migration history
 - **CHANGELOG.md** - Version history
 
 ---

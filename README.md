@@ -21,13 +21,13 @@ The resume URLs are stable, public and served by the portfolio domain. Validated
 
 The site uses Astro for static generation and progressive enhancement. Interactive behavior is isolated to the controls that need it, while professional content remains available without waiting for a client-side application to initialize.
 
-The source follows a pragmatic Feature-Sliced Design hierarchy:
+Astro route files are framework entry points above the application composition layers:
 
 ```text
-app → pages → widgets → features → entities → shared
+routes → app → widgets → features → entities → shared
 ```
 
-Public APIs are exposed through slice entry points, and cross-layer imports use explicit aliases.
+`bun run lint:architecture` enforces dependency direction, slice isolation, semantic aliases and public APIs. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the executable rules.
 
 ### Internationalization and content
 

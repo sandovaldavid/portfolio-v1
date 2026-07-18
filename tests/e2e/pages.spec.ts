@@ -41,6 +41,27 @@ pages.forEach(({ path, name }) => {
 	});
 });
 
+const internalRouteExpectations = [
+	{ path: '/about', heading: 'FULL BIOGRAPHY' },
+	{ path: '/projects', heading: 'Projects Catalog' },
+	{ path: '/es/about', heading: 'BIOGRAFÍA COMPLETA' },
+	{ path: '/es/projects', heading: 'Catálogo de Proyectos' },
+];
+
+test.describe('Internal route layout regression', () => {
+	for (const { path, heading } of internalRouteExpectations) {
+		test(`${path} renders its unique page content without homepage slots`, async ({ page }) => {
+			await page.goto(path);
+
+			const headings = page.locator('main h1');
+			await expect(headings).toHaveCount(1);
+			await expect(headings).toHaveText(heading);
+			await expect(page.locator('#experience')).toHaveCount(0);
+			await expect(page.locator('#technologies')).toHaveCount(0);
+		});
+	}
+});
+
 test.describe('Navigation between pages', () => {
 	test('should navigate between English pages', async ({ page }) => {
 		await page.goto('/');
