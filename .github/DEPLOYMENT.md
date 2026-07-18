@@ -3,25 +3,28 @@
 ## Branch Strategy
 
 ### `main` (Production)
+
 - **Status**: Production environment
 - **Host**: Vercel (production)
 - **Auto-deploy**: Yes (on push)
 - **PR Source**: Only from `develop`
 - **Requirements**:
-  - All checks must pass (ESLint, Prettier, Build)
-  - Commit messages must follow Conventional Commits
-  - Code review required (configure in branch protection)
+    - All checks must pass (ESLint, Prettier, Build)
+    - Commit messages must follow Conventional Commits
+    - Code review required (configure in branch protection)
 
 ### `develop` (Preview)
+
 - **Status**: Preview/Staging environment
 - **Host**: Vercel (preview)
 - **Auto-deploy**: Yes (on push)
 - **PR Source**: Any branch
 - **Requirements**:
-  - All checks must pass (ESLint, Prettier, Build)
-  - Commit messages must follow Conventional Commits
+    - All checks must pass (ESLint, Prettier, Build)
+    - Commit messages must follow Conventional Commits
 
 ### Feature branches
+
 - **Naming**: `feat/feature-name`, `fix/bug-name`, etc.
 - **PR Target**: `develop`
 - **Auto-deploy**: No
@@ -29,9 +32,11 @@
 ## GitHub Actions Workflows
 
 ### 1. Validate PR (`.github/workflows/validate-pr.yml`)
+
 **Triggers**: Push to `main`/`develop`, Pull requests to `main`/`develop`
 
 **Runs**:
+
 - ESLint (code quality)
 - Prettier (format check)
 - Type check (astro check)
@@ -41,9 +46,11 @@
 **Status**: Must pass ✅
 
 ### 2. Deploy to Preview (`.github/workflows/deploy-preview.yml`)
+
 **Triggers**: Push to `develop`, PRs to `main`/`develop`
 
 **Runs**:
+
 - All validation checks
 - Build
 - Deploy to Vercel (preview)
@@ -52,9 +59,11 @@
 **Environment**: Vercel Preview
 
 ### 3. Deploy to Production (`.github/workflows/deploy-production.yml`)
+
 **Triggers**: Push to `main`
 
 **Runs**:
+
 - All validation checks
 - Build
 - Deploy to Vercel (production)
@@ -83,16 +92,18 @@ SLACK_WEBHOOK         - (Optional) Slack webhook URL
 ### Branch Protection Rules (GitHub Settings → Branches)
 
 **For `main` branch**:
+
 - ✅ Require status checks to pass
-  - `validate (validate)`
+    - `validate (validate)`
 - ✅ Require code review
 - ✅ Dismiss stale pull request approvals
 - ✅ Require branches to be up to date
 - ✅ Restrict who can push to main (allow only `develop`)
 
 **For `develop` branch**:
+
 - ✅ Require status checks to pass
-  - `validate (validate)`
+    - `validate (validate)`
 - Optional: Require code review
 
 ## Commit Message Format
@@ -106,6 +117,7 @@ SLACK_WEBHOOK         - (Optional) Slack webhook URL
 ```
 
 ### Valid types:
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation
@@ -122,6 +134,7 @@ SLACK_WEBHOOK         - (Optional) Slack webhook URL
 - `revert` - Revert a commit
 
 ### Examples:
+
 ```
 feat(i18n): add Spanish language support
 
@@ -137,6 +150,7 @@ hotfix: urgent production bug fix
 ## Workflow Status
 
 Check GitHub Actions → Workflows to see:
+
 - PR validation status
 - Preview deployment status
 - Production deployment status
@@ -144,12 +158,14 @@ Check GitHub Actions → Workflows to see:
 ## Rollback
 
 ### To rollback production:
+
 1. Create hotfix branch from `main`
 2. Make fixes
 3. Merge hotfix to `develop`
 4. Merge `develop` to `main`
 
 ### Manual rollback:
+
 1. Go to Vercel dashboard
 2. Select project
 3. Go to Deployments
@@ -158,21 +174,25 @@ Check GitHub Actions → Workflows to see:
 ## Troubleshooting
 
 ### ESLint fails in CI but passes locally
+
 - Update `eslint.config.js`
 - Run `bun run lint:fix` locally
 - Commit changes
 
 ### Prettier fails in CI but passes locally
+
 - Run `bun run format` locally
 - Commit changes
 - Push again
 
 ### Build fails on CI
+
 - Check logs in GitHub Actions
 - Run `bun run build` locally
 - Fix issues and commit
 
 ### Deployment fails
+
 1. Check GitHub Actions logs
 2. Check Vercel deployment logs
 3. Verify environment variables are set
