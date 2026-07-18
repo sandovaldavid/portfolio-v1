@@ -4,12 +4,12 @@ The repository uses proportional pipelines: fast feedback for ordinary pull requ
 
 ## Pipeline levels
 
-| Context | Workflow | Purpose |
-|---|---|---|
-| Pull request to `develop` | `Continuous Integration` | Fast critical gates: repository checks, unit tests, production build, Chromium smoke and axe scans. |
-| Pull request to `main` and push to `main` | `Main Quality` | Full Chromium, Firefox and WebKit suite, unit coverage, generated-link validation, bundle report and Lighthouse. |
-| Weekly or manual | `Scheduled Extended Quality` | Complete desktop/mobile matrix, visual regression, generated-link audit, coverage and bundle artifacts. |
-| Pull request/push to `main`, weekly or manual | `CodeQL` | Security and quality analysis without charging every feature PR. |
+| Context                                       | Workflow                     | Purpose                                                                                                          |
+| --------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Pull request to `develop`                     | `Continuous Integration`     | Fast critical gates: repository checks, unit tests, production build, Chromium smoke and axe scans.              |
+| Pull request to `main` and push to `main`     | `Main Quality`               | Full Chromium, Firefox and WebKit suite, unit coverage, generated-link validation, bundle report and Lighthouse. |
+| Weekly or manual                              | `Scheduled Extended Quality` | Complete desktop/mobile matrix, visual regression, generated-link audit, coverage and bundle artifacts.          |
+| Pull request/push to `main`, weekly or manual | `CodeQL`                     | Security and quality analysis without charging every feature PR.                                                 |
 
 No workflow uses path filters. Documentation-only changes still exercise the build because content and metadata can affect generated routes.
 

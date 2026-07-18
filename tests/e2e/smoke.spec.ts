@@ -12,9 +12,7 @@ test.describe('Pull request smoke and accessibility gates', () => {
 			await expect(page.locator('main').first()).toBeVisible();
 			await expect(page.locator('h1')).toHaveCount(1);
 
-			const results = await new AxeBuilder({ page })
-				.withTags([...WCAG_TAGS])
-				.analyze();
+			const results = await new AxeBuilder({ page }).withTags([...WCAG_TAGS]).analyze();
 			const blockingViolations = results.violations.filter(
 				violation => violation.impact === 'critical' || violation.impact === 'serious'
 			);
