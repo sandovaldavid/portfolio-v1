@@ -1,4 +1,9 @@
 export default {
+	ignores: [
+		message =>
+			message.includes('Signed-off-by: dependabot[bot]') &&
+			/^(chore\(deps\)|ci\(actions\)):/.test(message),
+	],
 	extends: ['@commitlint/config-conventional'],
 	rules: {
 		'type-enum': [
