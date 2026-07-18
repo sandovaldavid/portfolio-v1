@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: quality-bootstrap-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   bootstrap:
     if: github.actor != 'github-actions[bot]'
@@ -54,7 +58,6 @@ jobs:
               "```css\n/* Variants adapt to theme automatically */\n- Gray (default): Neutral, low emphasis",
               "```text\nVariants adapt to the active theme automatically:\n\n- Gray (default): Neutral, low emphasis",
           )
-
           replace(
               'docs/testing/capture-screenshots.mjs',
               "import { chromium } from 'playwright';",
@@ -80,7 +83,6 @@ jobs:
               "\t} catch (error) {\n\t\tconsole.error('❌ Error:', error.message);",
               "\t} catch (error) {\n\t\tconst message = error instanceof Error ? error.message : String(error);\n\t\tconsole.error('❌ Error:', message);",
           )
-
           replace(
               'scripts/analyze-bundle.js',
               "function humanSize(bytes) {",
@@ -96,7 +98,6 @@ jobs:
               "function dirSize(dir) {",
               "/** @param {string} dir */\nfunction dirSize(dir) {",
           )
-
           replace(
               'tests/e2e/a11y.spec.ts',
               "import { test, expect } from './fixtures';\nimport AxeBuilder from '@axe-core/playwright';",
@@ -128,29 +129,42 @@ jobs:
           )
           PY
 
-      - name: Format and apply safe lint fixes
-        run: |
-          bun run format
-          bun run lint:fix
+      - name: Format complete repository
+        id: format
+        continue-on-error: true
+        run: bun run format 2>&1 | tee format.log
+
+      - name: Apply safe lint fixes
+        id: lint-fix
+        continue-on-error: true
+        run: bun run lint:fix 2>&1 | tee lint-fix.log
 
       - name: Verify complete quality command
-        run: bun run check
+        id: quality
+        continue-on-error: true
+        run: bun run check 2>&1 | tee quality.log
 
       - name: Package migration output
+        if: always()
         run: |
           git diff --name-only > changed-files.txt
           git diff --name-only -z | tar --null -czf quality-changes.tar.gz --files-from -
 
       - name: Upload migration artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: quality-migration
           path: |
             quality-changes.tar.gz
             changed-files.txt
+            format.log
+            lint-fix.log
+            quality.log
           retention-days: 1
 
       - name: Publish non-workflow files
+        if: steps.quality.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
@@ -192,3 +206,7 @@ jobs:
               --data-binary @payload.json \
               "https://api.github.com/repos/${REPOSITORY}/contents/${file}" > /dev/null
           done < changed-files.txt
+
+      - name: Fail when quality validation failed
+        if: steps.quality.outcome != 'success'
+        run: exit 1
