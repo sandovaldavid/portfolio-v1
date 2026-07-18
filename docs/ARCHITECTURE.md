@@ -21,7 +21,7 @@ src/pages → app → widgets → features → entities → shared
 
 ## Slice isolation and public APIs
 
-The following rules are executable through `bun run lint:architecture` and therefore through `bun run lint`, `bun run check` and CI:
+The following rules are executable through `bun run lint:architecture` and therefore through `bun run lint`, `bun run check` and CI. The checker parses imports and re-exports in TypeScript, JavaScript and Astro frontmatter, including dynamic imports.
 
 1. Widgets, features and entities cannot import another slice in the same layer.
 2. Cross-layer relative imports are forbidden.
