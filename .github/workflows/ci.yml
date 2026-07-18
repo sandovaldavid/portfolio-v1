@@ -211,13 +211,23 @@ jobs:
             - name: Assert Lighthouse thresholds
               run: bunx lhci assert
 
+            - name: Prepare Lighthouse artifact
+              if: always()
+              run: |
+                  rm -rf lighthouse-reports
+                  mkdir -p lighthouse-reports
+                  if [ -d .lighthouseci ]; then
+                    cp -R .lighthouseci/. lighthouse-reports/
+                  fi
+
             - name: Upload Lighthouse reports artifact
               id: upload-lh
               if: always()
               uses: actions/upload-artifact@v4
               with:
                   name: lighthouse-reports
-                  path: .lighthouseci
+                  path: lighthouse-reports/
+                  if-no-files-found: error
                   retention-days: 7
 
     playwright:
@@ -358,7 +368,7 @@ jobs:
                         '',
                         '# 2. Servir reportes locales con npx serve',
                         '# Para ver el reporte de Lighthouse:',
-                        'npx serve .lighthouseci/',
+                        'npx serve lighthouse-reports/',
                         '',
                         '# Para ver el reporte de Playwright E2E:',
                         'bunx playwright show-report playwright-report',
