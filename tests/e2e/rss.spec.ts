@@ -48,6 +48,7 @@ test.describe('RSS — EN feed (/rss.xml)', () => {
 	const PATH = '/rss.xml';
 	const EXPECTED_CHANNEL_TITLE = 'David Sandoval — Blog';
 	const DRAFT_TITLE = 'RSS Draft Exclusion Fixture';
+	const EN_POST_LINK_PREFIX = '/blog/';
 	const ES_POST_LINK_PREFIX = '/es/blog/';
 
 	test('returns 200 with an XML content type', async ({ page }) => {
@@ -124,7 +125,6 @@ test.describe('RSS — ES feed (/es/rss.xml)', () => {
 	const EXPECTED_CHANNEL_TITLE = 'David Sandoval — Blog';
 	const DRAFT_TITLE = 'RSS Draft Exclusion Fixture';
 	const ES_POST_LINK_PREFIX = '/es/blog/';
-	const EN_POST_LINK_PREFIX = '/blog/';
 
 	test('returns 200 with an XML content type', async ({ page }) => {
 		const { status, contentType } = await fetchFeed(page, PATH);
