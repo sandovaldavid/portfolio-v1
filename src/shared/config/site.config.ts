@@ -43,8 +43,8 @@ export const siteConfig = {
 
 	// ─── Resume ──────────────────────────────────────────────────
 	resume: {
-		en: 'https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_EN.pdf',
-		es: 'https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_ES.pdf',
+		en: 'https://sandovaldavid.com/resume/david-sandoval-resume.pdf',
+		es: 'https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf',
 	},
 } as const;
 

@@ -9,9 +9,11 @@ Portafolio bilingüe desarrollado con Astro, TypeScript y Tailwind CSS para pres
 **Perfil principal:** Ingeniero de software enfocado en Angular, .NET y TypeScript. Ubicado en Lima, Perú (UTC-5), y disponible para oportunidades remotas en Europa y Latinoamérica.
 
 - **Sitio:** https://sandovaldavid.com/es/
-- **CV en español:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_ES.pdf
-- **CV en inglés:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_EN.pdf
+- **CV en español:** https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf
+- **CV en inglés:** https://sandovaldavid.com/resume/david-sandoval-resume.pdf
 - **Documentación principal en inglés:** [README.md](README.md)
+
+Las URLs del CV son públicas, estables y están servidas por el dominio del portafolio. Los PDFs validados se generan en el repositorio privado del resume y se sincronizan con la rama dedicada `resume-assets` antes del despliegue de producción.
 
 ## Qué demuestra este repositorio
 
@@ -47,7 +49,8 @@ El repositorio incluye automatización para:
 - pruebas E2E con Playwright;
 - accesibilidad con Axe;
 - auditorías con Lighthouse;
-- builds y previews de despliegue.
+- builds y previews de despliegue;
+- validación posterior al despliegue de disponibilidad, firma PDF y headers HTTP de los CV públicos.
 
 `bun run check` es el control canónico para desarrollo local y CI. Verifica el formato del repositorio, analiza JavaScript, TypeScript y componentes Astro, ejecuta los diagnósticos de Astro y comprueba los tipos de tests, scripts y configuraciones soportadas.
 
@@ -113,6 +116,10 @@ La identidad retro se mantiene como diferenciador, pero no se utiliza como barre
 ### Rutas bilingües
 
 Las versiones en inglés y español comparten componentes y mantienen metadata, contenido y feeds específicos por idioma.
+
+### Entrega aislada del resume
+
+El repositorio privado del resume publica solamente los PDFs generados y metadata de procedencia en la rama pública `resume-assets`. El despliegue de producción incorpora esos archivos en `public/resume` y comprueba las URLs canónicas después de desplegar en Vercel.
 
 ## Contribución
 

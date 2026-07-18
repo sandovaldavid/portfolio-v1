@@ -9,9 +9,11 @@ A bilingual portfolio built with Astro, TypeScript and Tailwind CSS to present p
 **Primary profile:** Software Engineer focused on Angular, .NET and TypeScript. Based in Lima, Peru (UTC-5), and open to remote opportunities across Europe and Latin America.
 
 - **Live site:** https://sandovaldavid.com
-- **English resume:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_EN.pdf
-- **Spanish resume:** https://github.com/sandovaldavid/resume/releases/download/resume-latest/David_Sandoval_Resume_SoftwareEngineer_ES.pdf
+- **English resume:** https://sandovaldavid.com/resume/david-sandoval-resume.pdf
+- **Spanish resume:** https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf
 - **Spanish documentation:** [README.es.md](README.es.md)
+
+The resume URLs are stable, public and served by the portfolio domain. Validated PDFs are generated in the private resume repository and synchronized to the dedicated `resume-assets` branch before production deployment.
 
 ## What this repository demonstrates
 
@@ -49,7 +51,8 @@ The repository includes automated checks for:
 - browser flows with Playwright;
 - accessibility checks with Axe;
 - Lighthouse audits;
-- production builds and deployment previews.
+- production builds and deployment previews;
+- public resume availability, PDF signatures and response headers after production deployment.
 
 `bun run check` is the canonical local and CI quality gate. It checks repository-wide formatting, lints JavaScript, TypeScript and Astro files, runs Astro diagnostics, and type-checks tests, scripts and supported configuration files.
 
@@ -143,6 +146,10 @@ English and Spanish share the same component architecture while exposing locale-
 ### Automated regression checks
 
 Critical navigation, responsive behavior, accessibility and client-navigation lifecycles are tested in browsers. Changes to interactive components should include a regression test that covers both initial load and Astro client navigation when relevant.
+
+### Isolated resume delivery
+
+The private resume repository publishes only generated PDFs and provenance metadata to the public `resume-assets` branch. Production deployment checks out those assets, places them under `public/resume`, and verifies the canonical URLs after Vercel deployment.
 
 ## Contributing
 
