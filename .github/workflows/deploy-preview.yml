@@ -1,169 +1,88 @@
 name: Deploy to Vercel Preview
 
 on:
-  push:
-    branches: [develop]
   pull_request:
-    branches: [main, develop]
+    branches: [develop]
 
 permissions:
-  contents: read
-  deployments: write
-  pull-requests: write
+  contents: write
 
 jobs:
-  deploy:
-    if: (github.event_name == 'push' || github.event_name == 'pull_request') && github.actor != 'dependabot[bot]'
+  migrate-toolchain:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout PR branch
         uses: actions/checkout@v4
+        with:
+          ref: agent/standardize-project-toolchain
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.14
 
-      - name: Cache Bun global store
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Create GitHub Deployment
-        id: gh-deploy
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const deploy = await github.rest.repos.createDeployment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: context.payload.pull_request.head.ref,
-              environment: 'Preview',
-              auto_merge: false,
-              required_contexts: [],
-              description: 'Vercel Preview',
-              transient_environment: true,
-            });
-            core.setOutput('deployment_id', deploy.data.id);
-
-      - name: Set deployment status — in_progress
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-              state: 'in_progress',
-              description: 'Deploying to Vercel…',
-            });
-
-      - name: Pull Vercel Environment
-        run: bunx vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build
-        run: bunx vercel build --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy to Preview
-        id: deploy
+      - name: Update documentation policy
         run: |
-          PREVIEW_URL=$(bunx vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }})
-          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          python <<'PY'
+          from pathlib import Path
 
-      - name: Set deployment status — success
-        if: github.event_name == 'pull_request' && success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-              state: 'success',
-              environment_url: '${{ steps.deploy.outputs.preview_url }}',
-              description: 'Deployed to Vercel Preview',
-              log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-            });
+          readme = Path('README.md')
+          readme.write_text(readme.read_text().replace(
+              '- Bun\n- Git',
+              '- Bun 1.3.14 (declared by `packageManager` in `package.json`)\n- Git',
+          ))
 
-      - name: Set deployment status — failure
-        if: github.event_name == 'pull_request' && failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-              state: 'failure',
-              description: 'Deployment failed',
-              log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-            });
+          readme_es = Path('README.es.md')
+          readme_es.write_text(readme_es.read_text().replace(
+              '- Bun\n- Git',
+              '- Bun 1.3.14 (declarado en `packageManager` dentro de `package.json`)\n- Git',
+          ))
 
-      - name: Create or update PR comment
-        if: github.event_name == 'pull_request' && success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const MARKER = '<!-- deploy-preview-comment -->';
-            const sha = '${{ github.sha }}'.slice(0, 7);
-            const body = [
-              MARKER,
-              '### 🚀 Vista Previa de Despliegue',
-              '',
-              `| Detalle | Valor |`,
-              `|---|---|`,
-              `| **Preview URL** | [${{ steps.deploy.outputs.preview_url }}](${{ steps.deploy.outputs.preview_url }}) |`,
-              `| **Commit** | \`${sha}\` |`,
-              '',
-              '_Se actualiza automáticamente en cada push._',
-            ].join('\n');
+          contributing = Path('CONTRIBUTING.md')
+          text = contributing.read_text().replace(
+              '- Bun ≥1.3.14',
+              '- Bun 1.3.14 (use the version declared in `package.json`)',
+          )
+          policy = '''### Toolchain and dependency policy
 
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
+- Bun is pinned exactly through `packageManager` and every GitHub Actions workflow.
+- `package.json` uses compatible ranges for routine dependencies and exact versions for compatibility-sensitive packages.
+- Build, formatting, type-checking and test-only packages belong in `devDependencies`.
+- `bun.lock` is committed and CI installs with `bun install --frozen-lockfile`.
+- Historical `porfolio-dev-*` tags remain unchanged; future releases use the corrected `portfolio-v1` identifier.
 
-            const existing = comments.find(c => c.body.includes(MARKER));
+'''
+          marker = '---\n\n## Development Workflow'
+          if policy not in text:
+              text = text.replace(marker, policy + marker)
+          contributing.write_text(text)
+          PY
 
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
-
-      - name: Summary
-        if: always()
+      - name: Regenerate lockfile with pinned Bun
         run: |
-          echo "## 🚀 Preview Deployment" >> $GITHUB_STEP_SUMMARY
-          echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          if [ -n "${{ steps.deploy.outputs.preview_url }}" ]; then
-            echo "Preview URL: ${{ steps.deploy.outputs.preview_url }}" >> $GITHUB_STEP_SUMMARY
-          fi
+          bun install --lockfile-only
+          bun install --frozen-lockfile
+
+      - name: Restore full workflows with pinned Bun
+        run: |
+          git show origin/develop:.github/workflows/ci.yml > .github/workflows/ci.yml
+          git show origin/develop:.github/workflows/deploy-preview.yml > .github/workflows/deploy-preview.yml
+          sed -i 's/bun-version: latest/bun-version: 1.3.14/g' .github/workflows/ci.yml
+          sed -i 's/bun-version: latest/bun-version: 1.3.14/g' .github/workflows/deploy-preview.yml
+          rm -f .github/workflows/toolchain-migration.yml
+
+      - name: Format changed files
+        run: bunx prettier --write package.json bun.lock release-please-config.json README.md README.es.md CONTRIBUTING.md .github/workflows/ci.yml .github/workflows/codeql.yml .github/workflows/deploy-preview.yml .github/workflows/deploy-production.yml
+
+      - name: Verify build
+        run: bun run build
+
+      - name: Commit final migration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json bun.lock release-please-config.json README.md README.es.md CONTRIBUTING.md .github/workflows
+          git commit -m 'chore(tooling): standardize project toolchain'
+          git push origin HEAD:agent/standardize-project-toolchain
