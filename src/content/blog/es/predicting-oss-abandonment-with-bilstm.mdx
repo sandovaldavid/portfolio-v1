@@ -17,7 +17,7 @@ un repositorio?
 ## Por qué BiLSTM
 
 La frecuencia de commits, la tasa de resolución de issues y la rotación de contribuidores
-son señales secuenciales — lo que pasó en el mes *t* depende de lo que pasó en los meses
+son señales secuenciales — lo que pasó en el mes _t_ depende de lo que pasó en los meses
 anteriores, y el abandono rara vez ocurre en un solo paso. Una **Bidirectional LSTM** lee
 esa secuencia en ambas direcciones, lo cual importa aquí: las señales de alerta temprana
 (un mantenedor que deja de responder, PRs acumulándose sin revisión) se ponderan mejor
@@ -41,7 +41,7 @@ tipo de señal que los mantenedores ya usan informalmente, solo que hecha explí
 
 La BiLSTM se compara contra Regresión Logística y Random Forest sobre las mismas features,
 evaluando con F1 en la clase de abandono (desbalanceada) y AUC-ROC para ranking de riesgo.
-El objetivo no es solo "si el deep learning gana" — es si la estructura *secuencial* que
+El objetivo no es solo "si el deep learning gana" — es si la estructura _secuencial_ que
 puede explotar la BiLSTM realmente aporta señal sobre modelos que solo ven snapshots
 agregados.
 

@@ -12,10 +12,7 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html', 'lcov'],
-			include: [
-				'src/shared/lib/i18n/**/*.ts',
-				'src/shared/config/i18n/**/*.ts',
-			],
+			include: ['src/shared/lib/i18n/**/*.ts', 'src/shared/config/i18n/**/*.ts'],
 			exclude: [
 				'node_modules/',
 				'dist/',

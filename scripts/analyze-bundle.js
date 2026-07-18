@@ -16,6 +16,7 @@ const DIST_ASTRO_DIR = path.join(DIST_DIR, '_astro');
 const OUTPUT_DIR = 'bundle-analysis';
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'report.txt');
 
+/** @param {number} bytes */
 function humanSize(bytes) {
 	if (bytes < 1024) return `${bytes}B`;
 	const units = ['KB', 'MB', 'GB'];
@@ -28,14 +29,19 @@ function humanSize(bytes) {
 	return `${size.toFixed(1)}${units[unitIndex]}`;
 }
 
+/**
+ * @param {string} dir
+ * @param {string} extension
+ */
 function listFiles(dir, extension) {
 	if (!existsSync(dir)) return [];
 	return readdirSync(dir)
-		.filter((file) => file.endsWith(extension))
-		.map((file) => ({ file, size: statSync(path.join(dir, file)).size }))
+		.filter(file => file.endsWith(extension))
+		.map(file => ({ file, size: statSync(path.join(dir, file)).size }))
 		.sort((a, b) => b.size - a.size);
 }
 
+/** @param {string} dir */
 function dirSize(dir) {
 	if (!existsSync(dir)) return 0;
 	let total = 0;
@@ -59,10 +65,12 @@ const totalSize = dirSize(DIST_DIR);
 
 const lines = [
 	'=== JavaScript Bundle Analysis ===',
-	jsFiles.length ? jsFiles.map((f) => `${humanSize(f.size)}\t${f.file}`).join('\n') : 'No JS files',
+	jsFiles.length ? jsFiles.map(f => `${humanSize(f.size)}\t${f.file}`).join('\n') : 'No JS files',
 	'',
 	'=== CSS Bundle Analysis ===',
-	cssFiles.length ? cssFiles.map((f) => `${humanSize(f.size)}\t${f.file}`).join('\n') : 'No CSS files',
+	cssFiles.length
+		? cssFiles.map(f => `${humanSize(f.size)}\t${f.file}`).join('\n')
+		: 'No CSS files',
 	'',
 	'=== Total Size ===',
 	`${humanSize(totalSize)}\t${DIST_DIR}`,
