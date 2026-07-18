@@ -27,7 +27,7 @@ jobs:
         run: bun install
 
       - name: Format complete repository
-        run: bun run format
+        run: bun run format || true
 
       - name: Apply safe lint fixes
         run: bun run lint:fix || true
