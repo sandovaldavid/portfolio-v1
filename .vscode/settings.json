@@ -30,12 +30,7 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"eslint.validate": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact"
-	],
+	"eslint.validate": ["astro", "javascript", "javascriptreact", "typescript", "typescriptreact"],
 
 	// File Exclusions from Explorer & Search to improve performance
 	"files.exclude": {
@@ -49,7 +44,8 @@
 		"**/coverage": true,
 		"**/.lighthouseci": true,
 		"**/playwright-report": true,
-		"**/test-results": true
+		"**/test-results": true,
+		"**/bundle-analysis": true
 	},
 	"search.exclude": {
 		"**/node_modules": true,
@@ -58,7 +54,8 @@
 		"**/.vercel": true,
 		"**/coverage": true,
 		"**/playwright-report": true,
-		"**/test-results": true
+		"**/test-results": true,
+		"**/bundle-analysis": true
 	},
 	"files.watcherExclude": {
 		"**/.git/objects/**": true,
@@ -69,7 +66,8 @@
 		"**/.vercel/**": true,
 		"**/coverage/**": true,
 		"**/playwright-report/**": true,
-		"**/test-results/**": true
+		"**/test-results/**": true,
+		"**/bundle-analysis/**": true
 	},
 
 	// Tailwind CSS Associations

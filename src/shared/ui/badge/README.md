@@ -220,8 +220,9 @@ The component uses Tailwind CSS with semantic color variants:
 
 ### Color System (OKLCH-based for better perception)
 
-```css
-/* Variants adapt to theme automatically */
+```text
+Variants adapt to the active theme automatically:
+
 - Gray (default): Neutral, low emphasis
 - Blue (primary): Main actions, featured content
 - Purple (secondary): Secondary information

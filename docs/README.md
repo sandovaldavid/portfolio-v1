@@ -23,5 +23,5 @@ This directory contains the documentation for the DevSandoval Portfolio V1 proje
 
 ## Recent Changes
 
-* Version `1.6.2-beta.0`: Added new typographic scales and tokenized colors in the latest styling refactoring.
-* Added Copilot Agent rules (`README-COPILOT-INSTRUCTIONS.md`) directly in the documentation root.
+- Version `1.6.2-beta.0`: Added new typographic scales and tokenized colors in the latest styling refactoring.
+- Added Copilot Agent rules (`README-COPILOT-INSTRUCTIONS.md`) directly in the documentation root.

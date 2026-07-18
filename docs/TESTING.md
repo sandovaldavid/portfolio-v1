@@ -224,10 +224,10 @@ lhci collect --verbose
 [warning] Increase timeout in playwright.config.ts:
 
 ```typescript
-use: {
-  navigationTimeout: 30000,
-  actionTimeout: 10000,
-}
+const useOptions = {
+	navigationTimeout: 30000,
+	actionTimeout: 10000,
+};
 ```
 
 [warning] Check if dev server is running:

@@ -1,0 +1,32 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true,
+		"types": ["node", "vitest/globals"]
+	},
+	"include": [
+		"tests/**/*.ts",
+		"playwright.config.ts",
+		"vitest.config.ts",
+		"astro.config.mjs",
+		"scripts/**/*.js",
+		"scripts/**/*.mjs",
+		"scripts/**/*.ts",
+		"docs/testing/**/*.js",
+		"docs/testing/**/*.mjs",
+		"docs/testing/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		".astro",
+		".vercel",
+		"coverage",
+		"playwright-report",
+		"test-results",
+		"bundle-analysis",
+		".lighthouseci"
+	]
+}

@@ -16,11 +16,11 @@ activity time series?
 ## Why BiLSTM
 
 Commit frequency, issue resolution rate, and contributor churn are all sequential signals —
-what happened in month *t* depends on what happened in months before it, and abandonment
+what happened in month _t_ depends on what happened in months before it, and abandonment
 rarely happens in a single step. A **Bidirectional LSTM** reads that sequence in both
 directions, which matters here: early warning signs (a maintainer going quiet, PRs piling
 up unreviewed) are easier to weigh correctly when the model has context from both before
-*and* after a given point in training data.
+_and_ after a given point in training data.
 
 ## Data & features
 
@@ -39,7 +39,7 @@ use informally, just made explicit.
 
 The BiLSTM is benchmarked against Logistic Regression and Random Forest on the same
 features, evaluated with F1 on the (imbalanced) abandonment class and AUC-ROC for ranking
-risk. The goal isn't just "does deep learning win" — it's whether the *sequence* structure
+risk. The goal isn't just "does deep learning win" — it's whether the _sequence_ structure
 the BiLSTM can exploit actually adds signal over models that only see aggregated snapshots.
 
 Full methodology and current results are on the [research page](/research) — this post will
