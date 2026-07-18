@@ -8,70 +8,16 @@ This is a personal portfolio website built with Astro, TypeScript, and Tailwind 
 
 ## Architecture Guidelines - Feature-Sliced Design (FSD)
 
-This project **STRICTLY FOLLOWS** **Feature-Sliced Design (FSD)** architectural methodology. All new code MUST adhere to FSD principles.
+The canonical architecture rules are documented in [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md) and enforced by `bun run lint:architecture`.
 
-### FSD Layer Structure (IMPLEMENTED)
+- Astro route files compose the app and lower layers.
+- Dependencies flow through `app → widgets → features → entities → shared`.
+- Widgets, features and entities cannot import peer slices.
+- Consumers use semantic aliases and slice public APIs.
+- Catch-all aliases, root layer barrels and deep imports are forbidden.
+- Technology metadata is shared configuration at `src/shared/config/technology`.
 
-The project is organized according to FSD layers (from top to bottom):
-
-1. **App** (`src/app`) - ✅ IMPLEMENTED
-    - `app/layouts/` - Layout.astro (main layout wrapper)
-    - `app/styles/` - global.css, colors.css (OKLCH color system)
-
-2. **Pages** (`src/pages`) - ✅ IMPLEMENTED
-    - Astro pages and route handlers
-    - `/index.astro` (Spanish homepage), `/en/index.astro` (English homepage)
-    - `/404.astro` (Error page with i18n support)
-    - Only composition, NO business logic or data
-
-3. **Widgets** (`src/widgets`) - ✅ IMPLEMENTED
-    - `widgets/header/` - Site header with navigation
-    - `widgets/hero/` - Hero section
-    - `widgets/about-me/` - About me section
-    - `widgets/experience/` - Experience timeline
-    - `widgets/projects/` - Projects showcase
-    - `widgets/badges/` - Certifications/badges section
-    - `widgets/footer/` - Site footer
-    - All widgets have `index.ts` public API
-
-4. **Features** (`src/features`) - ✅ IMPLEMENTED
-    - `features/theme-toggle/` - Dark/light mode switcher
-    - `features/language-picker/` - Language selection
-    - All features have `model/` and `ui/` folders with `index.ts`
-
-5. **Entities** (`src/entities`) - ✅ IMPLEMENTED
-    - `entities/badge/` - Badge entity with data and UI
-    - `entities/experience/` - Experience entity
-    - `entities/project/` - Project entity
-    - `entities/technology/` - Technology entity
-    - All entities have `model/` (types, data) and optional `ui/` folders
-
-6. **Shared** (`src/shared`) - ✅ IMPLEMENTED
-    - `shared/ui/` - Design system components (Avatar, Badge, Button, LinkButton, etc.)
-    - `shared/lib/i18n/` - i18n utilities (useTranslations, getLangFromUrl, etc.)
-    - `shared/config/i18n/` - i18n configuration and dictionaries
-    - `shared/assets/` - Icons and static assets (LEGACY: currently at `src/assets`)
-
-### FSD Rules (STRICTLY ENFORCED)
-
-- **Import Rule**: Layers can ONLY import from layers BELOW them
-    - ❌ NEVER: `shared/` importing from `entities/`, `features/`, `widgets/`, `pages/`, or `app/`
-    - ❌ NEVER: `entities/` importing from `features/`, `widgets/`, `pages/`, or `app/`
-    - ✅ ALWAYS: Import downwards (Pages → Widgets → Features → Entities → Shared)
-
-- **Layer Independence**: Slices within the same layer CANNOT depend on each other
-    - ❌ NEVER: `widgets/header/` importing from `widgets/footer/`
-    - ✅ ALWAYS: Extract shared logic to lower layers (Shared, Entities, or Features)
-
-- **Public API**: ALL imports MUST go through index files
-    - ❌ NEVER: `import Component from '@/widgets/hero/ui/Hero.astro'`
-    - ✅ ALWAYS: `import { Hero } from '@/widgets/hero'`
-    - Every slice MUST have `index.ts` exporting public API
-
-- **Data and Logic Separation**:
-    - ✅ Data and types go in `model/` folder
-    - ✅ UI components go in `ui/` folder
-    - ✅ Each slice exports through `index.ts`
+Do not duplicate the rule set here; update the canonical document and executable checker together.
 
 ## Technology Stack
 

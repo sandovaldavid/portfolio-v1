@@ -21,11 +21,13 @@ Las URLs del CV son públicas, estables y están servidas por el dominio del por
 
 El sitio utiliza generación estática y mejora progresiva. El contenido profesional se entrega como HTML y las interacciones se limitan a los controles que realmente necesitan JavaScript.
 
-La estructura sigue una adaptación pragmática de Feature-Sliced Design:
+Los archivos de rutas de Astro funcionan como puntos de entrada por encima de las capas de composición:
 
 ```text
-app → pages → widgets → features → entities → shared
+rutas → app → widgets → features → entities → shared
 ```
+
+`bun run lint:architecture` valida la dirección de dependencias, el aislamiento de slices, los aliases semánticos y las APIs públicas. Las reglas ejecutables están documentadas en [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ### Internacionalización y contenido
 

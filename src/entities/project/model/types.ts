@@ -1,5 +1,5 @@
 import type { ImageMetadata } from 'astro';
-import type { Technology } from '@entities/technology';
+import type { Technology } from '@shared/config/technology';
 
 /**
  * Case study data for detailed project showcase pages

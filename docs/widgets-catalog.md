@@ -133,7 +133,7 @@ afterward by [`docs/tasks/branch-05-blog.md`](./tasks/branch-05-blog.md).
 ### `tech-stack`
 
 - **Purpose**: Two side-by-side cards of core frontend/backend tech pills + link to `/skills`.
-- **Dependencies**: `@entities/technology`, `@shared/ui`, `@shared/lib/i18n`, `@shared/config/i18n`
+- **Dependencies**: `@shared/config/technology`, `@shared/ui`, `@shared/lib/i18n`, `@shared/config/i18n`
 - **Public API**: `export { TechStack } from './ui'`
 - **Used in**: `src/app/layouts/Layout.astro` (via the `@widgets` barrel)
 
