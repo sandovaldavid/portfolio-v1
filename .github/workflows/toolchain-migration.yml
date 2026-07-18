@@ -1,9 +1,9 @@
 name: Toolchain migration
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/standardize-project-toolchain
+      - develop
 
 permissions:
   contents: write
@@ -107,5 +107,3 @@ jobs:
           git add package.json bun.lock release-please-config.json README.md README.es.md CONTRIBUTING.md .github/workflows
           git commit -m 'chore(tooling): standardize project toolchain'
           git push origin HEAD:agent/standardize-project-toolchain
-
-# Triggered after draft PR creation so the migration runs in branch context.
