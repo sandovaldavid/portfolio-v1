@@ -20,6 +20,9 @@ docs/FSD-Architecture/
 docs/reports/
 docs/tasks/
 
+# Generated and maintained by Release Please
+CHANGELOG.md
+
 *.min.js
 *.min.css
 
