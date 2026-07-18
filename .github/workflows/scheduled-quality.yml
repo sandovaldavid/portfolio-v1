@@ -51,15 +51,6 @@ jobs:
                   RUN_VISUAL_TESTS: 'true'
               run: bun run test:e2e:visual
 
-            - name: Prepare Lighthouse artifact
-              if: always()
-              run: |
-                  rm -rf lighthouse-reports
-                  mkdir -p lighthouse-reports
-                  if [ -d .lighthouseci ]; then
-                    cp -R .lighthouseci/. lighthouse-reports/
-                  fi
-
             - name: Upload extended Playwright diagnostics
               if: always()
               uses: actions/upload-artifact@v7
