@@ -12,7 +12,7 @@ describe('stripContentLocalePrefix', () => {
 		expect(stripContentLocalePrefix(id)).toBe(expected);
 	});
 
-	it.each(['fr/future-post', 'english/post', 'post-without-locale', '']) (
+	it.each(['fr/future-post', 'english/post', 'post-without-locale', ''])(
 		'preserves unsupported or absent locale prefixes in %s',
 		id => {
 			expect(stripContentLocalePrefix(id)).toBe(id);
@@ -31,7 +31,7 @@ describe('isContentForLanguage', () => {
 		expect(isContentForLanguage('en/post', Language.SPANISH)).toBe(false);
 	});
 
-	it.each(['english/post', 'en-post', 'en', '/en/post', '']) (
+	it.each(['english/post', 'en-post', 'en', '/en/post', ''])(
 		'requires an exact locale directory prefix for %s',
 		id => {
 			expect(isContentForLanguage(id, Language.ENGLISH)).toBe(false);
