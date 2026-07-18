@@ -9,6 +9,17 @@ bundle-analysis/
 .lighthouseci/
 .cache/
 
+# Generated or imported agent knowledge
+.agent/
+.agents/
+.claude/
+.github/instructions/
+
+# Historical audits, migration plans, and completed task notes
+docs/FSD-Architecture/
+docs/reports/
+docs/tasks/
+
 *.min.js
 *.min.css
 
