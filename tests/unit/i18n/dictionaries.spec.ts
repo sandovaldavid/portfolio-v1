@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { translations, DEFAULT_LANGUAGE, AVAILABLE_LANGUAGES, Language, LANGUAGE_LABELS, LANGUAGE_FLAGS } from '@shared/config/i18n';
+import {
+	translations,
+	DEFAULT_LANGUAGE,
+	AVAILABLE_LANGUAGES,
+	Language,
+	LANGUAGE_LABELS,
+	LANGUAGE_FLAGS,
+} from '@shared/config/i18n';
 
 describe('translations', () => {
 	it('has English translations', () => {
