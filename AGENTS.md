@@ -4,16 +4,16 @@
 
 ## 1. Sources of truth
 
-| Concern | Canonical source |
-| --- | --- |
-| Product and repository overview | [README.md](README.md) |
-| Architecture boundaries | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
-| Tool and dependency versions | [package.json](package.json) and `bun.lock` |
-| Testing | [docs/TESTING.md](docs/TESTING.md) |
-| CI behavior | [docs/CI.md](docs/CI.md) |
-| Performance budgets | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json` |
-| Documentation ownership | [docs/README.md](docs/README.md) |
-| Contribution flow | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Concern                         | Canonical source                                                             |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| Product and repository overview | [README.md](README.md)                                                       |
+| Architecture boundaries         | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
+| Tool and dependency versions    | [package.json](package.json) and `bun.lock`                                  |
+| Testing                         | [docs/TESTING.md](docs/TESTING.md)                                           |
+| CI behavior                     | [docs/CI.md](docs/CI.md)                                                     |
+| Performance budgets             | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json`    |
+| Documentation ownership         | [docs/README.md](docs/README.md)                                             |
+| Contribution flow               | [CONTRIBUTING.md](CONTRIBUTING.md)                                           |
 
 Do not copy version numbers, thresholds or architecture prose into another active document. Link to the canonical source.
 
@@ -57,14 +57,14 @@ Required practices:
 
 ## 5. Testing by change type
 
-| Change | Minimum validation |
-| --- | --- |
-| Documentation only | `bun run check:docs` and `bun run format:check` |
-| Pure logic | Unit tests plus `bun run test:unit:ci` |
-| Astro/UI behavior | Relevant Playwright regression plus Chromium smoke |
-| Architecture | `bun run lint:architecture` and affected tests |
+| Change              | Minimum validation                                                     |
+| ------------------- | ---------------------------------------------------------------------- |
+| Documentation only  | `bun run check:docs` and `bun run format:check`                        |
+| Pure logic          | Unit tests plus `bun run test:unit:ci`                                 |
+| Astro/UI behavior   | Relevant Playwright regression plus Chromium smoke                     |
+| Architecture        | `bun run lint:architecture` and affected tests                         |
 | Performance/loading | `bun run build`, `bun run performance:check` and relevant browser test |
-| CI/tooling | `bun run check`, the changed command locally, and final GitHub checks |
+| CI/tooling          | `bun run check`, the changed command locally, and final GitHub checks  |
 
 Coverage percentages apply only to the scope documented in [docs/testing/UNIT-COVERAGE.md](docs/testing/UNIT-COVERAGE.md).
 

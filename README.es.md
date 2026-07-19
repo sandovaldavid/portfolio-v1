@@ -8,12 +8,12 @@ Portafolio bilingüe y static-first para presentar experiencia profesional, evid
 
 ## Acceso rápido
 
-| Recurso | Enlace |
-| --- | --- |
-| Demo | [sandovaldavid.com](https://sandovaldavid.com) |
-| CV en inglés | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf) |
-| CV en español | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
-| Guía principal en inglés | [README.md](README.md) |
+| Recurso                  | Enlace                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| Demo                     | [sandovaldavid.com](https://sandovaldavid.com)                                                |
+| CV en inglés             | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf)       |
+| CV en español            | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
+| Guía principal en inglés | [README.md](README.md)                                                                        |
 
 ## Decisiones de ingeniería
 
@@ -25,15 +25,15 @@ Portafolio bilingüe y static-first para presentar experiencia profesional, evid
 
 ## Controles de calidad
 
-| Área | Validación |
-| --- | --- |
-| Formato, lint y tipos | `bun run check` |
-| Enlaces documentales | `bun run check:docs` |
-| Comportamiento unitario | Vitest con alcance de cobertura basado en riesgo |
-| Flujos de navegador | Playwright en pipelines proporcionales |
-| Accesibilidad | Axe bloquea violaciones serious y critical |
-| Rendimiento | Presupuestos por ruta y Lighthouse CI |
-| Despliegue | Previews de Vercel y validación de CV en producción |
+| Área                    | Validación                                          |
+| ----------------------- | --------------------------------------------------- |
+| Formato, lint y tipos   | `bun run check`                                     |
+| Enlaces documentales    | `bun run check:docs`                                |
+| Comportamiento unitario | Vitest con alcance de cobertura basado en riesgo    |
+| Flujos de navegador     | Playwright en pipelines proporcionales              |
+| Accesibilidad           | Axe bloquea violaciones serious y critical          |
+| Rendimiento             | Presupuestos por ruta y Lighthouse CI               |
+| Despliegue              | Previews de Vercel y validación de CV en producción |
 
 Los alcances y umbrales exactos viven en la configuración del repositorio, no en afirmaciones promocionales.
 

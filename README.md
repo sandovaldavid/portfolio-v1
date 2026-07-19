@@ -8,12 +8,12 @@ A bilingual, static-first portfolio for presenting software-engineering experien
 
 ## Quick access
 
-| Resource | Link |
-| --- | --- |
-| Live demo | [sandovaldavid.com](https://sandovaldavid.com) |
-| English CV | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf) |
-| Spanish CV | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
-| Spanish repository guide | [README.es.md](README.es.md) |
+| Resource                 | Link                                                                                          |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| Live demo                | [sandovaldavid.com](https://sandovaldavid.com)                                                |
+| English CV               | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf)       |
+| Spanish CV               | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
+| Spanish repository guide | [README.es.md](README.es.md)                                                                  |
 
 ## Engineering decisions
 
@@ -25,15 +25,15 @@ A bilingual, static-first portfolio for presenting software-engineering experien
 
 ## Quality gates
 
-| Area | Enforcement |
-| --- | --- |
-| Formatting, lint and types | `bun run check` |
-| Documentation links | `bun run check:docs` |
-| Unit behavior | Vitest with a documented risk-based coverage scope |
-| Browser flows | Playwright across proportional PR, main and scheduled pipelines |
-| Accessibility | Axe gates for serious and critical violations |
-| Performance | Route budgets plus Lighthouse CI |
-| Deployment | Vercel previews and production resume checks |
+| Area                       | Enforcement                                                     |
+| -------------------------- | --------------------------------------------------------------- |
+| Formatting, lint and types | `bun run check`                                                 |
+| Documentation links        | `bun run check:docs`                                            |
+| Unit behavior              | Vitest with a documented risk-based coverage scope              |
+| Browser flows              | Playwright across proportional PR, main and scheduled pipelines |
+| Accessibility              | Axe gates for serious and critical violations                   |
+| Performance                | Route budgets plus Lighthouse CI                                |
+| Deployment                 | Vercel previews and production resume checks                    |
 
 The exact scope and thresholds live in repository configuration, not in marketing copy.
 

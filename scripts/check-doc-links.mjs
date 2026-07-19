@@ -41,7 +41,11 @@ function collectMarkdown(path) {
 
 	if (excludedDirectories.has(repositoryPath)) {
 		return [...includedArchivedIndexes]
-			.filter(index => index.startsWith(`${repositoryPath}/`) && existsSync(resolve(repositoryRoot, index)))
+			.filter(
+				index =>
+					index.startsWith(`${repositoryPath}/`) &&
+					existsSync(resolve(repositoryRoot, index))
+			)
 			.map(index => resolve(repositoryRoot, index));
 	}
 
@@ -51,7 +55,10 @@ function collectMarkdown(path) {
 }
 
 function normalizeTarget(rawTarget) {
-	const withoutTitle = rawTarget.trim().replace(/^<|>$/g, '').split(/\s+["']/u, 1)[0];
+	const withoutTitle = rawTarget
+		.trim()
+		.replace(/^<|>$/g, '')
+		.split(/\s+["']/u, 1)[0];
 	const withoutFragment = withoutTitle.split('#', 1)[0].split('?', 1)[0];
 	try {
 		return decodeURIComponent(withoutFragment);
@@ -104,4 +111,6 @@ if (failures.length > 0) {
 	process.exit(1);
 }
 
-console.log(`[check:docs] ${markdownFiles.length} active Markdown files checked; all relative links resolve.`);
+console.log(
+	`[check:docs] ${markdownFiles.length} active Markdown files checked; all relative links resolve.`
+);
