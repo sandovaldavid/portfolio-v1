@@ -124,6 +124,7 @@ for (const file of markdownFiles) {
 				`${toPosix(relative(repositoryRoot, file))}: ${target} -> ${toPosix(relative(repositoryRoot, candidate))}`
 			);
 		}
+	}
 }
 
 if (failures.length > 0) {
