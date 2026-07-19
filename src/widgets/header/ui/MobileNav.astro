@@ -17,6 +17,7 @@ interface Props {
 		label: string;
 		url: string;
 		icon: string;
+		prefetch?: boolean;
 	}>;
 	lang: Language;
 }
@@ -77,6 +78,7 @@ const menuLabel = lang === 'en' ? 'Navigation menu' : 'Menú de navegación';
 						class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-none text-base font-bold uppercase tracking-wider font-mono text-content-strong hover:text-primary-500 hover:bg-surface-highlight border-2 border-transparent hover:border-edge-strong transition-all duration-100 whitespace-nowrap"
 						aria-label={link.label}
 						href={link.url}
+						data-astro-prefetch={link.prefetch ? 'hover' : undefined}
 						data-close-menu="true"
 					>
 						{link.icon === 'experience' && <BriefcaseIcon class="size-5" />}

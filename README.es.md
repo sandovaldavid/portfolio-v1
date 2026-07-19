@@ -51,12 +51,13 @@ El repositorio incluye automatización para:
 - pruebas E2E con Playwright;
 - accesibilidad con Axe;
 - auditorías con Lighthouse;
+- presupuestos de rendimiento por ruta para recorridos representativos en inglés y español;
 - builds y previews de despliegue;
 - validación posterior al despliegue de disponibilidad, firma PDF y headers HTTP de los CV públicos.
 
 `bun run check` es el control canónico para desarrollo local y CI. Verifica el formato del repositorio, analiza JavaScript, TypeScript y componentes Astro, ejecuta los diagnósticos de Astro y comprueba los tipos de tests, scripts y configuraciones soportadas.
 
-Los porcentajes de Vitest corresponden al [alcance unitario basado en riesgo](docs/testing/UNIT-COVERAGE.md), no a todo el repositorio. Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos.
+Los porcentajes de Vitest corresponden al [alcance unitario basado en riesgo](docs/testing/UNIT-COVERAGE.md), no a todo el repositorio. Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos. Las cifras de rendimiento son mediciones reproducibles del build según [docs/PERFORMANCE.md](docs/PERFORMANCE.md), no afirmaciones de velocidad sin evidencia.
 
 ## Tecnologías principales
 
@@ -101,6 +102,8 @@ bun run test:unit:coverage  # cobertura unitaria basada en riesgo
 bun run test:local          # Chromium, Firefox y Mobile Chrome
 bun run test                # matriz completa de Playwright
 bun run lighthouse          # Lighthouse CI
+bun run performance:check   # presupuestos por ruta después del build
+bun run bundle:visualize    # treemap de Rollup bajo demanda
 ```
 
 La política de versiones y clasificación de dependencias está documentada en [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md).

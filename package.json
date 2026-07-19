@@ -24,7 +24,7 @@
 		"test": "bunx playwright test",
 		"test:docker": "bash docker-test.sh",
 		"test:local": "bunx playwright test --project=chromium --project=firefox --project='Mobile Chrome'",
-		"test:e2e:smoke": "bunx playwright test tests/e2e/smoke.spec.ts --project=chromium",
+		"test:e2e:smoke": "bunx playwright test tests/e2e/smoke.spec.ts tests/e2e/performance.spec.ts --project=chromium",
 		"test:e2e:desktop": "bunx playwright test --project=chromium --project=firefox --project=webkit",
 		"test:e2e:extended": "bunx playwright test --project=chromium --project=firefox --project=webkit --project='Mobile Chrome' --project='Mobile Safari'",
 		"test:e2e:visual": "bunx playwright test tests/e2e/visual.spec.ts --project=chromium --project=firefox --project='Mobile Chrome'",
@@ -40,7 +40,9 @@
 		"lighthouse": "lhci autorun",
 		"lighthouse:collect": "lhci collect",
 		"lighthouse:assert": "lhci assert",
-		"bundle:analyze": "node scripts/analyze-bundle.js"
+		"bundle:analyze": "node scripts/analyze-bundle.js",
+		"performance:check": "node scripts/check-route-performance.mjs",
+		"bundle:visualize": "ANALYZE_BUNDLE=true bun run build && bun run bundle:analyze"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "6.0.3",

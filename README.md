@@ -51,12 +51,13 @@ The repository includes automated checks for:
 - browser flows with Playwright;
 - accessibility checks with Axe;
 - Lighthouse audits;
+- route-level performance budgets for representative English and Spanish journeys;
 - production builds and deployment previews;
 - public resume availability, PDF signatures and response headers after production deployment.
 
 `bun run check` is the canonical local and CI quality gate. It checks repository-wide formatting, lints JavaScript, TypeScript and Astro files, runs Astro diagnostics, and type-checks tests, scripts and supported configuration files.
 
-The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Vitest percentages cover the [risk-based pure-unit scope](docs/testing/UNIT-COVERAGE.md), not the whole repository. Generated output, imported agent knowledge and historical audit material are explicitly excluded from formatting; maintained source, tests, tooling, configuration and documentation remain covered. Reports are uploaded as CI artifacts where applicable.
+The scope and thresholds of each check are defined in the repository configuration and GitHub Actions workflows. Vitest percentages cover the [risk-based pure-unit scope](docs/testing/UNIT-COVERAGE.md), not the whole repository. Generated output, imported agent knowledge and historical audit material are explicitly excluded from formatting; maintained source, tests, tooling, configuration and documentation remain covered. Reports are uploaded as CI artifacts where applicable. Performance figures are build measurements governed by the reproducible methodology in [docs/PERFORMANCE.md](docs/PERFORMANCE.md), not unsupported speed claims.
 
 ## Main technologies
 
@@ -125,6 +126,8 @@ bun run test:unit:coverage  # risk-based unit coverage report
 bun run test:local          # Chromium, Firefox and Mobile Chrome
 bun run test                # complete Playwright matrix
 bun run lighthouse          # Lighthouse CI
+bun run performance:check   # enforce route-level budgets after a build
+bun run bundle:visualize    # opt-in Rollup treemap audit
 ```
 
 The versioning and dependency-classification rules are documented in [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md).

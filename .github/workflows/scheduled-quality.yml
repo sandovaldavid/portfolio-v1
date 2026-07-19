@@ -31,7 +31,9 @@ jobs:
             - name: Run risk-based unit coverage
               run: bun run test:unit:coverage
 
-            - name: Build production output
+            - name: Build production output with bundle visualizer
+              env:
+                  ANALYZE_BUNDLE: 'true'
               run: bun run build
 
             - name: Validate generated internal links
@@ -39,6 +41,9 @@ jobs:
 
             - name: Generate bundle audit
               run: bun run bundle:analyze
+
+            - name: Enforce route performance budgets
+              run: bun run performance:check
 
             - name: Install complete browser matrix
               run: bunx playwright install --with-deps chromium firefox webkit
@@ -72,5 +77,6 @@ jobs:
                   path: |
                       coverage/
                       bundle-analysis/
+                      performance-report/
                   if-no-files-found: warn
                   retention-days: 14
