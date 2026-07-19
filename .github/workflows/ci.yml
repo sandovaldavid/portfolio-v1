@@ -26,12 +26,30 @@ jobs:
               uses: ./.github/actions/setup-bun
 
             - name: Restore final CI workflow and apply migration
+              id: migration
+              continue-on-error: true
               shell: bash
               run: |
-                  git show origin/develop:.github/workflows/ci.yml > .github/workflows/ci.yml
-                  rm -f .github/workflows/issue-97-migrate.yml
-                  python scripts/issue-97-migrate.py
-                  rm scripts/issue-97-migrate.py
+                  set -o pipefail
+                  {
+                    git show origin/develop:.github/workflows/ci.yml > .github/workflows/ci.yml
+                    rm -f .github/workflows/issue-97-migrate.yml
+                    python -u scripts/issue-97-migrate.py
+                    rm scripts/issue-97-migrate.py
+                  } 2>&1 | tee migration.log
+
+            - name: Upload migration diagnostic
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: issue-97-migration-log
+                  path: migration.log
+                  if-no-files-found: error
+                  retention-days: 1
+
+            - name: Stop after migration failure
+              if: steps.migration.outcome != 'success'
+              run: exit 1
 
             - name: Format maintained files
               run: >-
