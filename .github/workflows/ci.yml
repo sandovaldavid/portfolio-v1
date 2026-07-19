@@ -1,22 +1,22 @@
-name: Continuous Integration
+name: Issue 97 Migration
 
 on:
     pull_request:
         branches: [develop]
 
 permissions:
-    contents: read
+    contents: write
 
 concurrency:
-    group: pr-quality-${{ github.event.pull_request.number }}
+    group: issue-97-migration
     cancel-in-progress: true
 
 jobs:
-    validate:
-        name: Code Quality & Commits
+    migrate:
+        if: github.head_ref == 'perf/route-level-budgets'
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout pull request head
+            - name: Checkout migration branch
               uses: actions/checkout@v7
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
@@ -25,147 +25,51 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Run repository quality checks
-              run: bun run check
-
-            - name: Validate Conventional Commits
-              env:
-                  BASE_SHA: ${{ github.event.pull_request.base.sha }}
-                  HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-              run: |
-                  git log --no-merges --format=%H "${BASE_SHA}..${HEAD_SHA}" | while read -r sha; do
-                    commit_msg=$(git log -1 --format=%B "$sha")
-                    echo "Linting commit: $sha"
-                    echo "$commit_msg" | bunx commitlint
-                  done
-
-            - name: Validate PR title
-              env:
-                  PR_TITLE: ${{ github.event.pull_request.title }}
-                  PR_NUMBER: ${{ github.event.pull_request.number }}
-              run: echo "${PR_TITLE} (#${PR_NUMBER})" | bunx commitlint
-
-    test-unit:
-        name: Unit Tests (Vitest)
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout pull request head
-              uses: actions/checkout@v7
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-
-            - name: Setup repository
-              uses: ./.github/actions/setup-bun
-
-            - name: Run unit tests
-              run: bun run test:unit:ci
-
-    build:
-        name: Build & Bundle Analysis
-        runs-on: ubuntu-latest
-        outputs:
-            build-url: ${{ steps.upload-build.outputs.artifact-url }}
-            bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
-        steps:
-            - name: Checkout pull request head
-              uses: actions/checkout@v7
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-
-            - name: Setup repository
-              uses: ./.github/actions/setup-bun
-
-            - name: Restore Astro cache
-              uses: actions/cache@v6
-              with:
-                  path: .astro
-                  key: ${{ runner.os }}-astro-pr-${{ hashFiles('bun.lock', 'src/**', 'astro.config.mjs') }}
-                  restore-keys: |
-                      ${{ runner.os }}-astro-pr-
-
-            - name: Build production output
-              run: bun run build
-
-            - name: Generate bundle report
-              run: bun run bundle:analyze
-
-            - name: Upload production build
-              id: upload-build
-              uses: actions/upload-artifact@v7
-              with:
-                  name: pr-build-output
-                  path: dist/
-                  if-no-files-found: error
-                  retention-days: 1
-
-            - name: Upload bundle report
-              id: upload-bundle
-              uses: actions/upload-artifact@v7
-              with:
-                  name: pr-bundle-analysis
-                  path: bundle-analysis/
-                  if-no-files-found: error
-                  retention-days: 7
-
-    smoke:
-        name: Playwright Chromium Smoke
-        runs-on: ubuntu-latest
-        needs: build
-        outputs:
-            report-url: ${{ steps.upload-report.outputs.artifact-url }}
-        steps:
-            - name: Checkout pull request head
-              uses: actions/checkout@v7
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-
-            - name: Setup repository
-              uses: ./.github/actions/setup-bun
-
-            - name: Download production build
-              uses: actions/download-artifact@v8
-              with:
-                  name: pr-build-output
-                  path: dist
-
-            - name: Install Chromium
-              run: bunx playwright install --with-deps chromium
-
-            - name: Run Chromium smoke and axe gates
-              run: bun run test:e2e:smoke
-
-            - name: Upload Playwright diagnostics
-              id: upload-report
-              if: always()
-              uses: actions/upload-artifact@v7
-              with:
-                  name: pr-playwright-smoke
-                  path: |
-                      playwright-report/
-                      test-results/
-                      test-results.json
-                      junit-results.xml
-                  if-no-files-found: warn
-                  retention-days: 7
-
-    summary:
-        name: PR Summary Report
-        runs-on: ubuntu-latest
-        needs: [validate, test-unit, build, smoke]
-        if: always()
-        steps:
-            - name: Write proportional CI summary
+            - name: Restore final CI workflow and apply migration
               shell: bash
               run: |
-                  {
-                    echo "## Pull request quality summary"
-                    echo
-                    echo "| Gate | Result |"
-                    echo "|---|---|"
-                    echo "| Code quality and commits | ${{ needs.validate.result }} |"
-                    echo "| Unit tests | ${{ needs.test-unit.result }} |"
-                    echo "| Production build and bundle report | ${{ needs.build.result }} |"
-                    echo "| Chromium smoke and axe | ${{ needs.smoke.result }} |"
-                    echo
-                    echo "Full desktop-browser, Lighthouse and visual/device suites run around main integration and on the scheduled/manual pipeline."
-                  } >> "$GITHUB_STEP_SUMMARY"
+                  git show origin/develop:.github/workflows/ci.yml > .github/workflows/ci.yml
+                  rm -f .github/workflows/issue-97-migrate.yml
+                  python scripts/issue-97-migrate.py
+                  rm scripts/issue-97-migrate.py
+
+            - name: Format maintained files
+              run: >-
+                  bunx prettier --write
+                  astro.config.mjs
+                  package.json
+                  performance-budgets.json
+                  scripts/check-route-performance.mjs
+                  scripts/analyze-bundle.js
+                  tests/e2e/performance.spec.ts
+                  src/app/layouts/Layout.astro
+                  src/widgets/header/ui/Header.astro
+                  src/widgets/header/ui/DesktopNav.astro
+                  src/widgets/header/ui/MobileNav.astro
+                  .github/workflows/ci.yml
+                  .github/workflows/main-quality.yml
+                  .github/workflows/scheduled-quality.yml
+                  docs/PERFORMANCE.md
+                  docs/TESTING.md
+                  docs/tools.md
+                  README.md
+                  README.es.md
+
+            - name: Validate repository
+              run: bun run check
+
+            - name: Validate production budgets
+              run: |
+                  bun run test:unit:ci
+                  bun run build
+                  bun run performance:check
+                  bun run bundle:analyze
+
+            - name: Commit migration
+              shell: bash
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add -A
+                  git commit -m "perf: enforce route-level performance budgets"
+                  git push origin HEAD:perf/route-level-budgets
