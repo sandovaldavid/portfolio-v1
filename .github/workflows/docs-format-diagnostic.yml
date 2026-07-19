@@ -1,0 +1,77 @@
+name: Documentation Format Diagnostic
+
+on:
+    pull_request:
+        branches: [develop]
+
+permissions:
+    contents: write
+
+jobs:
+    diagnose:
+        if: github.head_ref == 'docs/consolidate-repository-guidance'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Format maintained documentation
+              run: >-
+                  bunx prettier --write
+                  README.md
+                  README.es.md
+                  AGENTS.md
+                  CONTRIBUTING.md
+                  CLAUDE.md
+                  .github/copilot-instructions.md
+                  .github/instructions/*.md
+                  docs/README.md
+                  docs/TESTING.md
+                  docs/archive/README.md
+                  docs/reports/README.md
+                  docs/tasks/README.md
+                  docs/FSD-Architecture/README.md
+                  package.json
+                  scripts/check-doc-links.mjs
+
+            - name: Publish formatting changes
+              shell: bash
+              run: |
+                  if git diff --quiet; then
+                    echo 'No formatting changes required.'
+                    exit 0
+                  fi
+                  git config user.name 'github-actions[bot]'
+                  git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+                  git add \
+                    README.md \
+                    README.es.md \
+                    AGENTS.md \
+                    CONTRIBUTING.md \
+                    CLAUDE.md \
+                    .github/copilot-instructions.md \
+                    .github/instructions \
+                    docs/README.md \
+                    docs/TESTING.md \
+                    docs/archive/README.md \
+                    docs/reports/README.md \
+                    docs/tasks/README.md \
+                    docs/FSD-Architecture/README.md \
+                    package.json \
+                    scripts/check-doc-links.mjs
+                  git commit -m 'style(docs): format consolidated guidance'
+                  git push origin HEAD:docs/consolidate-repository-guidance
+
+            - name: Validate documentation links
+              run: bun run check:docs
+
+            - name: Validate lint and types
+              run: |
+                  bun run lint
+                  bun run typecheck
