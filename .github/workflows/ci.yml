@@ -34,6 +34,12 @@ jobs:
                   {
                     git show origin/develop:.github/workflows/ci.yml > .github/workflows/ci.yml
                     rm -f .github/workflows/issue-97-migrate.yml
+                    python - <<'PY'
+                  from pathlib import Path
+                  path = Path('scripts/issue-97-migrate.py')
+                  text = path.read_text().replace('"### Bundle Analysis\\n"', '"## Bundle analysis\\n"')
+                  path.write_text(text)
+                  PY
                     python -u scripts/issue-97-migrate.py
                     rm scripts/issue-97-migrate.py
                   } 2>&1 | tee migration.log
