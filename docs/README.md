@@ -1,27 +1,35 @@
-# Documentation Index
+# Documentation index
 
-This directory contains the documentation for the DevSandoval Portfolio V1 project.
+English is the primary repository documentation language. Spanish is maintained for the root project guide and user-facing content.
 
-## Guides & Standards
+## Active documentation
 
-- [STYLE-GUIDE.md](./STYLE-GUIDE.md): Typography, color tokens, headings, and shadow scale (`shadow-retro-*`) rules for UI work.
-- [TESTING.md](./TESTING.md): Testing strategy, Vitest unit tests, Playwright E2E, and Lighthouse CI instructions.
-- [README-COPILOT-INSTRUCTIONS.md](./README-COPILOT-INSTRUCTIONS.md): Important rules and workflows for AI agents working in this project.
-- [tools.md](./tools.md): Core tech stack rationale, including Astro, Bun, Tailwind CSS, etc.
+| Document | Owns |
+| --- | --- |
+| [README.md](../README.md) | Recruiter/developer overview, demo, CV and quick start |
+| [AGENTS.md](../AGENTS.md) | Shared working rules for humans and AI agents |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Current FSD boundaries and executable architecture policy |
+| [TESTING.md](TESTING.md) | Test strategy and local commands |
+| [CI.md](CI.md) | PR, main and scheduled pipeline behavior |
+| [TOOLCHAIN.md](TOOLCHAIN.md) | Version and dependency classification policy |
+| [PERFORMANCE.md](PERFORMANCE.md) | Route-budget methodology and loading decisions |
+| [STYLE-GUIDE.md](STYLE-GUIDE.md) | Maintained visual tokens and typography rules |
+| [testing/UNIT-COVERAGE.md](testing/UNIT-COVERAGE.md) | Measured Vitest coverage scope |
 
-## Architecture & Code Catalogs
+Catalogs such as [features-catalog.md](features-catalog.md) and [widgets-catalog.md](widgets-catalog.md) describe current slices but do not redefine architecture rules.
 
-- [FSD-Architecture/](./FSD-Architecture/): Details about the Feature-Sliced Design implementation in this project.
-- [features-catalog.md](./features-catalog.md): Catalog of all UI features, their client-side logic, and their public API (e.g., `theme-toggle`, `language-picker`, `cli-terminal`).
-- [widgets-catalog.md](./widgets-catalog.md): Catalog of the widgets integrating features and entities.
+## Historical documentation
 
-## Reports & Task Tracking
+Completed migration plans and point-in-time audits are frozen references. Start at [archive/README.md](archive/README.md). Do not use historical metrics or recommendations as current repository guarantees.
 
-- [reports/](./reports/): System reports, including Lighthouse budget reports and style audits.
-- [tasks/](./tasks/): Detailed tasks and branching steps created during project iteration.
-- [testing/](./testing/): Scripts and resources related to testing in different browsers or CI.
+## Ownership and update policy
 
-## Recent Changes
+1. Update the owning document instead of copying the same guidance elsewhere.
+2. `package.json`, `bun.lock` and executable configuration own versions and thresholds.
+3. Quantitative statements require a reproducible command, versioned configuration or artifact methodology.
+4. Tool-specific instruction files may contain only tool/path deltas and must reference [AGENTS.md](../AGENTS.md).
+5. Consequential decisions should be recorded once in the nearest active document or a concise ADR.
+6. Historical documents are not silently rewritten to match the present; add a correction banner only when necessary.
+7. Run `bun run check:docs` after adding, removing or moving documentation.
 
-- Version `1.6.2-beta.0`: Added new typographic scales and tokenized colors in the latest styling refactoring.
-- Added Copilot Agent rules (`README-COPILOT-INSTRUCTIONS.md`) directly in the documentation root.
+The active documentation owner is the repository maintainer. Any PR changing behavior must update the owning document in the same change when the contract changes.
