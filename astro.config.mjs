@@ -7,6 +7,8 @@ import robotsTxt from 'astro-robots-txt';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
+const analyzeBundle = process.env.ANALYZE_BUNDLE === 'true';
+
 // https://astro.build/config
 export default defineConfig({
 	experimental: {
@@ -16,9 +18,9 @@ export default defineConfig({
 	},
 	integrations: [robotsTxt(), mdx(), sitemap()],
 	site: 'https://sandovaldavid.com',
-	// Eagerly prefetch internal links; pairs with <ClientRouter /> for snappy nav.
+	// Only links marked with data-astro-prefetch participate in speculative loading.
 	prefetch: {
-		prefetchAll: true,
+		prefetchAll: false,
 		defaultStrategy: 'hover',
 	},
 	fonts: [
@@ -96,15 +98,19 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [
-			// @ts-ignore - Tailwind CSS and visualizer type compatibility
+			// @ts-ignore - Tailwind CSS plugin type compatibility
 			tailwindcss(),
-			visualizer({
-				filename: 'bundle-analysis/index.html',
-				title: 'Análisis de Bundle - Portafolio',
-				template: 'treemap',
-				gzipSize: true,
-				brotliSize: true,
-			}),
+			...(analyzeBundle
+				? [
+						visualizer({
+							filename: 'bundle-analysis/index.html',
+							title: 'Bundle Analysis - Portfolio',
+							template: 'treemap',
+							gzipSize: true,
+							brotliSize: true,
+						}),
+					]
+				: []),
 		],
 	},
 	i18n: {

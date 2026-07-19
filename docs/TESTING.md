@@ -68,11 +68,25 @@ The thresholds in `.lighthouserc.json` are:
 - Best practices: 90 or higher.
 - SEO: 90 or higher.
 
+### Route Performance Budgets
+
+After a production build, enforce representative route budgets and generate JSON/Markdown reports:
+
+```bash
+bun run build
+bun run performance:check
+```
+
+Configuration: `performance-budgets.json`. Methodology: [`docs/PERFORMANCE.md`](PERFORMANCE.md). The gate measures assets referenced by English and Spanish home, about, projects and blog routes.
+
 ## Bundle analysis
 
 ```bash
 bun run build
 bun run bundle:analyze
+
+# Generate the opt-in Rollup treemap
+bun run bundle:visualize
 ```
 
 The report is written to `bundle-analysis/report.txt`; the build also emits the Rollup visualizer output in `bundle-analysis/index.html`.

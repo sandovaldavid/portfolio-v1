@@ -61,13 +61,12 @@ Accessibility is scanned as part of the Playwright suite, not with a separate ax
 - **Run locally**: `bun run test:unit` / `bun run test:unit:coverage`.
 - **CI artifact**: `coverage-report`, retained for 7 days.
 
-## 5. Bundle size
+## 5. Route performance and bundle inspection
 
-- `astro.config.mjs` wires `rollup-plugin-visualizer` — every `astro build` emits a treemap at
-  `bundle-analysis/index.html`.
-- `bun run bundle:analyze` (`scripts/analyze-bundle.js`) writes a plain-text size breakdown to
-  `bundle-analysis/report.txt` (same logic CI runs inline in the `build` job).
-- CI checks total `dist/` size against a 5MB threshold — logs a warning, does not fail the build.
+- `bun run performance:check` enforces route-level JS, CSS, image, font-preload and request budgets from `performance-budgets.json`.
+- The methodology and baseline are documented in [`docs/PERFORMANCE.md`](./PERFORMANCE.md).
+- `bun run bundle:analyze` writes an informational emitted-file inventory to `bundle-analysis/report.txt`; total `dist/` size is not a performance gate.
+- `bun run bundle:visualize` explicitly enables `rollup-plugin-visualizer` and emits `bundle-analysis/index.html`. Normal builds do not create a treemap.
 
 ---
 

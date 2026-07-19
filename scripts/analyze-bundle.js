@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Bundle size report for the production build.
- * Mirrors the inline analysis CI runs in the `build` job of .github/workflows/ci.yml,
- * so `bun run bundle:analyze` gives the same numbers locally after `bun run build`.
+ * Informational emitted-file inventory for the production build.
+ * Route-level budgets are enforced separately by `bun run performance:check`.
  *
  * Usage: bun run build && bun run bundle:analyze
  */
@@ -72,7 +71,7 @@ const lines = [
 		? cssFiles.map(f => `${humanSize(f.size)}\t${f.file}`).join('\n')
 		: 'No CSS files',
 	'',
-	'=== Total Size ===',
+	'=== Informational Build Output Size (not a performance budget) ===',
 	`${humanSize(totalSize)}\t${DIST_DIR}`,
 ];
 
@@ -81,4 +80,5 @@ writeFileSync(OUTPUT_FILE, report);
 
 console.log(report);
 console.log(`[bundle:analyze] Report written to ${OUTPUT_FILE}`);
-console.log(`[bundle:analyze] Treemap (generated during build): ${OUTPUT_DIR}/index.html`);
+console.log('[bundle:analyze] Route budgets: bun run performance:check');
+console.log(`[bundle:analyze] Treemap: ${OUTPUT_DIR}/index.html (only when ANALYZE_BUNDLE=true)`);
