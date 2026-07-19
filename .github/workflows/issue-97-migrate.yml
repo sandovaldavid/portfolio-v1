@@ -1,0 +1,221 @@
+name: Implement issue 97
+
+on:
+    push:
+        branches: [perf/route-level-budgets]
+
+permissions:
+    contents: write
+
+concurrency:
+    group: issue-97-migration
+    cancel-in-progress: true
+
+jobs:
+    migrate:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout migration branch
+              uses: actions/checkout@v7
+              with:
+                  ref: perf/route-level-budgets
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Apply configuration and pipeline changes
+              shell: bash
+              run: |
+                  python <<'PY'
+                  from pathlib import Path
+                  import json
+
+                  def replace_once(path, old, new):
+                      file = Path(path)
+                      text = file.read_text()
+                      if old not in text:
+                          raise SystemExit(f'Missing expected text in {path}: {old[:80]!r}')
+                      file.write_text(text.replace(old, new, 1))
+
+                  Path('.github/workflows/issue-97-migrate.yml').unlink()
+
+                  replace_once(
+                      'astro.config.mjs',
+                      "import sitemap from '@astrojs/sitemap';\n",
+                      "import sitemap from '@astrojs/sitemap';\n\nconst analyzeBundle = process.env.ANALYZE_BUNDLE === 'true';\n",
+                  )
+                  replace_once(
+                      'astro.config.mjs',
+                      "\t// Eagerly prefetch internal links; pairs with <ClientRouter /> for snappy nav.\n\tprefetch: {\n\t\tprefetchAll: true,\n\t\tdefaultStrategy: 'hover',\n\t},",
+                      "\t// Only links marked with data-astro-prefetch participate in speculative loading.\n\tprefetch: {\n\t\tprefetchAll: false,\n\t\tdefaultStrategy: 'hover',\n\t},",
+                  )
+                  replace_once(
+                      'astro.config.mjs',
+                      "\t\tplugins: [\n\t\t\t// @ts-ignore - Tailwind CSS and visualizer type compatibility\n\t\t\ttailwindcss(),\n\t\t\tvisualizer({\n\t\t\t\tfilename: 'bundle-analysis/index.html',\n\t\t\t\ttitle: 'Análisis de Bundle - Portafolio',\n\t\t\t\ttemplate: 'treemap',\n\t\t\t\tgzipSize: true,\n\t\t\t\tbrotliSize: true,\n\t\t\t}),\n\t\t],",
+                      "\t\tplugins: [\n\t\t\t// @ts-ignore - Tailwind CSS plugin type compatibility\n\t\t\ttailwindcss(),\n\t\t\t...(analyzeBundle\n\t\t\t\t? [\n\t\t\t\t\t\tvisualizer({\n\t\t\t\t\t\t\tfilename: 'bundle-analysis/index.html',\n\t\t\t\t\t\t\ttitle: 'Bundle Analysis - Portfolio',\n\t\t\t\t\t\t\ttemplate: 'treemap',\n\t\t\t\t\t\t\tgzipSize: true,\n\t\t\t\t\t\t\tbrotliSize: true,\n\t\t\t\t\t\t}),\n\t\t\t\t\t]\n\t\t\t\t: []),\n\t\t],",
+                  )
+
+                  replace_once(
+                      'src/app/layouts/Layout.astro',
+                      '\t\t<Font cssVariable="--font-pixel" preload />\n\t\t<Font cssVariable="--font-pixel-clean" preload />',
+                      '\t\t<Font cssVariable="--font-pixel" />\n\t\t<Font cssVariable="--font-pixel-clean" preload />',
+                  )
+
+                  for marker in ["\t\ticon: 'projects',", "\t\ticon: 'blog',", "\t\ticon: 'about-me',"]:
+                      replace_once('src/widgets/header/ui/Header.astro', marker, marker + '\n\t\tprefetch: true,')
+
+                  for file in ['src/widgets/header/ui/DesktopNav.astro', 'src/widgets/header/ui/MobileNav.astro']:
+                      replace_once(file, '\t\ticon: string;\n', '\t\ticon: string;\n\t\tprefetch?: boolean;\n')
+                      replace_once(
+                          file,
+                          '\t\t\t\thref={link.url}\n',
+                          "\t\t\t\thref={link.url}\n\t\t\t\tdata-astro-prefetch={link.prefetch ? 'hover' : undefined}\n",
+                      )
+
+                  package_path = Path('package.json')
+                  package = json.loads(package_path.read_text())
+                  scripts = package['scripts']
+                  scripts['test:e2e:smoke'] = "bunx playwright test tests/e2e/smoke.spec.ts tests/e2e/performance.spec.ts --project=chromium"
+                  scripts['performance:check'] = 'node scripts/check-route-performance.mjs'
+                  scripts['bundle:visualize'] = 'ANALYZE_BUNDLE=true bun run build && bun run bundle:analyze'
+                  package_path.write_text(json.dumps(package, indent=4) + '\n')
+
+                  replace_once(
+                      '.github/workflows/ci.yml',
+                      '            - name: Generate bundle report\n              run: bun run bundle:analyze\n',
+                      '            - name: Generate bundle report\n              run: bun run bundle:analyze\n\n            - name: Enforce route performance budgets\n              run: bun run performance:check\n',
+                  )
+                  replace_once(
+                      '.github/workflows/ci.yml',
+                      '                  path: bundle-analysis/\n',
+                      '                  path: |\n                      bundle-analysis/\n                      performance-report/\n',
+                  )
+
+                  replace_once(
+                      '.github/workflows/main-quality.yml',
+                      '            - name: Generate bundle report\n              run: bun run bundle:analyze\n',
+                      '            - name: Generate bundle report\n              run: bun run bundle:analyze\n\n            - name: Enforce route performance budgets\n              run: bun run performance:check\n',
+                  )
+                  replace_once(
+                      '.github/workflows/main-quality.yml',
+                      '                  path: bundle-analysis/\n',
+                      '                  path: |\n                      bundle-analysis/\n                      performance-report/\n',
+                  )
+
+                  replace_once(
+                      '.github/workflows/scheduled-quality.yml',
+                      '            - name: Build production output\n              run: bun run build\n',
+                      "            - name: Build production output with bundle visualizer\n              env:\n                  ANALYZE_BUNDLE: 'true'\n              run: bun run build\n",
+                  )
+                  replace_once(
+                      '.github/workflows/scheduled-quality.yml',
+                      '            - name: Generate bundle audit\n              run: bun run bundle:analyze\n',
+                      '            - name: Generate bundle audit\n              run: bun run bundle:analyze\n\n            - name: Enforce route performance budgets\n              run: bun run performance:check\n',
+                  )
+                  replace_once(
+                      '.github/workflows/scheduled-quality.yml',
+                      '                      bundle-analysis/\n',
+                      '                      bundle-analysis/\n                      performance-report/\n',
+                  )
+
+                  replace_once(
+                      'scripts/analyze-bundle.js',
+                      ' * Bundle size report for the production build.\n * Mirrors the inline analysis CI runs in the `build` job of .github/workflows/ci.yml,\n * so `bun run bundle:analyze` gives the same numbers locally after `bun run build`.\n',
+                      ' * Informational emitted-file inventory for the production build.\n * Route-level budgets are enforced separately by `bun run performance:check`.\n',
+                  )
+                  replace_once(
+                      'scripts/analyze-bundle.js',
+                      "\t'=== Total Size ===',\n\t`${humanSize(totalSize)}\\t${DIST_DIR}`,",
+                      "\t'=== Informational Build Output Size (not a performance budget) ===',\n\t`${humanSize(totalSize)}\\t${DIST_DIR}`,",
+                  )
+                  replace_once(
+                      'scripts/analyze-bundle.js',
+                      'console.log(`[bundle:analyze] Treemap (generated during build): ${OUTPUT_DIR}/index.html`);',
+                      "console.log('[bundle:analyze] Route budgets: bun run performance:check');\nconsole.log(\n\t`[bundle:analyze] Treemap: ${OUTPUT_DIR}/index.html (only when ANALYZE_BUNDLE=true)`\n);",
+                  )
+
+                  gitignore = Path('.gitignore')
+                  gitignore.write_text(gitignore.read_text().rstrip() + '\n\n# route performance reports\nperformance-report/\n')
+
+                  replace_once('README.md', '- Lighthouse audits;\n', '- Lighthouse audits;\n- route-level performance budgets for representative English and Spanish journeys;\n')
+                  replace_once(
+                      'README.md',
+                      'Reports are uploaded as CI artifacts where applicable.',
+                      'Reports are uploaded as CI artifacts where applicable. Performance figures are build measurements governed by the reproducible methodology in [docs/PERFORMANCE.md](docs/PERFORMANCE.md), not unsupported speed claims.',
+                  )
+                  replace_once(
+                      'README.md',
+                      'bun run lighthouse          # Lighthouse CI\n',
+                      'bun run lighthouse          # Lighthouse CI\nbun run performance:check   # enforce route-level budgets after a build\nbun run bundle:visualize    # opt-in Rollup treemap audit\n',
+                  )
+
+                  replace_once('README.es.md', '- auditorías con Lighthouse;\n', '- auditorías con Lighthouse;\n- presupuestos de rendimiento por ruta para recorridos representativos en inglés y español;\n')
+                  replace_once(
+                      'README.es.md',
+                      'Los porcentajes de Vitest corresponden al [alcance unitario basado en riesgo](docs/testing/UNIT-COVERAGE.md), no a todo el repositorio. Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos.',
+                      'Los porcentajes de Vitest corresponden al [alcance unitario basado en riesgo](docs/testing/UNIT-COVERAGE.md), no a todo el repositorio. Los artefactos generados, el conocimiento importado para agentes y las auditorías históricas están excluidos explícitamente del formateo; el código mantenido, los tests, el tooling, las configuraciones y la documentación activa permanecen cubiertos. Las cifras de rendimiento son mediciones reproducibles del build según [docs/PERFORMANCE.md](docs/PERFORMANCE.md), no afirmaciones de velocidad sin evidencia.',
+                  )
+                  replace_once(
+                      'README.es.md',
+                      'bun run lighthouse          # Lighthouse CI\n',
+                      'bun run lighthouse          # Lighthouse CI\nbun run performance:check   # presupuestos por ruta después del build\nbun run bundle:visualize    # treemap de Rollup bajo demanda\n',
+                  )
+
+                  replace_once(
+                      'docs/tools.md',
+                      '## 5. Bundle size\n\n- `astro.config.mjs` wires `rollup-plugin-visualizer` — every `astro build` emits a treemap at\n  `bundle-analysis/index.html`.\n- `bun run bundle:analyze` (`scripts/analyze-bundle.js`) writes a plain-text size breakdown to\n  `bundle-analysis/report.txt` (same logic CI runs inline in the `build` job).\n- CI checks total `dist/` size against a 5MB threshold — logs a warning, does not fail the build.\n',
+                      '## 5. Route performance and bundle inspection\n\n- `bun run performance:check` enforces route-level JS, CSS, image, font-preload and request budgets from `performance-budgets.json`.\n- The methodology and baseline are documented in [`docs/PERFORMANCE.md`](./PERFORMANCE.md).\n- `bun run bundle:analyze` writes an informational emitted-file inventory to `bundle-analysis/report.txt`; total `dist/` size is not a performance gate.\n- `bun run bundle:visualize` explicitly enables `rollup-plugin-visualizer` and emits `bundle-analysis/index.html`. Normal builds do not create a treemap.\n',
+                  )
+
+                  replace_once(
+                      'docs/TESTING.md',
+                      '### Bundle Analysis\n',
+                      '### Route Performance Budgets\n\nAfter a production build, enforce representative route budgets and generate JSON/Markdown reports:\n\n```bash\nbun run build\nbun run performance:check\n```\n\nConfiguration: `performance-budgets.json`. Methodology: [`docs/PERFORMANCE.md`](PERFORMANCE.md). The gate measures assets referenced by English and Spanish home, about, projects and blog routes.\n\n### Bundle Analysis\n',
+                  )
+                  replace_once(
+                      'docs/TESTING.md',
+                      'bun run bundle:analyze\n',
+                      'bun run bundle:analyze\n\n# Generate the opt-in Rollup treemap\nbun run bundle:visualize\n',
+                  )
+                  PY
+
+            - name: Format maintained files
+              run: >-
+                  bunx prettier --write
+                  astro.config.mjs
+                  package.json
+                  performance-budgets.json
+                  scripts/check-route-performance.mjs
+                  scripts/analyze-bundle.js
+                  tests/e2e/performance.spec.ts
+                  src/app/layouts/Layout.astro
+                  src/widgets/header/ui/Header.astro
+                  src/widgets/header/ui/DesktopNav.astro
+                  src/widgets/header/ui/MobileNav.astro
+                  .github/workflows/ci.yml
+                  .github/workflows/main-quality.yml
+                  .github/workflows/scheduled-quality.yml
+                  docs/PERFORMANCE.md
+                  docs/TESTING.md
+                  docs/tools.md
+                  README.md
+                  README.es.md
+
+            - name: Validate repository
+              run: bun run check
+
+            - name: Validate production budgets
+              run: |
+                  bun run test:unit:ci
+                  bun run build
+                  bun run performance:check
+                  bun run bundle:analyze
+
+            - name: Commit migration
+              shell: bash
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add -A
+                  git commit -m "perf: enforce route-level performance budgets"
+                  git push origin HEAD:perf/route-level-budgets
