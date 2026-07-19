@@ -1,0 +1,153 @@
+name: Main Quality
+
+on:
+    pull_request:
+        branches: [main]
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: main-quality-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        name: Main Build & Unit Quality
+        runs-on: ubuntu-latest
+        outputs:
+            build-url: ${{ steps.upload-build.outputs.artifact-url }}
+        steps:
+            - name: Checkout integration revision
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Run repository quality checks
+              run: bun run check
+
+            - name: Run risk-based unit coverage
+              run: bun run test:unit:coverage
+
+            - name: Build production output
+              run: bun run build
+
+            - name: Validate generated internal links
+              run: bun run check:links
+
+            - name: Generate bundle report
+              run: bun run bundle:analyze
+
+            - name: Upload production build
+              id: upload-build
+              uses: actions/upload-artifact@v7
+              with:
+                  name: main-build-output
+                  path: dist/
+                  if-no-files-found: error
+                  retention-days: 1
+
+            - name: Upload unit coverage
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: main-coverage-report
+                  path: coverage/
+                  if-no-files-found: warn
+                  retention-days: 7
+
+            - name: Upload bundle report
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: main-bundle-analysis
+                  path: bundle-analysis/
+                  if-no-files-found: warn
+                  retention-days: 7
+
+    desktop-browsers:
+        name: Full Desktop Browser Suite
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout integration revision
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Download production build
+              uses: actions/download-artifact@v8
+              with:
+                  name: main-build-output
+                  path: dist
+
+            - name: Install desktop browsers
+              run: bunx playwright install --with-deps chromium firefox webkit
+
+            - name: Run Chromium, Firefox and WebKit
+              run: bun run test:e2e:desktop
+
+            - name: Upload desktop Playwright diagnostics
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: main-playwright-report
+                  path: |
+                      playwright-report/
+                      test-results/
+                      test-results.json
+                      junit-results.xml
+                  if-no-files-found: warn
+                  retention-days: 7
+
+    lighthouse:
+        name: Main Lighthouse
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout integration revision
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Download production build
+              uses: actions/download-artifact@v8
+              with:
+                  name: main-build-output
+                  path: dist
+
+            - name: Collect Lighthouse reports
+              run: bun run lighthouse:collect
+
+            - name: Assert Lighthouse thresholds
+              run: bun run lighthouse:assert
+
+            - name: Prepare Lighthouse artifact
+              if: always()
+              run: |
+                  rm -rf lighthouse-reports
+                  mkdir -p lighthouse-reports
+                  if [ -d .lighthouseci ]; then
+                    cp -R .lighthouseci/. lighthouse-reports/
+                  fi
+
+            - name: Upload Lighthouse reports
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: main-lighthouse-reports
+                  path: lighthouse-reports/
+                  if-no-files-found: warn
+                  retention-days: 7

@@ -1,0 +1,22 @@
+name: Setup Bun environment
+description: Install the repository Bun toolchain and frozen dependencies with a shared cache.
+
+runs:
+    using: composite
+    steps:
+        - name: Setup Bun
+          uses: oven-sh/setup-bun@v2
+          with:
+              bun-version: 1.3.14
+
+        - name: Cache Bun global store
+          uses: actions/cache@v6
+          with:
+              path: ~/.bun/install/cache
+              key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+              restore-keys: |
+                  ${{ runner.os }}-bun-
+
+        - name: Install dependencies
+          shell: bash
+          run: bun install --frozen-lockfile
