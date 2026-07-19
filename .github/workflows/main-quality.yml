@@ -44,6 +44,9 @@ jobs:
             - name: Generate bundle report
               run: bun run bundle:analyze
 
+            - name: Enforce route performance budgets
+              run: bun run performance:check
+
             - name: Upload production build
               id: upload-build
               uses: actions/upload-artifact@v7
@@ -67,7 +70,9 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: main-bundle-analysis
-                  path: bundle-analysis/
+                  path: |
+                      bundle-analysis/
+                      performance-report/
                   if-no-files-found: warn
                   retention-days: 7
 
