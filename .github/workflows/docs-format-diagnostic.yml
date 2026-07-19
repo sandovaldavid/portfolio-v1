@@ -5,7 +5,7 @@ on:
         branches: [develop]
 
 permissions:
-    contents: write
+    contents: read
 
 jobs:
     diagnose:
@@ -16,62 +16,52 @@ jobs:
               uses: actions/checkout@v7
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Format maintained documentation
-              run: >-
-                  bunx prettier --write
-                  README.md
-                  README.es.md
-                  AGENTS.md
-                  CONTRIBUTING.md
-                  CLAUDE.md
-                  .github/copilot-instructions.md
-                  .github/instructions/*.md
-                  docs/README.md
-                  docs/TESTING.md
-                  docs/archive/README.md
-                  docs/reports/README.md
-                  docs/tasks/README.md
-                  docs/FSD-Architecture/README.md
-                  package.json
-                  scripts/check-doc-links.mjs
-
-            - name: Publish formatting changes
+            - name: Validate formatting
+              id: formatting
+              continue-on-error: true
               shell: bash
-              run: |
-                  if git diff --quiet; then
-                    echo 'No formatting changes required.'
-                    exit 0
-                  fi
-                  git config user.name 'github-actions[bot]'
-                  git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-                  git add \
-                    README.md \
-                    README.es.md \
-                    AGENTS.md \
-                    CONTRIBUTING.md \
-                    CLAUDE.md \
-                    .github/copilot-instructions.md \
-                    .github/instructions \
-                    docs/README.md \
-                    docs/TESTING.md \
-                    docs/archive/README.md \
-                    docs/reports/README.md \
-                    docs/tasks/README.md \
-                    docs/FSD-Architecture/README.md \
-                    package.json \
-                    scripts/check-doc-links.mjs
-                  git commit -m 'style(docs): format consolidated guidance'
-                  git push origin HEAD:docs/consolidate-repository-guidance
+              run: bun run format:check 2>&1 | tee format-check.log
 
             - name: Validate documentation links
-              run: bun run check:docs
+              id: links
+              continue-on-error: true
+              shell: bash
+              run: bun run check:docs 2>&1 | tee docs-links.log
 
-            - name: Validate lint and types
+            - name: Validate lint
+              id: lint
+              continue-on-error: true
+              shell: bash
+              run: bun run lint 2>&1 | tee lint.log
+
+            - name: Validate types
+              id: types
+              continue-on-error: true
+              shell: bash
+              run: bun run typecheck 2>&1 | tee typecheck.log
+
+            - name: Upload diagnostics
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: documentation-diagnostics
+                  path: |
+                      format-check.log
+                      docs-links.log
+                      lint.log
+                      typecheck.log
+                  if-no-files-found: error
+                  retention-days: 1
+
+            - name: Assert diagnostics
+              if: always()
+              shell: bash
               run: |
-                  bun run lint
-                  bun run typecheck
+                  test '${{ steps.formatting.outcome }}' = 'success'
+                  test '${{ steps.links.outcome }}' = 'success'
+                  test '${{ steps.lint.outcome }}' = 'success'
+                  test '${{ steps.types.outcome }}' = 'success'
