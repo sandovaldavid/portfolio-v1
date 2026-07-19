@@ -5,7 +5,7 @@ on:
         branches: [develop]
 
 permissions:
-    contents: write
+    contents: read
 
 concurrency:
     group: issue-97-migration
@@ -89,11 +89,37 @@ jobs:
                   bun run performance:check
                   bun run bundle:analyze
 
-            - name: Commit migration
+            - name: Package validated sources
               shell: bash
               run: |
-                  git config user.name "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add -A
-                  git commit -m "perf: enforce route-level performance budgets"
-                  git push origin HEAD:perf/route-level-budgets
+                  cat > issue-97-files.txt <<'EOF'
+                  .gitignore
+                  .github/workflows/ci.yml
+                  .github/workflows/main-quality.yml
+                  .github/workflows/scheduled-quality.yml
+                  README.md
+                  README.es.md
+                  astro.config.mjs
+                  docs/PERFORMANCE.md
+                  docs/TESTING.md
+                  docs/tools.md
+                  package.json
+                  performance-budgets.json
+                  scripts/analyze-bundle.js
+                  scripts/check-route-performance.mjs
+                  src/app/layouts/Layout.astro
+                  src/widgets/header/ui/DesktopNav.astro
+                  src/widgets/header/ui/Header.astro
+                  src/widgets/header/ui/MobileNav.astro
+                  tests/e2e/performance.spec.ts
+                  EOF
+                  sed -i 's/^                  //' issue-97-files.txt
+                  tar -czf issue-97-final-files.tar.gz --files-from issue-97-files.txt
+
+            - name: Upload validated sources
+              uses: actions/upload-artifact@v7
+              with:
+                  name: issue-97-final-files
+                  path: issue-97-final-files.tar.gz
+                  if-no-files-found: error
+                  retention-days: 1
