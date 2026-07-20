@@ -11,6 +11,7 @@ English is the primary repository documentation language. Spanish is maintained 
 | [ARCHITECTURE.md](ARCHITECTURE.md)                   | Current FSD boundaries and executable architecture policy |
 | [TESTING.md](TESTING.md)                             | Test strategy and local commands                          |
 | [CI.md](CI.md)                                       | PR, main and scheduled pipeline behavior                  |
+| [DELIVERY.md](DELIVERY.md)                           | Branch, preview, production and release policy            |
 | [TOOLCHAIN.md](TOOLCHAIN.md)                         | Version and dependency classification policy              |
 | [PERFORMANCE.md](PERFORMANCE.md)                     | Route-budget methodology and loading decisions            |
 | [STYLE-GUIDE.md](STYLE-GUIDE.md)                     | Maintained visual tokens and typography rules             |
