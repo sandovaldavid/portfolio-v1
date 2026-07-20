@@ -15,13 +15,14 @@ bun run dev
 
 ## Workflow
 
-1. Update `develop` and create a prefixed branch from it.
+1. Update `main` and create a prefixed, short-lived branch from it.
 2. Read [AGENTS.md](AGENTS.md) and the owning document for the area being changed.
 3. Implement one coherent concern.
 4. Add the relevant unit or browser regression.
 5. Keep English and Spanish user-facing content synchronized.
 6. Run the canonical checks and any change-specific checks.
-7. Open a pull request into `develop` using a Conventional Commit title.
+7. Open a pull request into `main` using a Conventional Commit title.
+8. Use the Vercel preview to verify user-facing changes and squash merge after every required check passes.
 
 ```bash
 bun run check
@@ -29,7 +30,7 @@ bun run test:unit:ci
 bun run build
 ```
 
-See [docs/TESTING.md](docs/TESTING.md) for browser, accessibility, coverage and performance commands.
+See [docs/TESTING.md](docs/TESTING.md) for browser, accessibility, coverage and performance commands. The complete branch, preview, production and release policy lives in [docs/DELIVERY.md](docs/DELIVERY.md).
 
 ## Pull requests
 
