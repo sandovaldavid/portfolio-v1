@@ -24,6 +24,8 @@ The branch ruleset should require these stable pull-request check names:
 - `Playwright Chromium Smoke`
 - `Analyze Security`
 
+`Code Quality & Commits` validates the Conventional Commit pull-request title that becomes the single squash commit on `main`. Intermediate branch commits may remain iterative; the reviewed title and pull-request body are the integration contract.
+
 `PR Summary Report` and the Vercel preview deployment are informative and should not be required. The required job names are an external contract with branch protection and must not change without a coordinated ruleset update.
 
 Repository settings should also:
