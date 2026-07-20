@@ -27,6 +27,17 @@ jobs:
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
 
+            - name: Checkout canonical resume assets
+              uses: actions/checkout@v7
+              with:
+                  ref: resume-assets
+                  path: .resume-assets
+                  sparse-checkout: public/resume
+                  sparse-checkout-cone-mode: false
+
+            - name: Install canonical resume assets
+              run: bash scripts/install-resume-assets.sh
+
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
