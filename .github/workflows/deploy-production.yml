@@ -63,16 +63,8 @@ jobs:
                   sparse-checkout: public/resume
                   sparse-checkout-cone-mode: false
 
-            - name: Install and validate resume assets
-              run: |
-                  rm -rf public/resume
-                  mkdir -p public/resume
-                  cp .resume-assets/public/resume/david-sandoval-resume.pdf public/resume/
-                  cp .resume-assets/public/resume/david-sandoval-resume-es.pdf public/resume/
-                  cp .resume-assets/public/resume/manifest.json public/resume/
-
-                  test "$(head -c 5 public/resume/david-sandoval-resume.pdf)" = "%PDF-"
-                  test "$(head -c 5 public/resume/david-sandoval-resume-es.pdf)" = "%PDF-"
+            - name: Install canonical resume assets
+              run: bash scripts/install-resume-assets.sh
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
