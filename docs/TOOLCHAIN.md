@@ -14,4 +14,6 @@ The repository uses compatible version ranges for routine dependencies and exact
 
 ## Releases
 
-The canonical package identifier is `portfolio-v1`. Historical `porfolio-dev-*` tags are immutable repository history and are not renamed. Future Release Please tags and release metadata must use the corrected identifier.
+The canonical package identifier is `portfolio-v1`. Automated prerelease pull requests are intentionally disabled because production delivery is tied to validated `main` commits, not package publication.
+
+Create stable tags and GitHub Releases manually only for meaningful public milestones according to [DELIVERY.md](DELIVERY.md). Historical `porfolio-dev-*` and beta tags remain immutable repository history.
