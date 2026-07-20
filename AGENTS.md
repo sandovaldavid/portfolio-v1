@@ -11,6 +11,7 @@
 | Tool and dependency versions    | [package.json](package.json) and `bun.lock`                                  |
 | Testing                         | [docs/TESTING.md](docs/TESTING.md)                                           |
 | CI behavior                     | [docs/CI.md](docs/CI.md)                                                     |
+| Branches, releases, deployment  | [docs/DELIVERY.md](docs/DELIVERY.md)                                         |
 | Performance budgets             | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json`    |
 | Documentation ownership         | [docs/README.md](docs/README.md)                                             |
 | Contribution flow               | [CONTRIBUTING.md](CONTRIBUTING.md)                                           |
@@ -19,13 +20,13 @@ Do not copy version numbers, thresholds or architecture prose into another activ
 
 ## 2. Before changing code
 
-1. Start from an updated `develop` branch.
+1. Start from an updated `main` branch.
 2. Read the issue, nearby implementation and relevant active documentation.
-3. Keep one coherent concern per branch and pull request.
+3. Keep one coherent concern per short-lived branch and pull request.
 4. Determine the correct FSD layer before creating files.
 5. Identify the regression test and bilingual impact before implementation.
 
-Never work directly on `main` or `develop`. Feature branches target `develop`; only `develop` integrates into `main`.
+Never work directly on `main`. Feature, fix and maintenance branches target `main`; preview deployments provide the repository's staging environment.
 
 ## 3. Architecture and code
 
@@ -95,7 +96,7 @@ A pull request should state:
 - risks or trade-offs;
 - `Closes #<issue>` when the merge should close an issue.
 
-Do not merge unless explicitly requested. Before marking a PR ready, confirm the final head is mergeable and every required check is green.
+Use squash merge so the validated PR title becomes the single commit on `main`. Do not merge unless explicitly requested. Before marking a PR ready, confirm the final head is mergeable and every required check is green.
 
 ## 8. Canonical local gate
 
