@@ -78,6 +78,7 @@ function shouldIgnore(reference) {
 	return (
 		!reference ||
 		reference.startsWith('#') ||
+		reference.startsWith('?') ||
 		reference.startsWith('//') ||
 		reference.startsWith('data:') ||
 		externalPattern.test(reference)
