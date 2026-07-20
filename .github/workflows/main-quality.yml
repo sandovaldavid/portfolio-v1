@@ -1,8 +1,6 @@
 name: Main Quality
 
 on:
-    pull_request:
-        branches: [main]
     push:
         branches: [main]
     workflow_dispatch:
@@ -11,7 +9,7 @@ permissions:
     contents: read
 
 concurrency:
-    group: main-quality-${{ github.event.pull_request.number || github.ref }}
+    group: main-quality-${{ github.ref }}
     cancel-in-progress: true
 
 jobs:
@@ -21,10 +19,10 @@ jobs:
         outputs:
             build-url: ${{ steps.upload-build.outputs.artifact-url }}
         steps:
-            - name: Checkout integration revision
+            - name: Checkout integrated revision
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                  ref: ${{ github.sha }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
@@ -81,10 +79,10 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         steps:
-            - name: Checkout integration revision
+            - name: Checkout integrated revision
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                  ref: ${{ github.sha }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
@@ -119,10 +117,10 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         steps:
-            - name: Checkout integration revision
+            - name: Checkout integrated revision
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                  ref: ${{ github.sha }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
