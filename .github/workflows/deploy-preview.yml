@@ -18,6 +18,9 @@ jobs:
     deploy:
         if: github.actor != 'dependabot[bot]'
         runs-on: ubuntu-latest
+        environment:
+            name: Preview
+            url: ${{ steps.deploy.outputs.preview_url }}
         steps:
             - name: Checkout pull request head
               uses: actions/checkout@v7
@@ -26,35 +29,6 @@ jobs:
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
-
-            - name: Create GitHub Deployment
-              id: gh-deploy
-              uses: actions/github-script@v9
-              with:
-                  script: |
-                      const deploy = await github.rest.repos.createDeployment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        ref: context.payload.pull_request.head.sha,
-                        environment: 'Preview',
-                        auto_merge: false,
-                        required_contexts: [],
-                        description: 'Vercel Preview',
-                        transient_environment: true,
-                      });
-                      core.setOutput('deployment_id', deploy.data.id);
-
-            - name: Set deployment status — in progress
-              uses: actions/github-script@v9
-              with:
-                  script: |
-                      await github.rest.repos.createDeploymentStatus({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-                        state: 'in_progress',
-                        description: 'Deploying exact pull request head to Vercel Preview',
-                      });
 
             - name: Pull Vercel preview environment
               run: bunx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
@@ -76,35 +50,6 @@ jobs:
               env:
                   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
                   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-            - name: Set deployment status — success
-              if: success()
-              uses: actions/github-script@v9
-              with:
-                  script: |
-                      await github.rest.repos.createDeploymentStatus({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-                        state: 'success',
-                        environment_url: '${{ steps.deploy.outputs.preview_url }}',
-                        description: 'Deployed pull request head to Vercel Preview',
-                        log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-                      });
-
-            - name: Set deployment status — failure
-              if: failure()
-              uses: actions/github-script@v9
-              with:
-                  script: |
-                      await github.rest.repos.createDeploymentStatus({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        deployment_id: ${{ steps.gh-deploy.outputs.deployment_id }},
-                        state: 'failure',
-                        description: 'Preview deployment failed',
-                        log_url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-                      });
 
             - name: Create or update PR comment
               if: success()
