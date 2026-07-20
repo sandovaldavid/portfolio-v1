@@ -20,7 +20,6 @@ jobs:
               uses: actions/checkout@v7
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
@@ -28,18 +27,7 @@ jobs:
             - name: Run repository quality checks
               run: bun run check
 
-            - name: Validate Conventional Commits
-              env:
-                  BASE_SHA: ${{ github.event.pull_request.base.sha }}
-                  HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-              run: |
-                  git log --no-merges --format=%H "${BASE_SHA}..${HEAD_SHA}" | while read -r sha; do
-                    commit_msg=$(git log -1 --format=%B "$sha")
-                    echo "Linting commit: $sha"
-                    echo "$commit_msg" | bunx commitlint
-                  done
-
-            - name: Validate PR title
+            - name: Validate squash-merge title
               env:
                   PR_TITLE: ${{ github.event.pull_request.title }}
                   PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -167,7 +155,7 @@ jobs:
                     echo
                     echo "| Gate | Result |"
                     echo "|---|---|"
-                    echo "| Code quality and commits | ${{ needs.validate.result }} |"
+                    echo "| Code quality and squash title | ${{ needs.validate.result }} |"
                     echo "| Unit tests | ${{ needs.test-unit.result }} |"
                     echo "| Production build and bundle report | ${{ needs.build.result }} |"
                     echo "| Chromium smoke and axe | ${{ needs.smoke.result }} |"
