@@ -36,6 +36,11 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
+            - name: Format migration changes
+              run: |
+                  bun run format
+                  git diff --binary > formatting.patch
+
             - name: Run repository quality checks
               run: bun run check
 
@@ -81,6 +86,7 @@ jobs:
               with:
                   name: trunk-migration-validation
                   path: |
+                      formatting.patch
                       coverage/
                       bundle-analysis/
                       performance-report/
