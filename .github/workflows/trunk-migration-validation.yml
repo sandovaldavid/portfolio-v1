@@ -1,0 +1,103 @@
+name: Trunk Migration Validation
+
+on:
+    pull_request:
+        branches: [develop]
+        types: [opened, synchronize, reopened]
+
+permissions:
+    contents: write
+
+concurrency:
+    group: trunk-migration-validation
+    cancel-in-progress: true
+
+jobs:
+    validate:
+        if: github.head_ref == 'chore/adopt-trunk-based-delivery'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout migration head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Remove temporary validation workflow
+              id: cleanup
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  rm .github/workflows/trunk-migration-validation.yml
+                  git config user.name 'github-actions[bot]'
+                  git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+                  git add .github/workflows/trunk-migration-validation.yml
+                  git commit -m 'chore(ci): remove migration validation workflow'
+                  git push origin HEAD:chore/adopt-trunk-based-delivery
+                  echo "final_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+            - name: Run repository quality checks
+              run: bun run check
+
+            - name: Run risk-based unit coverage
+              run: bun run test:unit:coverage
+
+            - name: Build production output
+              run: bun run build
+
+            - name: Validate generated links
+              run: bun run check:links
+
+            - name: Generate bundle report
+              run: bun run bundle:analyze
+
+            - name: Enforce route performance budgets
+              run: bun run performance:check
+
+            - name: Install desktop browser matrix
+              run: bunx playwright install --with-deps chromium firefox webkit
+
+            - name: Run Chromium, Firefox and WebKit
+              run: bun run test:e2e:desktop
+
+            - name: Collect Lighthouse reports
+              run: bun run lighthouse:collect
+
+            - name: Assert Lighthouse thresholds
+              run: bun run lighthouse:assert
+
+            - name: Prepare Lighthouse artifact
+              if: always()
+              run: |
+                  rm -rf lighthouse-reports
+                  mkdir -p lighthouse-reports
+                  if [ -d .lighthouseci ]; then
+                    cp -R .lighthouseci/. lighthouse-reports/
+                  fi
+
+            - name: Upload migration validation artifacts
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: trunk-migration-validation
+                  path: |
+                      coverage/
+                      bundle-analysis/
+                      performance-report/
+                      playwright-report/
+                      test-results/
+                      test-results.json
+                      junit-results.xml
+                      lighthouse-reports/
+                  if-no-files-found: warn
+                  retention-days: 7
+
+            - name: Summary
+              if: always()
+              run: |
+                  echo "## Trunk migration validation" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Final branch SHA: ${{ steps.cleanup.outputs.final_sha }}" >> "$GITHUB_STEP_SUMMARY"
+                  echo "The temporary workflow was removed before validation." >> "$GITHUB_STEP_SUMMARY"
