@@ -2,7 +2,7 @@ name: Continuous Integration
 
 on:
     pull_request:
-        branches: [develop]
+        branches: [main]
 
 permissions:
     contents: read
@@ -172,5 +172,5 @@ jobs:
                     echo "| Production build and bundle report | ${{ needs.build.result }} |"
                     echo "| Chromium smoke and axe | ${{ needs.smoke.result }} |"
                     echo
-                    echo "Full desktop-browser, Lighthouse and visual/device suites run around main integration and on the scheduled/manual pipeline."
+                    echo "Full desktop-browser and Lighthouse suites run after integration into main; extended device and visual suites run on the scheduled/manual pipeline."
                   } >> "$GITHUB_STEP_SUMMARY"
