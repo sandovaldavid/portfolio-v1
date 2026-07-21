@@ -4,16 +4,17 @@ services:
             context: .
             dockerfile: Dockerfile.test
         image: portfolio-v1-test:latest
-        user: '${UID:-1000}:${GID:-1000}'
+        init: true
+        ipc: host
+        user: '${HOST_UID:-1000}:${HOST_GID:-1000}'
         working_dir: /workspace
         volumes:
             - .:/workspace:z
-            - ./.docker/node_modules:/workspace/node_modules:z
-            - bun_data:/home/pwuser/.bun
+            - ./.docker/runtime/node_modules:/workspace/node_modules:z
+            - ./.docker/runtime/home:/home/tester:z
         environment:
-            - CI=${CI:-}
+            HOME: /home/tester
+            CI: '${CI:-}'
+            RUN_VISUAL_TESTS: '${RUN_VISUAL_TESTS:-}'
         ports:
             - '4321:4321'
-
-volumes:
-    bun_data:

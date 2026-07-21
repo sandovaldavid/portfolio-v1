@@ -51,10 +51,8 @@ jobs:
             - name: Run extended desktop and mobile matrix
               run: bun run test:e2e:extended
 
-            - name: Run visual regression suite
-              env:
-                  RUN_VISUAL_TESTS: 'true'
-              run: bun run test:e2e:visual
+            - name: Run visual regression suite in pinned Docker
+              run: bun run test:e2e:visual:docker
 
             - name: Upload extended Playwright diagnostics
               if: always()

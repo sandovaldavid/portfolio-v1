@@ -41,6 +41,7 @@ bun run test:e2e:smoke
 bun run test:e2e:desktop
 bun run test:e2e:extended
 RUN_VISUAL_TESTS=true bun run test:e2e:visual
+bun run test:e2e:visual:docker
 bun run test:ui
 bun run test:debug
 ```
@@ -48,7 +49,14 @@ bun run test:debug
 - `test:e2e:smoke` checks critical English and Spanish routes in Chromium and blocks serious or critical Axe violations.
 - `test:e2e:desktop` runs Chromium, Firefox and WebKit.
 - `test:e2e:extended` adds Mobile Chrome and Mobile Safari.
-- `test:e2e:visual` validates maintained Chromium, Firefox and Mobile Chrome snapshots and remains skipped in ordinary CI unless `RUN_VISUAL_TESTS=true`.
+- `test:e2e:visual` runs maintained Chromium, Firefox and Mobile Chrome snapshots directly on the host. Use it for fast diagnostics when the host matches the baseline environment.
+- `test:e2e:visual:docker` is the merge-grade local Linux comparison. It builds the pinned Ubuntu 24.04 Playwright image, pins Bun to the repository version, enables CI-style single-worker execution and compares the maintained snapshots without update mode.
+
+Screenshot rendering can vary with the host operating system, browser build, font stack, hardware and headless configuration. A native mismatch is not evidence that a committed baseline should be replaced when the same head passes in the pinned Docker and CI environments. Never run `--update-snapshots` merely to make a host-specific failure pass.
+
+The Docker visual command must finish with all 27 maintained tests passing and must leave `tests/e2e/visual.spec.ts-snapshots/` unchanged. The image version in `Dockerfile.test` must remain aligned with the resolved `@playwright/test` version in `bun.lock`.
+
+Any deliberate baseline update must be generated inside the same pinned Docker environment, limited to reviewed cases and followed by a complete `bun run test:e2e:visual:docker` run without update mode. Passing only the snapshot-update command is not validation.
 
 Playwright retains first-retry traces, failure screenshots and failure videos. CI uploads HTML, JSON and JUnit diagnostics even when tests fail.
 

@@ -8,7 +8,7 @@ The repository uses proportional pipelines around one authoritative branch: fast
 | --------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | Pull request to `main`            | `Continuous Integration`      | Fast critical gates: repository checks, unit tests, production build, Chromium smoke and axe scans.              |
 | Push to `main` or manual run      | `Main Quality`                | Full Chromium, Firefox and WebKit suite, unit coverage, generated-link validation, bundle report and Lighthouse. |
-| Weekly or manual                  | `Scheduled Extended Quality`  | Complete desktop/mobile matrix, visual regression, generated-link audit, coverage and bundle artifacts.          |
+| Weekly or manual                  | `Scheduled Extended Quality`  | Complete desktop/mobile matrix, pinned-Docker visual regression, generated-link audit, coverage and artifacts.   |
 | Pull request/push to `main`       | `CodeQL`                      | Security and quality analysis for the production branch lifecycle.                                               |
 | Successful `Main Quality` on push | `Deploy to Vercel Production` | Deploys the exact validated `main` SHA; resume-only dispatches explicitly rebuild the latest `main`.             |
 
@@ -49,10 +49,12 @@ Production deployment is a separate workflow triggered by the successful complet
 `Scheduled Extended Quality` runs every Monday at 03:00 UTC and can be started with `workflow_dispatch`. It covers:
 
 - all configured desktop and mobile Playwright projects;
-- visual snapshots on Chromium, Firefox and Mobile Chrome;
+- visual snapshots on Chromium, Firefox and Mobile Chrome inside the pinned Docker environment;
 - internal references in generated HTML;
 - risk-based unit coverage;
 - bundle reporting.
+
+The pinned Docker image is the authoritative Linux screenshot environment for both scheduled CI and local merge-grade comparison. Native host runs remain useful diagnostics, but their screenshots are not interchangeable with committed Docker baselines because operating-system libraries, browser builds, font rendering and hardware can change pixel geometry.
 
 CodeQL runs separately every Sunday and can also be started manually.
 
@@ -61,6 +63,8 @@ CodeQL runs separately every Sunday and can also be started manually.
 `.github/actions/setup-bun/action.yml` owns the pinned Bun version, Bun cache and frozen dependency installation used by quality and deployment workflows.
 
 Only dependency and `.astro` caches are used. `dist/` is always rebuilt and is transferred between jobs as a short-lived artifact; it is not treated as an incremental cache.
+
+The visual Docker route additionally pins the Playwright image and Bun version in `Dockerfile.test`. Its host-owned `.docker/runtime/` mounts are ignored repository state and may be deleted safely between runs.
 
 ## Failure artifacts
 
@@ -76,6 +80,8 @@ bun run check:links
 bun run test:e2e:smoke
 bun run test:e2e:desktop
 bun run test:e2e:extended
-RUN_VISUAL_TESTS=true bun run test:e2e:visual
+bun run test:e2e:visual:docker
 bun run lighthouse
 ```
+
+`RUN_VISUAL_TESTS=true bun run test:e2e:visual` remains available for native-host diagnostics. It is not the authoritative comparison when the host differs from the pinned Docker environment.

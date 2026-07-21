@@ -45,6 +45,7 @@ junit-results.xml
 .lighthouseci/
 lighthouse-report/
 bundle-analysis/
+.docker/
 *.png
 !src/assets/**/*.png
 !tests/e2e/**/*.png
