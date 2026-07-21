@@ -22,7 +22,15 @@ jobs:
                   ref: ${{ github.event.pull_request.head.sha }}
 
             - name: Run complete pinned Docker visual suite
-              run: bun run test:e2e:visual:docker
+              env:
+                  CI: 'true'
+                  RUN_VISUAL_TESTS: 'true'
+              run: |
+                  bash docker-test.sh \
+                    tests/e2e/visual.spec.ts \
+                    --project=chromium \
+                    --project=firefox \
+                    --project='Mobile Chrome'
 
             - name: Confirm snapshots remain unchanged
               run: git diff --exit-code -- tests/e2e/visual.spec.ts-snapshots
