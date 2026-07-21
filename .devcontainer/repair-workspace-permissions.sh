@@ -11,6 +11,30 @@ cd "$REPOSITORY_ROOT"
 
 owner="$(id -u):$(id -g)"
 
+git_directory="$(git rev-parse --absolute-git-dir 2>/dev/null || true)"
+if [[ -n "$git_directory" ]]; then
+	case "$git_directory" in
+		"$REPOSITORY_ROOT"/.git | "$REPOSITORY_ROOT"/.git/*)
+			if [[ -L "$git_directory" ]]; then
+				echo "Refusing to repair Git metadata because it is a symbolic link: $git_directory" >&2
+				exit 1
+			fi
+
+			sudo chown -R --no-dereference "$owner" -- "$git_directory"
+			sudo chmod -R u+rwX -- "$git_directory"
+
+			if [[ ! -w "$git_directory" ]]; then
+				echo "Git metadata is not writable after repair: $git_directory" >&2
+				exit 1
+			fi
+			;;
+		*)
+			echo "Refusing to repair Git metadata outside the repository: $git_directory" >&2
+			exit 1
+			;;
+	esac
+fi
+
 generated_paths=(
 	.astro
 	dist
@@ -34,7 +58,7 @@ for path in "${generated_paths[@]}"; do
 	fi
 
 	if [[ -e "$path" ]]; then
-		sudo chown -R "$owner" -- "$path"
+		sudo chown -R --no-dereference "$owner" -- "$path"
 		sudo chmod -R u+rwX -- "$path"
 	fi
 done
@@ -48,4 +72,4 @@ for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime
 	fi
 done
 
-printf 'Generated workspace paths are writable by %s.\n' "$(id -un)"
+printf 'Git metadata and generated workspace paths are writable by %s.\n' "$(id -un)"
