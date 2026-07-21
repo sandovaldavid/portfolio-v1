@@ -10,6 +10,7 @@ The versioned configuration owns these guarantees:
 - Bun `1.3.14`, matching `packageManager`;
 - Playwright `1.61.1`, matching the exact `@playwright/test` dependency;
 - browsers supplied by the Playwright image through `/ms-playwright`;
+- a normalized `pwuser` UID/GID of `1000:1000` before Dev Containers applies host-specific remapping;
 - frozen dependency installation from `bun.lock`;
 - a container-owned named volume for `node_modules`;
 - repair of Git metadata and known ignored/generated workspace paths left by another UID;
@@ -19,7 +20,7 @@ The versioned configuration owns these guarantees:
 - explicit propagation of the real host workspace path to nested test containers;
 - the same non-root `pwuser` identity for editing and commands.
 
-`bun run check:devcontainer` rejects version, mount, lifecycle, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
 
 ## Prerequisites
 
@@ -34,6 +35,8 @@ The host directories `~/.gemini` and `~/.claude` are created before startup and 
 ## Workspace and dependencies
 
 The repository source is bind-mounted at `/workspaces/portfolio-v1`. The host checkout remains the source of truth for code, documentation and Git state.
+
+On native Linux, a bind mount preserves the numeric host UID and GID. The development image therefore normalizes `pwuser` to `1000:1000`, and Dev Containers may remap that identity when a different host UID is detected during container creation. The startup repair refuses to change repository ownership when the running user and workspace owner do not match.
 
 `node_modules` is deliberately different. The path `/workspaces/portfolio-v1/node_modules` is overlaid with the Docker named volume `portfolio-v1-devcontainer-node_modules` when the local repository directory is named `portfolio-v1`.
 
@@ -50,7 +53,7 @@ The post-create lifecycle verifies that `node_modules` is a separate mount, assi
 
 From Visual Studio Code, run **Dev Containers: Reopen in Container**.
 
-After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount or environment declarations.
+After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user or environment declarations.
 
 The startup lifecycle repairs writable Git and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the repair for an already-running container.
 
@@ -80,6 +83,41 @@ Then run **Dev Containers: Rebuild Container**. Docker creates a fresh empty vol
 
 Do not delete the repository or reset Git to repair dependencies. Removing this named volume affects installed packages only.
 
+## Recover a stale container identity
+
+A log that starts an existing container and includes `--skip-post-create` is not a rebuild. On Linux, an old container may retain a different numeric UID from the host checkout. The repair script reports both identities and exits before changing `.git` or generated paths.
+
+From a host terminal in the repository, inspect the ownership first:
+
+```bash
+id
+stat -c 'workspace=%u:%g %n' .
+docker inspect --format '{{.Config.User}}' <container-id>
+```
+
+Restore host ownership only for metadata or generated paths that were previously changed by a container:
+
+```bash
+sudo chown -R "$(id -u):$(id -g)" \
+	.git .astro dist coverage playwright-report test-results \
+	test-results.json junit-results.xml .docker 2>/dev/null || true
+```
+
+Remove the stale container shown in the Dev Containers log:
+
+```bash
+docker rm -f <container-id>
+```
+
+Then run **Dev Containers: Rebuild Container Without Cache**. A successful container must satisfy:
+
+```bash
+test "$(id -u)" = "$(stat -c '%u' /workspaces/portfolio-v1)"
+test -w /workspaces/portfolio-v1
+```
+
+Do not use recursive `chown` on the entire repository. Tracked source remains owned by the host user.
+
 ## Recover stale Git or generated artifacts
 
 The source checkout is a host bind mount, so Git metadata and generated output from a previous native command, container or UID can remain visible after a rebuild. Typical symptoms are `EACCES` errors involving:
@@ -92,13 +130,13 @@ The source checkout is a host bind mount, so Git metadata and generated output f
 
 The create, start and attach lifecycles repair the actual Git directory and the known ignored/generated paths automatically. Direct Playwright commands repeat the repair before creating reports, and the Docker visual wrapper repeats it before using `.docker/runtime`.
 
-Run the repair manually inside the devcontainer when needed:
+Run the repair manually inside a correctly aligned devcontainer when needed:
 
 ```bash
 bash .devcontainer/repair-workspace-permissions.sh
 ```
 
-The script resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata plus an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
+The script first requires the running UID to match the Linux workspace owner. It then resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata plus an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
 
 ## Daily development
 
