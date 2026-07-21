@@ -4,6 +4,21 @@ set -euo pipefail
 REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
+dependency_directory="$REPOSITORY_ROOT/node_modules"
+
+if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo; then
+	echo "node_modules is not mounted as an isolated devcontainer volume: $dependency_directory" >&2
+	echo "Rebuild the development container after updating main." >&2
+	exit 1
+fi
+
+sudo chown "$(id -u):$(id -g)" "$dependency_directory"
+
+if [[ ! -w "$dependency_directory" ]]; then
+	echo "The isolated node_modules volume is not writable by $(id -un)." >&2
+	exit 1
+fi
+
 expected_bun_version="$(node -p "require('./package.json').packageManager.split('@').at(-1)")"
 actual_bun_version="$(bun --version)"
 
@@ -37,3 +52,4 @@ printf '\nDevelopment container ready.\n'
 printf 'Bun: %s\n' "$actual_bun_version"
 printf 'Playwright: %s\n' "$actual_playwright_version"
 printf 'Workspace: %s\n' "$REPOSITORY_ROOT"
+printf 'Dependencies: %s (isolated volume)\n' "$dependency_directory"
