@@ -58,16 +58,17 @@ else
 	echo "Docker daemon connection: unavailable. Start the host Docker daemon before running Docker-backed tests." >&2
 fi
 
-prompt_marker="# devcontainer-ps1-customization"
-bashrc="$HOME/.bashrc"
-if ! grep -q "$prompt_marker" "$bashrc" 2>/dev/null; then
-	cat >> "$bashrc" <<- 'PS1_EOF'
+prompt_marker="# devcontainer-prompt-customization"
+for rc_file in "$HOME/.zshrc" "$HOME/.bashrc"; do
+	if [[ -f "$rc_file" ]] && ! grep -qF "$prompt_marker" "$rc_file" 2>/dev/null; then
+		cat >> "$rc_file" <<- 'PROMPT_EOF'
 
-	$prompt_marker
-	__git_branch() { git branch --show-current 2>/dev/null; }
-	PS1='\[\e[32m\]\W\[\e[0m\] \[\e[34m\]$(__git_branch)\[\e[0m\] \$ '
-PS1_EOF
-fi
+		# devcontainer-prompt-customization
+		__git_branch() { git branch --show-current 2>/dev/null; }
+		PROMPT='%F{green}%1~%f %F{blue}$(__git_branch)%f %# '
+PROMPT_EOF
+	fi
+done
 
 printf '\nDevelopment container ready.\n'
 printf 'Bun: %s\n' "$actual_bun_version"
