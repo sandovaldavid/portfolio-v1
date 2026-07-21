@@ -10,7 +10,7 @@ export HOST_UID="$(id -u)"
 export HOST_GID="$(id -g)"
 
 if [[ "${DEVCONTAINER:-}" == "true" ]]; then
-	bash .devcontainer/repair-workspace-permissions.sh
+	bash .devcontainer/scripts/post-start.sh
 
 	if [[ -z "${HOST_WORKSPACE_FOLDER:-}" ]]; then
 		echo "HOST_WORKSPACE_FOLDER is required inside the devcontainer." >&2

@@ -43,7 +43,7 @@ Install and start:
 2. Visual Studio Code.
 3. The Dev Containers extension.
 
-The host directories `~/.gemini` and `~/.claude` are created before startup and mounted for credential continuity. Assistant CLIs are optional user tools and are not part of the repository's reproducible core toolchain.
+Assistant CLIs are optional user tools configured on the host and are not part of the repository's reproducible core toolchain.
 
 ## Workspace and dependencies
 
@@ -72,12 +72,10 @@ From Visual Studio Code, run **Dev Containers: Reopen in Container**.
 
 After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands, `init`, `runArgs` or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user, init or environment declarations.
 
-The startup lifecycle repairs writable Git, Bun, dependency and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the inexpensive marker and mutable-cache checks for an already-running container.
-
 The post-create script performs the following checks:
 
 ```bash
-bash .devcontainer/repair-workspace-permissions.sh
+bash .devcontainer/scripts/post-start.sh
 bun --version
 bun install --frozen-lockfile
 bunx playwright --version
@@ -115,7 +113,7 @@ A normal rebuild preserves the named `node_modules` volume to avoid reinstalling
 After updating the branch, run inside a correctly aligned devcontainer:
 
 ```bash
-bash .devcontainer/repair-workspace-permissions.sh
+bash .devcontainer/scripts/post-start.sh
 cat "$BUN_INSTALL/.devcontainer-owner-state"
 cat node_modules/.devcontainer-volume-state
 bun install --frozen-lockfile
@@ -193,7 +191,7 @@ The create, start and attach lifecycles repair the actual Git directory and the 
 Run the repair manually inside a correctly aligned devcontainer when needed:
 
 ```bash
-bash .devcontainer/repair-workspace-permissions.sh
+bash .devcontainer/scripts/post-start.sh
 ```
 
 The script first requires the running UID to match the Linux workspace owner. It then restricts Bun repair to `/home/pwuser/.bun`, resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Bun state, Git metadata, the isolated dependency volume and an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.

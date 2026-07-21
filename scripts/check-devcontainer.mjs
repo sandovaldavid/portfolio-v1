@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 'utf8'));
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
-const postCreateScript = readFileSync('.devcontainer/post-create.sh', 'utf8');
-const repairScript = readFileSync('.devcontainer/repair-workspace-permissions.sh', 'utf8');
+const postCreateScript = readFileSync('.devcontainer/scripts/post-create.sh', 'utf8');
+const postStartScript = readFileSync('.devcontainer/scripts/post-start.sh', 'utf8');
 const dockerCompose = readFileSync('docker-compose.yml', 'utf8');
 const dockerTestScript = readFileSync('docker-test.sh', 'utf8');
 const runPlaywrightScript = readFileSync('scripts/run-playwright.mjs', 'utf8');
@@ -33,7 +33,7 @@ const runArgs = Array.isArray(devcontainer.runArgs) ? devcontainer.runArgs : [];
 const workspaceFolder = '/workspaces/portfolio-v1';
 const dependencyVolumeMount =
 	'source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume';
-const repairCommand = 'bash .devcontainer/repair-workspace-permissions.sh';
+const postStartCommand = 'bash .devcontainer/scripts/post-start.sh';
 
 expect(Boolean(bunVersion), 'packageManager must pin Bun as bun@<version>.');
 expect(
@@ -70,7 +70,7 @@ expect(
 );
 expect(
 	devcontainer.workspaceMount ===
-		`source=${'${localWorkspaceFolder}'},target=${workspaceFolder},type=bind,consistency=cached`,
+		`source=${'${localWorkspaceFolder}'},target=${workspaceFolder},type=bind`,
 	'devcontainer.json must mount the repository at the canonical workspace path.'
 );
 expect(
@@ -90,7 +90,19 @@ expect(
 	'devcontainer.json must install GitHub CLI support.'
 );
 expect(
-	devcontainer.remoteUser === 'pwuser' && devcontainer.containerUser === 'pwuser',
+	Boolean(devcontainer.features?.['ghcr.io/devcontainers/features/common-utils:2']),
+	'devcontainer.json must include common-utils for consistent shell environment.'
+);
+expect(
+	devcontainer.hostRequirements?.cpus >= 2 && devcontainer.hostRequirements?.memory === '4gb',
+	'devcontainer.json must declare minimum host requirements.'
+);
+expect(
+	devcontainer.shutdownAction === 'stopContainer',
+	'devcontainer.json must declare an explicit shutdown action.'
+);
+expect(
+	devcontainer.remoteUser === 'pwuser',
 	'VS Code and all default container processes must run as pwuser.'
 );
 expect(devcontainer.updateRemoteUserUID === true, 'Host UID mapping must remain enabled.');
@@ -100,15 +112,15 @@ expect(
 	'The devcontainer must share host IPC for direct Chromium execution.'
 );
 expect(
-	devcontainer.postCreateCommand === 'bash .devcontainer/post-create.sh',
+	devcontainer.postCreateCommand === 'bash .devcontainer/scripts/post-create.sh',
 	'devcontainer.json must use the versioned post-create script.'
 );
 expect(
-	devcontainer.postStartCommand === repairCommand,
+	devcontainer.postStartCommand === postStartCommand,
 	'devcontainer.json must repair writable state whenever the container starts.'
 );
 expect(
-	devcontainer.postAttachCommand === repairCommand,
+	devcontainer.postAttachCommand === postStartCommand,
 	'devcontainer.json must repair writable state whenever VS Code attaches.'
 );
 expect(
@@ -132,7 +144,7 @@ expect(
 	'devcontainer.json must expose a consistent interactive terminal capability.'
 );
 expect(
-	postCreateScript.includes(repairCommand),
+	postCreateScript.includes(postStartCommand),
 	'post-create setup must repair generated workspace paths before validation.'
 );
 expect(
@@ -152,39 +164,39 @@ expect(
 	'post-create setup must validate the devcontainer contract.'
 );
 expect(
-	repairScript.includes('git rev-parse --absolute-git-dir') &&
-		repairScript.includes('chown -R --no-dereference'),
+	postStartScript.includes('git rev-parse --absolute-git-dir') &&
+		postStartScript.includes('chown -R --no-dereference'),
 	'the repair script must restore writable Git metadata without following symbolic links.'
 );
 expect(
-	repairScript.includes('workspace_uid=') &&
-		repairScript.includes('Development container identity mismatch') &&
-		repairScript.includes('Rebuild Container Without Cache'),
+	postStartScript.includes('workspace_uid=') &&
+		postStartScript.includes('Development container identity mismatch') &&
+		postStartScript.includes('Rebuild Container Without Cache'),
 	'the repair script must reject stale containers whose UID differs from the Linux bind mount owner.'
 );
 expect(
-	repairScript.includes('bun_home=') &&
-		repairScript.includes('.devcontainer-owner-state') &&
-		repairScript.includes('Repairing inherited Bun home') &&
-		repairScript.includes('bun_probe='),
+	postStartScript.includes('bun_home=') &&
+		postStartScript.includes('.devcontainer-owner-state') &&
+		postStartScript.includes('Repairing inherited Bun home') &&
+		postStartScript.includes('bun_probe='),
 	'the repair script must version, repair and verify the writable Bun home.'
 );
 expect(
-	repairScript.includes('.devcontainer-volume-state') &&
-		repairScript.includes('Repairing inherited node_modules volume') &&
-		repairScript.includes('dependency_probe='),
+	postStartScript.includes('.devcontainer-volume-state') &&
+		postStartScript.includes('Repairing inherited node_modules volume') &&
+		postStartScript.includes('dependency_probe='),
 	'the repair script must version, repair and verify the dependency volume.'
 );
 expect(
-	repairScript.includes('generated_paths=(') && repairScript.includes('.docker'),
+	postStartScript.includes('generated_paths=(') && postStartScript.includes('.docker'),
 	'the repair script must use an explicit allowlist of generated paths.'
 );
 expect(
-	repairScript.includes('sudo mkdir -p .docker/runtime/node_modules .docker/runtime/home'),
+	postStartScript.includes('sudo mkdir -p .docker/runtime/node_modules .docker/runtime/home'),
 	'the repair script must be able to recreate generated Docker runtime paths before assigning ownership.'
 );
 expect(
-	!repairScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
+	!postStartScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
 	'the repair script must never recursively change ownership of the repository root.'
 );
 expect(
@@ -202,12 +214,12 @@ expect(
 	'the Docker test wrapper must validate the host workspace mount before running tests.'
 );
 expect(
-	dockerTestScript.includes(repairCommand),
+	dockerTestScript.includes(postStartCommand),
 	'the Docker test wrapper must repair generated runtime paths inside the devcontainer.'
 );
 expect(
 	runPlaywrightScript.includes("spawnSync('bash'") &&
-		runPlaywrightScript.includes('.devcontainer/repair-workspace-permissions.sh'),
+		runPlaywrightScript.includes('.devcontainer/scripts/post-start.sh'),
 	'direct Playwright commands must repair stale generated output inside the devcontainer.'
 );
 expect(

@@ -50,16 +50,10 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v7
 
-            - name: Prepare conditional host Git identity fixture
+            - name: Set global Git identity for CI
               run: |
-                  identity_config="$RUNNER_TEMP/devcontainer-ci-identity.gitconfig"
-                  git config --file "$identity_config" user.name 'Devcontainer CI'
-                  git config --file "$identity_config" user.email 'devcontainer-ci@example.invalid'
-                  git config --global --unset-all user.name || true
-                  git config --global --unset-all user.email || true
-                  git config --global "includeIf.gitdir:${GITHUB_WORKSPACE}/.path" "$identity_config"
-                  test "$(git config --get user.name)" = "Devcontainer CI"
-                  test "$(git config --get user.email)" = "devcontainer-ci@example.invalid"
+                  git config --global user.name 'Devcontainer CI'
+                  git config --global user.email 'devcontainer-ci@example.invalid'
 
             - name: Log in to GitHub Container Registry
               if: github.event_name == 'push'
@@ -91,12 +85,9 @@ jobs:
                       test -n "$HOST_WORKSPACE_FOLDER"
                       test "$TERM" = "xterm-256color"
 
-                      echo "Verify exported and imported host Git identity"
-                      test -r /mnt/devcontainer-host-git-identity
-                      test "$(git config --file /mnt/devcontainer-host-git-identity --get user.name)" = "Devcontainer CI"
-                      test "$(git config --file /mnt/devcontainer-host-git-identity --get user.email)" = "devcontainer-ci@example.invalid"
-                      test "$(git config --local --get user.name)" = "Devcontainer CI"
-                      test "$(git config --local --get user.email)" = "devcontainer-ci@example.invalid"
+                      echo "Verify Git identity propagated to container"
+                      test "$(git config --global --get user.name)" = "Devcontainer CI"
+                      test "$(git config --global --get user.email)" = "devcontainer-ci@example.invalid"
 
                       echo "Create stale Bun home fixture"
                       sudo rm -f "$BUN_INSTALL/.devcontainer-owner-state"
@@ -124,7 +115,7 @@ jobs:
                       sudo chown -R root:root .astro playwright-report test-results test-results.json junit-results.xml .docker
                       sudo chmod -R go-rwx .astro playwright-report test-results .docker
 
-                      bash .devcontainer/repair-workspace-permissions.sh
+                      bash .devcontainer/scripts/post-start.sh
                       test "$(cat "$BUN_INSTALL/.devcontainer-owner-state")" = "schema=1 uid=$(id -u) gid=$(id -g)"
                       test "$(stat -c '%u:%g' "$BUN_INSTALL/install/cache/inherited/state")" = "$(id -u):$(id -g)"
                       test -w "$BUN_INSTALL/install/cache"
@@ -169,7 +160,7 @@ jobs:
                       sh .husky/pre-commit
                       git diff --exit-code
 
-                      bash .devcontainer/repair-workspace-permissions.sh
+                      bash .devcontainer/scripts/post-start.sh
                       bun run check
                       bun run test:unit:ci
                       bun run build
