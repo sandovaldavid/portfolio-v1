@@ -24,8 +24,17 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Run repository quality checks
-              run: bun run check
+            - name: Check formatting
+              run: bun run format:check
+
+            - name: Check documentation links
+              run: bun run check:docs
+
+            - name: Run lint and architecture checks
+              run: bun run lint
+
+            - name: Run Astro and tooling type checks
+              run: bun run typecheck
 
             - name: Validate squash-merge title
               env:
