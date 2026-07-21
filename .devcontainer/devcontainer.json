@@ -19,6 +19,7 @@
 	"updateRemoteUserUID": true,
 	"containerEnv": {
 		"DEVCONTAINER": "true",
+		"HOST_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
 		"NODE_ENV": "development",
 		"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"
 	},
@@ -29,6 +30,8 @@
 		"source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind,consistency=cached"
 	],
 	"postCreateCommand": "bash .devcontainer/post-create.sh",
+	"postStartCommand": "bash .devcontainer/repair-workspace-permissions.sh",
+	"postAttachCommand": "bash .devcontainer/repair-workspace-permissions.sh",
 	"forwardPorts": [4321],
 	"portsAttributes": {
 		"4321": {
