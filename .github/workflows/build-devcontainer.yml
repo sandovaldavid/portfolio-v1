@@ -70,6 +70,11 @@ jobs:
                   push: ${{ github.event_name == 'push' && 'always' || 'never' }}
                   runCmd: |
                       test "$PWD" = "/workspaces/portfolio-v1"
+
+                      echo "Verify Linux workspace identity alignment"
+                      test "$(id -u)" = "$(stat -c '%u' "$PWD")"
+                      test -w "$PWD"
+
                       awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
                       test -w node_modules
                       test -n "$HOST_WORKSPACE_FOLDER"
@@ -80,11 +85,11 @@ jobs:
                       sudo chmod 600 .git/FETCH_HEAD
 
                       echo "Create stale generated ownership fixtures"
-                      sudo rm -rf .astro playwright-report test-results .docker/runtime
+                      sudo rm -rf .astro playwright-report test-results .docker
                       sudo mkdir -p .astro/collections playwright-report test-results .docker/runtime/home/.cache/dconf .docker/runtime/node_modules
                       sudo touch .astro/content.d.ts playwright-report/index.html test-results/.last-run.json test-results.json junit-results.xml
-                      sudo chown -R root:root .astro playwright-report test-results test-results.json junit-results.xml .docker/runtime
-                      sudo chmod -R go-rwx .astro playwright-report test-results .docker/runtime
+                      sudo chown -R root:root .astro playwright-report test-results test-results.json junit-results.xml .docker
+                      sudo chmod -R go-rwx .astro playwright-report test-results .docker
 
                       bash .devcontainer/repair-workspace-permissions.sh
                       test -w "$(git rev-parse --absolute-git-dir)/FETCH_HEAD"
