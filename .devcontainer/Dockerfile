@@ -1,38 +1,36 @@
-FROM mcr.microsoft.com/playwright:v1.61.0-noble
+ARG PLAYWRIGHT_VERSION=1.61.1
+FROM mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble
 
-# OCI Labels for GitHub Packages integration
+ARG BUN_VERSION=1.3.14
+
 LABEL org.opencontainers.image.source="https://github.com/sandovaldavid/portfolio-v1"
-LABEL org.opencontainers.image.description="Development container for Portfolio V1 with Playwright, Bun, Antigravity CLI, and Claude Code"
+LABEL org.opencontainers.image.description="Reproducible development container for Portfolio V1"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# Prevent interactive prompts during package installations
 ENV DEBIAN_FRONTEND=noninteractive
+ENV BUN_INSTALL=/home/pwuser/.bun
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+ENV PATH="${BUN_INSTALL}/bin:${PATH}"
 
-# Install sudo and basic utilities
 USER root
-RUN apt-get update && apt-get install -y \
-    sudo \
-    curl \
-    git \
-    unzip \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		bash-completion \
+		ca-certificates \
+		curl \
+		git \
+		less \
+		openssh-client \
+		sudo \
+		unzip \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& echo "pwuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pwuser \
+	&& chmod 0440 /etc/sudoers.d/pwuser
 
-# Allow the default non-root user (pwuser) to run sudo without password
-RUN echo "pwuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-# Switch to the non-root user to install user-space tools
 USER pwuser
 WORKDIR /home/pwuser
 
-# Add local bin directories to PATH
-ENV PATH="/home/pwuser/.local/bin:/home/pwuser/.bun/bin:${PATH}"
+RUN curl -fsSL https://bun.com/install | bash -s "bun-v${BUN_VERSION}" \
+	&& test "$(bun --version)" = "${BUN_VERSION}"
 
-# Install Bun (Project's primary package manager and runtime)
-RUN curl -fsSL https://bun.sh/install | bash
-
-# Install Antigravity CLI (agy)
-RUN curl -fsSL https://antigravity.google/cli/install.sh | bash
-
-# Install Claude Code CLI (claude)
-RUN curl -fsSL https://claude.ai/install.sh | bash
+WORKDIR /workspaces/portfolio-v1

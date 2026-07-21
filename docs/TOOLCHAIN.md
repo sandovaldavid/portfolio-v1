@@ -3,8 +3,12 @@
 ## Runtime
 
 - Bun is pinned to `1.3.14` through the `packageManager` field in `package.json`.
-- Every GitHub Actions workflow must use the same Bun version.
-- `bun.lock` is committed and CI installs dependencies with `bun install --frozen-lockfile`.
+- Every GitHub Actions workflow and the development container must use the same Bun version.
+- `bun.lock` is committed and automated environments install dependencies with `bun install --frozen-lockfile`.
+- Compatibility-sensitive browser tooling uses exact versions. The Playwright package, development image and test image must remain aligned.
+- `bun run check:devcontainer` enforces the versioned development-environment contract.
+
+See [DEVCONTAINER.md](DEVCONTAINER.md) for setup, rebuild and validation commands.
 
 ## Dependency classification
 

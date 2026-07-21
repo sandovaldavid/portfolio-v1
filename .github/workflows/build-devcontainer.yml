@@ -1,29 +1,37 @@
-name: Build and Push Dev Container
+name: Build and Validate Dev Container
 
 on:
     push:
         branches:
             - main
-            - develop
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - 'package.json'
+            - 'bun.lock'
+            - 'scripts/check-devcontainer.mjs'
     pull_request:
         branches:
             - main
-            - develop
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
-    workflow_dispatch: # Allows manual trigger from GitHub UI
+            - 'package.json'
+            - 'bun.lock'
+            - 'scripts/check-devcontainer.mjs'
+    workflow_dispatch:
 
 permissions:
     contents: read
     packages: write
 
+concurrency:
+    group: devcontainer-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
 jobs:
-    build-and-push:
-        runs-on: ubuntu-latest
+    build-validate-and-push:
+        runs-on: ubuntu-24.04
         steps:
             - name: Checkout repository
               uses: actions/checkout@v7
@@ -36,14 +44,23 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Downcase repository name for Docker image path
-              run: |
-                  echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}/devcontainer" >> $GITHUB_ENV
+            - name: Resolve development image name
+              run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}/devcontainer" >> "$GITHUB_ENV"
 
-            - name: Build and push Dev Container to GHCR
+            - name: Build, validate and optionally publish development container
               uses: devcontainers/ci@v0.3
               with:
                   imageName: ${{ env.IMAGE_NAME }}
-                  # Tags the image with branch/pr name and the commit SHA (PR tags are formatted to avoid slashes)
                   imageTag: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || github.ref_name }},${{ github.sha }}
+                  cacheFrom: ${{ env.IMAGE_NAME }}
                   push: ${{ github.event_name == 'push' && 'always' || 'never' }}
+                  runCmd: |
+                      bun --version
+                      bunx playwright --version
+                      bun run check
+                      bun run test:unit:ci
+                      bun run build
+                      bun run test:e2e:smoke
+                      docker --version
+                      docker compose version
+                      docker info
