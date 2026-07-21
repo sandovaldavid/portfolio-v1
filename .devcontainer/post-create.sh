@@ -14,7 +14,13 @@ if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exi
 	exit 1
 fi
 
-sudo chown "$(id -u):$(id -g)" "$dependency_directory"
+expected_dependency_state="schema=1 uid=$(id -u) gid=$(id -g)"
+actual_dependency_state="$(cat "$dependency_directory/.devcontainer-volume-state" 2>/dev/null || true)"
+
+if [[ "$actual_dependency_state" != "$expected_dependency_state" ]]; then
+	echo "The isolated node_modules volume was not prepared for $(id -u):$(id -g)." >&2
+	exit 1
+fi
 
 if [[ ! -w "$dependency_directory" ]]; then
 	echo "The isolated node_modules volume is not writable by $(id -un)." >&2
