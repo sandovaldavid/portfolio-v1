@@ -5,7 +5,9 @@ const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
 const postCreateScript = readFileSync('.devcontainer/post-create.sh', 'utf8');
 const repairScript = readFileSync('.devcontainer/repair-workspace-permissions.sh', 'utf8');
+const dockerCompose = readFileSync('docker-compose.yml', 'utf8');
 const dockerTestScript = readFileSync('docker-test.sh', 'utf8');
+const runPlaywrightScript = readFileSync('scripts/run-playwright.mjs', 'utf8');
 const prettierIgnore = readFileSync('.prettierignore', 'utf8');
 const eslintConfig = readFileSync('eslint.config.js', 'utf8');
 const preCommitHook = readFileSync('.husky/pre-commit', 'utf8');
@@ -29,6 +31,7 @@ const mounts = Array.isArray(devcontainer.mounts) ? devcontainer.mounts : [];
 const workspaceFolder = '/workspaces/portfolio-v1';
 const dependencyVolumeMount =
 	'source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume';
+const repairCommand = 'bash .devcontainer/repair-workspace-permissions.sh';
 
 expect(Boolean(bunVersion), 'packageManager must pin Bun as bun@<version>.');
 expect(
@@ -78,11 +81,23 @@ expect(
 	'devcontainer.json must use the versioned post-create script.'
 );
 expect(
+	devcontainer.postStartCommand === repairCommand,
+	'devcontainer.json must repair writable state whenever the container starts.'
+);
+expect(
+	devcontainer.postAttachCommand === repairCommand,
+	'devcontainer.json must repair writable state whenever VS Code attaches.'
+);
+expect(
 	devcontainer.containerEnv?.DEVCONTAINER === 'true',
 	'devcontainer.json must identify the managed development shell.'
 );
 expect(
-	postCreateScript.includes('bash .devcontainer/repair-workspace-permissions.sh'),
+	devcontainer.containerEnv?.HOST_WORKSPACE_FOLDER === '${localWorkspaceFolder}',
+	'devcontainer.json must expose the real host workspace path to Docker Compose.'
+);
+expect(
+	postCreateScript.includes(repairCommand),
 	'post-create setup must repair generated workspace paths before validation.'
 );
 expect(
@@ -102,6 +117,11 @@ expect(
 	'post-create setup must validate the devcontainer contract.'
 );
 expect(
+	repairScript.includes('git rev-parse --absolute-git-dir') &&
+		repairScript.includes('chown -R --no-dereference'),
+	'the repair script must restore writable Git metadata without following symbolic links.'
+);
+expect(
 	repairScript.includes('generated_paths=(') && repairScript.includes('.docker'),
 	'the repair script must use an explicit allowlist of generated paths.'
 );
@@ -110,8 +130,26 @@ expect(
 	'the repair script must never recursively change ownership of the repository root.'
 );
 expect(
-	dockerTestScript.includes('bash .devcontainer/repair-workspace-permissions.sh'),
+	dockerCompose.includes("'${HOST_WORKSPACE_FOLDER:-.}:/workspace:z'"),
+	'Docker Compose must bind the real host workspace into the Playwright container.'
+);
+expect(
+	dockerTestScript.includes('HOST_WORKSPACE_FOLDER') &&
+		dockerTestScript.includes('test -f /workspace/package.json') &&
+		dockerTestScript.includes('VERIFY_DOCKER_WORKSPACE_ONLY'),
+	'the Docker test wrapper must validate the host workspace mount before running tests.'
+);
+expect(
+	dockerTestScript.includes(repairCommand),
 	'the Docker test wrapper must repair generated runtime paths inside the devcontainer.'
+);
+expect(
+	runPlaywrightScript.includes(repairCommand),
+	'direct Playwright commands must repair stale generated output inside the devcontainer.'
+);
+expect(
+	packageJson.scripts?.['test:e2e:smoke']?.startsWith('node scripts/run-playwright.mjs'),
+	'the smoke gate must use the permission-aware Playwright runner.'
 );
 expect(
 	prettierIgnore.split(/\r?\n/).includes('.docker/'),
@@ -142,6 +180,10 @@ expect(
 	'the devcontainer workflow must prove that two consecutive frozen installs succeed.'
 );
 expect(
+	devcontainerWorkflow.includes('Create stale Git metadata fixture'),
+	'the devcontainer workflow must validate recovery from an unwritable FETCH_HEAD.'
+);
+expect(
 	devcontainerWorkflow.includes('Create stale generated ownership fixtures'),
 	'the devcontainer workflow must validate recovery from stale generated ownership.'
 );
@@ -152,6 +194,14 @@ expect(
 expect(
 	devcontainerWorkflow.includes('Create hostile Prettier traversal fixture'),
 	'the devcontainer workflow must prove Prettier does not enumerate Docker runtime state.'
+);
+expect(
+	devcontainerWorkflow.includes('Recreate stale Playwright output before the direct smoke command'),
+	'the devcontainer workflow must prove the direct Playwright runner repairs stale output.'
+);
+expect(
+	devcontainerWorkflow.includes('VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh'),
+	'the devcontainer workflow must prove Docker can mount the real host workspace.'
 );
 expect(
 	devcontainerWorkflow.includes('sh .husky/pre-commit'),
@@ -171,5 +221,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, isolated node_modules, repairable generated paths, tracked-file formatting, isolated Docker lint scope.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, writable Git metadata, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
 );
