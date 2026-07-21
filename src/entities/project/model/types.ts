@@ -2,6 +2,60 @@ import type { ImageMetadata } from 'astro';
 import type { Technology } from '@shared/config/technology';
 
 /**
+ * Architecture evidence rendered by the project case-study widget.
+ */
+export interface CaseStudyArchitecture {
+	/** Accessible caption explaining the diagram and its current scope */
+	caption: string;
+	/** Browser application and frontend responsibility */
+	client: string;
+	/** Identity provider and authentication boundary */
+	identity: string;
+	/** HTTP application and business-rule boundary */
+	api: string;
+	/** Implemented business modules owned by the API */
+	modules: string;
+	/** Durable data store and persistence responsibility */
+	database: string;
+	/** Supporting runtime processes */
+	processes: string;
+}
+
+/**
+ * Repository or demo source used to substantiate a case-study claim.
+ */
+export interface CaseStudySource {
+	label: string;
+	access: string;
+	href?: string;
+}
+
+/**
+ * Optional evidence package for flagship case studies.
+ */
+export interface CaseStudyEvidence {
+	statusLabel: string;
+	status: string;
+	statusDetail: string;
+	implementedLabel: string;
+	implemented: string[];
+	plannedLabel: string;
+	planned: string[];
+	architectureLabel: string;
+	architecture: CaseStudyArchitecture;
+	securityLabel: string;
+	security: string[];
+	testingLabel: string;
+	testing: string[];
+	deploymentLabel: string;
+	deployment: string[];
+	limitationsLabel: string;
+	limitations: string[];
+	sourcesLabel: string;
+	sources: CaseStudySource[];
+}
+
+/**
  * Case study data for detailed project showcase pages
  */
 export interface CaseStudy {
@@ -19,6 +73,8 @@ export interface CaseStudy {
 	timeline?: string;
 	/** My role in the project (optional) */
 	role?: string;
+	/** Verifiable implementation, architecture and delivery evidence (optional) */
+	evidence?: CaseStudyEvidence;
 }
 
 /**

@@ -1,6 +1,7 @@
 import { TAGS } from '@shared/config/technology';
 import type { ProjectItem } from './types';
 
+import yukidokeImg from '@assets/projects/project-11-yukidoke.svg';
 import campusMapImg from '@assets/projects/project-08-campus-map.webp';
 import madaiImg from '@assets/projects/project-10-MAD-AI.webp';
 import fluentreadsImg from '@assets/projects/project-09-fluentreads.webp';
@@ -11,6 +12,101 @@ import auctionsImg from '@assets/projects/project-02-auctions.webp';
  */
 export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 	return [
+		{
+			slug: 'yukidoke',
+			title: t('projects.yukidoke.title'),
+			description: t('projects.yukidoke.description'),
+			image: yukidokeImg,
+			tags: [TAGS.ANGULAR, TAGS.TYPESCRIPT, TAGS.RXJS, TAGS.CSHARP, TAGS.POSTGRESQL],
+			featured: true,
+			category: t('projects.category.enterprise'),
+			caseStudy: {
+				problem: t('projects.yukidoke.case.problem'),
+				approach: t('projects.yukidoke.case.approach'),
+				tradeoffs: t('projects.yukidoke.case.tradeoffs'),
+				outcome: t('projects.yukidoke.case.outcome'),
+				learnings: [
+					t('projects.yukidoke.case.learning1'),
+					t('projects.yukidoke.case.learning2'),
+					t('projects.yukidoke.case.learning3'),
+				],
+				timeline: t('projects.yukidoke.case.timeline'),
+				role: t('projects.yukidoke.case.role'),
+				evidence: {
+					statusLabel: t('projects.yukidoke.evidence.statusLabel'),
+					status: t('projects.yukidoke.evidence.status'),
+					statusDetail: t('projects.yukidoke.evidence.statusDetail'),
+					implementedLabel: t('projects.yukidoke.evidence.implementedLabel'),
+					implemented: [
+						t('projects.yukidoke.evidence.implemented1'),
+						t('projects.yukidoke.evidence.implemented2'),
+						t('projects.yukidoke.evidence.implemented3'),
+						t('projects.yukidoke.evidence.implemented4'),
+						t('projects.yukidoke.evidence.implemented5'),
+						t('projects.yukidoke.evidence.implemented6'),
+					],
+					plannedLabel: t('projects.yukidoke.evidence.plannedLabel'),
+					planned: [
+						t('projects.yukidoke.evidence.planned1'),
+						t('projects.yukidoke.evidence.planned2'),
+						t('projects.yukidoke.evidence.planned3'),
+						t('projects.yukidoke.evidence.planned4'),
+						t('projects.yukidoke.evidence.planned5'),
+					],
+					architectureLabel: t('projects.yukidoke.evidence.architectureLabel'),
+					architecture: {
+						caption: t('projects.yukidoke.evidence.architecture.caption'),
+						client: t('projects.yukidoke.evidence.architecture.client'),
+						identity: t('projects.yukidoke.evidence.architecture.identity'),
+						api: t('projects.yukidoke.evidence.architecture.api'),
+						modules: t('projects.yukidoke.evidence.architecture.modules'),
+						database: t('projects.yukidoke.evidence.architecture.database'),
+						processes: t('projects.yukidoke.evidence.architecture.processes'),
+					},
+					securityLabel: t('projects.yukidoke.evidence.securityLabel'),
+					security: [
+						t('projects.yukidoke.evidence.security1'),
+						t('projects.yukidoke.evidence.security2'),
+						t('projects.yukidoke.evidence.security3'),
+						t('projects.yukidoke.evidence.security4'),
+					],
+					testingLabel: t('projects.yukidoke.evidence.testingLabel'),
+					testing: [
+						t('projects.yukidoke.evidence.testing1'),
+						t('projects.yukidoke.evidence.testing2'),
+						t('projects.yukidoke.evidence.testing3'),
+						t('projects.yukidoke.evidence.testing4'),
+					],
+					deploymentLabel: t('projects.yukidoke.evidence.deploymentLabel'),
+					deployment: [
+						t('projects.yukidoke.evidence.deployment1'),
+						t('projects.yukidoke.evidence.deployment2'),
+						t('projects.yukidoke.evidence.deployment3'),
+						t('projects.yukidoke.evidence.deployment4'),
+					],
+					limitationsLabel: t('projects.yukidoke.evidence.limitationsLabel'),
+					limitations: [
+						t('projects.yukidoke.evidence.limitations1'),
+						t('projects.yukidoke.evidence.limitations2'),
+						t('projects.yukidoke.evidence.limitations3'),
+						t('projects.yukidoke.evidence.limitations4'),
+					],
+					sourcesLabel: t('projects.yukidoke.evidence.sourcesLabel'),
+					sources: [
+						{
+							label: t('projects.yukidoke.evidence.source1Label'),
+							access: t('projects.yukidoke.evidence.source1Access'),
+							href: t('projects.yukidoke.evidence.source1Href'),
+						},
+						{
+							label: t('projects.yukidoke.evidence.source2Label'),
+							access: t('projects.yukidoke.evidence.source2Access'),
+							href: t('projects.yukidoke.evidence.source2Href'),
+						},
+					],
+				},
+			},
+		},
 		{
 			slug: 'campus-map',
 			title: t('projects.campus-map.title'),

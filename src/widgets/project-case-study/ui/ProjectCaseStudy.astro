@@ -37,6 +37,14 @@ const {
 } = Astro.props;
 
 const { caseStudy } = project;
+const evidence = caseStudy?.evidence;
+const evidenceDecisionSections = evidence
+	? [
+		{ label: evidence.securityLabel, items: evidence.security },
+		{ label: evidence.testingLabel, items: evidence.testing },
+		{ label: evidence.deploymentLabel, items: evidence.deployment },
+	]
+	: [];
 ---
 
 <section>
@@ -108,6 +116,22 @@ const { caseStudy } = project;
 		{
 			caseStudy && (
 				<div class="space-y-12">
+					{evidence && (
+						<section
+							class="border-2 border-black bg-surface p-6 shadow-retro-md dark:border-white"
+							aria-labelledby="case-study-status"
+						>
+							<h2
+								id="case-study-status"
+								class="mb-3 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
+							>
+								{evidence.statusLabel}
+							</h2>
+							<p class="text-xl font-bold text-content-strong">{evidence.status}</p>
+							<p class="mt-3 text-sm leading-relaxed text-content-muted">{evidence.statusDetail}</p>
+						</section>
+					)}
+
 					<div class="border-l-4 border-red-500 pl-6">
 						<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500">
 							{labelProblem}
@@ -135,6 +159,132 @@ const { caseStudy } = project;
 						</div>
 						<p class="text-base leading-relaxed">{caseStudy.outcome}</p>
 					</div>
+
+					{evidence && (
+						<div class="grid gap-8 lg:grid-cols-2">
+							<section aria-labelledby="implemented-evidence">
+								<h2
+									id="implemented-evidence"
+									class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-success-500"
+								>
+									{evidence.implementedLabel}
+								</h2>
+								<ul class="space-y-3">
+									{evidence.implemented.map(item => (
+										<li class="flex items-start gap-3 text-sm leading-relaxed">
+											<span class="mt-1 font-bold text-success-500" aria-hidden="true">
+												✓
+											</span>
+											<span>{item}</span>
+										</li>
+									))}
+								</ul>
+							</section>
+
+							<section aria-labelledby="planned-evidence">
+								<h2
+									id="planned-evidence"
+									class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-warning-500"
+								>
+									{evidence.plannedLabel}
+								</h2>
+								<ul class="space-y-3">
+									{evidence.planned.map(item => (
+										<li class="flex items-start gap-3 text-sm leading-relaxed">
+											<span class="mt-1 font-bold text-warning-500" aria-hidden="true">
+												○
+											</span>
+											<span>{item}</span>
+										</li>
+									))}
+								</ul>
+							</section>
+						</div>
+					)}
+
+					{evidence && (
+						<section aria-labelledby="architecture-evidence">
+							<h2
+								id="architecture-evidence"
+								class="mb-5 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
+							>
+								{evidence.architectureLabel}
+							</h2>
+							<figure class="border-2 border-black bg-neutral-950 p-5 text-white shadow-retro-lg dark:border-white">
+								<div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
+									<div class="border-2 border-red-500 bg-neutral-900 p-4 text-center">
+										{evidence.architecture.client.split('\n').map((line, index) => (
+											<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+												{line}
+											</p>
+										))}
+									</div>
+									<div class="hidden text-2xl md:block" aria-hidden="true">→</div>
+									<div class="border-2 border-purple-500 bg-neutral-900 p-4 text-center">
+										{evidence.architecture.api.split('\n').map((line, index) => (
+											<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+												{line}
+											</p>
+										))}
+									</div>
+								</div>
+
+								<div class="my-4 text-center text-2xl" aria-hidden="true">↓</div>
+
+								<div class="grid gap-4 md:grid-cols-3">
+									<div class="border-2 border-sky-400 bg-neutral-900 p-4 text-center">
+										{evidence.architecture.identity.split('\n').map((line, index) => (
+											<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+												{line}
+											</p>
+										))}
+									</div>
+									<div class="border-2 border-emerald-400 bg-neutral-900 p-4 text-center">
+										{evidence.architecture.modules.split('\n').map((line, index) => (
+											<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+												{line}
+											</p>
+										))}
+									</div>
+									<div class="border-2 border-blue-400 bg-neutral-900 p-4 text-center">
+										{evidence.architecture.database.split('\n').map((line, index) => (
+											<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+												{line}
+											</p>
+										))}
+									</div>
+								</div>
+
+								<div class="mt-4 border-2 border-neutral-500 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.processes.split('\n').map((line, index) => (
+										<p class={index === 0 ? 'font-bold text-white' : 'mt-1 text-xs text-neutral-300'}>
+											{line}
+										</p>
+									))}
+								</div>
+								<figcaption class="mt-5 text-sm leading-relaxed text-neutral-300">
+									{evidence.architecture.caption}
+								</figcaption>
+							</figure>
+						</section>
+					)}
+
+					{evidence && (
+						<div class="grid gap-8 md:grid-cols-3">
+							{evidenceDecisionSections.map(({ label, items }) => (
+								<section class="border-t-4 border-primary-500 pt-4">
+									<h2 class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400">
+										{label}
+									</h2>
+									<ul class="space-y-3">
+										{items.map(item => (
+											<li class="text-sm leading-relaxed">{item}</li>
+										))}
+									</ul>
+								</section>
+							))}
+						</div>
+					)}
 
 					{(caseStudy.timeline || caseStudy.role) && (
 						<div class="flex flex-wrap gap-6 border-t border-neutral-300 pt-6 dark:border-neutral-700">
@@ -164,15 +314,58 @@ const { caseStudy } = project;
 						<ul class="space-y-3">
 							{caseStudy.learnings.map(learning => (
 								<li class="flex items-start gap-3">
-									<span
-										class="mt-1 size-2 shrink-0 bg-purple-500"
-										aria-hidden="true"
-									/>
+									<span class="mt-1 size-2 shrink-0 bg-purple-500" aria-hidden="true" />
 									<span class="text-sm">{learning}</span>
 								</li>
 							))}
 						</ul>
 					</div>
+
+					{evidence && (
+						<div class="grid gap-8 lg:grid-cols-2">
+							<section aria-labelledby="limitations-evidence">
+								<h2
+									id="limitations-evidence"
+									class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500"
+								>
+									{evidence.limitationsLabel}
+								</h2>
+								<ul class="space-y-3">
+									{evidence.limitations.map(item => (
+										<li class="text-sm leading-relaxed">{item}</li>
+									))}
+								</ul>
+							</section>
+
+							<section aria-labelledby="sources-evidence">
+								<h2
+									id="sources-evidence"
+									class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
+								>
+									{evidence.sourcesLabel}
+								</h2>
+								<ul class="space-y-4">
+									{evidence.sources.map(source => (
+										<li class="border-2 border-black p-4 dark:border-white">
+											{source.href ? (
+												<a
+													href={source.href}
+													target="_blank"
+													rel="noreferrer"
+													class="font-bold text-primary-500 underline decoration-2 underline-offset-4 hover:no-underline dark:text-primary-400"
+												>
+													{source.label}
+												</a>
+											) : (
+												<p class="font-bold">{source.label}</p>
+											)}
+											<p class="mt-2 text-sm leading-relaxed text-content-muted">{source.access}</p>
+										</li>
+									))}
+								</ul>
+							</section>
+						</div>
+					)}
 				</div>
 			)
 		}
