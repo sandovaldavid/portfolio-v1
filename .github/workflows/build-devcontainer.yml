@@ -79,6 +79,13 @@ jobs:
                       test -w node_modules
                       test -n "$HOST_WORKSPACE_FOLDER"
 
+                      echo "Create stale dependency volume fixture"
+                      sudo rm -f node_modules/.devcontainer-volume-state
+                      sudo mkdir -p node_modules/.vite-temp/inherited
+                      sudo touch node_modules/.vite-temp/stale-config.mjs node_modules/.vite-temp/inherited/state
+                      sudo chown -R 12345:12345 node_modules
+                      sudo chmod -R u+rwX,go-rX node_modules
+
                       echo "Create stale Git metadata fixture"
                       sudo touch .git/FETCH_HEAD
                       sudo chown root:root .git/FETCH_HEAD
@@ -92,6 +99,9 @@ jobs:
                       sudo chmod -R go-rwx .astro playwright-report test-results .docker
 
                       bash .devcontainer/repair-workspace-permissions.sh
+                      test "$(cat node_modules/.devcontainer-volume-state)" = "schema=1 uid=$(id -u) gid=$(id -g)"
+                      test "$(stat -c '%u:%g' node_modules/.vite-temp/stale-config.mjs)" = "$(id -u):$(id -g)"
+                      test -w node_modules/.vite-temp
                       test -w "$(git rev-parse --absolute-git-dir)/FETCH_HEAD"
                       test -w .astro
                       test -w playwright-report
