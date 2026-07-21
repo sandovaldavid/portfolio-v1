@@ -54,7 +54,6 @@ bundle-analysis/
 
 # lighthouse ci
 .lhci-results/.docker/
-.mcp.json
 
 # route performance reports
 performance-report/
