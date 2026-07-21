@@ -78,6 +78,14 @@ jobs:
                       awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
                       test -w node_modules
                       test -n "$HOST_WORKSPACE_FOLDER"
+                      test "$TERM" = "xterm-256color"
+
+                      echo "Create stale Bun home fixture"
+                      sudo rm -f "$BUN_INSTALL/.devcontainer-owner-state"
+                      sudo mkdir -p "$BUN_INSTALL/install/cache/inherited"
+                      sudo touch "$BUN_INSTALL/install/cache/inherited/state"
+                      sudo chown -R 12345:12345 "$BUN_INSTALL/install/cache"
+                      sudo chmod -R u+rwX,go-rX "$BUN_INSTALL/install/cache"
 
                       echo "Create stale dependency volume fixture"
                       sudo rm -f node_modules/.devcontainer-volume-state
@@ -99,6 +107,9 @@ jobs:
                       sudo chmod -R go-rwx .astro playwright-report test-results .docker
 
                       bash .devcontainer/repair-workspace-permissions.sh
+                      test "$(cat "$BUN_INSTALL/.devcontainer-owner-state")" = "schema=1 uid=$(id -u) gid=$(id -g)"
+                      test "$(stat -c '%u:%g' "$BUN_INSTALL/install/cache/inherited/state")" = "$(id -u):$(id -g)"
+                      test -w "$BUN_INSTALL/install/cache"
                       test "$(cat node_modules/.devcontainer-volume-state)" = "schema=1 uid=$(id -u) gid=$(id -g)"
                       test "$(stat -c '%u:%g' node_modules/.vite-temp/stale-config.mjs)" = "$(id -u):$(id -g)"
                       test -w node_modules/.vite-temp
