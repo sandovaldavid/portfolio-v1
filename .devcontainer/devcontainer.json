@@ -1,5 +1,5 @@
 {
-	"name": "Portfolio Development",
+	"name": "Portfolio-v1",
 
 	"build": {
 		"dockerfile": "Dockerfile",

@@ -47,6 +47,14 @@ if [[ "$actual_playwright_version" != "$expected_playwright_version" ]]; then
 	exit 1
 fi
 
+mkdir -p "$HOME/.config/git"
+if [[ ! -f "$HOME/.config/git/allowed_signers" ]]; then
+	cat > "$HOME/.config/git/allowed_signers" <<- 'SIGNERS'
+	# Personal identity - dev.sandovaldavid.com
+	dev@sandovaldavid.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVyMWhv5f1beR6nNz2Y0IjGdr1EfMW6Qn81viu13lGr GitHub - SD-AN5
+	SIGNERS
+fi
+
 bun run check:devcontainer
 
 docker --version
