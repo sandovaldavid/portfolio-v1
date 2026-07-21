@@ -130,10 +130,11 @@ automatically from them.
    offsets previously used (1.5px, 2.5px, 3.5px, 4.5px) were normalized to `sm` / `sm` / `md` /
    `lg` respectively — visually identical on integer-DPR screens and crisper on HiDPI.
 
-### Documented exceptions (kept as `shadow-[…]`)
+### Documented exceptions (kept as arbitrary shadows)
 
-These intentionally use a color **other** than `--color-edge-strong` and so cannot map to the
-retro scale. They stay as arbitrary `shadow-[..var(--color-<other>)]` literals:
+These intentionally use a color **other** than `--color-edge-strong` and therefore cannot map to
+the retro scale. Avoid placeholder text that resembles a complete Tailwind class candidate: the
+Tailwind v4 scanner may otherwise generate invalid CSS from documentation-only examples.
 
 - **Primary glow** — `shadow-[Npx_Npx_0_var(--color-primary-500)]` on Skills cards
   (`src/pages/skills.astro`, `src/pages/es/skills.astro`), ContactSidebar, Footer CTA,
