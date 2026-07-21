@@ -4,17 +4,18 @@
 
 ## 1. Sources of truth
 
-| Concern                         | Canonical source                                                             |
-| ------------------------------- | ---------------------------------------------------------------------------- |
-| Product and repository overview | [README.md](README.md)                                                       |
-| Architecture boundaries         | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
-| Tool and dependency versions    | [package.json](package.json) and `bun.lock`                                  |
-| Testing                         | [docs/TESTING.md](docs/TESTING.md)                                           |
-| CI behavior                     | [docs/CI.md](docs/CI.md)                                                     |
-| Branches, releases, deployment  | [docs/DELIVERY.md](docs/DELIVERY.md)                                         |
-| Performance budgets             | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json`    |
-| Documentation ownership         | [docs/README.md](docs/README.md)                                             |
-| Contribution flow               | [CONTRIBUTING.md](CONTRIBUTING.md)                                           |
+| Concern                            | Canonical source                                                             |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| Product and repository overview    | [README.md](README.md)                                                       |
+| Architecture boundaries            | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
+| Localization and bilingual content | [docs/I18N.md](docs/I18N.md)                                                 |
+| Tool and dependency versions       | [package.json](package.json) and `bun.lock`                                  |
+| Testing                            | [docs/TESTING.md](docs/TESTING.md)                                           |
+| CI behavior                        | [docs/CI.md](docs/CI.md)                                                     |
+| Branches, releases, deployment     | [docs/DELIVERY.md](docs/DELIVERY.md)                                         |
+| Performance budgets                | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json`    |
+| Documentation ownership            | [docs/README.md](docs/README.md)                                             |
+| Contribution flow                  | [CONTRIBUTING.md](CONTRIBUTING.md)                                           |
 
 Do not copy version numbers, thresholds or architecture prose into another active document. Link to the canonical source.
 
@@ -50,8 +51,11 @@ Required practices:
 
 ## 4. User-facing changes
 
-- Update English and Spanish content together.
-- Use the existing i18n utilities and locale files; do not introduce a parallel translation mechanism.
+- Follow [docs/I18N.md](docs/I18N.md) before adding or moving localized content.
+- Classify text as UI copy, structured portfolio content, editorial content or language-neutral data and update only its canonical owner.
+- Update English and Spanish together, including visible copy, accessibility labels and localized metadata.
+- Do not add monolithic locale files, component-local bilingual copy maps, raw HTML translations or a parallel translation runtime.
+- Treat the current flattened dictionaries and mixed-value helpers as temporary compatibility code; do not extend those patterns to new domains.
 - Preserve keyboard navigation, semantic HTML, reduced-motion behavior and light/dark themes.
 - Add browser coverage for interactions, navigation lifecycle or responsive behavior.
 - Do not add seniority, impact or performance claims without verifiable evidence.

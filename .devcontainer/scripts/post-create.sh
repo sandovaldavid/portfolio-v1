@@ -4,43 +4,7 @@ set -euo pipefail
 REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
-bash .devcontainer/repair-workspace-permissions.sh
-
-host_git_config="/mnt/devcontainer-host-git-identity"
-host_git_name=""
-host_git_email=""
-
-if [[ -r "$host_git_config" ]]; then
-	host_git_name="$(git config --file "$host_git_config" --get user.name 2>/dev/null || true)"
-	host_git_email="$(git config --file "$host_git_config" --get user.email 2>/dev/null || true)"
-fi
-
-repository_git_name="$(git config --local --get user.name 2>/dev/null || true)"
-repository_git_email="$(git config --local --get user.email 2>/dev/null || true)"
-
-if [[ -z "$repository_git_name" && -n "$host_git_name" ]]; then
-	git config --local user.name "$host_git_name"
-	repository_git_name="$host_git_name"
-fi
-
-if [[ -z "$repository_git_email" && -n "$host_git_email" ]]; then
-	git config --local user.email "$host_git_email"
-	repository_git_email="$host_git_email"
-fi
-
-if [[ -z "$repository_git_name" || -z "$repository_git_email" ]]; then
-	cat >&2 <<'EOF'
-Git commit identity is incomplete inside the development container.
-Configure it on the host with:
-
-  git config --global user.name "Your Name"
-  git config --global user.email "you@example.com"
-
-Then rebuild the development container. The host initialization step resolves includes and conditional includes before exporting only user.name and user.email. Existing repository-local values are never overwritten.
-EOF
-else
-	printf 'Git identity: %s <%s> (repository-local)\n' "$repository_git_name" "$repository_git_email"
-fi
+bash .devcontainer/scripts/post-start.sh
 
 dependency_directory="$REPOSITORY_ROOT/node_modules"
 
@@ -83,6 +47,14 @@ if [[ "$actual_playwright_version" != "$expected_playwright_version" ]]; then
 	exit 1
 fi
 
+mkdir -p "$HOME/.config/git"
+if ssh-add -L >/dev/null 2>&1; then
+	email="$(git config --global --get user.email || echo 'dev@example.com')"
+	ssh-add -L 2>/dev/null | while read -r key; do
+		echo "$email namespaces=\"git\" $key"
+	done > "$HOME/.config/git/allowed_signers"
+fi
+
 bun run check:devcontainer
 
 docker --version
@@ -93,6 +65,18 @@ if docker info >/dev/null 2>&1; then
 else
 	echo "Docker daemon connection: unavailable. Start the host Docker daemon before running Docker-backed tests." >&2
 fi
+
+prompt_marker="# devcontainer-prompt-customization"
+for rc_file in "$HOME/.zshrc" "$HOME/.bashrc"; do
+	if [[ -f "$rc_file" ]] && ! grep -qF "$prompt_marker" "$rc_file" 2>/dev/null; then
+		cat >> "$rc_file" <<- 'PROMPT_EOF'
+
+		# devcontainer-prompt-customization
+		__git_branch() { git branch --show-current 2>/dev/null; }
+		PROMPT='%F{green}%1~%f %F{blue}$(__git_branch)%f %# '
+PROMPT_EOF
+	fi
+done
 
 printf '\nDevelopment container ready.\n'
 printf 'Bun: %s\n' "$actual_bun_version"

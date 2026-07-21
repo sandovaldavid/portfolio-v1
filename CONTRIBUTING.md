@@ -19,7 +19,7 @@ bun run dev
 2. Read [AGENTS.md](AGENTS.md) and the owning document for the area being changed.
 3. Implement one coherent concern.
 4. Add the relevant unit or browser regression.
-5. Keep English and Spanish user-facing content synchronized.
+5. For user-facing content, follow [docs/I18N.md](docs/I18N.md), update English and Spanish together and include accessibility and metadata copy.
 6. Run the canonical checks and any change-specific checks.
 7. Open a pull request into `main` using a Conventional Commit title.
 8. Use the Vercel preview to verify user-facing changes and squash merge after every required check passes.
@@ -46,7 +46,7 @@ All required checks must pass. Do not bypass architecture, testing, accessibilit
 
 ## Documentation
 
-[docs/README.md](docs/README.md) defines ownership and update rules. Avoid copying versions, thresholds or common agent guidance. Historical audits and completed plans are read-only references indexed through [docs/archive/README.md](docs/archive/README.md).
+[docs/README.md](docs/README.md) defines ownership and update rules. [docs/I18N.md](docs/I18N.md) owns localization placement, naming, fallback, rich-content safety and migration policy. Avoid copying versions, thresholds or common agent guidance. Historical audits and completed plans are read-only references indexed through [docs/archive/README.md](docs/archive/README.md).
 
 ## Conduct
 

@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 
 if (process.env.DEVCONTAINER === 'true') {
-	const repairResult = spawnSync('bash', ['.devcontainer/repair-workspace-permissions.sh'], {
+	const repairResult = spawnSync('bash', ['.devcontainer/scripts/post-start.sh'], {
 		stdio: 'inherit',
 	});
 
