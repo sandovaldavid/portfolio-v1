@@ -9,6 +9,10 @@ export RUN_VISUAL_TESTS="${RUN_VISUAL_TESTS:-}"
 export HOST_UID="$(id -u)"
 export HOST_GID="$(id -g)"
 
+if [[ "${DEVCONTAINER:-}" == "true" ]]; then
+	bash .devcontainer/repair-workspace-permissions.sh
+fi
+
 mkdir -p .docker/runtime/node_modules .docker/runtime/home
 
 for directory in .docker/runtime/node_modules .docker/runtime/home; do
