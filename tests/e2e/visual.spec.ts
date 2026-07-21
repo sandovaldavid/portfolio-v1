@@ -29,11 +29,10 @@ async function preparePage(page: Page, path: string, options: { hideHeader?: boo
 		);
 	});
 
+	// Hide current overlay roots so fixed controls cannot contaminate element snapshots.
 	const selectorsToHide = [
 		'aside#contact-sidebar',
-		'#hud-toggle-btn',
-		'#hud-panel',
-		'#hud-hint',
+		'#recruiter-hud',
 		'#cli-overlay',
 		'#cli-i18n',
 		'#shortcuts-modal',
