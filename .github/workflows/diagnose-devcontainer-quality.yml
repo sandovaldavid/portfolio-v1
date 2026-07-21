@@ -1,0 +1,40 @@
+name: Diagnose Devcontainer Quality
+
+on:
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+
+concurrency:
+    group: diagnose-devcontainer-quality-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    diagnostics:
+        if: github.head_ref == 'chore/reproducible-devcontainer'
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Check formatting
+              run: bun run format:check
+
+            - name: Check documentation links
+              run: bun run check:docs
+
+            - name: Check devcontainer contract
+              run: bun run check:devcontainer
+
+            - name: Run lint and architecture checks
+              run: bun run lint
+
+            - name: Run type checks
+              run: bun run typecheck
