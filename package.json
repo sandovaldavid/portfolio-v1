@@ -30,6 +30,7 @@
 		"test:e2e:desktop": "bunx playwright test --project=chromium --project=firefox --project=webkit",
 		"test:e2e:extended": "bunx playwright test --project=chromium --project=firefox --project=webkit --project='Mobile Chrome' --project='Mobile Safari'",
 		"test:e2e:visual": "bunx playwright test tests/e2e/visual.spec.ts --project=chromium --project=firefox --project='Mobile Chrome'",
+		"test:e2e:visual:docker": "CI=true RUN_VISUAL_TESTS=true bash docker-test.sh tests/e2e/visual.spec.ts --project=chromium --project=firefox --project='Mobile Chrome'",
 		"test:snapshots": "bunx playwright test tests/e2e/visual.spec.ts --update-snapshots --project=chromium --project=firefox --project='Mobile Chrome'",
 		"test:snapshots:all": "bunx playwright test tests/e2e/visual.spec.ts --update-snapshots",
 		"test:ui": "bunx playwright test --ui",
