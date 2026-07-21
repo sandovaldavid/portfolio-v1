@@ -6,6 +6,55 @@ cd "$REPOSITORY_ROOT"
 
 bash .devcontainer/repair-workspace-permissions.sh
 
+host_git_name=""
+host_git_email=""
+
+for host_git_config in \
+	/mnt/devcontainer-host-xdg-gitconfig \
+	/mnt/devcontainer-host-gitconfig; do
+	if [[ ! -r "$host_git_config" ]]; then
+		continue
+	fi
+
+	candidate_name="$(git config --file "$host_git_config" --get user.name 2>/dev/null || true)"
+	candidate_email="$(git config --file "$host_git_config" --get user.email 2>/dev/null || true)"
+
+	if [[ -n "$candidate_name" ]]; then
+		host_git_name="$candidate_name"
+	fi
+
+	if [[ -n "$candidate_email" ]]; then
+		host_git_email="$candidate_email"
+	fi
+done
+
+repository_git_name="$(git config --local --get user.name 2>/dev/null || true)"
+repository_git_email="$(git config --local --get user.email 2>/dev/null || true)"
+
+if [[ -z "$repository_git_name" && -n "$host_git_name" ]]; then
+	git config --local user.name "$host_git_name"
+	repository_git_name="$host_git_name"
+fi
+
+if [[ -z "$repository_git_email" && -n "$host_git_email" ]]; then
+	git config --local user.email "$host_git_email"
+	repository_git_email="$host_git_email"
+fi
+
+if [[ -z "$repository_git_name" || -z "$repository_git_email" ]]; then
+	cat >&2 <<'EOF'
+Git commit identity is incomplete inside the development container.
+Configure it on the host with:
+
+  git config --global user.name "Your Name"
+  git config --global user.email "you@example.com"
+
+Then rebuild the development container. Existing repository-local values are never overwritten.
+EOF
+else
+	printf 'Git identity: %s <%s> (repository-local)\n' "$repository_git_name" "$repository_git_email"
+fi
+
 dependency_directory="$REPOSITORY_ROOT/node_modules"
 
 if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo; then
