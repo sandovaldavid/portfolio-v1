@@ -35,7 +35,7 @@ if (filesResult.status !== 0) {
 const trackedFiles = filesResult.stdout
 	.split('\0')
 	.filter(Boolean)
-	.filter((file) => existsSync(file));
+	.filter(file => existsSync(file));
 
 if (trackedFiles.length === 0) {
 	console.log('No tracked files available for Prettier.');
