@@ -13,6 +13,7 @@ The versioned configuration owns these guarantees:
 - a normalized `pwuser` UID/GID of `1000:1000` before Dev Containers applies host-specific remapping;
 - frozen dependency installation from `bun.lock`;
 - a container-owned named volume for `node_modules`;
+- one-time recovery of inherited dependency-volume ownership through a versioned owner marker;
 - repair of Git metadata and known ignored/generated workspace paths left by another UID;
 - repair during create, container start and VS Code attach lifecycle events;
 - GitHub CLI and Docker Compose support;
@@ -47,7 +48,9 @@ This separation prevents the devcontainer from reusing dependency links created 
 - the pinned visual-test container;
 - an interrupted or differently configured Bun installation.
 
-The post-create lifecycle verifies that `node_modules` is a separate mount, assigns its root to `pwuser` and then performs a frozen Bun installation. The permanent workflow runs two additional consecutive frozen installations to prove that setup is idempotent.
+The permission lifecycle stores `.devcontainer-volume-state` inside the named volume. When the marker is missing, uses another schema or identifies another UID/GID, the lifecycle repairs the complete volume once. Later starts repair only mutable tool paths such as `.bin`, `.cache`, `.vite` and `.vite-temp`, then verify that a probe file can be created and removed.
+
+The post-create lifecycle verifies that `node_modules` is a separate mount and prepared for `pwuser` before performing a frozen Bun installation. The permanent workflow deliberately changes the entire dependency volume to another numeric UID, creates a stale Vite cache and proves that two consecutive frozen installations plus Vitest succeed after recovery.
 
 ## Open the repository
 
@@ -55,7 +58,7 @@ From Visual Studio Code, run **Dev Containers: Reopen in Container**.
 
 After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user or environment declarations.
 
-The startup lifecycle repairs writable Git and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the repair for an already-running container.
+The startup lifecycle repairs writable Git, dependency and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the inexpensive marker and mutable-cache checks for an already-running container.
 
 The post-create script performs the following checks:
 
@@ -73,7 +76,25 @@ A successful setup prints the resolved Bun, Playwright, workspace and isolated d
 
 ## Recover a stale dependency volume
 
-A normal rebuild preserves the named `node_modules` volume to avoid reinstalling every package from scratch. If that isolated volume itself becomes corrupted, close the devcontainer and remove only the dependency volume from a host terminal:
+A normal rebuild preserves the named `node_modules` volume to avoid reinstalling every package from scratch. An inherited volume can contain links or Vite caches written by the UID of an older container. Typical symptoms are repeated Bun `EEXIST` link failures or `EACCES` under `node_modules/.vite-temp`.
+
+After updating the branch, run inside a correctly aligned devcontainer:
+
+```bash
+bash .devcontainer/repair-workspace-permissions.sh
+cat node_modules/.devcontainer-volume-state
+bun install --frozen-lockfile
+```
+
+The state must identify the current numeric UID/GID, for example:
+
+```text
+schema=1 uid=1000 gid=1000
+```
+
+This repair is safe because `node_modules` is a disposable named volume rather than tracked source. It does not recursively change the repository checkout.
+
+If the isolated volume remains structurally corrupted after the automatic recovery, close the devcontainer and remove only that volume from a host terminal:
 
 ```bash
 docker volume rm portfolio-v1-devcontainer-node_modules
@@ -140,7 +161,7 @@ Run the repair manually inside a correctly aligned devcontainer when needed:
 bash .devcontainer/repair-workspace-permissions.sh
 ```
 
-The script first requires the running UID to match the Linux workspace owner. It then resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata plus an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
+The script first requires the running UID to match the Linux workspace owner. It then resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata, the isolated dependency volume and an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
 
 ## Daily development
 
