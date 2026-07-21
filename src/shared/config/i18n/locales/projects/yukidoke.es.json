@@ -35,7 +35,7 @@
 		"sourcesLabel": "REPOSITORIOS FUENTE",
 		"implemented1": "SPA standalone en Angular 22 con rutas lazy, contexto del hogar, guards por capacidades y stores locales basados en signals.",
 		"implemented2": "Integración Keycloak Authorization Code + PKCE, adjunto protegido de bearer tokens y autenticación mock limitada a loopback para desarrollo.",
-		"implemented3": "Monolito modular .NET 10 con ASP.NET Core Minimal APIs y módulos Users, Households, Accounting, Cards, Debts e Incomes.",
+		"implemented3": "Monolito modular .NET 10 con ASP.NET Core Minimal APIs, módulos Users, Households, Accounting, Cards, Debts e Incomes y documento OpenAPI de desarrollo.",
 		"implemented4": "Persistencia PostgreSQL 16 con esquema por módulo, migraciones EF Core, concurrencia optimista y motor contable de partida doble.",
 		"implemented5": "Clientes REST tipados, presentación de ProblemDetails, normalización de paginación y reconciliación de notificaciones con SignalR.",
 		"implemented6": "Infraestructura de pruebas unitarias, integración, funcionales, navegador y accesibilidad documentada en ambos repositorios.",

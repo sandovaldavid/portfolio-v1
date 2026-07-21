@@ -35,7 +35,7 @@
 		"sourcesLabel": "SOURCE REPOSITORIES",
 		"implemented1": "Angular 22 standalone SPA with lazy routes, household context, capability guards and feature-local signal stores.",
 		"implemented2": "Keycloak Authorization Code + PKCE integration, guarded bearer-token attachment and loopback-only development mock authentication.",
-		"implemented3": ".NET 10 ASP.NET Core Minimal API modular monolith with Users, Households, Accounting, Cards, Debts and Incomes modules.",
+		"implemented3": ".NET 10 ASP.NET Core Minimal API modular monolith with Users, Households, Accounting, Cards, Debts and Incomes modules plus a development OpenAPI document.",
 		"implemented4": "PostgreSQL 16 schema-per-module persistence, EF Core migrations, optimistic concurrency and a double-entry ledger engine.",
 		"implemented5": "Typed REST clients, ProblemDetails presentation, pagination normalization and SignalR notification reconciliation.",
 		"implemented6": "Unit, integration, functional, browser and accessibility test infrastructure documented across the two repositories.",
