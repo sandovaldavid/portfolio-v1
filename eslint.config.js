@@ -15,6 +15,7 @@ const generatedFiles = [
 	'**/bundle-analysis/**',
 	'**/.lighthouseci/**',
 	'**/.cache/**',
+	'**/.docker/**',
 	'**/*.min.js',
 	'test-results.json',
 	'junit-results.xml',

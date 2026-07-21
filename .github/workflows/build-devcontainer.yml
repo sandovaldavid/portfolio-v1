@@ -7,18 +7,32 @@ on:
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.husky/pre-commit'
+            - '.prettierignore'
+            - 'docker-compose.yml'
+            - 'docker-test.sh'
+            - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
+            - 'scripts/format-tracked-files.mjs'
+            - 'scripts/run-playwright.mjs'
     pull_request:
         branches:
             - main
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.husky/pre-commit'
+            - '.prettierignore'
+            - 'docker-compose.yml'
+            - 'docker-test.sh'
+            - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
+            - 'scripts/format-tracked-files.mjs'
+            - 'scripts/run-playwright.mjs'
     workflow_dispatch:
 
 permissions:
@@ -35,6 +49,17 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v7
+
+            - name: Prepare conditional host Git identity fixture
+              run: |
+                  identity_config="$RUNNER_TEMP/devcontainer-ci-identity.gitconfig"
+                  git config --file "$identity_config" user.name 'Devcontainer CI'
+                  git config --file "$identity_config" user.email 'devcontainer-ci@example.invalid'
+                  git config --global --unset-all user.name || true
+                  git config --global --unset-all user.email || true
+                  git config --global "includeIf.gitdir:${GITHUB_WORKSPACE}/.path" "$identity_config"
+                  test "$(git config --get user.name)" = "Devcontainer CI"
+                  test "$(git config --get user.email)" = "devcontainer-ci@example.invalid"
 
             - name: Log in to GitHub Container Registry
               if: github.event_name == 'push'
@@ -56,16 +81,108 @@ jobs:
                   push: ${{ github.event_name == 'push' && 'always' || 'never' }}
                   runCmd: |
                       test "$PWD" = "/workspaces/portfolio-v1"
+
+                      echo "Verify Linux workspace identity alignment"
+                      test "$(id -u)" = "$(stat -c '%u' "$PWD")"
+                      test -w "$PWD"
+
                       awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
                       test -w node_modules
+                      test -n "$HOST_WORKSPACE_FOLDER"
+                      test "$TERM" = "xterm-256color"
+
+                      echo "Verify exported and imported host Git identity"
+                      test -r /mnt/devcontainer-host-git-identity
+                      test "$(git config --file /mnt/devcontainer-host-git-identity --get user.name)" = "Devcontainer CI"
+                      test "$(git config --file /mnt/devcontainer-host-git-identity --get user.email)" = "devcontainer-ci@example.invalid"
+                      test "$(git config --local --get user.name)" = "Devcontainer CI"
+                      test "$(git config --local --get user.email)" = "devcontainer-ci@example.invalid"
+
+                      echo "Create stale Bun home fixture"
+                      sudo rm -f "$BUN_INSTALL/.devcontainer-owner-state"
+                      sudo mkdir -p "$BUN_INSTALL/install/cache/inherited"
+                      sudo touch "$BUN_INSTALL/install/cache/inherited/state"
+                      sudo chown -R 12345:12345 "$BUN_INSTALL/install/cache"
+                      sudo chmod -R u+rwX,go-rX "$BUN_INSTALL/install/cache"
+
+                      echo "Create stale dependency volume fixture"
+                      sudo rm -f node_modules/.devcontainer-volume-state
+                      sudo mkdir -p node_modules/.vite-temp/inherited
+                      sudo touch node_modules/.vite-temp/stale-config.mjs node_modules/.vite-temp/inherited/state
+                      sudo chown -R 12345:12345 node_modules
+                      sudo chmod -R u+rwX,go-rX node_modules
+
+                      echo "Create stale Git metadata fixture"
+                      sudo touch .git/FETCH_HEAD
+                      sudo chown root:root .git/FETCH_HEAD
+                      sudo chmod 600 .git/FETCH_HEAD
+
+                      echo "Create stale generated ownership fixtures"
+                      sudo rm -rf .astro playwright-report test-results .docker
+                      sudo mkdir -p .astro/collections playwright-report test-results .docker/runtime/home/.cache/dconf .docker/runtime/node_modules
+                      sudo touch .astro/content.d.ts playwright-report/index.html test-results/.last-run.json test-results.json junit-results.xml
+                      sudo chown -R root:root .astro playwright-report test-results test-results.json junit-results.xml .docker
+                      sudo chmod -R go-rwx .astro playwright-report test-results .docker
+
+                      bash .devcontainer/repair-workspace-permissions.sh
+                      test "$(cat "$BUN_INSTALL/.devcontainer-owner-state")" = "schema=1 uid=$(id -u) gid=$(id -g)"
+                      test "$(stat -c '%u:%g' "$BUN_INSTALL/install/cache/inherited/state")" = "$(id -u):$(id -g)"
+                      test -w "$BUN_INSTALL/install/cache"
+                      test "$(cat node_modules/.devcontainer-volume-state)" = "schema=1 uid=$(id -u) gid=$(id -g)"
+                      test "$(stat -c '%u:%g' node_modules/.vite-temp/stale-config.mjs)" = "$(id -u):$(id -g)"
+                      test -w node_modules/.vite-temp
+                      test -w "$(git rev-parse --absolute-git-dir)/FETCH_HEAD"
+                      test -w .astro
+                      test -w playwright-report
+                      test -w test-results
+                      test -w test-results.json
+                      test -w junit-results.xml
+                      test -w .docker/runtime/node_modules
+                      test -w .docker/runtime/home
+
+                      echo "Create hostile nested ESLint fixture"
+                      mkdir -p .docker/runtime/home/.bun/install/cache/hostile-package
+                      cat > .docker/runtime/home/.bun/install/cache/hostile-package/eslint.config.mjs <<'EOF'
+                      import 'package-that-must-never-be-resolved-from-docker-runtime';
+                      export default [];
+                      EOF
+
+                      echo "Create hostile Prettier traversal fixture"
+                      sudo mkdir -p .docker/runtime/home/.cache/dconf/unreadable
+                      sudo touch .docker/runtime/home/.cache/dconf/unreadable/state
+                      sudo chown -R root:root .docker/runtime/home/.cache/dconf
+                      sudo chmod 000 .docker/runtime/home/.cache/dconf
+
+                      echo "Create staged generated devcontainer lock fixture"
+                      printf '{"features":{"fixture":{"version":"1"}}}\n' > .devcontainer/devcontainer-lock.json
+                      git add -f .devcontainer/devcontainer-lock.json
+                      bun run format:check
+                      git reset -- .devcontainer/devcontainer-lock.json
+                      rm -f .devcontainer/devcontainer-lock.json
+
                       bun install --frozen-lockfile
                       bun install --frozen-lockfile
                       bun --version
                       bunx playwright --version
+                      bun run lint:fix
+                      bun run format
+                      sh .husky/pre-commit
+                      git diff --exit-code
+
+                      bash .devcontainer/repair-workspace-permissions.sh
                       bun run check
                       bun run test:unit:ci
                       bun run build
+
+                      echo "Recreate stale Playwright output before the direct smoke command"
+                      sudo rm -rf test-results
+                      sudo mkdir -p test-results
+                      sudo touch test-results/.last-run.json
+                      sudo chown -R root:root test-results
+                      sudo chmod -R go-rwx test-results
                       bun run test:e2e:smoke
+
+                      VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh
                       docker --version
                       docker compose version
                       docker info

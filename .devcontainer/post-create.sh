@@ -4,6 +4,44 @@ set -euo pipefail
 REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
+bash .devcontainer/repair-workspace-permissions.sh
+
+host_git_config="/mnt/devcontainer-host-git-identity"
+host_git_name=""
+host_git_email=""
+
+if [[ -r "$host_git_config" ]]; then
+	host_git_name="$(git config --file "$host_git_config" --get user.name 2>/dev/null || true)"
+	host_git_email="$(git config --file "$host_git_config" --get user.email 2>/dev/null || true)"
+fi
+
+repository_git_name="$(git config --local --get user.name 2>/dev/null || true)"
+repository_git_email="$(git config --local --get user.email 2>/dev/null || true)"
+
+if [[ -z "$repository_git_name" && -n "$host_git_name" ]]; then
+	git config --local user.name "$host_git_name"
+	repository_git_name="$host_git_name"
+fi
+
+if [[ -z "$repository_git_email" && -n "$host_git_email" ]]; then
+	git config --local user.email "$host_git_email"
+	repository_git_email="$host_git_email"
+fi
+
+if [[ -z "$repository_git_name" || -z "$repository_git_email" ]]; then
+	cat >&2 <<'EOF'
+Git commit identity is incomplete inside the development container.
+Configure it on the host with:
+
+  git config --global user.name "Your Name"
+  git config --global user.email "you@example.com"
+
+Then rebuild the development container. The host initialization step resolves includes and conditional includes before exporting only user.name and user.email. Existing repository-local values are never overwritten.
+EOF
+else
+	printf 'Git identity: %s <%s> (repository-local)\n' "$repository_git_name" "$repository_git_email"
+fi
+
 dependency_directory="$REPOSITORY_ROOT/node_modules"
 
 if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo; then
@@ -13,6 +51,14 @@ if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exi
 fi
 
 sudo chown "$(id -u):$(id -g)" "$dependency_directory"
+
+expected_dependency_state="schema=1 uid=$(id -u) gid=$(id -g)"
+actual_dependency_state="$(cat "$dependency_directory/.devcontainer-volume-state" 2>/dev/null || true)"
+
+if [[ "$actual_dependency_state" != "$expected_dependency_state" ]]; then
+	echo "The isolated node_modules volume was not prepared for $(id -u):$(id -g)." >&2
+	exit 1
+fi
 
 if [[ ! -w "$dependency_directory" ]]; then
 	echo "The isolated node_modules volume is not writable by $(id -un)." >&2

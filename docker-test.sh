@@ -9,6 +9,23 @@ export RUN_VISUAL_TESTS="${RUN_VISUAL_TESTS:-}"
 export HOST_UID="$(id -u)"
 export HOST_GID="$(id -g)"
 
+if [[ "${DEVCONTAINER:-}" == "true" ]]; then
+	bash .devcontainer/repair-workspace-permissions.sh
+
+	if [[ -z "${HOST_WORKSPACE_FOLDER:-}" ]]; then
+		echo "HOST_WORKSPACE_FOLDER is required inside the devcontainer." >&2
+		echo "Rebuild the development container after updating devcontainer.json." >&2
+		exit 1
+	fi
+else
+	export HOST_WORKSPACE_FOLDER="$SCRIPT_DIR"
+fi
+
+if [[ ! -f "$SCRIPT_DIR/package.json" ]]; then
+	echo "Repository package.json is missing: $SCRIPT_DIR/package.json" >&2
+	exit 1
+fi
+
 mkdir -p .docker/runtime/node_modules .docker/runtime/home
 
 for directory in .docker/runtime/node_modules .docker/runtime/home; do
@@ -21,6 +38,15 @@ done
 
 echo "==> Building pinned Playwright test image..."
 docker compose build playwright
+
+echo "==> Verifying the host workspace mount..."
+docker compose run --rm --entrypoint bash playwright -lc \
+	'test -f /workspace/package.json && test -f /workspace/bun.lock'
+
+if [[ "${VERIFY_DOCKER_WORKSPACE_ONLY:-}" == "true" ]]; then
+	echo "Pinned Playwright container can access the host workspace."
+	exit 0
+fi
 
 echo "==> Running Playwright E2E tests in the pinned container..."
 docker compose run --rm \

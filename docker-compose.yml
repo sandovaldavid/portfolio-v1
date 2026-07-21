@@ -9,9 +9,9 @@ services:
         user: '${HOST_UID:-1000}:${HOST_GID:-1000}'
         working_dir: /workspace
         volumes:
-            - .:/workspace:z
-            - ./.docker/runtime/node_modules:/workspace/node_modules:z
-            - ./.docker/runtime/home:/home/tester:z
+            - '${HOST_WORKSPACE_FOLDER:-.}:/workspace:z'
+            - '${HOST_WORKSPACE_FOLDER:-.}/.docker/runtime/node_modules:/workspace/node_modules:z'
+            - '${HOST_WORKSPACE_FOLDER:-.}/.docker/runtime/home:/home/tester:z'
         environment:
             HOME: /home/tester
             CI: '${CI:-}'

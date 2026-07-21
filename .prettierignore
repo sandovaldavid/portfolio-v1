@@ -8,6 +8,10 @@ test-results/
 bundle-analysis/
 .lighthouseci/
 .cache/
+.docker/
+
+# Generated Dev Container feature lock; commit as tool output without reformatting
+.devcontainer/devcontainer-lock.json
 
 # Generated or imported agent knowledge
 .agent/
