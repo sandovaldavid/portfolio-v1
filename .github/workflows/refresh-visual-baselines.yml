@@ -47,6 +47,11 @@ jobs:
             --project=firefox \
             --grep='#research|#technologies|footer'
 
+          bunx playwright test tests/e2e/visual.spec.ts \
+            --update-snapshots \
+            --project='Mobile Chrome' \
+            --grep='#technologies'
+
       - name: Verify all maintained visual baselines without update mode
         env:
           RUN_VISUAL_TESTS: 'true'
@@ -119,8 +124,8 @@ jobs:
           fi
 
           snapshot_count="$(printf '%s\n' "$changed_files" | grep -Ec '^tests/e2e/visual\.spec\.ts-snapshots/.+\.png$' || true)"
-          if [[ "$snapshot_count" -ne 18 ]]; then
-            echo "Expected exactly 18 changed snapshots, found $snapshot_count."
+          if [[ "$snapshot_count" -ne 19 ]]; then
+            echo "Expected exactly 19 changed snapshots, found $snapshot_count."
             exit 1
           fi
 
