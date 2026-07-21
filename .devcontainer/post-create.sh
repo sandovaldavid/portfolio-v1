@@ -6,27 +6,14 @@ cd "$REPOSITORY_ROOT"
 
 bash .devcontainer/repair-workspace-permissions.sh
 
+host_git_config="/mnt/devcontainer-host-git-identity"
 host_git_name=""
 host_git_email=""
 
-for host_git_config in \
-	/mnt/devcontainer-host-xdg-gitconfig \
-	/mnt/devcontainer-host-gitconfig; do
-	if [[ ! -r "$host_git_config" ]]; then
-		continue
-	fi
-
-	candidate_name="$(git config --file "$host_git_config" --get user.name 2>/dev/null || true)"
-	candidate_email="$(git config --file "$host_git_config" --get user.email 2>/dev/null || true)"
-
-	if [[ -n "$candidate_name" ]]; then
-		host_git_name="$candidate_name"
-	fi
-
-	if [[ -n "$candidate_email" ]]; then
-		host_git_email="$candidate_email"
-	fi
-done
+if [[ -r "$host_git_config" ]]; then
+	host_git_name="$(git config --file "$host_git_config" --get user.name 2>/dev/null || true)"
+	host_git_email="$(git config --file "$host_git_config" --get user.email 2>/dev/null || true)"
+fi
 
 repository_git_name="$(git config --local --get user.name 2>/dev/null || true)"
 repository_git_email="$(git config --local --get user.email 2>/dev/null || true)"
@@ -49,7 +36,7 @@ Configure it on the host with:
   git config --global user.name "Your Name"
   git config --global user.email "you@example.com"
 
-Then rebuild the development container. Existing repository-local values are never overwritten.
+Then rebuild the development container. The host initialization step resolves includes and conditional includes before exporting only user.name and user.email. Existing repository-local values are never overwritten.
 EOF
 else
 	printf 'Git identity: %s <%s> (repository-local)\n' "$repository_git_name" "$repository_git_email"
