@@ -89,6 +89,10 @@ expect(
 	'devcontainer.json must repair writable state whenever VS Code attaches.'
 );
 expect(
+	devcontainer.waitFor === 'postStartCommand',
+	'VS Code must wait for startup permission repair before attaching extensions.'
+);
+expect(
 	devcontainer.containerEnv?.DEVCONTAINER === 'true',
 	'devcontainer.json must identify the managed development shell.'
 );
