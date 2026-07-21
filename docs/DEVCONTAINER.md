@@ -95,12 +95,16 @@ stat -c 'workspace=%u:%g %n' .
 docker inspect --format '{{.Config.User}}' <container-id>
 ```
 
-Restore host ownership only for metadata or generated paths that were previously changed by a container:
+Restore host ownership only for paths that currently exist and were previously changed by a container:
 
 ```bash
-sudo chown -R "$(id -u):$(id -g)" \
+for path in \
 	.git .astro dist coverage playwright-report test-results \
-	test-results.json junit-results.xml .docker 2>/dev/null || true
+	test-results.json junit-results.xml .docker; do
+	if [ -e "$path" ]; then
+		sudo chown -R "$(id -u):$(id -g)" "$path"
+	fi
+done
 ```
 
 Remove the stale container shown in the Dev Containers log:
