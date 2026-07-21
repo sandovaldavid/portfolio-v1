@@ -5,8 +5,13 @@ const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
 const postCreateScript = readFileSync('.devcontainer/post-create.sh', 'utf8');
 
+/** @type {string[]} */
 const failures = [];
 
+/**
+ * @param {unknown} condition
+ * @param {string} message
+ */
 function expect(condition, message) {
 	if (!condition) failures.push(message);
 }
