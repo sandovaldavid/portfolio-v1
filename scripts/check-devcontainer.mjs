@@ -28,6 +28,8 @@ const bunVersion = packageJson.packageManager?.match(/^bun@(.+)$/)?.[1];
 const playwrightVersion = packageJson.devDependencies?.['@playwright/test'];
 /** @type {string[]} */
 const mounts = Array.isArray(devcontainer.mounts) ? devcontainer.mounts : [];
+/** @type {string[]} */
+const runArgs = Array.isArray(devcontainer.runArgs) ? devcontainer.runArgs : [];
 const workspaceFolder = '/workspaces/portfolio-v1';
 const dependencyVolumeMount =
 	'source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume';
@@ -53,6 +55,10 @@ expect(
 		dockerfile.includes('usermod --uid "${DEVCONTAINER_UID}"') &&
 		dockerfile.includes('groupmod --gid "${DEVCONTAINER_GID}" pwuser'),
 	'the development image must normalize pwuser to the standard Linux UID/GID before runtime remapping.'
+);
+expect(
+	dockerfile.includes('USER pwuser') && dockerfile.includes('WORKDIR /workspaces/portfolio-v1'),
+	'the development image must finish as pwuser in the canonical workspace.'
 );
 expect(
 	devcontainer.build?.args?.BUN_VERSION === bunVersion,
@@ -84,6 +90,16 @@ expect(
 	'devcontainer.json must install GitHub CLI support.'
 );
 expect(
+	devcontainer.remoteUser === 'pwuser' && devcontainer.containerUser === 'pwuser',
+	'VS Code and all default container processes must run as pwuser.'
+);
+expect(devcontainer.updateRemoteUserUID === true, 'Host UID mapping must remain enabled.');
+expect(devcontainer.init === true, 'The devcontainer must use an init process as PID 1.');
+expect(
+	runArgs.includes('--ipc=host'),
+	'The devcontainer must share host IPC for direct Chromium execution.'
+);
+expect(
 	devcontainer.postCreateCommand === 'bash .devcontainer/post-create.sh',
 	'devcontainer.json must use the versioned post-create script.'
 );
@@ -106,6 +122,14 @@ expect(
 expect(
 	devcontainer.containerEnv?.HOST_WORKSPACE_FOLDER === '${localWorkspaceFolder}',
 	'devcontainer.json must expose the real host workspace path to Docker Compose.'
+);
+expect(
+	devcontainer.containerEnv?.PLAYWRIGHT_BROWSERS_PATH === '/ms-playwright',
+	'devcontainer.json must use the browsers bundled with the Playwright image.'
+);
+expect(
+	devcontainer.containerEnv?.TERM === 'xterm-256color',
+	'devcontainer.json must expose a consistent interactive terminal capability.'
 );
 expect(
 	postCreateScript.includes(repairCommand),
@@ -139,6 +163,19 @@ expect(
 	'the repair script must reject stale containers whose UID differs from the Linux bind mount owner.'
 );
 expect(
+	repairScript.includes('bun_home=') &&
+		repairScript.includes('.devcontainer-owner-state') &&
+		repairScript.includes('Repairing inherited Bun home') &&
+		repairScript.includes('bun_probe='),
+	'the repair script must version, repair and verify the writable Bun home.'
+);
+expect(
+	repairScript.includes('.devcontainer-volume-state') &&
+		repairScript.includes('Repairing inherited node_modules volume') &&
+		repairScript.includes('dependency_probe='),
+	'the repair script must version, repair and verify the dependency volume.'
+);
+expect(
 	repairScript.includes('generated_paths=(') && repairScript.includes('.docker'),
 	'the repair script must use an explicit allowlist of generated paths.'
 );
@@ -149,6 +186,10 @@ expect(
 expect(
 	!repairScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
 	'the repair script must never recursively change ownership of the repository root.'
+);
+expect(
+	dockerCompose.includes('init: true') && dockerCompose.includes('ipc: host'),
+	'the pinned Playwright container must use init and host IPC.'
 );
 expect(
 	dockerCompose.includes("'${HOST_WORKSPACE_FOLDER:-.}:/workspace:z'"),
@@ -235,12 +276,6 @@ expect(
 	devcontainerWorkflow.includes('sh .husky/pre-commit'),
 	'the devcontainer workflow must execute the real pre-commit hook.'
 );
-expect(
-	devcontainer.containerEnv?.PLAYWRIGHT_BROWSERS_PATH === '/ms-playwright',
-	'devcontainer.json must use the browsers bundled with the Playwright image.'
-);
-expect(devcontainer.remoteUser === 'pwuser', 'The development user must be pwuser.');
-expect(devcontainer.updateRemoteUserUID === true, 'Host UID mapping must remain enabled.');
 
 if (failures.length > 0) {
 	console.error('Devcontainer contract validation failed:');
@@ -249,5 +284,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, normalized Linux identity, writable Git metadata, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, normalized Linux identity, init and IPC isolation settings, writable Git metadata and Bun home, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
 );
