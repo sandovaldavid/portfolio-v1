@@ -7,24 +7,28 @@ on:
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.husky/pre-commit'
             - '.prettierignore'
             - 'docker-test.sh'
             - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
+            - 'scripts/format-tracked-files.mjs'
     pull_request:
         branches:
             - main
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.husky/pre-commit'
             - '.prettierignore'
             - 'docker-test.sh'
             - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
+            - 'scripts/format-tracked-files.mjs'
     workflow_dispatch:
 
 permissions:
@@ -88,13 +92,22 @@ jobs:
                       export default [];
                       EOF
 
+                      echo "Create hostile Prettier traversal fixture"
+                      sudo mkdir -p .docker/runtime/home/.cache/dconf/unreadable
+                      sudo touch .docker/runtime/home/.cache/dconf/unreadable/state
+                      sudo chown -R root:root .docker/runtime/home/.cache/dconf
+                      sudo chmod 000 .docker/runtime/home/.cache/dconf
+
                       bun install --frozen-lockfile
                       bun install --frozen-lockfile
                       bun --version
                       bunx playwright --version
                       bun run lint:fix
                       bun run format
+                      sh .husky/pre-commit
                       git diff --exit-code
+
+                      bash .devcontainer/repair-workspace-permissions.sh
                       bun run check
                       bun run test:unit:ci
                       bun run build
