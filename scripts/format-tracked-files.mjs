@@ -55,15 +55,7 @@ for (let index = 0; index < trackedFiles.length; index += batchSize) {
 	const batch = trackedFiles.slice(index, index + batchSize);
 	const prettierResult = spawnSync(
 		process.execPath,
-		[
-			prettierCli,
-			mode,
-			'--ignore-unknown',
-			'--ignore-path',
-			'.prettierignore',
-			'--',
-			...batch,
-		],
+		[prettierCli, mode, '--ignore-unknown', '--ignore-path', '.prettierignore', '--', ...batch],
 		{ stdio: 'inherit' }
 	);
 
