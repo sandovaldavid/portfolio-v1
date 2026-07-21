@@ -32,6 +32,43 @@ if [[ ! -w "$REPOSITORY_ROOT" ]]; then
 	exit 1
 fi
 
+bun_home="${BUN_INSTALL:-$HOME/.bun}"
+if [[ "$bun_home" != "$HOME/.bun" ]]; then
+	echo "Refusing to repair an unexpected Bun home outside the managed path: $bun_home" >&2
+	exit 1
+fi
+
+if [[ -L "$bun_home" ]]; then
+	echo "Refusing to repair Bun home because it is a symbolic link: $bun_home" >&2
+	exit 1
+fi
+
+bun_state="$bun_home/.devcontainer-owner-state"
+expected_bun_state="schema=1 uid=${owner_uid} gid=${owner_gid}"
+sudo mkdir -p "$bun_home"
+actual_bun_state="$(cat "$bun_state" 2>/dev/null || true)"
+
+if [[ "$actual_bun_state" != "$expected_bun_state" ]]; then
+	echo "Repairing inherited Bun home for ${owner}."
+	sudo chown -R --no-dereference "$owner" -- "$bun_home"
+	sudo chmod -R u+rwX -- "$bun_home"
+fi
+
+for mutable_path in install/cache; do
+	if [[ -e "$bun_home/$mutable_path" ]]; then
+		sudo chown -R --no-dereference "$owner" -- "$bun_home/$mutable_path"
+		sudo chmod -R u+rwX -- "$bun_home/$mutable_path"
+	fi
+done
+
+printf '%s\n' "$expected_bun_state" | sudo tee "$bun_state" >/dev/null
+sudo chown "$owner" -- "$bun_state"
+sudo chmod u+rw -- "$bun_state"
+
+bun_probe="$bun_home/.devcontainer-write-probe.$$"
+touch "$bun_probe"
+rm -f "$bun_probe"
+
 git_directory="$(git rev-parse --absolute-git-dir 2>/dev/null || true)"
 if [[ -n "$git_directory" ]]; then
 	case "$git_directory" in
@@ -125,4 +162,4 @@ for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime
 	fi
 done
 
-printf 'Git metadata, dependency volume and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
+printf 'Git metadata, Bun home, dependency volume and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
