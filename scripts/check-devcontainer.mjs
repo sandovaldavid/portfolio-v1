@@ -148,7 +148,8 @@ expect(
 	'the Docker test wrapper must repair generated runtime paths inside the devcontainer.'
 );
 expect(
-	runPlaywrightScript.includes(repairCommand),
+	runPlaywrightScript.includes("spawnSync('bash'") &&
+		runPlaywrightScript.includes('.devcontainer/repair-workspace-permissions.sh'),
 	'direct Playwright commands must repair stale generated output inside the devcontainer.'
 );
 expect(
