@@ -14,6 +14,8 @@ if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exi
 	exit 1
 fi
 
+sudo chown "$(id -u):$(id -g)" "$dependency_directory"
+
 expected_dependency_state="schema=1 uid=$(id -u) gid=$(id -g)"
 actual_dependency_state="$(cat "$dependency_directory/.devcontainer-volume-state" 2>/dev/null || true)"
 
