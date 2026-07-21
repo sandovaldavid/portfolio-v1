@@ -15,14 +15,10 @@ if (process.env.DEVCONTAINER === 'true') {
 	}
 }
 
-const playwrightResult = spawnSync(
-	'bunx',
-	['playwright', 'test', ...process.argv.slice(2)],
-	{
-		stdio: 'inherit',
-		env: process.env,
-	}
-);
+const playwrightResult = spawnSync('bunx', ['playwright', 'test', ...process.argv.slice(2)], {
+	stdio: 'inherit',
+	env: process.env,
+});
 
 if (playwrightResult.error) {
 	console.error(playwrightResult.error.message);
