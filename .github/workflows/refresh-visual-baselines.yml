@@ -87,6 +87,17 @@ jobs:
 
           exit "$visual_status"
 
+      - name: Upload residual visual diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: residual-visual-diagnostics
+          path: |
+            test-results.json
+            test-results/
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Remove temporary automation and commit reviewed snapshots
         shell: bash
         run: |
