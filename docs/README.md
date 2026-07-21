@@ -9,6 +9,7 @@ English is the primary repository documentation language. Spanish is maintained 
 | [README.md](../README.md)                            | Recruiter/developer overview, demo, CV and quick start    |
 | [AGENTS.md](../AGENTS.md)                            | Shared working rules for humans and AI agents             |
 | [ARCHITECTURE.md](ARCHITECTURE.md)                   | Current FSD boundaries and executable architecture policy |
+| [DEVCONTAINER.md](DEVCONTAINER.md)                   | Reproducible development environment and commands         |
 | [TESTING.md](TESTING.md)                             | Test strategy and local commands                          |
 | [CI.md](CI.md)                                       | PR, main and scheduled pipeline behavior                  |
 | [DELIVERY.md](DELIVERY.md)                           | Branch, preview, production and release policy            |
