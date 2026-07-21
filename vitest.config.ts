@@ -4,6 +4,19 @@ import path from 'path';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 
+/**
+ * Risk-based unit coverage scope.
+ *
+ * These files contain deterministic logic that can be exercised without Astro's runtime or a
+ * browser. The percentages do not represent whole-repository coverage. See
+ * docs/testing/UNIT-COVERAGE.md for the inventory, exclusions and change policy.
+ */
+const unitCoverageScope = [
+	'src/shared/lib/i18n/**/*.ts',
+	'src/shared/config/i18n/**/*.ts',
+	'src/shared/lib/content/locale-content-id.ts',
+];
+
 export default defineConfig({
 	test: {
 		globals: true,
@@ -11,11 +24,8 @@ export default defineConfig({
 		include: ['tests/unit/**/*.spec.ts'],
 		coverage: {
 			provider: 'v8',
-			reporter: ['text', 'json', 'html', 'lcov'],
-			include: [
-				'src/shared/lib/i18n/**/*.ts',
-				'src/shared/config/i18n/**/*.ts',
-			],
+			reporter: ['text', 'text-summary', 'json', 'json-summary', 'html', 'lcov'],
+			include: unitCoverageScope,
 			exclude: [
 				'node_modules/',
 				'dist/',
@@ -40,7 +50,6 @@ export default defineConfig({
 			'@widgets': path.resolve(root, 'src/widgets'),
 			'@app': path.resolve(root, 'src/app'),
 			'@assets': path.resolve(root, 'src/assets'),
-			'@': path.resolve(root, 'src'),
 		},
 	},
 });

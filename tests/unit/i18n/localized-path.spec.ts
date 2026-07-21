@@ -43,7 +43,9 @@ describe('getLocalizedPath', () => {
 		});
 
 		it('prefixes nested path with /es', () => {
-			expect(getLocalizedPath(Language.SPANISH, '/projects/detail')).toBe('/es/projects/detail');
+			expect(getLocalizedPath(Language.SPANISH, '/projects/detail')).toBe(
+				'/es/projects/detail'
+			);
 		});
 	});
 });

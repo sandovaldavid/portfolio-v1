@@ -8,7 +8,11 @@ import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
-import { Header, Footer, TechStack, RecruiterHUD, ContactSidebar } from '@widgets';
+import { ContactSidebar } from '@widgets/contact-sidebar';
+import { Footer } from '@widgets/footer';
+import { Header } from '@widgets/header';
+import { RecruiterHUD } from '@widgets/recruiter-hud';
+import { TechStack } from '@widgets/tech-stack';
 import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
@@ -35,7 +39,7 @@ const {
 	description,
 	title,
 	img_preview,
-	isHome = true,
+	isHome = false,
 	article = false,
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
 } = Astro.props;
@@ -97,7 +101,7 @@ const personSchema = {
 	sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 	jobTitle: 'Software Engineer',
 	worksFor: { '@type': 'Organization', name: siteConfig.currentCompany },
-	address: { '@type': 'PostalAddress', addressLocality: 'Piura', addressCountry: 'PE' },
+	address: { '@type': 'PostalAddress', addressLocality: 'Lima', addressCountry: 'PE' },
 	email: siteConfig.email,
 	knowsAbout: [
 		'.NET 8',
@@ -156,6 +160,7 @@ const articleSchema = article
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="theme-color" content="#0096ff" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="apple-mobile-web-app-title" content="DevSandoval" />
 
@@ -199,7 +204,7 @@ const articleSchema = article
 		/>
 
 		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
-		<Font cssVariable="--font-pixel" preload />
+		<Font cssVariable="--font-pixel" />
 		<Font cssVariable="--font-pixel-clean" preload />
 		<Font cssVariable="--font-retro-tag" />
 		<Font cssVariable="--font-gaming-mono" />
@@ -333,7 +338,9 @@ const articleSchema = article
 			</main>
 			<Footer />
 			<RecruiterHUD />
-			<CLITerminal />
+			<div transition:persist="cli-terminal">
+				<CLITerminal />
+			</div>
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
 		</div>

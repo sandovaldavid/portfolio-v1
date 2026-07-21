@@ -1,6 +1,17 @@
 ---
+import Layout from '@app/layouts/Layout.astro';
 import { AboutContent } from '@widgets/about-content';
+import { useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+
+const lang = Language.ENGLISH;
+const t = useTranslations(lang);
 ---
 
-<AboutContent lang={Language.ENGLISH} />
+<Layout
+	title={t('about-me.page-title')}
+	description={t('about-me.page-description')}
+	img_preview="/projects/portfolio.webp"
+>
+	<AboutContent {lang} />
+</Layout>

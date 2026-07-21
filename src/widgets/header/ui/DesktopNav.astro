@@ -14,6 +14,7 @@ interface Props {
 		label: string;
 		url: string;
 		icon: string;
+		prefetch?: boolean;
 	}>;
 }
 
@@ -30,6 +31,7 @@ const { navItems } = Astro.props;
 				class="relative flex items-center gap-1.5 px-2 py-2 text-sm font-bold uppercase tracking-wide transition text-content-strong hover:text-primary-500 dark:hover:text-primary-500 whitespace-nowrap"
 				aria-label={link.label}
 				href={link.url}
+				data-astro-prefetch={link.prefetch ? 'hover' : undefined}
 			>
 				{link.icon === 'experience' && <BriefcaseIcon class="size-4" />}
 				{link.icon === 'research' && <BrainIcon class="size-4" />}

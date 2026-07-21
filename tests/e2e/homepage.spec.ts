@@ -1,99 +1,107 @@
 import { test, expect } from './fixtures';
 
 test.describe('Homepage', () => {
-  test('should load and display main content', async ({ page }) => {
-    await page.goto('/');
+	test('shows professional positioning and primary actions immediately', async ({ page }) => {
+		await page.goto('/');
 
-    // Verify page title
-    await expect(page).toHaveTitle(/David Sandoval|Portfolio/i);
+		await expect(page).toHaveTitle(/David Sandoval.*Software Engineer/i);
+		await expect(page.locator('h1')).toHaveText(/David Sandoval/i);
+		await expect(page.getByText(/Angular · \.NET · TypeScript/i).first()).toBeVisible();
+		await expect(page.getByRole('link', { name: /view selected work/i })).toBeVisible();
+		await expect(page.getByRole('link', { name: /contact me/i })).toBeVisible();
+		await expect(page.getByRole('link', { name: /download resume/i })).toBeVisible();
+		await expect(page.getByRole('link', { name: 'GitHub', exact: true }).first()).toBeVisible();
+		await expect(
+			page.getByRole('link', { name: 'LinkedIn', exact: true }).first()
+		).toBeVisible();
+	});
 
-    // The Hero renders the page's single h1
-    const heading = page.locator('h1');
-    await expect(heading).toBeVisible();
-    await expect(heading).toHaveText(/David Sandoval/i);
-  });
+	test('does not block the default first visit', async ({ page }) => {
+		await page.goto('/');
 
-  test('should have working navigation', async ({ page }) => {
-    await page.goto('/');
+		const splash = page.locator('#splash-screen');
+		await expect(splash).toBeHidden();
+		await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+		await expect(page.getByText(/Systems Architect|Lvl\. 99|LEVEL 5\+/i)).toHaveCount(0);
+	});
 
-    // Desktop: nav links are visible; mobile: hamburger toggle button is visible
-    const desktopNav = page.locator('header nav a').first();
-    const mobileToggle = page.locator('button[aria-label="Toggle menu"]');
+	test('opens retro mode only when explicitly requested', async ({ page }) => {
+		await page.goto('/?retro=1');
 
-    const hasDesktop = await desktopNav.isVisible().catch(() => false);
-    const hasMobile = await mobileToggle.isVisible().catch(() => false);
-    expect(hasDesktop || hasMobile).toBe(true);
-  });
+		const dialog = page.getByRole('dialog', { name: /retro mode/i });
+		await expect(dialog).toBeVisible();
+		await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
 
-  test('should be responsive on mobile', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+		await page.keyboard.press('Escape');
+		await expect(dialog).toBeHidden();
+		await expect(page).toHaveURL(/\/$/);
+		await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+	});
 
-    // Verify content is visible on mobile
-    const content = page.locator('main, [role="main"]');
-    await expect(content).toBeVisible();
-  });
+	test('has working navigation', async ({ page }) => {
+		await page.goto('/');
 
-  test('should have no accessibility violations', async ({ page }) => {
-    await page.goto('/');
+		const desktopNav = page.locator('header nav a').first();
+		const mobileToggle = page.locator('button[aria-label="Toggle menu"]');
 
-    // Check for images without alt text
-    const imagesWithoutAlt = page.locator('img:not([alt])');
-    const count = await imagesWithoutAlt.count();
-    expect(count).toBe(0);
+		const hasDesktop = await desktopNav.isVisible().catch(() => false);
+		const hasMobile = await mobileToggle.isVisible().catch(() => false);
+		expect(hasDesktop || hasMobile).toBe(true);
+	});
 
-    // Heading hierarchy (one h1, no level skips) is enforced in typography.spec.ts
-    const headings = page.locator('h1, h2, h3, h4, h5, h6');
-    await expect(headings.first()).toBeVisible();
-  });
+	test('is responsive on mobile', async ({ page }) => {
+		await page.setViewportSize({ width: 375, height: 667 });
+		await page.goto('/');
 
-  test('should apply the persisted theme', async ({ page }) => {
-    // NOTE: the site currently ships no theme-toggle UI (the ThemeToggle
-    // feature slice is unmounted dead code — see
-    // docs/reports/style-audit-2026-07/04-test-false-positives.md §5).
-    // This asserts the actual mechanism: Layout's inline script applies
-    // the theme persisted in localStorage on every load.
-    const html = page.locator('html');
+		await expect(page.locator('main, [role="main"]')).toBeVisible();
+		await expect(page.getByRole('link', { name: /contact me/i })).toBeVisible();
+	});
 
-    // Default (no stored preference) is dark
-    await page.goto('/');
-    await expect(html).toHaveClass(/dark/);
+	test('has no basic accessibility regressions', async ({ page }) => {
+		await page.goto('/');
 
-    // A stored "light" preference removes the dark class on load
-    await page.addInitScript(() => localStorage.setItem('theme', 'light'));
-    await page.goto('/');
-    await expect(html).not.toHaveClass(/dark/);
-  });
+		expect(await page.locator('img:not([alt])').count()).toBe(0);
+		await expect(page.locator('h1, h2, h3, h4, h5, h6').first()).toBeVisible();
+	});
+
+	test('applies the persisted theme', async ({ page }) => {
+		const html = page.locator('html');
+
+		await page.goto('/');
+		await expect(html).toHaveClass(/dark/);
+
+		await page.addInitScript(() => localStorage.setItem('theme', 'light'));
+		await page.goto('/');
+		await expect(html).not.toHaveClass(/dark/);
+	});
 });
 
 test.describe('Page Load Performance', () => {
-  test('should load within acceptable time', async ({ page }) => {
-    await page.goto('/');
+	test('loads within acceptable time', async ({ page }) => {
+		await page.goto('/');
 
-    // Use Navigation Timing API for accurate browser-measured load time
-    const loadTime = await page.evaluate(() => {
-      const [entry] = performance.getEntriesByType(
-        'navigation'
-      ) as PerformanceNavigationTiming[];
-      return entry ? Math.round(entry.loadEventEnd - entry.startTime) : 0;
-    });
+		const loadTime = await page.evaluate(() => {
+			const [entry] = performance.getEntriesByType(
+				'navigation'
+			) as PerformanceNavigationTiming[];
+			return entry ? Math.round(entry.loadEventEnd - entry.startTime) : 0;
+		});
 
-    expect(loadTime).toBeLessThan(3000);
-  });
+		expect(loadTime).toBeLessThan(3000);
+	});
 
-  test('should have no console errors', async ({ page }) => {
-    const errors: string[] = [];
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
-        const text = msg.text();
-        // Ignore 404s for external resources (fonts, analytics) — only fail on JS errors
-        if (!text.includes('Failed to load resource') && !text.includes('net::ERR_')) {
-          errors.push(text);
-        }
-      }
-    });
+	test('has no console errors', async ({ page }) => {
+		const errors: string[] = [];
+		page.on('console', msg => {
+			if (msg.type() === 'error') {
+				const text = msg.text();
+				if (!text.includes('Failed to load resource') && !text.includes('net::ERR_')) {
+					errors.push(text);
+				}
+			}
+		});
 
-    await page.goto('/');
-    expect(errors).toEqual([]);
-  });
+		await page.goto('/');
+		expect(errors).toEqual([]);
+	});
 });

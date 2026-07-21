@@ -1,12 +1,17 @@
 ---
 import Layout from '@app/layouts/Layout.astro';
-import { Experience, Projects, AboutMe, Hero, Research } from '@widgets';
+import { AboutMe } from '@widgets/about-me';
+import { Experience } from '@widgets/experience';
+import { Hero } from '@widgets/hero';
+import { Projects } from '@widgets/projects';
+import { Research } from '@widgets/research';
 ---
 
 <Layout
-	title="David Sandoval Portfolio - Web Developer"
-	description="Hire David Sandoval, web and mobile developer. Specialized in creating unique applications."
+	title="David Sandoval — Software Engineer"
+	description="Software Engineer building reliable web products with Angular, .NET and TypeScript. Based in Lima and open to remote opportunities across Europe and Latin America."
 	img_preview="/projects/portfolio.webp"
+	isHome
 >
 	<Hero slot="hero" />
 	<Experience slot="experience" />

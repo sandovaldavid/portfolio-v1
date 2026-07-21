@@ -1,6 +1,19 @@
 ---
+import Layout from '@app/layouts/Layout.astro';
 import { ResearchContent } from '@widgets/research-content';
+import { useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+
+const lang = Language.SPANISH;
+const t = useTranslations(lang);
 ---
 
-<ResearchContent lang={Language.SPANISH} backHref="/#research" />
+<Layout
+	title={t('research.page-title')}
+	description={t('research.page-description')}
+	img_preview="/projects/portfolio.webp"
+	isHome={false}
+	article={true}
+>
+	<ResearchContent {lang} backHref="/#research" />
+</Layout>

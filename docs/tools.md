@@ -1,82 +1,57 @@
-# Testing & Quality Tools
+# Testing and quality tools
 
-Reference for the tools this project actually uses to test performance, accessibility, and
-cross-browser/device rendering. See [`docs/testing/`](./testing/README.md) for how to run them
-locally and [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) for how they run in CI.
+This page explains the role of each tool without duplicating versions, thresholds or workflow names. Those values are owned by [package.json](../package.json), versioned configuration and [CI.md](CI.md).
 
----
+## Repository quality
 
-## 1. Performance, Accessibility, Best Practices, SEO — Lighthouse CI
+- **Prettier** checks maintained source and documentation formatting.
+- **ESLint** validates JavaScript, TypeScript and Astro source.
+- **Astro Check** validates Astro components and content configuration.
+- **TypeScript** checks tests, scripts and supported configuration.
+- **Architecture checker** enforces the dependency rules in [ARCHITECTURE.md](ARCHITECTURE.md).
+- **Documentation checker** validates relative links in active documentation and archive indexes.
 
-The project uses **[`@lhci/cli`](https://github.com/GoogleChrome/lighthouse-ci)**, not the
-standalone `lighthouse` CLI, so runs are reproducible and config-driven.
+Run the canonical gate with:
 
-- **Config**: [`.lighthouserc.json`](../.lighthouserc.json) — audits 10 pages (`/`, `/about`,
-  `/projects`, `/blog`, `/blog/building-this-portfolio-with-astro-and-fsd/` + `/es` mirrors),
-  3 runs averaged per page. Blog list and one article detail page per locale are in the audit
-  set to catch `.prose`/MDX render regressions.
-- **Thresholds** (enforced, `error` severity): Performance ≥ 90, Accessibility ≥ 95,
-  Best Practices ≥ 90, SEO ≥ 90.
-- **Run locally**:
-    ```bash
-    bun run build
-    bun run lighthouse:collect
-    bun run lighthouse:assert
-    ```
-- **In CI**: the `lighthouse` job in `ci.yml` runs this over the prebuilt `dist/`, uploads
-  reports as the `lighthouse-reports` artifact (7-day retention).
+```bash
+bun run check
+```
 
-## 2. Accessibility — `@axe-core/playwright`
+## Unit behavior
 
-Accessibility is scanned as part of the Playwright suite, not with a separate axe CLI.
+**Vitest** covers deterministic, risk-selected behavior. Coverage percentages apply only to the scope documented in [testing/UNIT-COVERAGE.md](testing/UNIT-COVERAGE.md).
 
-- **Test file**: [`tests/e2e/a11y.spec.ts`](../tests/e2e/a11y.spec.ts) — runs `AxeBuilder` (WCAG
-  2.0/2.1 A+AA tags) against 8 key routes (home, about, projects, research — both EN and ES),
-  once in dark theme and once in light theme.
-- **CI gate**: fails the build on any new `critical` or `serious` violation.
-- **Run locally**: `bun run test tests/e2e/a11y.spec.ts`.
+```bash
+bun run test:unit:ci
+bun run test:unit:coverage
+```
 
-## 3. Cross-browser / cross-device — Playwright
+## Browser and accessibility behavior
 
-- **Config**: [`playwright.config.ts`](../playwright.config.ts) — 5 projects: Chromium, Firefox,
-  WebKit, Mobile Chrome (Pixel 5), Mobile Safari (iPhone 12).
-- Also used for visual-regression screenshots (`tests/e2e/visual.spec.ts`) and general
-  navigation/smoke tests (`tests/e2e/homepage.spec.ts`, `pages.spec.ts`).
-- **Run locally**:
-    ```bash
-    bun run test          # all projects
-    bun run test:ui       # interactive mode
-    bun run test:local    # chromium + firefox + Mobile Chrome only (faster local loop)
-    ```
+**Playwright** covers navigation, responsive behavior, Astro client-navigation lifecycles and critical user flows. **Axe** runs inside the browser suite and blocks serious or critical accessibility regressions.
 
-## 4. Unit tests — Vitest
+```bash
+bun run test:e2e:smoke
+bun run test:e2e:desktop
+bun run test:e2e:extended
+```
 
-- **Scope**: `src/shared/lib/i18n/**` and `src/shared/config/i18n/**` only (see
-  `vitest.config.ts`) — 90% coverage threshold on lines/functions/branches/statements.
-- **Run locally**: `bun run test:unit` / `bun run test:unit:coverage`.
+Project definitions and retained diagnostics are configured in `playwright.config.ts` and the GitHub Actions workflows.
 
-## 5. Bundle size
+## Performance
 
-- `astro.config.mjs` wires `rollup-plugin-visualizer` — every `astro build` emits a treemap at
-  `bundle-analysis/index.html`.
-- `bun run bundle:analyze` (`scripts/analyze-bundle.js`) writes a plain-text size breakdown to
-  `bundle-analysis/report.txt` (same logic CI runs inline in the `build` job).
-- CI checks total `dist/` size against a 5MB threshold — logs a warning, does not fail the build.
+- **Route budgets** measure emitted assets referenced by representative English and Spanish routes. See [PERFORMANCE.md](PERFORMANCE.md).
+- **Lighthouse CI** provides browser-level performance, accessibility, best-practices and SEO audits. Thresholds are owned by `.lighthouserc.json`.
+- **Rollup visualizer** is an opt-in composition audit, not a blocking size metric.
 
----
+```bash
+bun run build
+bun run performance:check
+bun run lighthouse:collect
+bun run lighthouse:assert
+bun run bundle:visualize
+```
 
-## Not used by this project
+## Generated reports
 
-Generic recommendations you'll see elsewhere (standalone `lighthouse`/`axe-cli`/`pa11y` CLIs,
-`LinkChecker`, `structured-data-testing-tool`) are **not** part of this toolchain — the
-equivalents above already cover the same ground in CI. Reach for one of those only if evaluating
-a new tool to replace or complement the current setup.
-
----
-
-## Contact
-
-For questions about this testing setup:
-
-- Email: hello@sandovaldavid.com
-- Email: dev@sandovaldavid.com
+Coverage, Playwright, Lighthouse, bundle and route-budget outputs are generated artifacts and are not maintained as repository documentation. CI retention and artifact names are documented in [CI.md](CI.md).

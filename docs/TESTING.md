@@ -1,267 +1,95 @@
-# Testing & Quality Assurance
+# Testing and quality assurance
 
-Complete testing infrastructure for the portfolio including Lighthouse CI, Playwright E2E tests, and bundle analysis.
+The portfolio uses executable repository rules, focused unit tests, browser tests, accessibility scans, documentation/generated-link validation, Lighthouse and route-level performance budgets.
 
-## Overview
-
-The project includes comprehensive testing and monitoring:
-
-- **Lighthouse CI**: Performance, accessibility, and best practices audits
-- **Playwright**: End-to-end testing across multiple browsers and devices
-- **Vitest**: Unit tests with coverage (i18n modules)
-- **Bundle Analysis**: Track bundle size and identify optimization opportunities
-- **CI Artifacts**: Test reports delivered as workflow run artifacts, linked from the unified PR comment
-
-## Running Tests Locally
-
-### Prerequisites
+## Local setup
 
 ```bash
-bun install
+bun install --frozen-lockfile
 ```
 
-### Lighthouse Audits
-
-Generate Lighthouse reports for production build:
+## Repository quality
 
 ```bash
-# Build the project
+bun run check
+```
+
+`check` runs repository-wide Prettier validation, active-document link validation, ESLint, the Feature-Sliced Design boundary checker, Astro diagnostics and strict tooling type-checking.
+
+Documentation links can also be checked independently:
+
+```bash
+bun run check:docs
+```
+
+The documentation checker validates maintained Markdown and the archive indexes. Frozen historical report bodies are excluded because their point-in-time references are intentionally preserved.
+
+## Unit tests
+
+```bash
+bun run test:unit:ci
+bun run test:unit:coverage
+bun run test:unit:ui
+```
+
+Coverage thresholds apply only to the risk-based pure-unit scope in [testing/UNIT-COVERAGE.md](testing/UNIT-COVERAGE.md), not the complete Astro repository.
+
+## Playwright
+
+```bash
+bun run test:e2e:smoke
+bun run test:e2e:desktop
+bun run test:e2e:extended
+RUN_VISUAL_TESTS=true bun run test:e2e:visual
+bun run test:ui
+bun run test:debug
+```
+
+- `test:e2e:smoke` checks critical English and Spanish routes in Chromium and blocks serious or critical Axe violations.
+- `test:e2e:desktop` runs Chromium, Firefox and WebKit.
+- `test:e2e:extended` adds Mobile Chrome and Mobile Safari.
+- `test:e2e:visual` validates maintained Chromium, Firefox and Mobile Chrome snapshots and remains skipped in ordinary CI unless `RUN_VISUAL_TESTS=true`.
+
+Playwright retains first-retry traces, failure screenshots and failure videos. CI uploads HTML, JSON and JUnit diagnostics even when tests fail.
+
+## Production build and generated links
+
+```bash
 bun run build
+bun run check:links
+```
 
-# Run Lighthouse CI
+`check:links` validates internal `href` and `src` references emitted into `dist/**/*.html`. External URLs are excluded so branch protection does not depend on third-party availability.
+
+## Lighthouse
+
+```bash
+bun run build
 bun run lighthouse:collect
-
-# Assert against performance thresholds
 bun run lighthouse:assert
 ```
 
-Configuration: `.lighthouserc.json`
+Thresholds are owned by `.lighthouserc.json`; do not duplicate or weaken them in prose.
 
-**Thresholds:**
-
-- Performance: ≥ 90
-- Accessibility: ≥ 95
-- Best Practices: ≥ 90
-- SEO: ≥ 90
-
-### Playwright Tests
-
-Run end-to-end tests:
+## Route performance budgets
 
 ```bash
-# Run all tests
-bun run test
-
-# Run with UI (interactive mode)
-bun run test:ui
-
-# Debug mode
-bun run test:debug
-
-# Run specific test file
-bun run test tests/e2e/homepage.spec.ts
-
-# Run tests by tag
-bun run test --grep @smoke
-
-# Run unit tests + E2E together
-bun run test:all
+bun run build
+bun run performance:check
 ```
 
-Configuration: `playwright.config.ts`
+Configuration lives in `performance-budgets.json`; methodology lives in [PERFORMANCE.md](PERFORMANCE.md). The gate measures representative English and Spanish home, about, projects and blog routes.
 
-**Test Coverage:**
-
-- Homepage rendering
-- Navigation functionality
-- Responsive design (mobile, tablet, desktop)
-- Accessibility compliance
-- Theme toggle
-- Page load performance
-- Language switching (en/es)
-- Blog pages (`/blog`, `/es/blog`) — smoke tests in `tests/e2e/pages.spec.ts` and axe scans in `tests/e2e/a11y.spec.ts`
-
-**E2E spec files** (`tests/e2e/`): `homepage.spec.ts`, `pages.spec.ts`, `a11y.spec.ts`,
-`visual.spec.ts`, `rss.spec.ts` (+ shared `fixtures.ts`).
-
-- `rss.spec.ts` covers `/rss.xml` and `/es/rss.xml`: HTTP 200, XML content type, RSS 2.0
-  structure, every `<item>` has `title`/`link`/`pubDate`, links point to the correct locale,
-  drafts are excluded from the production feed, and EN/ES feeds don't leak each other's
-  titles (locale isolation).
-
-### Unit Tests (Vitest)
-
-```bash
-bun run test:unit           # All unit tests
-bun run test:unit:ui        # Interactive UI
-bun run test:unit:coverage  # Coverage report
-```
-
-Configuration: `vitest.config.ts` (coverage scope limited to the i18n modules, 90% threshold)
-
-**Unit spec files** (`tests/unit/`, 7 files): `i18n.spec.ts`, `components.spec.ts`, and the i18n
-sub-suite `i18n/{translations,url-lang,dictionaries,interpolation,localized-path}.spec.ts`.
-
-### Bundle Analysis
-
-Analyze bundle size:
+## Bundle inspection
 
 ```bash
 bun run build
 bun run bundle:analyze
+bun run bundle:visualize
 ```
 
-Output: `bundle-analysis/report.txt` (`scripts/analyze-bundle.js`, mirrors the same check CI runs
-inline in the `build` job). `astro.config.mjs` also wires `rollup-plugin-visualizer`, so every
-`bun run build` additionally emits an interactive treemap at `bundle-analysis/index.html`.
+`bundle:analyze` produces an informational emitted-file inventory. `bundle:visualize` explicitly enables the Rollup treemap; route budgets remain the blocking performance gate.
 
-**Size Thresholds:**
+## CI policy
 
-- Total dist: ≤ 5MB (reported as a warning in CI, does not block the build)
-
-[info] Per-page JS/CSS/image budgets are defined in `lighthouse-budget.json` (50-70KB script per
-page) but are not currently wired into any CI assertion — treat them as reference targets, not
-an enforced gate.
-
-## CI/CD Pipeline
-
-### Continuous Integration Workflow
-
-All testing runs in a single consolidated workflow:
-
-```bash
-.github/workflows/ci.yml
-```
-
-Triggers on:
-
-- Push to `main` or `develop`
-- Pull requests
-
-Jobs:
-
-1. **validate** — ESLint, Prettier check, Conventional Commits validation
-2. **test-unit** — Vitest with coverage
-3. **build** — Astro check + build, bundle size analysis (5MB warning threshold)
-4. **lighthouse** — Lighthouse CI (3 runs, averages score) over the prebuilt dist
-5. **playwright** — E2E tests (5 browsers/devices)
-6. **pr-summary** — unified PR comment with job statuses and artifact links
-
-## Test Reports (CI Artifacts)
-
-Reports are NOT published to GitHub Pages. Each CI run uploads them as
-artifacts, and the unified PR comment links directly to their download pages:
-
-- **coverage-report** — Vitest coverage (7-day retention)
-- **lighthouse-reports** — Lighthouse HTML/JSON reports (7-day retention)
-- **playwright-report** — Playwright HTML report (7-day retention)
-- **bundle-analysis** — bundle size report (7-day retention)
-
-To review them locally:
-
-```bash
-# Download and extract all artifacts from a run
-gh run download <run-id>
-
-# Serve the reports
-npx serve .lighthouseci/
-bunx playwright show-report playwright-report
-npx serve coverage/
-```
-
-## Configuration Files
-
-### Lighthouse CI (`.lighthouserc.json`)
-
-[info] Audits 10 pages in multiple languages (`/`, `/about`, `/projects`, `/blog`, one blog article detail page + `/es` mirrors)
-[info] Runs 3 audits and averages results for stability
-[info] Checks Core Web Vitals thresholds
-[info] Upload results to temporary storage
-
-### Playwright (`playwright.config.ts`)
-
-[info] Tests in Chromium, Firefox, and WebKit
-[info] Mobile testing (iPhone, Pixel 5)
-[info] Screenshots and videos on failure
-[info] HTML, JSON, and JUnit reports
-
-### Bundle Analysis (`.github/workflows/ci.yml`, build job)
-
-[info] Tracks JS and CSS bundle sizes
-[info] Publishes the size report in the unified PR comment
-[warning] The 5MB total size threshold logs a warning only — it does not fail the build
-
-## Test Results Interpretation
-
-### Lighthouse Scores
-
-- **90-100**: Excellent
-- **50-89**: Good
-- **0-49**: Poor
-
-### Playwright Results
-
-- **Passed**: All assertions met
-- **Failed**: One or more assertions failed
-- **Skipped**: Test marked with @skip
-- **Flaky**: Passed/failed on retries
-
-## Troubleshooting
-
-### Lighthouse CI Fails
-
-[warning] Check internet connection (required for Lighthouse)
-[warning] Verify dev server is running on port 4321
-[warning] Check `.lighthouserc.json` configuration
-
-```bash
-# Debug with verbose output
-lhci collect --verbose
-```
-
-### Playwright Tests Timeout
-
-[warning] Increase timeout in playwright.config.ts:
-
-```typescript
-use: {
-  navigationTimeout: 30000,
-  actionTimeout: 10000,
-}
-```
-
-[warning] Check if dev server is running:
-
-```bash
-bun run preview
-```
-
-### Bundle Size Exceeds Threshold
-
-[info] Analyze large files:
-
-```bash
-# Check individual file sizes
-du -sh dist/_astro/*
-```
-
-[warning] Consider:
-
-- Code splitting
-- Lazy loading components
-- Removing unused dependencies
-- Minification
-
-## Continuous Improvement
-
-[info] Review test reports regularly
-[warning] Add new tests when adding features
-[warning] Update thresholds as performance improves
-[info] Monitor bundle size trends over time
-
-## Contact
-
-For issues or questions:
-
-- Email: hello@sandovaldavid.com
-- Email: dev@sandovaldavid.com
+Validation depth follows the branch lifecycle rather than running every expensive suite on every feature PR. Workflow responsibilities, stable required-check names, cache policy and artifact retention are documented in [CI.md](CI.md).

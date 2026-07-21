@@ -7,7 +7,9 @@ describe('interpolate', () => {
 	});
 
 	it('replaces a number variable', () => {
-		expect(interpolate('You have {{count}} messages', { count: 5 })).toBe('You have 5 messages');
+		expect(interpolate('You have {{count}} messages', { count: 5 })).toBe(
+			'You have 5 messages'
+		);
 	});
 
 	it('replaces multiple variables', () => {
@@ -24,9 +26,9 @@ describe('interpolate', () => {
 		expect(interpolate('Hello world', {})).toBe('Hello world');
 	});
 
-	it('replaces only the first occurrence of duplicate variables', () => {
+	it('replaces every occurrence of a repeated variable', () => {
 		const result = interpolate('{{x}} and {{x}}', { x: 'A' });
-		expect(result).toBe('A and {{x}}');
+		expect(result).toBe('A and A');
 	});
 
 	it('handles variable with number value 0', () => {

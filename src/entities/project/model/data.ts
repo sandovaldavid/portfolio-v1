@@ -1,4 +1,4 @@
-import { TAGS } from '@entities/technology';
+import { TAGS } from '@shared/config/technology';
 import type { ProjectItem } from './types';
 
 import campusMapImg from '@assets/projects/project-08-campus-map.webp';
@@ -16,7 +16,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			title: t('projects.campus-map.title'),
 			description: t('projects.campus-map.description'),
 			link: 'https://mapa-unp.sandovaldavid.com',
-			github: 'https://github.com/dev-sandoval/unp-campus-map',
+			github: 'https://github.com/sandovaldavid/unp-campus-map',
 			image: campusMapImg,
 			tags: [TAGS.TAILWIND, TAGS.CLOUDINARY, TAGS.NEXTJS, TAGS.JAVASCRIPT, TAGS.MYSQL],
 			featured: true,
@@ -39,7 +39,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			slug: 'mad-ai',
 			title: t('projects.madai.title'),
 			description: t('projects.madai.description'),
-			github: 'https://github.com/dev-sandoval/MAD-AI',
+			github: 'https://github.com/sandovaldavid/MAD-AI',
 			image: madaiImg,
 			tags: [
 				TAGS.ANGULAR,
@@ -71,7 +71,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			title: t('projects.fluentreads.title'),
 			description: t('projects.fluentreads.description'),
 			link: 'https://fluentreads.vercel.app',
-			github: 'https://github.com/dev-sandoval/fluentreads',
+			github: 'https://github.com/sandovaldavid/fluentreads',
 			image: fluentreadsImg,
 			tags: [TAGS.ASTRO, TAGS.REACT, TAGS.TAILWIND, TAGS.TYPESCRIPT],
 			category: 'Frontend Development',
@@ -94,7 +94,7 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			title: t('projects.auctions.title'),
 			description: t('projects.auctions.description'),
 			link: 'https://auctions.sandovaldavid.com',
-			github: 'https://github.com/sandovaldavid/project-02-auctions',
+			github: 'https://github.com/sandovaldavid/auctions',
 			image: auctionsImg,
 			tags: [TAGS.DJANGO, TAGS.PYTHON, TAGS.BOOTSTRAP, TAGS.JAVASCRIPT, TAGS.POSTGRESQL],
 			category: 'Full-Stack Development',

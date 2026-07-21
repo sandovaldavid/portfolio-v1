@@ -8,7 +8,8 @@ export async function GET(context: APIContext) {
 	const posts = await getBlogPosts(Language.SPANISH);
 	return rss({
 		title: `${siteConfig.name} — Blog`,
-		description: siteConfig.defaultDescription,
+		description:
+			'Portafolio de David Sandoval, Ingeniero de Software especializado en .NET 8, Angular 19 y predicción de abandono de proyectos OSS con redes neuronales BiLSTM.',
 		site: context.site ?? siteConfig.url,
 		items: posts.map(post => ({
 			title: post.data.title,

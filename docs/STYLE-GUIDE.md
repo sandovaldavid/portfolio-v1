@@ -15,15 +15,15 @@ every `--animate-<name>` token generates `animate-<name>` utilities.
 
 The browser base size is 16px (no `html { font-size }` override — keep it that way).
 
-| Role | Class | Px | Used for |
-|---|---|---:|---|
-| Display | `text-4xl sm:text-6xl lg:text-7xl` | 36–72 | Hero `h1` only |
-| Page title (`h1`) | `text-3xl sm:text-4xl` (up to `md:text-5xl`) | 30–48 | Top heading of every sub-page |
-| Section heading (`h2`) | `text-2xl sm:text-3xl` (home `TitleSection` keeps `text-4xl`) | 24–30 | Section titles |
-| Sub-heading (`h3`) | `text-lg sm:text-xl` | 18–20 | Card titles, panel titles |
-| **Body copy** | `text-base` | **16** | Paragraphs, descriptions, list content — anything the visitor reads |
-| **Secondary** | `text-sm` | **14** | Metadata, dates, nav items, functional captions, dense HUD/terminal reading text |
-| **Caption / label** | `text-xs` | **12** | Decorative badges, tags, kickers, kbd hints — **absolute floor** |
+| Role                   | Class                                                         |     Px | Used for                                                                         |
+| ---------------------- | ------------------------------------------------------------- | -----: | -------------------------------------------------------------------------------- |
+| Display                | `text-4xl sm:text-6xl lg:text-7xl`                            |  36–72 | Hero `h1` only                                                                   |
+| Page title (`h1`)      | `text-3xl sm:text-4xl` (up to `md:text-5xl`)                  |  30–48 | Top heading of every sub-page                                                    |
+| Section heading (`h2`) | `text-2xl sm:text-3xl` (home `TitleSection` keeps `text-4xl`) |  24–30 | Section titles                                                                   |
+| Sub-heading (`h3`)     | `text-lg sm:text-xl`                                          |  18–20 | Card titles, panel titles                                                        |
+| **Body copy**          | `text-base`                                                   | **16** | Paragraphs, descriptions, list content — anything the visitor reads              |
+| **Secondary**          | `text-sm`                                                     | **14** | Metadata, dates, nav items, functional captions, dense HUD/terminal reading text |
+| **Caption / label**    | `text-xs`                                                     | **12** | Decorative badges, tags, kickers, kbd hints — **absolute floor**                 |
 
 ### Hard rules
 
@@ -32,7 +32,7 @@ The browser base size is 16px (no `html { font-size }` override — keep it that
    not the font size.
 2. **Body copy is `text-base`, not `text-sm`.** If a `<p>` holds sentences someone reads,
    it is body copy.
-3. Responsive steps may go *up* from the role's floor (`text-sm sm:text-base` for secondary is
+3. Responsive steps may go _up_ from the role's floor (`text-sm sm:text-base` for secondary is
    fine); they may not dip below it on any breakpoint.
 
 ### Pixel-font (+1 step) rule
@@ -48,14 +48,14 @@ their large sizes.
 All color comes from the semantic tokens in `src/app/styles/colors.css` (they handle
 light/dark via `light-dark()` — no `dark:` pair needed):
 
-| Token | Utility | Role |
-|---|---|---|
-| `--color-content-strong` | `text-content-strong` | Headings, emphasized text |
-| `--color-content` | `text-content` | Body copy (also the `body` default) |
-| `--color-content-muted` | `text-content-muted` | Secondary/metadata text |
-| `--color-surface` / `--color-surface-highlight` | `bg-surface` / `bg-surface-highlight` | Panels, cards |
-| `--color-edge-subtle` / `--color-edge-strong` | `border-edge-subtle` / `border-edge-strong` | Borders; `--color-edge-strong` also powers the retro shadow scale |
-| `--color-success-500` / `--color-warning-500` / `--color-error-500` | `text-success-500`, … | Status UI — never raw `emerald`/`green`/`yellow`/`red` |
+| Token                                                               | Utility                                     | Role                                                              |
+| ------------------------------------------------------------------- | ------------------------------------------- | ----------------------------------------------------------------- |
+| `--color-content-strong`                                            | `text-content-strong`                       | Headings, emphasized text                                         |
+| `--color-content`                                                   | `text-content`                              | Body copy (also the `body` default)                               |
+| `--color-content-muted`                                             | `text-content-muted`                        | Secondary/metadata text                                           |
+| `--color-surface` / `--color-surface-highlight`                     | `bg-surface` / `bg-surface-highlight`       | Panels, cards                                                     |
+| `--color-edge-subtle` / `--color-edge-strong`                       | `border-edge-subtle` / `border-edge-strong` | Borders; `--color-edge-strong` also powers the retro shadow scale |
+| `--color-success-500` / `--color-warning-500` / `--color-error-500` | `text-success-500`, …                       | Status UI — never raw `emerald`/`green`/`yellow`/`red`            |
 
 ### Hard rules
 
@@ -86,7 +86,7 @@ after a CSS property.** `--color-text-main` produced the stutter `text-text-main
    alone don't establish hierarchy.
 4. Card titles inside a section use the level below the section's heading (page `h1`/section
    `h2` → card `h3`).
-5. Global CSS (`global.css`) sets heading *font/tracking/case* only — sizes always live on the
+5. Global CSS (`global.css`) sets heading _font/tracking/case_ only — sizes always live on the
    element per the scale in §1, so changing a tag never silently changes its size.
 
 ## 4. Enforcement
@@ -104,15 +104,15 @@ The retro 3D offset shadow is the design system's signature. Tokens live in
 `src/app/styles/colors.css` inside `@theme` — Tailwind 4 generates `shadow-retro-*` utilities
 automatically from them.
 
-| Token | Utility | Offset | Used for |
-|---|---|---|---|
-| `--shadow-retro-xs` | `shadow-retro-xs` | `1px 1px 0 0` | kbd keys, micro-chips, pressed-button residual |
-| `--shadow-retro-sm` | `shadow-retro-sm` | `1.5px 1.5px 0 0` | small pills, badges, tooltips, mobile nav rest state |
-| `--shadow-retro-md` | `shadow-retro-md` | `3px 3px 0 0` | cards (BlogCard, DevlogCard, TechStack), panels, default retro border |
-| `--shadow-retro-lg` | `shadow-retro-lg` | `4px 4px 0 0` | primary/feature ProjectCard, About section cards, hero avatar, splash button |
-| `--shadow-retro-xl` | `shadow-retro-xl` | `5px 5px 0 0` | hover state of retro-md/lg elements (the lift), CTA buttons |
-| `--shadow-retro-2xl` | `shadow-retro-2xl` | `6px 6px 0 0` | Research panel, Atena main card, interactive primary hover |
-| `--shadow-retro-3xl` | `shadow-retro-3xl` | `8px 8px 0 0` | Hero HUD, CLITerminal — the largest interactive surfaces |
+| Token                | Utility            | Offset            | Used for                                                                     |
+| -------------------- | ------------------ | ----------------- | ---------------------------------------------------------------------------- |
+| `--shadow-retro-xs`  | `shadow-retro-xs`  | `1px 1px 0 0`     | kbd keys, micro-chips, pressed-button residual                               |
+| `--shadow-retro-sm`  | `shadow-retro-sm`  | `1.5px 1.5px 0 0` | small pills, badges, tooltips, mobile nav rest state                         |
+| `--shadow-retro-md`  | `shadow-retro-md`  | `3px 3px 0 0`     | cards (BlogCard, DevlogCard, TechStack), panels, default retro border        |
+| `--shadow-retro-lg`  | `shadow-retro-lg`  | `4px 4px 0 0`     | primary/feature ProjectCard, About section cards, hero avatar, splash button |
+| `--shadow-retro-xl`  | `shadow-retro-xl`  | `5px 5px 0 0`     | hover state of retro-md/lg elements (the lift), CTA buttons                  |
+| `--shadow-retro-2xl` | `shadow-retro-2xl` | `6px 6px 0 0`     | Research panel, Atena main card, interactive primary hover                   |
+| `--shadow-retro-3xl` | `shadow-retro-3xl` | `8px 8px 0 0`     | Hero HUD, CLITerminal — the largest interactive surfaces                     |
 
 ### Hard rules
 

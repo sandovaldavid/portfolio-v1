@@ -1,42 +1,61 @@
 ---
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
-const personalImageAlt = 'Juan David';
+const personalImageAlt = 'Juan David Sandoval';
+
+const copy =
+	langCode === 'en'
+		? {
+				profileTitle: 'PROFESSIONAL PROFILE',
+				profile:
+					'Computer Engineer building web products with <strong>Angular, .NET and TypeScript</strong>. My work includes frontend modernization, REST APIs and performance improvements. I also research OSS abandonment prediction using BiLSTM models.',
+				readMore: 'READ FULL BIOGRAPHY',
+				currentTitle: 'CURRENT ROLE @ ATENA',
+				currentSummary:
+					'I currently work at <strong>Atena</strong> as a Software Engineer contributing to Angular frontends and .NET APIs. My focus is maintainable delivery, measurable performance improvements and clear technical documentation.',
+				currentButton: 'VIEW WORK DETAILS',
+			}
+		: {
+				profileTitle: 'PERFIL PROFESIONAL',
+				profile:
+					'Ingeniero Informático que construye productos web con <strong>Angular, .NET y TypeScript</strong>. Mi trabajo incluye modernización frontend, APIs REST y mejoras de rendimiento. También investigo la predicción de abandono de proyectos OSS mediante modelos BiLSTM.',
+				readMore: 'LEER BIOGRAFÍA COMPLETA',
+				currentTitle: 'ROL ACTUAL @ ATENA',
+				currentSummary:
+					'Actualmente trabajo en <strong>Atena</strong> como Software Engineer, contribuyendo en frontends Angular y APIs .NET. Mi enfoque es entregar software mantenible, aplicar mejoras de rendimiento medibles y documentar las decisiones técnicas.',
+				currentButton: 'VER DETALLES DEL TRABAJO',
+			};
 ---
 
 <div class="space-y-6">
-	<!-- First Card: Text Content and Profile Image -->
 	<article
 		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
 	>
 		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
-			<!-- Text Content -->
 			<div class="flex-1 space-y-4">
 				<h3
 					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
 				>
-					{t('about-me.profile.title')}
+					{copy.profileTitle}
 				</h3>
 				<div
 					class="space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
 				>
-					<p set:html={t('about-me.paragraph1')} />
+					<p set:html={copy.profile} />
 				</div>
 				<div class="pt-2">
 					<a
 						href={getLocalizedPath(lang, '/about')}
 						class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 					>
-						{t('about-me.read-more')}
+						{copy.readMore}
 					</a>
 				</div>
 			</div>
 
-			<!-- Profile Image -->
 			<div class="shrink-0 relative group">
 				<div
 					class="absolute inset-0 bg-primary-500 translate-x-1.5 translate-y-1.5 group-hover:translate-x-2.5 group-hover:translate-y-2.5 transition-transform duration-200"
@@ -54,7 +73,6 @@ const personalImageAlt = 'Juan David';
 		</div>
 	</article>
 
-	<!-- Atena Current Work Card -->
 	<article
 		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
 	>
@@ -62,18 +80,18 @@ const personalImageAlt = 'Juan David';
 			<h3
 				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
 			>
-				{t('about-me.atena.title')}
+				{copy.currentTitle}
 			</h3>
 			<p
 				class="text-content text-base leading-relaxed text-pretty"
-				set:html={t('about-me.atena.summary')}
+				set:html={copy.currentSummary}
 			/>
 			<div class="pt-2">
 				<a
 					href={getLocalizedPath(lang, '/atena')}
 					class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 				>
-					{t('about-me.atena.button')}
+					{copy.currentButton}
 				</a>
 			</div>
 		</div>
