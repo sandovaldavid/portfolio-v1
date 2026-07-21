@@ -48,6 +48,13 @@ expect(
 	'.devcontainer/Dockerfile must pin the project Playwright version.'
 );
 expect(
+	dockerfile.includes('ARG DEVCONTAINER_UID=1000') &&
+		dockerfile.includes('ARG DEVCONTAINER_GID=1000') &&
+		dockerfile.includes('usermod --uid "${DEVCONTAINER_UID}"') &&
+		dockerfile.includes('groupmod --gid "${DEVCONTAINER_GID}" pwuser'),
+	'the development image must normalize pwuser to the standard Linux UID/GID before runtime remapping.'
+);
+expect(
 	devcontainer.build?.args?.BUN_VERSION === bunVersion,
 	'devcontainer.json must pass the packageManager Bun version to the image build.'
 );
@@ -126,8 +133,18 @@ expect(
 	'the repair script must restore writable Git metadata without following symbolic links.'
 );
 expect(
+	repairScript.includes('workspace_uid=') &&
+		repairScript.includes('Development container identity mismatch') &&
+		repairScript.includes('Rebuild Container Without Cache'),
+	'the repair script must reject stale containers whose UID differs from the Linux bind mount owner.'
+);
+expect(
 	repairScript.includes('generated_paths=(') && repairScript.includes('.docker'),
 	'the repair script must use an explicit allowlist of generated paths.'
+);
+expect(
+	repairScript.includes('sudo mkdir -p .docker/runtime/node_modules .docker/runtime/home'),
+	'the repair script must be able to recreate generated Docker runtime paths before assigning ownership.'
 );
 expect(
 	!repairScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
@@ -185,6 +202,10 @@ expect(
 	'the devcontainer workflow must prove that two consecutive frozen installs succeed.'
 );
 expect(
+	devcontainerWorkflow.includes('Verify Linux workspace identity alignment'),
+	'the devcontainer workflow must assert that the remote user owns the bind-mounted workspace.'
+);
+expect(
 	devcontainerWorkflow.includes('Create stale Git metadata fixture'),
 	'the devcontainer workflow must validate recovery from an unwritable FETCH_HEAD.'
 );
@@ -228,5 +249,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, writable Git metadata, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, normalized Linux identity, writable Git metadata, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
 );
