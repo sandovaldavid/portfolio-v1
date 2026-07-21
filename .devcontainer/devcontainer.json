@@ -1,35 +1,60 @@
 {
-	"name": "Portfolio Dev Container",
-
-	// Build from local Dockerfile but pull cached layers from GHCR for instant startup
+	"name": "Portfolio Development",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": "..",
-		"cacheFrom": ["ghcr.io/sandovaldavid/portfolio-v1/devcontainer:develop"]
+		"args": {
+			"PLAYWRIGHT_VERSION": "1.61.1",
+			"BUN_VERSION": "1.3.14"
+		}
 	},
-
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"remoteUser": "pwuser",
+	"containerUser": "pwuser",
+	"updateRemoteUserUID": true,
+	"containerEnv": {
+		"NODE_ENV": "development",
+		"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"
+	},
+	"initializeCommand": "mkdir -p ${localEnv:HOME}/.gemini ${localEnv:HOME}/.claude",
+	"mounts": [
+		"source=${localEnv:HOME}/.gemini,target=/home/pwuser/.gemini,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind,consistency=cached"
+	],
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+	"forwardPorts": [4321],
+	"portsAttributes": {
+		"4321": {
+			"label": "Astro development server",
+			"onAutoForward": "notify"
+		}
+	},
 	"customizations": {
 		"vscode": {
 			"settings": {
-				"terminal.integrated.defaultProfile.linux": "bash"
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"editor.formatOnSave": true,
+				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				"files.eol": "\n",
+				"eslint.validate": ["javascript", "typescript", "astro"],
+				"[astro]": {
+					"editor.defaultFormatter": "astro-build.astro-vscode"
+				}
 			},
 			"extensions": [
 				"astro-build.astro-vscode",
 				"dbaeumer.vscode-eslint",
 				"esbenp.prettier-vscode",
 				"bradlc.vscode-tailwindcss",
-				"christian-kohler.path-intellisense"
+				"christian-kohler.path-intellisense",
+				"ms-playwright.playwright",
+				"redhat.vscode-yaml",
+				"EditorConfig.EditorConfig",
+				"DavidAnson.vscode-markdownlint"
 			]
 		}
-	},
-	"remoteUser": "pwuser",
-	"containerUser": "pwuser",
-	"mounts": [
-		// Bind-mount Antigravity configurations to share authentication state and project registry
-		"source=${localEnv:HOME}/.gemini,target=/home/pwuser/.gemini,type=bind",
-		// Bind-mount Claude CLI credentials and command history
-		"source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind"
-	],
-	"postCreateCommand": "bun install",
-	"forwardPorts": [4321]
+	}
 }
