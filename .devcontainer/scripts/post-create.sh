@@ -58,6 +58,17 @@ else
 	echo "Docker daemon connection: unavailable. Start the host Docker daemon before running Docker-backed tests." >&2
 fi
 
+prompt_marker="# devcontainer-ps1-customization"
+bashrc="$HOME/.bashrc"
+if ! grep -q "$prompt_marker" "$bashrc" 2>/dev/null; then
+	cat >> "$bashrc" <<- 'PS1_EOF'
+
+	$prompt_marker
+	__git_branch() { git branch --show-current 2>/dev/null; }
+	PS1='\[\e[32m\]\W\[\e[0m\] \[\e[34m\]$(__git_branch)\[\e[0m\] \$ '
+PS1_EOF
+fi
+
 printf '\nDevelopment container ready.\n'
 printf 'Bun: %s\n' "$actual_bun_version"
 printf 'Playwright: %s\n' "$actual_playwright_version"
