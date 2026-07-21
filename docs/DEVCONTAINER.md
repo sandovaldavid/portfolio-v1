@@ -88,6 +88,26 @@ docker compose version
 
 A successful setup prints the resolved Bun, Playwright, workspace and isolated dependency paths. A stopped host Docker daemon produces a warning; start Docker before running Docker-backed commands.
 
+## Validate a runtime configuration update
+
+Changes to `init`, `runArgs`, users, mounts or container-wide environment variables require a real rebuild. After pulling such a change, run **Dev Containers: Rebuild Container** and verify inside the new container:
+
+```bash
+test "$(id -u)" = "$(stat -c '%u' /workspaces/portfolio-v1)"
+test "$TERM" = "xterm-256color"
+cat "$BUN_INSTALL/.devcontainer-owner-state"
+cat node_modules/.devcontainer-volume-state
+bun install --frozen-lockfile
+bun run check
+bun run test:unit:ci
+bun run build
+bun run test:e2e:smoke
+bun run test:e2e:visual:docker
+git status --short
+```
+
+The visual suite must complete without updating snapshots. The final Git status must not contain generated output or local-only assistant configuration staged for commit.
+
 ## Recover a stale dependency volume
 
 A normal rebuild preserves the named `node_modules` volume to avoid reinstalling every package from scratch. An inherited volume can contain links or Vite caches written by the UID of an older container. Typical symptoms are repeated Bun `EEXIST` link failures or `EACCES` under `node_modules/.vite-temp`.
