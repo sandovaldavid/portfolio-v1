@@ -4,6 +4,8 @@ set -euo pipefail
 REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
+bash .devcontainer/repair-workspace-permissions.sh
+
 dependency_directory="$REPOSITORY_ROOT/node_modules"
 
 if ! awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo; then
