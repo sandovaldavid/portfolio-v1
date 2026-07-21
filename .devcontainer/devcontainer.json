@@ -26,13 +26,12 @@
 		"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright",
 		"TERM": "xterm-256color"
 	},
-	"initializeCommand": "mkdir -p ${localEnv:HOME}/.gemini ${localEnv:HOME}/.claude ${localEnv:HOME}/.config/git && touch ${localEnv:HOME}/.gitconfig ${localEnv:HOME}/.config/git/config",
+	"initializeCommand": "bash .devcontainer/initialize-host.sh",
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
 		"source=${localEnv:HOME}/.gemini,target=/home/pwuser/.gemini,type=bind,consistency=cached",
 		"source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind,consistency=cached",
-		"source=${localEnv:HOME}/.gitconfig,target=/mnt/devcontainer-host-gitconfig,type=bind,readonly",
-		"source=${localEnv:HOME}/.config/git/config,target=/mnt/devcontainer-host-xdg-gitconfig,type=bind,readonly"
+		"source=${localEnv:HOME}/.cache/portfolio-v1-devcontainer/git-identity.gitconfig,target=/mnt/devcontainer-host-git-identity,type=bind,readonly"
 	],
 	"postCreateCommand": "bash .devcontainer/post-create.sh",
 	"postStartCommand": "bash .devcontainer/repair-workspace-permissions.sh",
