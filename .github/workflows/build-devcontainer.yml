@@ -55,6 +55,11 @@ jobs:
                   cacheFrom: ${{ env.IMAGE_NAME }}
                   push: ${{ github.event_name == 'push' && 'always' || 'never' }}
                   runCmd: |
+                      test "$PWD" = "/workspaces/portfolio-v1"
+                      awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
+                      test -w node_modules
+                      bun install --frozen-lockfile
+                      bun install --frozen-lockfile
                       bun --version
                       bunx playwright --version
                       bun run check
