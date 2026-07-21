@@ -200,7 +200,9 @@ expect(
 	'the devcontainer workflow must prove Prettier does not enumerate Docker runtime state.'
 );
 expect(
-	devcontainerWorkflow.includes('Recreate stale Playwright output before the direct smoke command'),
+	devcontainerWorkflow.includes(
+		'Recreate stale Playwright output before the direct smoke command'
+	),
 	'the devcontainer workflow must prove the direct Playwright runner repairs stale output.'
 );
 expect(
