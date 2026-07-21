@@ -12,11 +12,12 @@ The versioned configuration owns these guarantees:
 - browsers supplied by the Playwright image through `/ms-playwright`;
 - frozen dependency installation from `bun.lock`;
 - a container-owned named volume for `node_modules`;
+- repair of known ignored/generated workspace paths left by another UID;
 - GitHub CLI and Docker Compose support;
 - Docker-outside-of-Docker access to the host daemon;
 - the same non-root `pwuser` identity for editing and commands.
 
-`bun run check:devcontainer` rejects version, mount or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, mount, repair-policy or configuration drift. The command also runs as part of `bun run check`.
 
 ## Prerequisites
 
@@ -52,6 +53,7 @@ After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, th
 The post-create script performs the following checks:
 
 ```bash
+bash .devcontainer/repair-workspace-permissions.sh
 bun --version
 bun install --frozen-lockfile
 bunx playwright --version
@@ -73,6 +75,25 @@ docker volume rm portfolio-v1-devcontainer-node_modules
 Then run **Dev Containers: Rebuild Container**. Docker creates a fresh empty volume and the post-create lifecycle restores dependencies from `bun.lock`.
 
 Do not delete the repository or reset Git to repair dependencies. Removing this named volume affects installed packages only.
+
+## Recover stale generated artifacts
+
+The source checkout is a host bind mount, so generated output from a previous native command, container or UID can remain visible after a rebuild. Typical symptoms are `EACCES` errors involving:
+
+- `.astro`;
+- `playwright-report` or `test-results`;
+- `test-results.json` or `junit-results.xml`;
+- `.docker/runtime`.
+
+The post-create lifecycle repairs these known ignored/generated paths automatically. The Docker visual wrapper repeats the repair before using `.docker/runtime` when it runs inside the devcontainer.
+
+Run the repair manually inside the devcontainer when needed:
+
+```bash
+bash .devcontainer/repair-workspace-permissions.sh
+```
+
+The script uses an explicit allowlist and refuses symbolic links. It does not recursively change ownership of the repository root or tracked source files. `.docker/` is also excluded from Prettier traversal because it contains container runtime state rather than repository content.
 
 ## Daily development
 
