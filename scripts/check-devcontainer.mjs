@@ -4,6 +4,9 @@ const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 'utf8'));
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
 const postCreateScript = readFileSync('.devcontainer/post-create.sh', 'utf8');
+const repairScript = readFileSync('.devcontainer/repair-workspace-permissions.sh', 'utf8');
+const dockerTestScript = readFileSync('docker-test.sh', 'utf8');
+const prettierIgnore = readFileSync('.prettierignore', 'utf8');
 const devcontainerWorkflow = readFileSync('.github/workflows/build-devcontainer.yml', 'utf8');
 
 /** @type {string[]} */
@@ -73,6 +76,14 @@ expect(
 	'devcontainer.json must use the versioned post-create script.'
 );
 expect(
+	devcontainer.containerEnv?.DEVCONTAINER === 'true',
+	'devcontainer.json must identify the managed development shell.'
+);
+expect(
+	postCreateScript.includes('bash .devcontainer/repair-workspace-permissions.sh'),
+	'post-create setup must repair generated workspace paths before validation.'
+);
+expect(
 	postCreateScript.includes('/proc/self/mountinfo'),
 	'post-create setup must verify that node_modules is a separate mount.'
 );
@@ -89,8 +100,28 @@ expect(
 	'post-create setup must validate the devcontainer contract.'
 );
 expect(
+	repairScript.includes('generated_paths=(') && repairScript.includes('.docker'),
+	'the repair script must use an explicit allowlist of generated paths.'
+);
+expect(
+	!repairScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
+	'the repair script must never recursively change ownership of the repository root.'
+);
+expect(
+	dockerTestScript.includes('bash .devcontainer/repair-workspace-permissions.sh'),
+	'the Docker test wrapper must repair generated runtime paths inside the devcontainer.'
+);
+expect(
+	prettierIgnore.split(/\r?\n/).includes('.docker/'),
+	'.prettierignore must exclude Docker runtime state.'
+);
+expect(
 	(devcontainerWorkflow.match(/bun install --frozen-lockfile/g) ?? []).length >= 2,
 	'the devcontainer workflow must prove that two consecutive frozen installs succeed.'
+);
+expect(
+	devcontainerWorkflow.includes('Create stale generated ownership fixtures'),
+	'the devcontainer workflow must validate recovery from stale generated ownership.'
 );
 expect(
 	devcontainer.containerEnv?.PLAYWRIGHT_BROWSERS_PATH === '/ms-playwright',
@@ -106,5 +137,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, isolated node_modules.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, isolated node_modules, repairable generated paths.`
 );
