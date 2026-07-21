@@ -56,6 +56,36 @@ if [[ -n "$git_directory" ]]; then
 	esac
 fi
 
+dependency_directory="$REPOSITORY_ROOT/node_modules"
+dependency_volume_state="$dependency_directory/.devcontainer-volume-state"
+dependency_volume_schema="1"
+expected_dependency_state="schema=${dependency_volume_schema} uid=${owner_uid} gid=${owner_gid}"
+
+if awk -v target="$dependency_directory" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo; then
+	actual_dependency_state="$(cat "$dependency_volume_state" 2>/dev/null || true)"
+
+	if [[ "$actual_dependency_state" != "$expected_dependency_state" ]]; then
+		echo "Repairing inherited node_modules volume for ${owner}."
+		sudo chown -R --no-dereference "$owner" -- "$dependency_directory"
+		sudo chmod -R u+rwX -- "$dependency_directory"
+	fi
+
+	for mutable_path in .bin .cache .vite .vite-temp; do
+		if [[ -e "$dependency_directory/$mutable_path" ]]; then
+			sudo chown -R --no-dereference "$owner" -- "$dependency_directory/$mutable_path"
+			sudo chmod -R u+rwX -- "$dependency_directory/$mutable_path"
+		fi
+	done
+
+	printf '%s\n' "$expected_dependency_state" | sudo tee "$dependency_volume_state" >/dev/null
+	sudo chown "$owner" -- "$dependency_volume_state"
+	sudo chmod u+rw -- "$dependency_volume_state"
+
+	dependency_probe="$dependency_directory/.devcontainer-write-probe.$$"
+	touch "$dependency_probe"
+	rm -f "$dependency_probe"
+fi
+
 generated_paths=(
 	.astro
 	dist
@@ -95,4 +125,4 @@ for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime
 	fi
 done
 
-printf 'Git metadata and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
+printf 'Git metadata, dependency volume and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
