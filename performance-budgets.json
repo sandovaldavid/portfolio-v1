@@ -28,7 +28,7 @@
 			"budgets": {
 				"javascriptParsedBytes": 36864,
 				"javascriptTransferBytes": 12288,
-					"cssTransferBytes": 22528,
+				"cssTransferBytes": 22528,
 				"largestImageBytes": 8192,
 				"fontPreloadCount": 1,
 				"requestCount": 8
@@ -72,9 +72,9 @@
 			"budgets": {
 				"javascriptParsedBytes": 36864,
 				"javascriptTransferBytes": 12288,
-			"cssTransferBytes": 22528,
-			"largestImageBytes": 1024,
-			"fontPreloadCount": 1,
+				"cssTransferBytes": 22528,
+				"largestImageBytes": 1024,
+				"fontPreloadCount": 1,
 				"requestCount": 7
 			}
 		},
@@ -83,7 +83,7 @@
 			"budgets": {
 				"javascriptParsedBytes": 36864,
 				"javascriptTransferBytes": 12288,
-					"cssTransferBytes": 22528,
+				"cssTransferBytes": 22528,
 				"largestImageBytes": 1024,
 				"fontPreloadCount": 1,
 				"requestCount": 7
