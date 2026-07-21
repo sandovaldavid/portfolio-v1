@@ -7,6 +7,8 @@ on:
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.prettierignore'
+            - 'docker-test.sh'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
@@ -16,6 +18,8 @@ on:
         paths:
             - '.devcontainer/**'
             - '.github/workflows/build-devcontainer.yml'
+            - '.prettierignore'
+            - 'docker-test.sh'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
@@ -58,6 +62,23 @@ jobs:
                       test "$PWD" = "/workspaces/portfolio-v1"
                       awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
                       test -w node_modules
+
+                      echo "Create stale generated ownership fixtures"
+                      sudo rm -rf .astro playwright-report test-results .docker/runtime
+                      sudo mkdir -p .astro/collections playwright-report test-results .docker/runtime/home/.cache/dconf .docker/runtime/node_modules
+                      sudo touch .astro/content.d.ts playwright-report/index.html test-results/.last-run.json test-results.json junit-results.xml
+                      sudo chown -R root:root .astro playwright-report test-results test-results.json junit-results.xml .docker/runtime
+                      sudo chmod -R go-rwx .astro playwright-report test-results .docker/runtime
+
+                      bash .devcontainer/repair-workspace-permissions.sh
+                      test -w .astro
+                      test -w playwright-report
+                      test -w test-results
+                      test -w test-results.json
+                      test -w junit-results.xml
+                      test -w .docker/runtime/node_modules
+                      test -w .docker/runtime/home
+
                       bun install --frozen-lockfile
                       bun install --frozen-lockfile
                       bun --version
