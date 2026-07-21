@@ -74,6 +74,8 @@
 	"init": true,
 	"runArgs": ["--ipc=host"],
 
+	"initializeCommand": "bash .devcontainer/scripts/initialize-identity.sh",
+
 	"postCreateCommand": "bash .devcontainer/scripts/post-create.sh",
 	"postStartCommand": "bash .devcontainer/scripts/post-start.sh",
 	"postAttachCommand": "bash .devcontainer/scripts/post-start.sh",

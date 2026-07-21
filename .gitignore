@@ -58,3 +58,6 @@ bundle-analysis/
 
 # route performance reports
 performance-report/
+
+# host-specific identity file copied by initializeCommand
+.devcontainer/host-allowed-signers
