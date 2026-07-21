@@ -50,7 +50,42 @@ jobs:
       - name: Verify all maintained visual baselines without update mode
         env:
           RUN_VISUAL_TESTS: 'true'
-        run: bun run test:e2e:visual
+        shell: bash
+        run: |
+          set +e
+          bun run test:e2e:visual
+          visual_status=$?
+          set -e
+
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('test-results.json', 'utf8'));
+          const failures = [];
+
+          const visit = suite => {
+            for (const child of suite.suites ?? []) visit(child);
+            for (const spec of suite.specs ?? []) {
+              for (const test of spec.tests ?? []) {
+                const failed = (test.results ?? []).find(result => result.status === 'failed');
+                if (!failed) continue;
+                const message = failed.errors?.[0]?.message ?? '';
+                const difference = message
+                  .split('\n')
+                  .find(line => line.includes('pixels') || line.includes('Expected an image'))
+                  ?.trim();
+                failures.push({ project: test.projectName, title: spec.title, difference });
+              }
+            }
+          };
+
+          for (const suite of report.suites ?? []) visit(suite);
+          console.log(`Visual verification failures: ${failures.length}`);
+          for (const failure of failures) {
+            console.log(`- [${failure.project}] ${failure.title}${failure.difference ? ` — ${failure.difference}` : ''}`);
+          }
+          NODE
+
+          exit "$visual_status"
 
       - name: Remove temporary automation and commit reviewed snapshots
         shell: bash
