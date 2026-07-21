@@ -11,17 +11,29 @@ The versioned configuration owns these guarantees:
 - Playwright `1.61.1`, matching the exact `@playwright/test` dependency;
 - browsers supplied by the Playwright image through `/ms-playwright`;
 - a normalized `pwuser` UID/GID of `1000:1000` before Dev Containers applies host-specific remapping;
+- the same non-root `pwuser` identity for the default container process, VS Code, terminals, tasks and lifecycle commands;
+- a Docker init process as PID 1 and host IPC for direct Chromium execution;
 - frozen dependency installation from `bun.lock`;
+- a writable, versioned Bun home at `/home/pwuser/.bun`;
 - a container-owned named volume for `node_modules`;
 - one-time recovery of inherited dependency-volume ownership through a versioned owner marker;
 - repair of Git metadata and known ignored/generated workspace paths left by another UID;
 - repair during create, container start and VS Code attach lifecycle events;
 - GitHub CLI and Docker Compose support;
 - Docker-outside-of-Docker access to the host daemon;
-- explicit propagation of the real host workspace path to nested test containers;
-- the same non-root `pwuser` identity for editing and commands.
+- explicit propagation of the real host workspace path to nested test containers.
 
-`bun run check:devcontainer` rejects version, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, user, init, IPC, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+
+## Intentional project-specific choices
+
+This repository does not copy a generic `vscode` and `/workspace` template literally:
+
+- `pwuser` is retained because it is the non-root user supplied by the pinned Playwright base image. The Dockerfile normalizes it before Dev Containers applies host-specific remapping and ends with `USER pwuser`.
+- `/workspaces/portfolio-v1` remains the canonical workspace because the devcontainer, validation workflow and repository scripts share that contract.
+- `waitFor` remains `postStartCommand`. Lifecycle stages execute in order, so a first creation still completes `postCreateCommand`; later starts also block VS Code attachment until Git, Bun, dependency and generated-state repair has completed.
+- the named `node_modules` volume remains enabled to isolate Linux dependencies from the host and from the pinned nested Playwright container. Its ownership is managed explicitly instead of relying on the volume's previous state.
+- Bash remains the default terminal because it is installed and versioned by the image. The repository does not declare zsh unless the Dockerfile owns that dependency.
 
 ## Prerequisites
 
@@ -50,15 +62,17 @@ This separation prevents the devcontainer from reusing dependency links created 
 
 The permission lifecycle stores `.devcontainer-volume-state` inside the named volume. When the marker is missing, uses another schema or identifies another UID/GID, the lifecycle repairs the complete volume once. Later starts repair only mutable tool paths such as `.bin`, `.cache`, `.vite` and `.vite-temp`, then verify that a probe file can be created and removed.
 
-The post-create lifecycle verifies that `node_modules` is a separate mount and prepared for `pwuser` before performing a frozen Bun installation. The permanent workflow deliberately changes the entire dependency volume to another numeric UID, creates a stale Vite cache and proves that two consecutive frozen installations plus Vitest succeed after recovery.
+Bun itself is installed under `/home/pwuser/.bun`. The lifecycle stores `.devcontainer-owner-state` there, repairs inherited ownership only when the schema or numeric identity changes, restores the mutable global cache and verifies write access. This matters on Linux because Bun can populate project dependencies from its global cache using hardlinks.
+
+The post-create lifecycle verifies that `node_modules` is a separate mount and prepared for `pwuser` before performing a frozen Bun installation. The permanent workflow deliberately changes both the Bun cache and the entire dependency volume to another numeric UID, creates a stale Vite cache and proves that two consecutive frozen installations plus Vitest succeed after recovery.
 
 ## Open the repository
 
 From Visual Studio Code, run **Dev Containers: Reopen in Container**.
 
-After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user or environment declarations.
+After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands, `init`, `runArgs` or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user, init or environment declarations.
 
-The startup lifecycle repairs writable Git, dependency and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the inexpensive marker and mutable-cache checks for an already-running container.
+The startup lifecycle repairs writable Git, Bun, dependency and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the inexpensive marker and mutable-cache checks for an already-running container.
 
 The post-create script performs the following checks:
 
@@ -82,17 +96,18 @@ After updating the branch, run inside a correctly aligned devcontainer:
 
 ```bash
 bash .devcontainer/repair-workspace-permissions.sh
+cat "$BUN_INSTALL/.devcontainer-owner-state"
 cat node_modules/.devcontainer-volume-state
 bun install --frozen-lockfile
 ```
 
-The state must identify the current numeric UID/GID, for example:
+Both states must identify the current numeric UID/GID, for example:
 
 ```text
 schema=1 uid=1000 gid=1000
 ```
 
-This repair is safe because `node_modules` is a disposable named volume rather than tracked source. It does not recursively change the repository checkout.
+This repair is safe because `node_modules` is a disposable named volume and the Bun path is restricted to `/home/pwuser/.bun`; neither operation recursively changes tracked source.
 
 If the isolated volume remains structurally corrupted after the automatic recovery, close the devcontainer and remove only that volume from a host terminal:
 
@@ -161,7 +176,7 @@ Run the repair manually inside a correctly aligned devcontainer when needed:
 bash .devcontainer/repair-workspace-permissions.sh
 ```
 
-The script first requires the running UID to match the Linux workspace owner. It then resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata, the isolated dependency volume and an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
+The script first requires the running UID to match the Linux workspace owner. It then restricts Bun repair to `/home/pwuser/.bun`, resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Bun state, Git metadata, the isolated dependency volume and an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
 
 ## Daily development
 
@@ -187,7 +202,9 @@ A native visual run executes directly in the devcontainer:
 RUN_VISUAL_TESTS=true bun run test:e2e:visual
 ```
 
-Use it for diagnostics and local UI iteration. Screenshot rendering can differ across host kernels, graphics stacks and container configurations.
+The outer devcontainer uses Docker init and host IPC, matching Playwright's recommended process and Chromium shared-memory settings for direct browser execution.
+
+Use the native run for diagnostics and local UI iteration. Screenshot rendering can differ across host kernels, graphics stacks and container configurations.
 
 The merge-grade visual command is:
 
@@ -197,7 +214,7 @@ bun run test:e2e:visual:docker
 
 The devcontainer exports the real host checkout as `HOST_WORKSPACE_FOLDER`. Docker Compose uses that host path rather than `/workspaces/portfolio-v1`, which exists only inside the outer devcontainer. The wrapper verifies that `/workspace/package.json` and `/workspace/bun.lock` are visible in the inner pinned container before installation or tests begin.
 
-The inner pinned test container remains the authoritative visual environment; the outer devcontainer is the development shell.
+The inner pinned test container also uses `init: true` and `ipc: host` and remains the authoritative visual environment; the outer devcontainer is the development shell.
 
 Never regenerate committed snapshots merely to satisfy a native devcontainer mismatch. Reviewed updates must be generated in the pinned visual container and followed by a complete run without `--update-snapshots`.
 
