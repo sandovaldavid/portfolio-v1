@@ -18,6 +18,7 @@
 	"containerUser": "pwuser",
 	"updateRemoteUserUID": true,
 	"containerEnv": {
+		"DEVCONTAINER": "true",
 		"NODE_ENV": "development",
 		"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"
 	},
