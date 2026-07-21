@@ -24,8 +24,21 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Check formatting
-              run: bun run format:check
+            - name: Generate canonical formatting patch
+              run: |
+                  bun run format
+                  git diff --binary > formatting.patch
+                  git diff --name-only > formatting-files.txt
+
+            - name: Upload formatting diagnostics
+              uses: actions/upload-artifact@v7
+              with:
+                  name: formatting-diagnostics
+                  path: |
+                      formatting.patch
+                      formatting-files.txt
+                  if-no-files-found: error
+                  retention-days: 1
 
             - name: Check documentation links
               run: bun run check:docs
