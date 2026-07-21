@@ -9,6 +9,7 @@ on:
             - '.github/workflows/build-devcontainer.yml'
             - '.prettierignore'
             - 'docker-test.sh'
+            - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
@@ -20,6 +21,7 @@ on:
             - '.github/workflows/build-devcontainer.yml'
             - '.prettierignore'
             - 'docker-test.sh'
+            - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
@@ -79,10 +81,20 @@ jobs:
                       test -w .docker/runtime/node_modules
                       test -w .docker/runtime/home
 
+                      echo "Create hostile nested ESLint fixture"
+                      mkdir -p .docker/runtime/home/.bun/install/cache/hostile-package
+                      cat > .docker/runtime/home/.bun/install/cache/hostile-package/eslint.config.mjs <<'EOF'
+                      import 'package-that-must-never-be-resolved-from-docker-runtime';
+                      export default [];
+                      EOF
+
                       bun install --frozen-lockfile
                       bun install --frozen-lockfile
                       bun --version
                       bunx playwright --version
+                      bun run lint:fix
+                      bun run format
+                      git diff --exit-code
                       bun run check
                       bun run test:unit:ci
                       bun run build
