@@ -9,12 +9,14 @@ on:
             - '.github/workflows/build-devcontainer.yml'
             - '.husky/pre-commit'
             - '.prettierignore'
+            - 'docker-compose.yml'
             - 'docker-test.sh'
             - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
             - 'scripts/format-tracked-files.mjs'
+            - 'scripts/run-playwright.mjs'
     pull_request:
         branches:
             - main
@@ -23,12 +25,14 @@ on:
             - '.github/workflows/build-devcontainer.yml'
             - '.husky/pre-commit'
             - '.prettierignore'
+            - 'docker-compose.yml'
             - 'docker-test.sh'
             - 'eslint.config.js'
             - 'package.json'
             - 'bun.lock'
             - 'scripts/check-devcontainer.mjs'
             - 'scripts/format-tracked-files.mjs'
+            - 'scripts/run-playwright.mjs'
     workflow_dispatch:
 
 permissions:
@@ -68,6 +72,12 @@ jobs:
                       test "$PWD" = "/workspaces/portfolio-v1"
                       awk -v target="$PWD/node_modules" '$5 == target { found = 1 } END { exit !found }' /proc/self/mountinfo
                       test -w node_modules
+                      test -n "$HOST_WORKSPACE_FOLDER"
+
+                      echo "Create stale Git metadata fixture"
+                      sudo touch .git/FETCH_HEAD
+                      sudo chown root:root .git/FETCH_HEAD
+                      sudo chmod 600 .git/FETCH_HEAD
 
                       echo "Create stale generated ownership fixtures"
                       sudo rm -rf .astro playwright-report test-results .docker/runtime
@@ -77,6 +87,7 @@ jobs:
                       sudo chmod -R go-rwx .astro playwright-report test-results .docker/runtime
 
                       bash .devcontainer/repair-workspace-permissions.sh
+                      test -w "$(git rev-parse --absolute-git-dir)/FETCH_HEAD"
                       test -w .astro
                       test -w playwright-report
                       test -w test-results
@@ -111,7 +122,16 @@ jobs:
                       bun run check
                       bun run test:unit:ci
                       bun run build
+
+                      echo "Recreate stale Playwright output before the direct smoke command"
+                      sudo rm -rf test-results
+                      sudo mkdir -p test-results
+                      sudo touch test-results/.last-run.json
+                      sudo chown -R root:root test-results
+                      sudo chmod -R go-rwx test-results
                       bun run test:e2e:smoke
+
+                      VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh
                       docker --version
                       docker compose version
                       docker info
