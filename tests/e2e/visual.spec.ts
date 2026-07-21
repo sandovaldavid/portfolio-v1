@@ -31,9 +31,7 @@ async function preparePage(page: Page, path: string, options: { hideHeader?: boo
 
 	const selectorsToHide = [
 		'aside#contact-sidebar',
-		'#hud-toggle-btn',
-		'#hud-panel',
-		'#hud-hint',
+		'#recruiter-hud',
 		'#cli-overlay',
 		'#cli-i18n',
 		'#shortcuts-modal',
