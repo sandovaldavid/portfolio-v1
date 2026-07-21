@@ -12,12 +12,14 @@ The versioned configuration owns these guarantees:
 - browsers supplied by the Playwright image through `/ms-playwright`;
 - frozen dependency installation from `bun.lock`;
 - a container-owned named volume for `node_modules`;
-- repair of known ignored/generated workspace paths left by another UID;
+- repair of Git metadata and known ignored/generated workspace paths left by another UID;
+- repair during create, container start and VS Code attach lifecycle events;
 - GitHub CLI and Docker Compose support;
 - Docker-outside-of-Docker access to the host daemon;
+- explicit propagation of the real host workspace path to nested test containers;
 - the same non-root `pwuser` identity for editing and commands.
 
-`bun run check:devcontainer` rejects version, mount, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, mount, lifecycle, repair-policy or configuration drift. The command also runs as part of `bun run check`.
 
 ## Prerequisites
 
@@ -48,7 +50,9 @@ The post-create lifecycle verifies that `node_modules` is a separate mount, assi
 
 From Visual Studio Code, run **Dev Containers: Reopen in Container**.
 
-After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount declarations.
+After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount or environment declarations.
+
+The startup lifecycle repairs writable Git and generated state before VS Code extensions begin repository operations. The attach lifecycle repeats the repair for an already-running container.
 
 The post-create script performs the following checks:
 
@@ -76,16 +80,17 @@ Then run **Dev Containers: Rebuild Container**. Docker creates a fresh empty vol
 
 Do not delete the repository or reset Git to repair dependencies. Removing this named volume affects installed packages only.
 
-## Recover stale generated artifacts
+## Recover stale Git or generated artifacts
 
-The source checkout is a host bind mount, so generated output from a previous native command, container or UID can remain visible after a rebuild. Typical symptoms are `EACCES` errors involving:
+The source checkout is a host bind mount, so Git metadata and generated output from a previous native command, container or UID can remain visible after a rebuild. Typical symptoms are `EACCES` errors involving:
 
+- `.git/FETCH_HEAD`;
 - `.astro`;
 - `playwright-report` or `test-results`;
 - `test-results.json` or `junit-results.xml`;
 - `.docker/runtime`.
 
-The post-create lifecycle repairs these known ignored/generated paths automatically. The Docker visual wrapper repeats the repair before using `.docker/runtime` when it runs inside the devcontainer.
+The create, start and attach lifecycles repair the actual Git directory and the known ignored/generated paths automatically. Direct Playwright commands repeat the repair before creating reports, and the Docker visual wrapper repeats it before using `.docker/runtime`.
 
 Run the repair manually inside the devcontainer when needed:
 
@@ -93,7 +98,7 @@ Run the repair manually inside the devcontainer when needed:
 bash .devcontainer/repair-workspace-permissions.sh
 ```
 
-The script uses an explicit allowlist and refuses symbolic links. It does not recursively change ownership of the repository root or tracked source files. `.docker/` is also excluded from Prettier traversal because it contains container runtime state rather than repository content.
+The script resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Git metadata plus an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
 
 ## Daily development
 
@@ -106,6 +111,8 @@ bun run test:e2e:smoke
 bun run test:e2e:desktop
 bun run test:e2e:extended
 ```
+
+All direct Playwright scripts use `scripts/run-playwright.mjs`, which repairs stale generated reports only when `DEVCONTAINER=true` and then delegates to the pinned project client.
 
 Astro uses port `4321`, which the devcontainer forwards automatically.
 
@@ -125,7 +132,9 @@ The merge-grade visual command is:
 bun run test:e2e:visual:docker
 ```
 
-The devcontainer runs that command through Docker-outside-of-Docker. The inner pinned test container remains the authoritative visual environment; the outer devcontainer is the development shell.
+The devcontainer exports the real host checkout as `HOST_WORKSPACE_FOLDER`. Docker Compose uses that host path rather than `/workspaces/portfolio-v1`, which exists only inside the outer devcontainer. The wrapper verifies that `/workspace/package.json` and `/workspace/bun.lock` are visible in the inner pinned container before installation or tests begin.
+
+The inner pinned test container remains the authoritative visual environment; the outer devcontainer is the development shell.
 
 Never regenerate committed snapshots merely to satisfy a native devcontainer mismatch. Reviewed updates must be generated in the pinned visual container and followed by a complete run without `--update-snapshots`.
 
