@@ -8,28 +8,28 @@ const pathname = url.pathname;
 
 /**
  * Generates the correct path for language switching
- * Spanish (default): / or /page
- * English: /en/ or /en/page
+ * English (default): / or /page
+ * Spanish: /es/ or /es/page
  */
 const getLanguagePath = (targetLang: string): string => {
-	const cleanPath = pathname.replace(/^\/en(\/|$)/, '/');
+	// Remove any language prefix (/es or /en) from the pathname
+	const cleanPath = pathname.replace(/^\/(es|en)(\/|$)/, '/');
 
 	if (targetLang === DEFAULT_LANGUAGE) {
+		// For English (default), return path without prefix
 		return cleanPath === '' ? '/' : cleanPath;
 	}
 
-	// For English, add /en prefix
+	// For Spanish, add /es prefix
 	if (cleanPath === '/' || cleanPath === '') {
-		return '/en/';
+		return '/es/';
 	}
 
-	return `/en${cleanPath}`;
+	return `/es${cleanPath}`;
 };
 ---
 
-<div
-	class="flex items-center space-x-1 border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden"
->
+<div class="flex items-center gap-2 font-mono">
 	{
 		AVAILABLE_LANGUAGES.map(lang => {
 			const isActive = currentLang === lang;
@@ -38,10 +38,10 @@ const getLanguagePath = (targetLang: string): string => {
 			return (
 				<a
 					href={path}
-					class={`px-2 py-1 text-sm font-medium transition-colors ${
+					class={`px-2.5 py-1 text-xs font-bold transition-all duration-100 uppercase tracking-wider border-2 border-black dark:border-white ${
 						isActive
-							? 'bg-blue-500 text-white'
-							: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+							? 'bg-primary-500 text-white dark:text-black shadow-retro-xs translate-x-[1.5px] translate-y-[1.5px] cursor-default pointer-events-none'
+							: 'bg-surface text-content-strong shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-retro-xs'
 					}`}
 					aria-current={isActive ? 'page' : undefined}
 				>

@@ -1,9 +1,47 @@
 {
+	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"installCommand": "bun install --frozen-lockfile",
 	"buildCommand": "bun run build",
 	"git": {
 		"deploymentEnabled": false
 	},
+	"ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"gh-pages\" ]; then exit 0; else exit 1; fi",
+	"headers": [
+		{
+			"source": "/resume/david-sandoval-resume.pdf",
+			"headers": [
+				{
+					"key": "Content-Type",
+					"value": "application/pdf"
+				},
+				{
+					"key": "Content-Disposition",
+					"value": "attachment; filename=\"david-sandoval-resume.pdf\""
+				},
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=300, s-maxage=300, must-revalidate"
+				}
+			]
+		},
+		{
+			"source": "/resume/david-sandoval-resume-es.pdf",
+			"headers": [
+				{
+					"key": "Content-Type",
+					"value": "application/pdf"
+				},
+				{
+					"key": "Content-Disposition",
+					"value": "attachment; filename=\"david-sandoval-resume-es.pdf\""
+				},
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=300, s-maxage=300, must-revalidate"
+				}
+			]
+		}
+	],
 	"rewrites": [
 		{
 			"source": "/links",

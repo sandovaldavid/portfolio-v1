@@ -1,0 +1,46 @@
+---
+title: 'Predicting OSS Abandonment With BiLSTM: Notes From My Thesis'
+description: 'Early notes on using Bidirectional LSTM networks to predict when an open-source repository is at risk of abandonment, from commit and issue activity time series.'
+pubDate: 2026-06-18
+tags: ['research', 'machine-learning', 'oss']
+---
+
+## The problem
+
+Open-source repositories die quietly. A project that looked healthy a year ago can end up
+with no maintainer, no merged PRs, and a growing pile of unaddressed security issues — and
+by the time that's obvious, dependents have already built on top of it. My thesis asks a
+narrower question: can we predict abandonment risk early, directly from a repository's
+activity time series?
+
+## Why BiLSTM
+
+Commit frequency, issue resolution rate, and contributor churn are all sequential signals —
+what happened in month _t_ depends on what happened in months before it, and abandonment
+rarely happens in a single step. A **Bidirectional LSTM** reads that sequence in both
+directions, which matters here: early warning signs (a maintainer going quiet, PRs piling
+up unreviewed) are easier to weigh correctly when the model has context from both before
+_and_ after a given point in training data.
+
+## Data & features
+
+Using GH Archive as the source, I extract per-repository monthly time series:
+
+- Commit count and unique committers
+- Issue open/close rates
+- PR merge latency
+- A rough "bus factor" proxy from contributor concentration
+
+Repositories are labeled abandoned/active using activity-threshold heuristics on
+last-contribution date and open-issue aging — the same kind of signal maintainers already
+use informally, just made explicit.
+
+## Baseline comparison
+
+The BiLSTM is benchmarked against Logistic Regression and Random Forest on the same
+features, evaluated with F1 on the (imbalanced) abandonment class and AUC-ROC for ranking
+risk. The goal isn't just "does deep learning win" — it's whether the _sequence_ structure
+the BiLSTM can exploit actually adds signal over models that only see aggregated snapshots.
+
+Full methodology and current results are on the [research page](/research) — this post will
+get a follow-up once training converges on the full dataset.

@@ -1,72 +1,99 @@
 ---
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
-const personalImageAlt = 'Juan David';
+const personalImageAlt = 'Juan David Sandoval';
 
-const focusAreas = [
-	t('about-me.focus1'),
-	t('about-me.focus2'),
-	t('about-me.focus3'),
-	t('about-me.focus4'),
-	t('about-me.focus5'),
-	t('about-me.focus6'),
-];
+const copy =
+	langCode === 'en'
+		? {
+				profileTitle: 'PROFESSIONAL PROFILE',
+				profile:
+					'Computer Engineer building web products with <strong>Angular, .NET and TypeScript</strong>. My work includes frontend modernization, REST APIs and performance improvements. I also research OSS abandonment prediction using BiLSTM models.',
+				readMore: 'READ FULL BIOGRAPHY',
+				currentTitle: 'CURRENT ROLE @ ATENA',
+				currentSummary:
+					'I currently work at <strong>Atena</strong> as a Software Engineer contributing to Angular frontends and .NET APIs. My focus is maintainable delivery, measurable performance improvements and clear technical documentation.',
+				currentButton: 'VIEW WORK DETAILS',
+			}
+		: {
+				profileTitle: 'PERFIL PROFESIONAL',
+				profile:
+					'Ingeniero Informático que construye productos web con <strong>Angular, .NET y TypeScript</strong>. Mi trabajo incluye modernización frontend, APIs REST y mejoras de rendimiento. También investigo la predicción de abandono de proyectos OSS mediante modelos BiLSTM.',
+				readMore: 'LEER BIOGRAFÍA COMPLETA',
+				currentTitle: 'ROL ACTUAL @ ATENA',
+				currentSummary:
+					'Actualmente trabajo en <strong>Atena</strong> como Software Engineer, contribuyendo en frontends Angular y APIs .NET. Mi enfoque es entregar software mantenible, aplicar mejoras de rendimiento medibles y documentar las decisiones técnicas.',
+				currentButton: 'VER DETALLES DEL TRABAJO',
+			};
 ---
 
-<div class="space-y-8">
-	<!-- First Card: Text Content and Profile Image -->
+<div class="space-y-6">
 	<article
-		class="rounded-3xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50"
+		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
 	>
 		<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
-			<!-- Text Content -->
-			<div
-				class="flex-1 space-y-4 [&>p]:text-neutral-700 dark:[&>p]:text-neutral-300 [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
-			>
-				<p set:html={t('about-me.paragraph1')} />
-				<p set:html={t('about-me.paragraph2')} />
-				<p set:html={t('about-me.paragraph3')} />
+			<div class="flex-1 space-y-4">
+				<h3
+					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
+				>
+					{copy.profileTitle}
+				</h3>
+				<div
+					class="space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
+				>
+					<p set:html={copy.profile} />
+				</div>
+				<div class="pt-2">
+					<a
+						href={getLocalizedPath(lang, '/about')}
+						class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
+					>
+						{copy.readMore}
+					</a>
+				</div>
 			</div>
 
-			<!-- Profile Image -->
-			<div class="shrink-0">
+			<div class="shrink-0 relative group">
+				<div
+					class="absolute inset-0 bg-primary-500 translate-x-1.5 translate-y-1.5 group-hover:translate-x-2.5 group-hover:translate-y-2.5 transition-transform duration-200"
+				>
+				</div>
 				<img
 					width="240"
 					height="240"
 					src="/profile/perfil.webp"
 					alt={personalImageAlt}
-					class="w-56 h-56 object-cover aspect-square rounded-2xl ring-2 ring-primary-500/40 shadow-lg shadow-primary-500/20"
+					class="relative w-48 h-48 md:w-56 md:h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
 					style="object-position: 50% 50%"
 				/>
 			</div>
 		</div>
 	</article>
 
-	<!-- Second Card: Currently Focused On -->
 	<article
-		class="rounded-3xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 backdrop-blur-sm p-8 md:p-10 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50"
+		class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
 	>
-		<h3 class="text-2xl font-bold text-neutral-900 dark:text-neutral-50 mb-6 md:mb-8">
-			{t('about-me.currently-focused')}
-		</h3>
-		<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-			{
-				focusAreas.map((area, idx) => (
-					<li
-						class="flex items-start gap-3 transition-all duration-300"
-						style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
-					>
-						<span class="shrink-0 w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400 mt-2" />
-						<span class="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed">
-							{area}
-						</span>
-					</li>
-				))
-			}
-		</ul>
+		<div class="space-y-4">
+			<h3
+				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
+			>
+				{copy.currentTitle}
+			</h3>
+			<p
+				class="text-content text-base leading-relaxed text-pretty"
+				set:html={copy.currentSummary}
+			/>
+			<div class="pt-2">
+				<a
+					href={getLocalizedPath(lang, '/atena')}
+					class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
+				>
+					{copy.currentButton}
+				</a>
+			</div>
+		</div>
 	</article>
 </div>

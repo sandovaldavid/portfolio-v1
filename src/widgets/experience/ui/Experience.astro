@@ -19,7 +19,7 @@ const EXPERIENCE = getExperienceData(tList);
 				id="experience-tablist"
 				role="tablist"
 				aria-label="Experience tabs"
-				class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible bg-neutral-100 dark:bg-neutral-900 p-4 rounded-2xl"
+				class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible bg-surface border-2 border-edge-strong p-4 rounded-none shadow-retro-sm"
 			>
 				{
 					EXPERIENCE.map((exp, idx) => (
@@ -30,13 +30,22 @@ const EXPERIENCE = getExperienceData(tList);
 							aria-selected={idx === 0 ? 'true' : 'false'}
 							tabindex={idx === 0 ? 0 : -1}
 							data-index={idx}
-							class="relative px-4 py-3 rounded-lg text-left whitespace-nowrap md:whitespace-normal data-[active=true]:border-l-4 text-neutral-600 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200 data-[active=true]:bg-neutral-200 dark:data-[active=true]:bg-neutral-800 data-[active=true]:text-neutral-900 dark:data-[active=true]:text-neutral-50 data-[active=true]:border-l-primary-500"
+							data-active={idx === 0 ? 'true' : 'false'}
+							class="group relative pl-4 md:pl-6 pr-4 py-3 rounded-none text-left whitespace-nowrap md:whitespace-normal border-2 border-transparent data-[active=true]:border-edge-strong data-[active=true]:bg-badge-brand-bg text-content-muted data-[active=true]:text-content-strong hover:text-content-strong transition-all duration-100 font-bold uppercase tracking-wider text-sm font-gaming-mono cursor-pointer"
 						>
-							<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-500 rounded-l-lg hidden data-[active=true]:block" />
+							{/* Active indicator bar */}
+							<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-500 scale-y-0 group-data-[active=true]:scale-y-100 transition-transform duration-150 origin-center hidden md:block" />
+							<div class="absolute bottom-0 left-0 right-0 h-1 bg-primary-500 scale-x-0 group-data-[active=true]:scale-x-100 transition-transform duration-150 origin-center block md:hidden" />
+
 							<div class="flex flex-col">
-								<span class="font-semibold">{exp.company ?? exp.title}</span>
+								<span class="font-bold flex items-center">
+									<span class="text-primary-500 mr-1.5 scale-0 group-data-[active=true]:scale-100 transition-transform duration-150 origin-left">
+										▸
+									</span>
+									{exp.company ?? exp.title}
+								</span>
 								{exp.company && (
-									<span class="text-neutral-500 dark:text-neutral-500 text-xs md:text-sm">
+									<span class="text-content-muted text-xs md:text-sm pl-4 group-data-[active=true]:pl-4 transition-all duration-150">
 										{exp.title}
 									</span>
 								)}
@@ -48,56 +57,65 @@ const EXPERIENCE = getExperienceData(tList);
 		</div>
 
 		<!-- Right: Detail Panel -->
-		<div class="md:col-span-3 min-h-[520px]">
-			{
-				EXPERIENCE.map((exp, idx) => (
-					<div
-						role="tabpanel"
-						id={`exp-panel-${idx}`}
-						aria-labelledby={`exp-tab-${idx}`}
-						hidden={idx !== 0}
-						class="transition-all duration-300 ease-out data-[active=true]:animate-in data-[active=true]:fade-in data-[active=true]:slide-up"
-						data-active={idx === 0}
-					>
-						<ExperienceItem {...exp} />
-					</div>
-				))
-			}
+		<div class="md:col-span-3">
+			<div class="relative" style="display:grid;">
+				{
+					EXPERIENCE.map((exp, idx) => (
+						<div
+							role="tabpanel"
+							id={`exp-panel-${idx}`}
+							aria-labelledby={`exp-tab-${idx}`}
+							class={`[grid-area:1/1] transition-opacity duration-300 ${idx === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+							data-active={idx === 0}
+						>
+							<ExperienceItem {...exp} />
+						</div>
+					))
+				}
+			</div>
 		</div>
 	</div>
 
-	<script is:inline>
-		// Basic ARIA-compliant tabs behavior
-		const tablist = document.getElementById('experience-tablist');
-		if (tablist) {
-			const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
-			const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+	<script>
+		// ARIA-compliant tabs. Bundled + astro:page-load so the tabs stay
+		// interactive after client-side navigation (the previous is:inline
+		// version silently died once the DOM was swapped).
+		const setupExperienceTabs = () => {
+			const tablist = document.getElementById('experience-tablist');
+			if (!tablist || tablist.dataset.tabsReady === 'true') return;
+			tablist.dataset.tabsReady = 'true';
 
-			function updatePanelAnimations(index) {
+			const tabs = Array.from(tablist.querySelectorAll<HTMLElement>('[role="tab"]'));
+			const panels = Array.from(document.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+			const updatePanelAnimations = (index: number) => {
 				panels.forEach((panel, i) => {
 					panel.dataset.active = String(i === index);
 				});
-			}
-			function activateTab(index, opts = { focus: false }) {
+			};
+
+			const activateTab = (index: number, opts = { focus: false }) => {
 				tabs.forEach((tab, i) => {
 					const selected = i === index;
 					tab.setAttribute('aria-selected', String(selected));
 					tab.tabIndex = selected ? 0 : -1;
 					tab.dataset.active = String(selected);
 					const panel = panels[i];
-					if (panel) panel.hidden = !selected;
+					if (panel) {
+						if (selected) {
+							panel.classList.remove('opacity-0', 'pointer-events-none');
+							panel.classList.add('opacity-100', 'pointer-events-auto');
+						} else {
+							panel.classList.remove('opacity-100', 'pointer-events-auto');
+							panel.classList.add('opacity-0', 'pointer-events-none');
+						}
+					}
 				});
 				updatePanelAnimations(index);
 				if (opts.focus) {
-					if (typeof tabs[index]?.focus === 'function') {
-						try {
-							tabs[index].focus({ preventScroll: true });
-						} catch {
-							tabs[index].focus();
-						}
-					}
+					tabs[index]?.focus({ preventScroll: true });
 				}
-			}
+			};
 
 			tabs.forEach((tab, i) => {
 				tab.addEventListener('click', () => activateTab(i, { focus: false }));
@@ -117,13 +135,16 @@ const EXPERIENCE = getExperienceData(tList);
 						)
 					) {
 						e.preventDefault();
-						tabs[next].focus({ preventScroll: true });
+						tabs[next]?.focus({ preventScroll: true });
 					}
 				});
 			});
-			// Set initial active state without focusing (prevents scroll jump)
+
+			// Set initial active state without focusing (prevents scroll jump).
 			activateTab(0, { focus: false });
 			updatePanelAnimations(0);
-		}
+		};
+
+		document.addEventListener('astro:page-load', setupExperienceTabs);
 	</script>
 </section>

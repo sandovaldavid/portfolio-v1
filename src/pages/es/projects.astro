@@ -1,0 +1,20 @@
+---
+import Layout from '@app/layouts/Layout.astro';
+import { Projects as ProjectsWidget } from '@widgets/projects';
+import { SectionContainer } from '@shared/ui';
+---
+
+<Layout
+	title="Catálogo de Proyectos - David Sandoval"
+	description="Explora todos los proyectos desarrollados por David Sandoval: aplicaciones web escalables y móviles."
+	img_preview="/projects/portfolio.webp"
+>
+	<SectionContainer id="projects-catalog" class="w-full max-w-5xl px-4">
+		<h1
+			class="text-4xl md:text-5xl font-bold font-pixel-clean text-content-strong mb-12 text-center uppercase tracking-wide"
+		>
+			Catálogo de Proyectos
+		</h1>
+		<ProjectsWidget showAll={true} />
+	</SectionContainer>
+</Layout>

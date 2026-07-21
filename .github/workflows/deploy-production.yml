@@ -1,71 +1,149 @@
 name: Deploy to Vercel Production
 
 on:
-  push:
-    branches:
-      - main
+    workflow_run:
+        workflows: [Main Quality]
+        types: [completed]
+        branches: [main]
+    repository_dispatch:
+        types: [resume-assets-updated]
+    workflow_dispatch:
 
 permissions:
-  contents: read
-  deployments: write
+    contents: read
+    deployments: write
+
+concurrency:
+    group: portfolio-production
+    cancel-in-progress: true
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        if: >-
+            (github.event_name == 'workflow_run' &&
+             github.event.workflow_run.event == 'push' &&
+             github.event.workflow_run.conclusion == 'success' &&
+             github.event.workflow_run.head_branch == 'main') ||
+            github.event_name == 'repository_dispatch' ||
+            github.event_name == 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        environment:
+            name: Production
+            url: ${{ steps.deploy.outputs.deployment_url }}
+        steps:
+            - name: Checkout validated main revision
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || 'main' }}
+                  fetch-depth: 1
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+            - name: Verify production source
+              shell: bash
+              env:
+                  EVENT_NAME: ${{ github.event_name }}
+                  VALIDATED_SHA: ${{ github.event.workflow_run.head_sha }}
+              run: |
+                  set -euo pipefail
+                  actual_sha=$(git rev-parse HEAD)
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
+                  if [ "$EVENT_NAME" = "workflow_run" ]; then
+                    test "$actual_sha" = "$VALIDATED_SHA"
+                  else
+                    git fetch --depth=1 origin main
+                    test "$actual_sha" = "$(git rev-parse FETCH_HEAD)"
+                  fi
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+                  echo "Production source: $actual_sha"
 
-      - name: Run linter
-        run: bun run lint
+            - name: Checkout canonical resume assets
+              uses: actions/checkout@v7
+              with:
+                  ref: resume-assets
+                  path: .resume-assets
+                  sparse-checkout: public/resume
+                  sparse-checkout-cone-mode: false
 
-      - name: Check formatting
-        run: bun run format:check
+            - name: Install canonical resume assets
+              run: bash scripts/install-resume-assets.sh
 
-      - name: Install Vercel CLI
-        run: bun install -g vercel@latest
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
 
-      - name: Pull Vercel Environment
-        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            - name: Pull Vercel production environment
+              run: bunx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+              env:
+                  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Build Production
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            - name: Build production
+              run: bunx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+              env:
+                  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Deploy to Production
-        id: deploy
-        run: |
-          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
-          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
-          echo "✅ Successfully deployed to production: $DEPLOYMENT_URL"
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            - name: Deploy production
+              id: deploy
+              run: |
+                  DEPLOYMENT_URL=$(bunx vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }})
+                  echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+                  echo "Successfully deployed to production: $DEPLOYMENT_URL"
+              env:
+                  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Summary
-        if: always()
-        run: |
-          echo "## 🎉 Production Deployment" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Successfully deployed to production!" >> $GITHUB_STEP_SUMMARY
-            echo "URL: https://sandovaldavid.com" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ Deployment failed. Please check the logs above." >> $GITHUB_STEP_SUMMARY
-          fi
+            - name: Verify canonical resume URLs
+              shell: bash
+              run: |
+                  set -euo pipefail
 
+                  verify_pdf() {
+                      local url="$1"
+                      local filename="$2"
+                      local headers
+                      local body
+                      headers=$(mktemp)
+                      body=$(mktemp)
+
+                      for attempt in $(seq 1 30); do
+                          if curl --fail --silent --show-error \
+                              --dump-header "$headers" \
+                              --output "$body" \
+                              "$url"; then
+                              tr -d '\r' < "$headers" > "${headers}.normalized"
+
+                              if grep -qi '^content-type: application/pdf' "${headers}.normalized" \
+                                  && grep -qi "^content-disposition: attachment; filename=\"${filename}\"" "${headers}.normalized" \
+                                  && [ "$(head -c 5 "$body")" = "%PDF-" ]; then
+                                  echo "Verified $url"
+                                  rm -f "$headers" "${headers}.normalized" "$body"
+                                  return 0
+                              fi
+                          fi
+
+                          echo "Attempt ${attempt}/30: waiting for $url"
+                          sleep 10
+                      done
+
+                      echo "::error::Canonical resume URL failed validation: $url"
+                      cat "${headers}.normalized" 2>/dev/null || true
+                      rm -f "$headers" "${headers}.normalized" "$body"
+                      return 1
+                  }
+
+                  verify_pdf \
+                      "https://sandovaldavid.com/resume/david-sandoval-resume.pdf" \
+                      "david-sandoval-resume.pdf"
+                  verify_pdf \
+                      "https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf" \
+                      "david-sandoval-resume-es.pdf"
+
+            - name: Summary
+              if: always()
+              run: |
+                  echo "## Production Deployment" >> "$GITHUB_STEP_SUMMARY"
+                  echo "" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Status: ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Source SHA: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Deployment: ${{ steps.deploy.outputs.deployment_url }}" >> "$GITHUB_STEP_SUMMARY"
+                  echo "English resume: https://sandovaldavid.com/resume/david-sandoval-resume.pdf" >> "$GITHUB_STEP_SUMMARY"
+                  echo "Spanish resume: https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,53 @@
+---
+import type { BlogPost } from '@entities/blog';
+
+interface Props {
+	post: BlogPost;
+	readMoreText: string;
+	readMoreLink: string;
+}
+
+const { post, readMoreText, readMoreLink } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
+const formattedDate = pubDate.toISOString().split('T')[0];
+---
+
+<article
+	class="border-2 border-black dark:border-white bg-white/95 dark:bg-neutral-900/95 shadow-retro-md"
+>
+	<div
+		class="flex items-center gap-2 border-b-2 border-black dark:border-white bg-primary-500/10 px-4 py-2"
+	>
+		<span
+			class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400"
+		>
+			BLOG
+		</span>
+		<time class="ml-auto font-mono text-xs text-content-muted" datetime={pubDate.toISOString()}>
+			[{formattedDate}]
+		</time>
+	</div>
+	<div class="p-5">
+		<div class="mb-2 flex flex-wrap items-center gap-2">
+			{
+				tags.map(tag => (
+					<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+						{tag}
+					</span>
+				))
+			}
+		</div>
+		<h2 class="mb-2 text-xl font-bold font-pixel-clean tracking-wide text-content-strong">
+			{title}
+		</h2>
+		<p class="mb-4 text-base leading-relaxed text-content-muted">
+			{description}
+		</p>
+		<a
+			href={readMoreLink}
+			class="inline-flex items-center gap-1 font-mono text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400 hover:underline"
+		>
+			{readMoreText} →
+		</a>
+	</div>
+</article>

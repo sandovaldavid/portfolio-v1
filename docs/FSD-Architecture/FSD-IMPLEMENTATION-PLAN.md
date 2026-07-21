@@ -1,12 +1,15 @@
 # FSD Architecture Implementation Plan
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## Technical Portfolio V2 - Complete Migration Strategy
 
 **Project:** technical-portfolio-v2  
 **Branch:** refactor/fsd-architecture  
 **Generated:** October 30, 2025  
-**Current Status:** ⚠️ 30% Complete  
-**Estimated Time:** 10-12 hours
+**Current Status:** ✅ 100% Complete (archived)  
+**Original Estimated Time:** 10-12 hours  
+**Actual Completion:** October 2025
 
 ---
 

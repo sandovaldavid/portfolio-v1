@@ -1,10 +1,20 @@
 ---
+import BriefcaseIcon from '@assets/icons/Briefcase.astro';
+import BrainIcon from '@assets/icons/Brain.astro';
+import CodeIcon from '@assets/icons/Code.astro';
+import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
+import ScrollTextIcon from '@assets/icons/ScrollText.astro';
+import BookOpenIcon from '@assets/icons/BookOpen.astro';
+import SystemIcon from '@assets/icons/System.astro';
+
 interface Props {
 	lang?: unknown;
 	navItems: Array<{
 		title: string;
 		label: string;
 		url: string;
+		icon: string;
+		prefetch?: boolean;
 	}>;
 }
 
@@ -12,17 +22,25 @@ const { navItems } = Astro.props;
 ---
 
 <nav
-	class="hidden md:flex items-center justify-center gap-8 font-sans"
+	class="hidden md:flex items-center justify-center gap-4 lg:gap-8 font-mono"
 	aria-label="Main navigation"
 >
 	{
 		navItems.map(link => (
 			<a
-				class="relative block px-2 py-2 text-sm font-medium transition text-neutral-800 dark:text-neutral-200 hover:text-primary-600 dark:hover:text-primary-200"
+				class="relative flex items-center gap-1.5 px-2 py-2 text-sm font-bold uppercase tracking-wide transition text-content-strong hover:text-primary-500 dark:hover:text-primary-500 whitespace-nowrap"
 				aria-label={link.label}
 				href={link.url}
+				data-astro-prefetch={link.prefetch ? 'hover' : undefined}
 			>
-				{link.title}
+				{link.icon === 'experience' && <BriefcaseIcon class="size-4" />}
+				{link.icon === 'research' && <BrainIcon class="size-4" />}
+				{link.icon === 'projects' && <CodeIcon class="size-4" />}
+				{link.icon === 'devlog' && <ScrollTextIcon class="size-4" />}
+				{link.icon === 'blog' && <BookOpenIcon class="size-4" />}
+				{link.icon === 'about-me' && <ProfileCheckIcon class="size-4" />}
+				{link.icon === 'technologies' && <SystemIcon class="size-4" />}
+				<span>{link.title}</span>
 			</a>
 		))
 	}

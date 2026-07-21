@@ -17,7 +17,7 @@ export function useTranslations(locale: Language) {
 	return function t(key: TranslationKey): string {
 		const value = translations[locale]?.[key];
 
-		if (!value) {
+		if (value === undefined) {
 			console.warn(`Missing translation: ${key} for locale: ${locale}`);
 			return key as string;
 		}
@@ -38,7 +38,7 @@ export function useTranslations(locale: Language) {
 export function useTranslationsList(locale: Language) {
 	return function tList(key: TranslationKey): string | string[] {
 		const value = translations[locale]?.[key];
-		if (!value) {
+		if (value === undefined) {
 			console.warn(`Missing translation: ${key} for locale: ${locale}`);
 			return key as string;
 		}

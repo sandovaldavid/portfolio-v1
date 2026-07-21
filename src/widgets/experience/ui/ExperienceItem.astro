@@ -11,7 +11,7 @@ interface Props {
 	link?: string;
 	company?: string;
 }
-const { title, date, description, technologies, link } = Astro.props;
+const { title, date, description, technologies, link, company } = Astro.props;
 const descriptionItems = Array.isArray(description) ? description : [description];
 const technologyItems = Array.isArray(technologies) ? technologies : [technologies];
 
@@ -21,24 +21,41 @@ const t = useTranslations(lang);
 ---
 
 <div
-	class="flex flex-col gap-5 p-6 rounded-2xl bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-300/80 dark:border-neutral-700/80 text-neutral-700 dark:text-neutral-300 shadow-lg shadow-neutral-200/50 dark:shadow-neutral-950/50 backdrop-blur-sm transition-all duration-300"
+	class="flex flex-col gap-5 p-6 rounded-none bg-surface border-2 border-edge-strong text-content shadow-[4px_4px_0px_0px_var(--color-primary-500)] transition-all duration-100"
 >
-	<div class="space-y-2">
-		<h3 class="text-neutral-900 dark:text-neutral-50 font-bold text-3xl">{title}</h3>
-		<time class="block text-primary-500 dark:text-primary-400 text-xl font-medium">{date}</time>
+	<div class="space-y-1">
+		<h3
+			class="text-content-strong font-bold text-2xl sm:text-3xl tracking-wide font-pixel-clean"
+		>
+			{title}
+		</h3>
+		<div
+			class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base font-bold font-gaming-mono uppercase tracking-wider"
+		>
+			{
+				company && (
+					<>
+						<span class="text-primary-500 dark:text-primary-400">{company}</span>
+						<span class="text-content-muted">·</span>
+					</>
+				)
+			}
+			<span class="text-content-muted">{date}</span>
+		</div>
 	</div>
 
 	<!-- Bullet Points Description -->
-	<ul
-		class="space-y-2 list-disc list-inside text-neutral-700 dark:text-neutral-300 leading-relaxed"
-	>
+	<ul class="space-y-3 text-content leading-relaxed">
 		{
 			descriptionItems.map((point, idx) => (
 				<li
-					class="ml-2 text-base transition-all duration-300"
+					class="flex items-start gap-2.5 text-base transition-all duration-300"
 					style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
 				>
-					{point}
+					<span class="text-primary-500 shrink-0 mt-1.5 text-xs font-bold font-gaming-mono">
+						▸
+					</span>
+					<span class="leading-relaxed">{point}</span>
 				</li>
 			))
 		}
@@ -52,7 +69,7 @@ const t = useTranslations(lang);
 				style="animation: var(--animate-slide-up); animation-delay: 150ms;"
 			>
 				{technologyItems.map(tech => (
-					<span class="px-3 py-1.5 rounded-full bg-primary-500/15 dark:bg-primary-500/15 text-primary-600 dark:text-primary-300 text-sm font-medium border border-primary-500/40 dark:border-primary-500/40 hover:border-primary-500/60 dark:hover:border-primary-400/60 hover:bg-primary-500/25 dark:hover:bg-primary-500/25 transition-all duration-300">
+					<span class="px-3 py-1.5 rounded-none bg-badge-brand-bg text-badge-brand-text text-sm font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:bg-badge-brand-bg-hover transition-all duration-100">
 						{tech}
 					</span>
 				))}

@@ -1,5 +1,7 @@
 # Guía de Refactorización FSD - Visión General
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 📋 Estado Actual del Proyecto
 
 ### Estructura Actual (Legacy)

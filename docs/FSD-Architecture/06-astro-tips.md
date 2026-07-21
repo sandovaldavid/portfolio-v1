@@ -1,5 +1,7 @@
 # Tips de Astro para Evitar Duplicación
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 🎯 Funcionalidades Nativas de Astro
 
 Astro tiene muchas features built-in que evitan crear código duplicado. Aquí están las más relevantes para tu portfolio.

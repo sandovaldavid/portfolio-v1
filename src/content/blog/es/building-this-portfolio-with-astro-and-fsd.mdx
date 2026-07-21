@@ -1,0 +1,47 @@
+---
+title: 'Construyendo Este Portfolio Con Astro 6 y Feature-Sliced Design'
+description: 'Por qué reconstruí sandovaldavid.com sobre Astro 6 con una jerarquía de capas estricta bajo Feature-Sliced Design, y qué gané con eso en la práctica.'
+pubDate: 2026-06-30
+tags: ['astro', 'arquitectura', 'fsd']
+---
+
+## ¿Por qué FSD para un portfolio?
+
+Un portfolio personal es un proyecto pequeño, pero crece más rápido de lo que uno espera:
+una sección hero se convierte en widget, luego aparece un devlog, luego case studies de
+proyectos, luego un blog. Sin una regla de capas, los proyectos "pequeños" terminan siendo
+un montón de componentes que se importan entre sí sin orden.
+
+Adopté [Feature-Sliced Design](https://feature-sliced.design/) con una dirección de
+importación estricta:
+
+```
+app → pages → widgets → features → entities → shared
+```
+
+Cada capa solo puede importar de las capas debajo de ella. Los widgets no pueden importar
+otros widgets, las páginas no pueden importar otras páginas, y `shared` nunca importa de
+capas superiores. Suena rígido para un portfolio, pero es justo lo que me permitió agregar
+toda una sección de devlog — y ahora este blog — sin tocar código que no tenía relación.
+
+## Cómo se ve esto en el día a día
+
+- **`shared/ui`** contiene las piezas primitivas: `Badge`, `TechPill`, `LinkButton`. Sin
+  lógica de negocio.
+- **`entities/`** envuelven los datos crudos (proyectos, posts de devlog, y ahora posts del
+  blog) detrás de helpers de consulta como `getBlogPosts(lang)`, así las páginas nunca tocan
+  la colección de contenido directamente.
+- **`widgets/`** componen entidades y UI compartida en secciones de página — `BlogCard`,
+  `ProjectCard`, `DevlogDetail`.
+- **`pages/`** se mantienen delgadas: obtienen datos, se los pasan a un widget, listo.
+
+## El resultado
+
+Cuando agregué este blog, el diff fue casi enteramente aditivo: un nuevo slice
+`entities/blog`, un nuevo slice `widgets/blog`, y cuatro archivos de rutas. Nada en
+`widgets/header` ni en `app/layouts/Layout.astro` necesitó reescritura — solo una entrada
+nueva en el nav y un tag `<link>` de RSS.
+
+Ese es todo el argumento a favor de FSD en un proyecto de este tamaño: cuesta un poco de
+disciplina al inicio, y se paga sola cada vez que agregas una funcionalidad en vez de un
+parche.

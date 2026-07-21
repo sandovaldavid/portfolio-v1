@@ -1,0 +1,47 @@
+---
+import Layout from '@app/layouts/Layout.astro';
+import { DevlogCard } from '@widgets/devlog';
+import { getDevlogPosts, getDevlogSlug } from '@entities/devlog';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const posts = await getDevlogPosts(lang);
+---
+
+<Layout
+	title={t('devlog.page-title')}
+	description={t('devlog.page-description')}
+	img_preview="/projects/portfolio.webp"
+	isHome={false}
+>
+	<div class="py-16 md:py-24">
+		<div class="mx-auto max-w-4xl">
+			<header class="mb-12">
+				<p
+					class="mb-2 font-retro-tag text-sm font-bold uppercase tracking-widest text-primary-500 dark:text-primary-400"
+				>
+					{t('devlog.label')}
+				</p>
+				<h1 class="mb-4 text-3xl font-bold font-pixel-clean tracking-wide md:text-5xl">
+					{t('devlog.heading')}
+				</h1>
+				<p class="max-w-2xl text-base leading-relaxed text-content-muted">
+					{t('devlog.subheading')}
+				</p>
+			</header>
+
+			<div class="space-y-6">
+				{
+					posts.map(post => (
+						<DevlogCard
+							post={post}
+							readMoreText={t('devlog.read-more')}
+							readMoreLink={`/es/devlog/${getDevlogSlug(post)}`}
+						/>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</Layout>

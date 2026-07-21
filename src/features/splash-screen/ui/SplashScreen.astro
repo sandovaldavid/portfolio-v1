@@ -1,0 +1,177 @@
+---
+import { getLangFromUrl } from '@shared/lib/i18n';
+import { siteConfig } from '@shared/config/site.config';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const year = new Date().getFullYear();
+
+const copy =
+	langCode === 'en'
+		? {
+				title: 'RETRO MODE',
+				intro: 'Optional portfolio boot sequence',
+				lines: [
+					'Loading Angular, .NET and TypeScript profile…',
+					'Connecting project case studies…',
+					'Loading BiLSTM/OSS research notes…',
+					'Professional profile ready.',
+				],
+				continue: 'Continue to portfolio',
+				close: 'Close retro mode',
+			}
+		: {
+				title: 'MODO RETRO',
+				intro: 'Secuencia de inicio opcional del portafolio',
+				lines: [
+					'Cargando perfil Angular, .NET y TypeScript…',
+					'Conectando casos de estudio…',
+					'Cargando investigación BiLSTM/OSS…',
+					'Perfil profesional listo.',
+				],
+				continue: 'Continuar al portafolio',
+				close: 'Cerrar modo retro',
+			};
+---
+
+<div
+	id="splash-screen"
+	class="hidden fixed inset-0 w-screen h-screen bg-[#07090e] z-[9999] flex-col items-center justify-center font-mono text-primary-500 overflow-hidden px-4"
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="retro-mode-title"
+>
+	<div class="crt-overlay pointer-events-none absolute inset-0 z-10 opacity-[0.15]"></div>
+
+	<div
+		class="w-full max-w-2xl border-2 border-[#00ff88]/60 bg-black/80 p-6 sm:p-8 shadow-retro-3xl relative z-20"
+	>
+		<div class="flex items-start justify-between gap-4 border-b border-[#00ff88]/30 pb-4">
+			<div>
+				<p class="text-xs sm:text-sm text-[#00ff88]/70">
+					PORTFOLIO SYSTEM BIOS // {year}
+					{siteConfig.handle.toUpperCase()}
+				</p>
+				<h2
+					id="retro-mode-title"
+					class="mt-2 text-2xl sm:text-3xl font-pixel-clean text-[#00ff88]"
+				>
+					{copy.title}
+				</h2>
+				<p class="mt-2 text-sm text-neutral-300">{copy.intro}</p>
+			</div>
+			<button
+				id="retro-close"
+				type="button"
+				class="border border-[#00ff88]/60 px-2 py-1 text-[#00ff88] cursor-pointer"
+				aria-label={copy.close}
+			>
+				×
+			</button>
+		</div>
+
+		<ul class="mt-6 space-y-3 text-sm sm:text-base text-neutral-200" aria-label={copy.intro}>
+			{
+				copy.lines.map((line, index) => (
+					<li style={`animation-delay:${index * 120}ms`}>
+						[{index + 1}/4] {line}
+					</li>
+				))
+			}
+		</ul>
+
+		<button
+			id="retro-continue"
+			type="button"
+			class="mt-8 w-full sm:w-auto px-8 py-3 bg-primary-500 text-white dark:text-black font-pixel text-xs tracking-widest border-2 border-white shadow-retro-lg hover:bg-primary-400 focus:outline-none cursor-pointer"
+		>
+			{copy.continue}
+		</button>
+	</div>
+</div>
+
+<script data-astro-rerun>
+	(function () {
+		const splash = document.getElementById('splash-screen');
+		if (!(splash instanceof HTMLElement) || splash.dataset.bound === 'true') return;
+		splash.dataset.bound = 'true';
+
+		const params = new URLSearchParams(window.location.search);
+		if (params.get('retro') !== '1') return;
+
+		const continueButton = splash.querySelector('#retro-continue');
+		const closeButton = splash.querySelector('#retro-close');
+		const previousOverflow = document.body.style.overflow;
+
+		const show = () => {
+			splash.classList.remove('hidden');
+			splash.classList.add('flex');
+			document.body.style.overflow = 'hidden';
+			if (continueButton instanceof HTMLElement) continueButton.focus();
+		};
+
+		const dismiss = () => {
+			splash.classList.add('dismissing');
+			window.setTimeout(() => {
+				splash.classList.add('hidden');
+				splash.classList.remove('flex', 'dismissing');
+				document.body.style.overflow = previousOverflow;
+				params.delete('retro');
+				const query = params.toString();
+				window.history.replaceState(
+					{},
+					'',
+					`${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
+				);
+			}, 300);
+		};
+
+		continueButton?.addEventListener('click', dismiss);
+		closeButton?.addEventListener('click', dismiss);
+		splash.addEventListener('keydown', event => {
+			if (event.key === 'Escape' && !splash.classList.contains('hidden')) dismiss();
+		});
+
+		show();
+	})();
+</script>
+
+<style>
+	.crt-overlay {
+		background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+		background-size: 100% 4px;
+	}
+
+	#splash-screen li {
+		animation: retro-line-in 0.35s ease-out both;
+	}
+
+	#splash-screen.dismissing {
+		animation: retro-close 0.3s ease-in forwards;
+		pointer-events: none;
+	}
+
+	@keyframes retro-line-in {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes retro-close {
+		to {
+			opacity: 0;
+			transform: scaleY(0.02);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		#splash-screen li,
+		#splash-screen.dismissing {
+			animation: none;
+		}
+	}
+</style>

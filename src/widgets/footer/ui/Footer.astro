@@ -1,10 +1,11 @@
 ---
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { siteConfig } from '@shared/config/site.config';
 import MailIcon from '@assets/icons/Mail.astro';
 import LinkedInIcon from '@assets/social-networks/LinkedIn.astro';
 import GitHubIcon from '@assets/technologies/GitHub.astro';
 import LinkHubIcon from '@assets/social-networks/LinkHub.astro';
-import CodeIcon from '@/assets/icons/Code.astro';
+import CodeIcon from '@assets/icons/Code.astro';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
@@ -14,51 +15,54 @@ const currentYear = new Date().getFullYear();
 const socialLinks = [
 	{
 		name: 'GitHub',
-		href: 'https://github.com/dev-sandoval',
+		href: siteConfig.social.github,
 		icon: GitHubIcon,
 	},
 	{
 		name: 'LinkedIn',
-		href: 'https://www.linkedin.com/in/jdavidsandoval',
+		href: siteConfig.social.linkedin,
 		icon: LinkedInIcon,
 	},
 	{
 		name: 'Email',
-		href: 'mailto:contact@devsandoval.me',
+		href: `mailto:${siteConfig.email}`,
 		icon: MailIcon,
 	},
 	{
 		name: 'Link Hub',
-		href: 'https://linkdevs.social',
+		href: siteConfig.social.linkHub,
 		icon: LinkHubIcon,
 	},
 ];
 ---
 
-<footer class="mt-24 px-4 sm:px-6 lg:px-8 pb-8 w-full" id="contact">
+<footer
+	class="mt-28 px-4 sm:px-6 lg:px-8 pb-8 w-full border-t-2 border-edge-strong pt-20"
+	id="contact"
+>
 	<!-- CTA Section -->
-	<div class="text-center space-y-6 mb-12">
-		<h1
-			class="text-2xl sm:text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100"
+	<div class="text-center space-y-4 mb-10 max-w-2xl mx-auto">
+		<h2
+			class="text-4xl sm:text-5xl md:text-6xl font-bold font-pixel-clean uppercase tracking-wider text-content-strong"
 		>
 			{t('footer.title')}
-		</h1>
-		<h2
-			class="text-base sm:text-lg md:text-xl font-semibold text-neutral-600 dark:text-neutral-400 px-4"
-		>
-			{t('footer.subtitle')}
 		</h2>
-		<a
-			href="mailto:sandovaldavid2201@gmail.com"
-			class="inline-flex items-center gap-2 px-6 sm:px-8 py-3 bg-primary-500 text-white rounded-full font-medium hover:bg-primary-600 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
-		>
-			<MailIcon class="w-5 h-5" />
-			{t('footer.cta')}
-		</a>
+		<p class="text-sm font-mono uppercase text-content-muted tracking-wide">
+			{t('footer.subtitle')}
+		</p>
+		<div class="pt-4">
+			<a
+				href={`mailto:${siteConfig.email}`}
+				class="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white font-mono text-sm font-bold uppercase tracking-wider shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_var(--color-primary-500)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
+			>
+				<MailIcon class="w-5 h-5" />
+				{t('footer.cta')}
+			</a>
+		</div>
 	</div>
 
 	<!-- Social Links -->
-	<div class="flex justify-center gap-4 sm:gap-6 mb-12 flex-wrap">
+	<div class="flex justify-center gap-4 sm:gap-5 mb-14 flex-wrap">
 		{
 			socialLinks.map(({ name, href, icon: Icon }) => (
 				<a
@@ -66,7 +70,7 @@ const socialLinks = [
 					target="_blank"
 					rel="noopener noreferrer"
 					title={name}
-					class="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-500 transition-colors duration-300 p-2"
+					class="flex items-center justify-center p-3.5 bg-surface border-2 border-black dark:border-white text-content-strong shadow-[2.5px_2.5px_0px_var(--color-primary-500)] hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] hover:shadow-[4px_4px_0px_var(--color-primary-500)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
 				>
 					<Icon class="w-6 h-6" />
 				</a>
@@ -76,13 +80,20 @@ const socialLinks = [
 
 	<!-- Bottom Bar -->
 	<div
-		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-300 dark:border-neutral-800 font-mono text-xs sm:text-sm text-neutral-600 dark:text-neutral-500 text-center md:text-left"
+		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-300 dark:border-neutral-800 font-mono text-xs sm:text-sm text-content-muted text-center md:text-left"
 	>
-		<p>© {currentYear} Juan David Sandoval. {t('footer.rights')}.</p>
+		<p>© {currentYear} {siteConfig.fullName}. {t('footer.rights')}.</p>
 		<p class="flex items-center gap-2">
 			{t('footer.built-with')}
 			<CodeIcon class="w-4 h-4 text-primary-500" />
-			<span class="text-neutral-500 dark:text-neutral-600">v2.0.0</span>
+			<span class="text-content-muted">v2.0.0</span>
+			<span aria-hidden="true">·</span>
+			<a
+				href={getLocalizedPath(lang, '/devlog')}
+				class="underline decoration-dotted underline-offset-2 hover:text-primary-500 transition-colors"
+			>
+				{t('nav.devlog')}
+			</a>
 		</p>
 	</div>
 </footer>

@@ -1,0 +1,121 @@
+---
+import { SectionContainer } from '@shared/ui';
+import { getLocalizedPath } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
+
+interface Props {
+	lang: Language;
+}
+
+const { lang } = Astro.props;
+const isEnglish = lang === Language.ENGLISH;
+const personalImageAlt = 'Juan David Sandoval';
+
+const copy = isEnglish
+	? {
+			bioTitle: 'FULL BIOGRAPHY',
+			userRecord: '[ USER RECORD: DAVID_S // SOFTWARE ENGINEERING ]',
+			paragraphs: [
+				'Computer Engineer focused on building maintainable web products with <strong>Angular, .NET and TypeScript</strong>. I value clear architecture when it reduces delivery risk, not as an objective by itself.',
+				'My professional work includes modernizing frontend modules, contributing to REST APIs, improving bundle delivery and supporting migrations from legacy systems. The public portfolio documents the projects and trade-offs that can be shared openly.',
+				'Alongside product engineering, I research <strong>Mining Software Repositories</strong> and the use of BiLSTM models to study OSS project abandonment. This research is a secondary specialization that complements my software-engineering work.',
+			],
+			currentlyFocused: 'CURRENTLY FOCUSED ON',
+			focusAreas: [
+				'Angular and reactive frontend architecture',
+				'.NET APIs and maintainable backend boundaries',
+				'TypeScript and web performance',
+				'Automated testing and CI quality gates',
+				'BiLSTM models for OSS abandonment prediction',
+				'Open-source documentation and contribution',
+			],
+			returnButton: '[ RETURN TO HOME ]',
+		}
+	: {
+			bioTitle: 'BIOGRAFÍA COMPLETA',
+			userRecord: '[ REGISTRO: DAVID_S // INGENIERÍA DE SOFTWARE ]',
+			paragraphs: [
+				'Ingeniero Informático enfocado en construir productos web mantenibles con <strong>Angular, .NET y TypeScript</strong>. Valoro una arquitectura clara cuando reduce riesgos de entrega, no como un objetivo por sí misma.',
+				'Mi experiencia profesional incluye modernización de módulos frontend, contribución en APIs REST, mejoras en la entrega de bundles y apoyo en migraciones desde sistemas legacy. El portafolio documenta los proyectos y trade-offs que pueden compartirse públicamente.',
+				'En paralelo al desarrollo de productos, investigo <strong>Mining Software Repositories</strong> y el uso de modelos BiLSTM para estudiar el abandono de proyectos OSS. Esta investigación es una especialización secundaria que complementa mi trabajo en ingeniería de software.',
+			],
+			currentlyFocused: 'ENFOQUE ACTUAL',
+			focusAreas: [
+				'Angular y arquitectura frontend reactiva',
+				'APIs .NET y límites backend mantenibles',
+				'TypeScript y rendimiento web',
+				'Pruebas automatizadas y quality gates en CI',
+				'Modelos BiLSTM para predecir abandono OSS',
+				'Documentación y contribución open source',
+			],
+			returnButton: '[ VOLVER AL INICIO ]',
+		};
+---
+
+<SectionContainer id="about-details" class="w-full max-w-4xl px-4 flex flex-col gap-8">
+	<div class="text-center space-y-3">
+		<h1
+			class="text-4xl md:text-5xl font-bold font-pixel-clean text-content-strong uppercase tracking-wide"
+		>
+			{copy.bioTitle}
+		</h1>
+		<p class="text-content-muted font-mono text-sm uppercase">{copy.userRecord}</p>
+	</div>
+
+	<div class="space-y-6">
+		<article
+			class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
+		>
+			<div class="flex flex-col items-center justify-center gap-8 md:gap-12 md:flex-row">
+				<div
+					class="flex-1 space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty font-mono text-base leading-relaxed"
+				>
+					{copy.paragraphs.map(paragraph => <p set:html={paragraph} />)}
+				</div>
+
+				<div class="shrink-0">
+					<img
+						width="240"
+						height="240"
+						src="/profile/perfil.webp"
+						alt={personalImageAlt}
+						class="w-56 h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white shadow-retro-lg"
+						style="object-position: 50% 50%"
+					/>
+				</div>
+			</div>
+		</article>
+
+		<article
+			class="rounded-none bg-surface border-2 border-edge-strong p-8 md:p-10 shadow-retro-lg transition-all duration-100"
+		>
+			<h2
+				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-6 border-b-2 border-dashed border-edge-subtle pb-2"
+			>
+				{copy.currentlyFocused}
+			</h2>
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 font-mono text-base">
+				{
+					copy.focusAreas.map((area, idx) => (
+						<li
+							class="flex items-start gap-3 transition-all duration-300"
+							style={`animation: var(--animate-slide-up); animation-delay: ${idx * 50}ms;`}
+						>
+							<span class="shrink-0 w-2.5 h-2.5 rounded-none bg-primary-500 dark:bg-primary-400 mt-1.5" />
+							<span class="text-content leading-relaxed">{area}</span>
+						</li>
+					))
+				}
+			</ul>
+		</article>
+	</div>
+
+	<div class="w-full flex justify-center mt-4">
+		<a
+			href={getLocalizedPath(lang, '/')}
+			class="inline-flex items-center justify-center rounded-none bg-surface text-content-strong border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-md hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-retro-xl active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
+		>
+			{copy.returnButton}
+		</a>
+	</div>
+</SectionContainer>

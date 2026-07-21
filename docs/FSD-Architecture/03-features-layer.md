@@ -1,5 +1,7 @@
 # Guía de Migración: Features Layer
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## ✨ Features Layer - Funcionalidades Interactivas
 
 El Features layer contiene componentes con **lógica de negocio** e **interactividad client-side**. Son reutilizables y proporcionan valor al usuario.

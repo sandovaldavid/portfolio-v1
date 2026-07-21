@@ -29,8 +29,31 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# coverage reports
+coverage/
+
 # testing artifacts
 docs/testing/screenshots/
 docs/testing/lighthouse/
+docs/test-reports/lighthouse/
+docs/test-reports/playwright/
+docs/test-reports/coverage/
+playwright-report/
+test-results/
+test-results.json
+junit-results.xml
+.lighthouseci/
+lighthouse-report/
+bundle-analysis/
 *.png
 !src/assets/**/*.png
+!tests/e2e/**/*.png
+
+# playwright
+.auth/
+
+# lighthouse ci
+.lhci-results/.docker/
+
+# route performance reports
+performance-report/

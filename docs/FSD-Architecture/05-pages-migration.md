@@ -1,5 +1,7 @@
 # Guía de Migración: Pages Layer
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 📄 Pages - Actualización de Imports
 
 Las páginas en Astro son archivos en `src/pages/` que se convierten automáticamente en rutas. Solo necesitamos actualizar los imports para usar las nuevas Public APIs de FSD.

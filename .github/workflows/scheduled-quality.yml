@@ -1,0 +1,82 @@
+name: Scheduled Extended Quality
+
+on:
+    schedule:
+        - cron: '0 3 * * 1'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: scheduled-extended-quality
+    cancel-in-progress: false
+
+jobs:
+    extended:
+        name: Extended Devices, Links & Visuals
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout main
+              uses: actions/checkout@v7
+              with:
+                  ref: main
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Run repository quality checks
+              run: bun run check
+
+            - name: Run risk-based unit coverage
+              run: bun run test:unit:coverage
+
+            - name: Build production output with bundle visualizer
+              env:
+                  ANALYZE_BUNDLE: 'true'
+              run: bun run build
+
+            - name: Validate generated internal links
+              run: bun run check:links
+
+            - name: Generate bundle audit
+              run: bun run bundle:analyze
+
+            - name: Enforce route performance budgets
+              run: bun run performance:check
+
+            - name: Install complete browser matrix
+              run: bunx playwright install --with-deps chromium firefox webkit
+
+            - name: Run extended desktop and mobile matrix
+              run: bun run test:e2e:extended
+
+            - name: Run visual regression suite
+              env:
+                  RUN_VISUAL_TESTS: 'true'
+              run: bun run test:e2e:visual
+
+            - name: Upload extended Playwright diagnostics
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: scheduled-playwright-report
+                  path: |
+                      playwright-report/
+                      test-results/
+                      test-results.json
+                      junit-results.xml
+                  if-no-files-found: warn
+                  retention-days: 14
+
+            - name: Upload coverage and bundle audit
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: scheduled-quality-reports
+                  path: |
+                      coverage/
+                      bundle-analysis/
+                      performance-report/
+                  if-no-files-found: warn
+                  retention-days: 14

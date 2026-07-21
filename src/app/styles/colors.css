@@ -1,25 +1,26 @@
-@import '@fontsource/geist-sans';
-@import '@fontsource/geist-mono';
-
 @theme {
-	--font-sans: 'Geist Sans', 'Inter', system-ui, sans-serif;
-	--font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
-	--font-code: 'Fira Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
+	--font-sans: 'JetBrains Mono', 'Inter', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+	--font-code: 'JetBrains Mono', 'Fira Code', monospace;
+	--font-pixel: 'Press Start 2P', monospace;
+	--font-pixel-clean: 'VT323', monospace;
+	--font-retro-tag: 'Silkscreen', monospace;
+	--font-gaming-mono: 'Share Tech Mono', monospace;
 
-	--color-primary-50: #eff6ff;
-	--color-primary-100: #dbeafe;
-	--color-primary-200: #bfdbfe;
-	--color-primary-300: #93c5fd;
-	--color-primary-400: #60a5fa;
-	--color-primary-500: #3c82f1;
-	--color-primary-600: #2563eb;
+	--color-primary-50: #f0f7ff;
+	--color-primary-100: #e0effe;
+	--color-primary-200: #bae0fd;
+	--color-primary-300: #7cc7fb;
+	--color-primary-400: light-dark(#3b82f6, #00d8ff);
+	--color-primary-500: light-dark(#0a5cd6, #00b0ff);
+	--color-primary-600: light-dark(#0044cc, #0080ff);
 	--color-primary-700: #1d4ed8;
 	--color-primary-800: #1e40af;
 	--color-primary-900: #1e3a8a;
 	--color-primary-950: #172554;
 
-	--color-neutral-50: #f8fafc;
-	--color-neutral-100: #f1f5f9;
+	--color-neutral-50: #fafbfe;
+	--color-neutral-100: #edf2f9;
 	--color-neutral-200: #e2e8f0;
 	--color-neutral-300: #cbd5e1;
 	--color-neutral-400: #94a3b8;
@@ -28,40 +29,40 @@
 	--color-neutral-700: #334155;
 	--color-neutral-800: #1e293b;
 	--color-neutral-900: #0f172a;
-	--color-neutral-950: #020617;
+	--color-neutral-950: #020408;
 
-	--color-success-500: #10b981;
-	--color-success-900: #064e3b;
+	--color-success-500: #00e676;
+	--color-success-900: #1b5e20;
 
-	--color-warning-500: #f59e0b;
-	--color-warning-900: #78350f;
+	--color-warning-500: #ffc107;
+	--color-warning-900: #ff6f00;
 
-	--color-error-500: #ef4444;
-	--color-error-900: #7f1d1d;
+	--color-error-500: #ff1744;
+	--color-error-900: #b71c1c;
 
 	/* Light mode colors */
-	--color-background-light: var(--color-neutral-50);
-	--color-surface-light: var(--color-neutral-100);
-	--color-surface-highlight-light: var(--color-neutral-200);
+	--color-background-light: #f5f8fc;
+	--color-surface-light: #ffffff;
+	--color-surface-highlight-light: #e8eef9;
 
-	--color-text-main-light: var(--color-neutral-900);
-	--color-text-body-light: var(--color-neutral-700);
-	--color-text-muted-light: var(--color-neutral-600);
+	--color-content-strong-light: #0f172a;
+	--color-content-light: #334155;
+	--color-content-muted-light: #475569;
 
-	--color-border-subtle-light: var(--color-neutral-200);
-	--color-border-strong-light: var(--color-neutral-300);
+	--color-edge-subtle-light: #cbd5e1;
+	--color-edge-strong-light: #0f172a;
 
 	/* Dark mode colors */
-	--color-background-dark: var(--color-neutral-900);
-	--color-surface-dark: var(--color-neutral-800);
-	--color-surface-highlight-dark: var(--color-neutral-700);
+	--color-background-dark: #020408;
+	--color-surface-dark: #0a0d14;
+	--color-surface-highlight-dark: #141b29;
 
-	--color-text-main-dark: var(--color-neutral-50);
-	--color-text-body-dark: var(--color-neutral-300);
-	--color-text-muted-dark: var(--color-neutral-400);
+	--color-content-strong-dark: #f1f5f9;
+	--color-content-dark: #cbd5e1;
+	--color-content-muted-dark: #94a3b8;
 
-	--color-border-subtle-dark: var(--color-neutral-800);
-	--color-border-strong-dark: var(--color-neutral-700);
+	--color-edge-subtle-dark: #1e293b;
+	--color-edge-strong-dark: #cbd5e1;
 
 	/* Semantic tokens with light-dark() */
 	--color-background: light-dark(var(--color-background-light), var(--color-background-dark));
@@ -71,18 +72,59 @@
 		var(--color-surface-highlight-dark)
 	);
 
-	--color-text-main: light-dark(var(--color-text-main-light), var(--color-text-main-dark));
-	--color-text-body: light-dark(var(--color-text-body-light), var(--color-text-body-dark));
-	--color-text-muted: light-dark(var(--color-text-muted-light), var(--color-text-muted-dark));
+	--color-content-strong: light-dark(
+		var(--color-content-strong-light),
+		var(--color-content-strong-dark)
+	);
+	--color-content: light-dark(var(--color-content-light), var(--color-content-dark));
+	--color-content-muted: light-dark(
+		var(--color-content-muted-light),
+		var(--color-content-muted-dark)
+	);
 
-	--color-border-subtle: light-dark(
-		var(--color-border-subtle-light),
-		var(--color-border-subtle-dark)
+	--color-edge-subtle: light-dark(var(--color-edge-subtle-light), var(--color-edge-subtle-dark));
+	--color-edge-strong: light-dark(var(--color-edge-strong-light), var(--color-edge-strong-dark));
+
+	/* Custom accessibility & retro status colors */
+	--color-banner-border: light-dark(rgba(10, 92, 214, 0.6), rgba(0, 216, 255, 0.6));
+	--color-banner-text: light-dark(var(--color-primary-600), var(--color-primary-400));
+
+	--color-badge-brand-bg: light-dark(rgba(10, 92, 214, 0.1), rgba(0, 176, 255, 0.15));
+	--color-badge-brand-bg-hover: light-dark(rgba(10, 92, 214, 0.2), rgba(0, 176, 255, 0.25));
+	--color-badge-brand-text: light-dark(var(--color-primary-600), var(--color-primary-400));
+
+	--color-badge-brand-outline-border: light-dark(rgba(10, 92, 214, 0.4), rgba(0, 176, 255, 0.4));
+	--color-badge-brand-outline-bg-hover: light-dark(
+		rgba(10, 92, 214, 0.1),
+		rgba(0, 176, 255, 0.1)
 	);
-	--color-border-strong: light-dark(
-		var(--color-border-strong-light),
-		var(--color-border-strong-dark)
-	);
+
+	--color-status-success-bg: light-dark(rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.1));
+	--color-status-success-border: light-dark(rgba(16, 185, 129, 0.4), rgba(16, 185, 129, 0.6));
+	--color-status-success-text: light-dark(#065f46, #34d399);
+
+	/* Retro 3D offset shadow scale */
+	--shadow-retro-xs: 1px 1px 0px 0px var(--color-edge-strong);
+	--shadow-retro-sm: 1.5px 1.5px 0px 0px var(--color-edge-strong);
+	--shadow-retro-md: 3px 3px 0px 0px var(--color-edge-strong);
+	--shadow-retro-lg: 4px 4px 0px 0px var(--color-edge-strong);
+	--shadow-retro-xl: 5px 5px 0px 0px var(--color-edge-strong);
+	--shadow-retro-2xl: 6px 6px 0px 0px var(--color-edge-strong);
+	--shadow-retro-3xl: 8px 8px 0px 0px var(--color-edge-strong);
+
+	/* Pixel-grid spacing scale (4px increments) */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.25rem;
+	--space-6: 1.5rem;
+	--space-8: 2rem;
+	--space-10: 2.5rem;
+	--space-12: 3rem;
+	--space-16: 4rem;
+	--space-20: 5rem;
+	--space-24: 6rem;
 
 	/* Animaciones Standard */
 	--animate-fade-in: fade-in 0.4s ease-out forwards;
@@ -118,22 +160,18 @@
 
 body {
 	background-color: var(--color-background);
-	color: var(--color-text-body);
+	color: var(--color-content);
 	-webkit-font-smoothing: antialiased;
 }
 
 .hero-gradient {
 	background: radial-gradient(
 		circle at 50% 0%,
-		rgba(60, 130, 241, 0.08) 0%,
-		rgba(248, 250, 252, 0) 50%
+		rgba(10, 92, 214, 0.06) 0%,
+		rgba(245, 248, 252, 0) 50%
 	);
 }
 
 :root.dark .hero-gradient {
-	background: radial-gradient(
-		circle at 50% 0%,
-		rgba(60, 130, 241, 0.15) 0%,
-		rgba(15, 23, 42, 0) 50%
-	);
+	background: radial-gradient(circle at 50% 0%, rgba(0, 176, 255, 0.14) 0%, rgba(2, 4, 8, 0) 50%);
 }

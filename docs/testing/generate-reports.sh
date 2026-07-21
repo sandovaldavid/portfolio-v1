@@ -19,16 +19,31 @@ if [ ! -d "node_modules" ]; then
     bun install
 fi
 
-# Check if dev server is already running
+# Check if dev server is already running (cross-platform)
 DEV_ALREADY_RUNNING=false
-if lsof -Pi :4321 -sTCP:LISTEN -t >/dev/null 2>&1; then
+if netstat -tuln 2>/dev/null | grep -q :4321 || lsof -Pi :4321 -sTCP:LISTEN -t >/dev/null 2>&1; then
     echo "✓ Dev server already running on :4321"
     DEV_ALREADY_RUNNING=true
 else
-    echo "🔧 Starting dev server..."
-    bun run dev > /dev/null 2>&1 &
+    echo "🔧 Starting dev server on :4321..."
+    bun run dev > /tmp/portfolio-dev.log 2>&1 &
     DEV_PID=$!
-    sleep 4
+
+    # Wait for server to be ready
+    max_attempts=30
+    attempt=0
+    while [ $attempt -lt $max_attempts ]; do
+        if nc -z localhost 4321 2>/dev/null; then
+            break
+        fi
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+
+    if [ $attempt -eq $max_attempts ]; then
+        echo "❌ Dev server failed to start"
+        exit 1
+    fi
     echo "✓ Dev server started (PID: $DEV_PID)"
 fi
 
@@ -61,14 +76,21 @@ echo "     - lighthouse http://localhost:4321 --output=json --output-path=docs/t
 echo "     - lighthouse http://localhost:4321 --output=html --output-path=docs/testing/lighthouse/latest.html"
 echo ""
 
-echo "✅ Done! Check docs/testing/ for your artifacts."
+echo "✅ Testing artifacts generated!"
 echo ""
 
-# Cleanup (only kill if we started it)
-if [ "$DEV_ALREADY_RUNNING" = false ] && [ ! -z "$DEV_PID" ]; then
-    echo "💡 Tip: Dev server is still running. Use Ctrl+C to stop it or run:"
-    echo "   kill $DEV_PID"
+if [ -d "docs/testing/screenshots" ] && [ "$(ls -A docs/testing/screenshots 2>/dev/null)" ]; then
+    echo "📸 Screenshots location:"
+    echo "   docs/testing/screenshots/{mobile,tablet,desktop}/"
+else
+    echo "⚠️  No screenshots found. Check if dev server is running."
 fi
 
 echo ""
 echo "📖 For more information, see: docs/testing/README.md"
+echo ""
+
+# Cleanup (only kill if we started it)
+if [ "$DEV_ALREADY_RUNNING" = false ] && [ ! -z "$DEV_PID" ]; then
+    echo "💡 Dev server still running. Stop with: kill $DEV_PID"
+fi

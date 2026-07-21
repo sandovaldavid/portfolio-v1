@@ -1,68 +1,237 @@
 ---
-import { getLangFromUrl, getLocalizedPath, useTranslations } from '@shared/lib/i18n';
-import CodeIcon from '@assets/icons/Code.astro';
-import BrainIcon from '@assets/icons/Brain.astro';
-import PaletteIcon from '@assets/icons/Palette.astro';
+import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+import { siteConfig } from '@shared/config/site.config';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
+const resumeUrl = langCode === 'en' ? siteConfig.resume.en : siteConfig.resume.es;
 
-const specializations = [
-	{ label: '.NET 8 (Clean)', icon: CodeIcon },
-	{ label: 'Angular 19 (Signals)', icon: PaletteIcon },
-	{ label: 'LSTM Research', icon: BrainIcon },
-];
+const copy =
+	langCode === 'en'
+		? {
+				banner: '[ AVAILABLE FOR SOFTWARE ENGINEERING OPPORTUNITIES ]',
+				title: 'Software Engineer building reliable web products',
+				subtitle: '.NET · Angular · TypeScript',
+				credential:
+					'Based in Lima (UTC-5) · Remote across Europe and Latin America · BiLSTM/OSS research',
+				profile: 'PROFESSIONAL PROFILE',
+				status: 'AVAILABLE',
+				roleLabel: 'ROLE',
+				role: 'Software Engineer',
+				focusLabel: 'CORE STACK',
+				focus: 'Angular · .NET · TypeScript',
+				locationLabel: 'LOCATION',
+				location: 'Lima, Peru · UTC-5',
+				workLabel: 'WORK MODE',
+				work: 'Remote · Europe & LATAM',
+				currentLabel: 'CURRENTLY',
+				current: 'Software Engineer @ Atena',
+				researchLabel: 'RESEARCH',
+				research: 'OSS abandonment prediction with BiLSTM',
+				viewWork: 'View selected work',
+				contact: 'Contact me',
+				resume: 'Download resume',
+				retro: 'Launch retro mode',
+			}
+		: {
+				banner: '[ DISPONIBLE PARA OPORTUNIDADES EN INGENIERÍA DE SOFTWARE ]',
+				title: 'Ingeniero de software que construye productos web confiables',
+				subtitle: '.NET · Angular · TypeScript',
+				credential:
+					'En Lima (UTC-5) · Remoto para Europa y Latinoamérica · Investigación BiLSTM/OSS',
+				profile: 'PERFIL PROFESIONAL',
+				status: 'DISPONIBLE',
+				roleLabel: 'ROL',
+				role: 'Ingeniero de software',
+				focusLabel: 'STACK PRINCIPAL',
+				focus: 'Angular · .NET · TypeScript',
+				locationLabel: 'UBICACIÓN',
+				location: 'Lima, Perú · UTC-5',
+				workLabel: 'MODALIDAD',
+				work: 'Remoto · Europa y LATAM',
+				currentLabel: 'ACTUALMENTE',
+				current: 'Software Engineer @ Atena',
+				researchLabel: 'INVESTIGACIÓN',
+				research: 'Predicción de abandono OSS con BiLSTM',
+				viewWork: 'Ver proyectos',
+				contact: 'Contactarme',
+				resume: 'Descargar CV',
+				retro: 'Iniciar modo retro',
+			};
 ---
 
-<div class="w-full h-dvh hero-gradient flex flex-col items-center justify-center gap-6 md:gap-8">
-	<div class="max-w-4xl px-4 flex flex-col items-center gap-6 md:gap-8">
-		<h2
-			class="text-5xl sm:text-7xl lg:text-8xl font-bold text-center opacity-20 text-neutral-900 dark:text-neutral-50 tracking-tight leading-none"
-			style="animation: var(--animate-fade-in); animation-delay: 0ms;"
+<section
+	class="w-full min-h-[calc(100dvh-4.5rem)] hero-gradient flex flex-col items-center justify-start md:justify-center py-8 md:py-12 px-4"
+	aria-labelledby="hero-title"
+>
+	<div class="w-full max-w-5xl flex flex-col items-center gap-8 md:gap-10">
+		<div
+			class="w-full text-center border-2 border-dashed border-banner-border p-3 font-retro-tag text-xs sm:text-sm text-banner-text tracking-widest uppercase"
 		>
-			{t('hero.title')}
-		</h2>
+			{copy.banner}
+		</div>
 
-		<p
-			class="text-lg sm:text-xl text-center text-neutral-600 dark:text-neutral-400 tracking-wide font-medium"
-			style="animation: var(--animate-fade-in); animation-delay: 150ms;"
-		>
-			{t('hero.subtitle')}
-		</p>
-
-		<p
-			class="text-sm sm:text-base text-center text-neutral-500 dark:text-neutral-500 italic"
-			style="animation: var(--animate-fade-in); animation-delay: 200ms;"
-		>
-			{t('hero.credential')}
-		</p>
+		<div class="text-center space-y-3">
+			<span
+				class="font-retro-tag text-xs uppercase tracking-widest text-primary-500 font-bold block"
+			>
+				{copy.title}
+			</span>
+			<h1
+				id="hero-title"
+				class="text-4xl sm:text-6xl lg:text-7xl text-center text-content-strong font-pixel tracking-wider leading-none uppercase"
+				style="text-shadow: 5px 5px 0px var(--color-primary-500);"
+			>
+				David Sandoval
+			</h1>
+			<p class="text-lg text-content-strong font-gaming-mono tracking-wide max-w-2xl mx-auto">
+				{copy.subtitle}
+			</p>
+			<p
+				class="text-base text-content-muted font-gaming-mono tracking-wide max-w-3xl mx-auto"
+			>
+				{copy.credential}
+			</p>
+		</div>
 
 		<div
-			class="flex flex-wrap justify-center gap-3 sm:gap-4 mt-2 sm:mt-4"
-			style="animation: var(--animate-fade-in); animation-delay: 300ms;"
+			class="w-full grid grid-cols-1 md:grid-cols-[16rem_1fr] border-2 border-black dark:border-white bg-surface shadow-retro-3xl rounded-none overflow-hidden font-mono"
 		>
-			{
-				specializations.map(spec => (
-					<div class="rounded-full bg-neutral-200 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 px-5 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 hover:border-primary-500 transition-colors duration-300 group">
-						<spec.icon class="size-4 sm:size-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
-						<span class="text-sm sm:text-base text-neutral-900 dark:text-neutral-50 font-medium">
-							{spec.label}
-						</span>
+			<div
+				class="flex flex-col items-center justify-center p-6 md:p-8 border-b-2 md:border-b-0 md:border-r-2 border-black dark:border-white bg-neutral-100/50 dark:bg-black/20"
+			>
+				<div
+					class="relative w-44 h-44 md:w-52 md:h-52 border-2 border-black dark:border-white shadow-retro-lg overflow-hidden bg-black"
+				>
+					<img
+						src="/profile/perfil.webp"
+						alt="David Sandoval, Software Engineer"
+						width="208"
+						height="208"
+						decoding="async"
+						fetchpriority="high"
+						class="w-full h-full object-cover aspect-square"
+					/>
+					<div
+						class="absolute bottom-0 inset-x-0 bg-primary-500 text-white dark:text-black text-xs font-pixel text-center py-1.5 uppercase tracking-widest"
+					>
+						DAVID_S
 					</div>
-				))
-			}
+				</div>
+				<span
+					class="font-retro-tag text-xs text-content-muted mt-4 uppercase tracking-wider"
+				>
+					{copy.role}
+				</span>
+			</div>
+
+			<div class="p-6 md:p-9 flex flex-col justify-between gap-6 bg-surface">
+				<div
+					class="w-full border-b-2 border-dashed border-edge-subtle pb-3 flex flex-wrap gap-3 justify-between items-center"
+				>
+					<span
+						class="font-pixel-clean text-2xl md:text-3xl font-bold uppercase tracking-wider text-content-strong"
+					>
+						{copy.profile}
+					</span>
+					<span
+						class="font-retro-tag text-xs bg-success-500 text-black px-2.5 py-1 font-bold uppercase"
+					>
+						{copy.status}
+					</span>
+				</div>
+
+				<dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm sm:text-base">
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.roleLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">{copy.role}</dd>
+					</div>
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.focusLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">{copy.focus}</dd>
+					</div>
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.locationLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">
+							{copy.location}
+						</dd>
+					</div>
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.workLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">{copy.work}</dd>
+					</div>
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.currentLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">
+							{copy.current}
+						</dd>
+					</div>
+					<div class="border-b border-edge-subtle pb-2">
+						<dt class="text-content-muted font-bold uppercase tracking-wide">
+							{copy.researchLabel}
+						</dt>
+						<dd class="text-content-strong font-semibold mt-1">
+							{copy.research}
+						</dd>
+					</div>
+				</dl>
+			</div>
 		</div>
 
-		{/* CTA Button */}
-		<div class="mt-6 sm:mt-8">
+		<nav class="flex flex-wrap justify-center gap-3" aria-label="Primary professional actions">
 			<a
-				href={getLocalizedPath(lang, '/#experience')}
-				class="relative inline-flex items-center justify-center rounded-2xl bg-primary-500 hover:bg-primary-600 text-white text-lg sm:text-xl px-7 sm:px-9 py-3.5 sm:py-4 font-medium transition-all duration-300 will-change-transform hover:scale-[1.02] shadow-[0_20px_40px_rgba(60,130,241,0.35)] dark:shadow-[0_20px_40px_rgba(60,130,241,0.35)] ring-1 ring-white/10"
+				href={getLocalizedPath(lang, '/#projects')}
+				class="inline-flex items-center justify-center bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
 			>
-				{t('hero.cta.view-work')}
+				{copy.viewWork}
 			</a>
-		</div>
+			<a
+				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
+				class="inline-flex items-center justify-center bg-surface text-content-strong border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
+			>
+				{copy.contact}
+			</a>
+			<a
+				href={resumeUrl}
+				target="_blank"
+				rel="noreferrer"
+				class="inline-flex items-center justify-center bg-surface text-content-strong border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
+			>
+				{copy.resume}
+			</a>
+			<a
+				href={siteConfig.social.github}
+				target="_blank"
+				rel="noreferrer"
+				class="inline-flex items-center justify-center px-4 py-3 font-bold uppercase tracking-wider underline underline-offset-4"
+			>
+				GitHub
+			</a>
+			<a
+				href={siteConfig.social.linkedin}
+				target="_blank"
+				rel="noreferrer"
+				class="inline-flex items-center justify-center px-4 py-3 font-bold uppercase tracking-wider underline underline-offset-4"
+			>
+				LinkedIn
+			</a>
+			<a
+				href="?retro=1"
+				class="inline-flex items-center justify-center px-4 py-3 text-content-muted font-bold uppercase tracking-wider underline underline-offset-4"
+			>
+				{copy.retro}
+			</a>
+		</nav>
 	</div>
-</div>
+</section>

@@ -1,12 +1,84 @@
 {
-    "files.exclude": {
-        "**/bun.lockb": false,
-        "**/.bun": true,
-        "**/.bun/**": true,
-        "**/node_modules": true,
-        "**/.astro": true,
-    },
-    "files.associations": {
-        "*.css": "tailwindcss",
-    },
+	// File formatting & Indentation (matches .prettierrc: useTabs: true, tabWidth: 4)
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": true,
+
+	// Default Formatters
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[astro]": {
+		"editor.defaultFormatter": "astro-build.astro-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	// Code Quality (ESLint auto-fix on save)
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+	"eslint.validate": ["astro", "javascript", "javascriptreact", "typescript", "typescriptreact"],
+
+	// File Exclusions from Explorer & Search to improve performance
+	"files.exclude": {
+		"**/bun.lockb": false,
+		"**/.bun": true,
+		"**/.bun/**": true,
+		"**/node_modules": true,
+		"**/.astro": true,
+		"**/dist": true,
+		"**/.vercel": true,
+		"**/coverage": true,
+		"**/.lighthouseci": true,
+		"**/playwright-report": true,
+		"**/test-results": true,
+		"**/bundle-analysis": true
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/dist": true,
+		"**/.astro": true,
+		"**/.vercel": true,
+		"**/coverage": true,
+		"**/playwright-report": true,
+		"**/test-results": true,
+		"**/bundle-analysis": true
+	},
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/**": true,
+		"**/dist/**": true,
+		"**/.astro/**": true,
+		"**/.vercel/**": true,
+		"**/coverage/**": true,
+		"**/playwright-report/**": true,
+		"**/test-results/**": true,
+		"**/bundle-analysis/**": true
+	},
+
+	// Tailwind CSS Associations
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"tailwindCSS.experimental.classRegex": [
+		["class:\\s*['\"`]([^'\"`]*?)['\"`]", "([^\\s]+)"],
+		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+	],
+
+	// TypeScript path completions
+	"typescript.preferences.importModuleSpecifier": "non-relative"
 }

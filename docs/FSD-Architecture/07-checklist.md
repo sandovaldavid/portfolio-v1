@@ -1,5 +1,7 @@
 # Checklist Completo de Migración FSD
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 📋 Guía Paso a Paso
 
 Usa este checklist para rastrear tu progreso durante la migración a Feature-Sliced Design.

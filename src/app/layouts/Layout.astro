@@ -1,114 +1,348 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
 import '@app/styles/global.css';
-import '@fontsource-variable/onest';
+import '@app/styles/print.css';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 import ProfileCheckIcon from '@assets/icons/ProfileCheck.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
-import StarIcon from '@assets/icons/Star.astro';
-import { Header } from '@widgets/header';
+import { ContactSidebar } from '@widgets/contact-sidebar';
 import { Footer } from '@widgets/footer';
+import { Header } from '@widgets/header';
+import { RecruiterHUD } from '@widgets/recruiter-hud';
 import { TechStack } from '@widgets/tech-stack';
-import { SectionContainer, TitleSection } from '@/shared/ui';
+import { CLITerminal } from '@features/cli-terminal';
+import { SplashScreen } from '@features/splash-screen';
+import { SectionContainer, TitleSection } from '@shared/ui';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
+import { siteConfig } from '@shared/config/site.config';
+
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const canonicalPath =
+	langCode === 'en' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/es/, '') || '/';
+const enUrl = new URL(getRelativeLocaleUrl('en', canonicalPath), siteConfig.url).toString();
+const esUrl = new URL(getRelativeLocaleUrl('es', canonicalPath), siteConfig.url).toString();
 
 interface Props {
 	title: string;
 	description: string;
 	img_preview: string;
+	isHome?: boolean;
+	article?: boolean;
+	keywords?: string;
 }
-const { description, title, img_preview } = Astro.props;
-const langCode = getLangFromUrl(new URL(Astro.request.url));
+const {
+	description,
+	title,
+	img_preview,
+	isHome = false,
+	article = false,
+	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
+} = Astro.props;
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
+const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
+const ogLocale = langCode === 'en' ? 'en_US' : 'es_PE';
+const ogType = article ? 'article' : 'website';
+
+// BreadcrumbList generation
+const breadcrumbLabels: Record<string, string> = {
+	projects: t('nav.projects'),
+	skills: 'Skills Inventory',
+	about: t('nav.about'),
+	research: t('nav.research'),
+	atena: 'Atena',
+};
+const breadcrumbSegments = Astro.url.pathname.replace(/^\/es/, '').split('/').filter(Boolean);
+const breadcrumbItems: { name: string; url: string }[] = [];
+if (breadcrumbSegments.length > 0) {
+	breadcrumbItems.push({ name: 'Home', url: langCode === 'en' ? '/' : '/es/' });
+	breadcrumbSegments.forEach((segment, i) => {
+		const url =
+			langCode === 'en'
+				? '/' + breadcrumbSegments.slice(0, i + 1).join('/')
+				: '/es/' + breadcrumbSegments.slice(0, i + 1).join('/');
+		breadcrumbItems.push({
+			name: breadcrumbLabels[segment] || segment,
+			url,
+		});
+	});
+}
+const breadcrumbSchema =
+	breadcrumbItems.length > 0
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'BreadcrumbList',
+				itemListElement: breadcrumbItems.map((item, i) => ({
+					'@type': 'ListItem',
+					position: i + 1,
+					name: item.name,
+					item: new URL(item.url, siteConfig.url).toString(),
+				})),
+			}
+		: null;
+
+// JSON-LD structured data
+const personSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: siteConfig.fullName,
+	givenName: 'Juan David',
+	familyName: 'Sandoval Salvador',
+	alternateName: siteConfig.handle,
+	url: siteConfig.url,
+	image: `${siteConfig.url}/profile/perfil.webp`,
+	sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+	jobTitle: 'Software Engineer',
+	worksFor: { '@type': 'Organization', name: siteConfig.currentCompany },
+	address: { '@type': 'PostalAddress', addressLocality: 'Lima', addressCountry: 'PE' },
+	email: siteConfig.email,
+	knowsAbout: [
+		'.NET 8',
+		'C#',
+		'Angular',
+		'TypeScript',
+		'BiLSTM',
+		'Machine Learning',
+		'Python',
+		'Django',
+		'Docker',
+		'PostgreSQL',
+	],
+};
+const websiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: siteConfig.defaultTitle,
+	url: siteConfig.url,
+	description: siteConfig.defaultDescription,
+	inLanguage: [langCode],
+	author: { '@type': 'Person', name: siteConfig.fullName },
+};
+const articleSchema = article
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'ScholarlyArticle',
+			name: title,
+			description: description,
+			url: canonicalUrl,
+			author: {
+				'@type': 'Person',
+				name: siteConfig.fullName,
+				url: siteConfig.url,
+			},
+		}
+	: null;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={langCode}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Primary meta -->
+		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={siteConfig.fullName} />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href={canonicalUrl} />
+
+		<!-- Favicon & PWA -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="theme-color" content="#0096ff" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="DevSandoval" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content={ogType} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={img_preview} />
-		<meta property="og:url" content="https://devsandoval.me" />
-		<meta property="og:type" content="website" />
-		<title>{title}</title>
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={`${siteConfig.name} — Portfolio preview`} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={siteConfig.defaultTitle} />
+		<meta property="og:locale" content={ogLocale} />
+
+		<!-- Twitter / X Card -->
+		<meta name="twitter:card" content={siteConfig.twitterCard} />
+		<meta name="twitter:site" content={`@${siteConfig.handle}`} />
+		<meta name="twitter:creator" content={`@${siteConfig.handle}`} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- hreflang alternates for bilingual SEO -->
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="es" href={esUrl} />
+		<link rel="alternate" hreflang="x-default" href={enUrl} />
+
+		<!-- RSS feeds -->
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${siteConfig.name} — Blog (EN)`}
+			href="/rss.xml"
+		/>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${siteConfig.name} — Blog (ES)`}
+			href="/es/rss.xml"
+		/>
+
+		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
+		<Font cssVariable="--font-pixel" />
+		<Font cssVariable="--font-pixel-clean" preload />
+		<Font cssVariable="--font-retro-tag" />
+		<Font cssVariable="--font-gaming-mono" />
+		<Font cssVariable="--font-mono" />
+
+		<!-- Structured Data (JSON-LD) -->
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+		{
+			breadcrumbSchema && (
+				<script
+					is:inline
+					type="application/ld+json"
+					set:html={JSON.stringify(breadcrumbSchema)}
+				/>
+			)
+		}
+		{
+			articleSchema && (
+				<script
+					is:inline
+					type="application/ld+json"
+					set:html={JSON.stringify(articleSchema)}
+				/>
+			)
+		}
+
+		<meta name="generator" content={Astro.generator} />
 		<script is:inline>
-			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-			document.documentElement.classList.toggle(
-				'dark',
-				localStorage.theme === 'dark' ||
-					(!('theme' in localStorage) &&
-						window.matchMedia('(prefers-color-scheme: dark)').matches)
-			);
+			(function applyTheme() {
+				const saved = localStorage.getItem('theme') || 'dark';
+				const isDark =
+					saved === 'dark' ||
+					(saved === 'system' &&
+						window.matchMedia('(prefers-color-scheme: dark)').matches);
+				document.documentElement.classList.toggle('dark', isDark);
+			})();
+			document.addEventListener('astro:after-swap', () => {
+				(function applyTheme() {
+					const saved = localStorage.getItem('theme') || 'dark';
+					const isDark =
+						saved === 'dark' ||
+						(saved === 'system' &&
+							window.matchMedia('(prefers-color-scheme: dark)').matches);
+					document.documentElement.classList.toggle('dark', isDark);
+				})();
+			});
 		</script>
+		<ClientRouter />
 		<Analytics />
 	</head>
 
-	<body class="text-black dark:text-white bg-white dark:bg-gray-950 flex flex-col">
-		<div class="flex flex-col justify-center items-center">
+	<body class="bg-background text-content flex flex-col min-h-screen">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white dark:focus:text-black focus:font-bold focus:uppercase focus:tracking-wider focus:border-2 focus:border-black dark:focus:border-white focus:shadow-retro-lg focus:rounded-none focus:no-underline"
+		>
+			Skip to main content
+		</a>
+		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
-			<main>
-				<div class="flex flex-col justify-around">
-					<slot name="hero" />
-				</div>
-				<div class="flex flex-col gap-10 md:gap-16 xl:gap-24">
-					<SectionContainer id="experience">
-						<TitleSection>
-							<BriefCaseIcon class="size-12" />
-							{t('title.experience')}
-						</TitleSection>
-						<slot name="experience" />
-					</SectionContainer>
+			<main id="main-content" class="w-full min-h-screen flex flex-col items-center">
+				{
+					isHome ? (
+						<div class="pt-[4.5rem]">
+							<div class="flex flex-col justify-around md:max-h-[calc(100dvh-4.5rem)]">
+								<slot name="hero" />
+							</div>
+							<div class="flex flex-col">
+								<SectionContainer
+									id="experience"
+									class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6"
+								>
+									<TitleSection className="mb-0">
+										<BriefCaseIcon class="size-12" />
+										{t('title.experience')}
+									</TitleSection>
+									<slot name="experience" />
+								</SectionContainer>
+								<SectionContainer
+									id="research"
+									class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6"
+								>
+									<TitleSection className="mb-0">
+										<BrainIcon class="size-12" />
+										{t('title.research')}
+									</TitleSection>
+									<slot name="research" />
+								</SectionContainer>
 
-					<SectionContainer id="research">
-						<TitleSection>
-							<BrainIcon class="size-12" />
-							{t('title.research')}
-						</TitleSection>
-						<slot name="research" />
-					</SectionContainer>
+								<SectionContainer
+									id="projects"
+									class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6"
+								>
+									<TitleSection className="mb-0">
+										<CodeIcon class="size-12" />
+										{t('title.projects')}
+									</TitleSection>
+									<slot name="projects" />
+								</SectionContainer>
 
-					<SectionContainer id="vision">
-						<TitleSection>
-							<StarIcon class="size-12" />
-							{t('title.vision')}
-						</TitleSection>
-						<slot name="vision" />
-					</SectionContainer>
+								<SectionContainer
+									id="about-me"
+									class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6"
+								>
+									<TitleSection className="mb-0">
+										<ProfileCheckIcon class="size-12" />
+										{t('title.about-me')}
+									</TitleSection>
+									<slot name="about-me" />
+								</SectionContainer>
 
-					<SectionContainer id="projects">
-						<TitleSection>
-							<CodeIcon class="size-12" />
-							{t('title.projects')}
-						</TitleSection>
-						<slot name="projects" />
-					</SectionContainer>
-
-					<SectionContainer id="about-me">
-						<TitleSection>
-							<ProfileCheckIcon class="size-12" />
-							{t('title.about-me')}
-						</TitleSection>
-						<slot name="about-me" />
-					</SectionContainer>
-
-					<SectionContainer id="technologies">
-						<TitleSection>
-							<CodeIcon class="size-12" />
-							{t('title.technologies')}
-						</TitleSection>
-						<TechStack />
-					</SectionContainer>
-				</div>
+								<SectionContainer
+									id="technologies"
+									class="min-h-[calc(100dvh-4.5rem)] py-12 md:py-16 gap-y-6"
+								>
+									<TitleSection className="mb-0">
+										<CodeIcon class="size-12" />
+										{t('title.technologies')}
+									</TitleSection>
+									<TechStack />
+								</SectionContainer>
+							</div>
+						</div>
+					) : (
+						<div class="pt-28 pb-16 w-full flex flex-col items-center">
+							<slot />
+						</div>
+					)
+				}
 			</main>
 			<Footer />
+			<RecruiterHUD />
+			<div transition:persist="cli-terminal">
+				<CLITerminal />
+			</div>
+			<ContactSidebar />
+			{isHome && <SplashScreen />}
 		</div>
 	</body>
 </html>

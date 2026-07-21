@@ -8,7 +8,7 @@ export function getBadgesData(t: (key: string) => string): BadgeItem[] {
 		{
 			label: t('badges.github-foundations.label'),
 			link: 'https://www.credly.com/badges/5ba766a3-e275-4be8-ac14-17a69119b3af/linked_in_profile',
-			image: '/badges/github-foundations.png',
+			image: 'https://images.credly.com/size/340x340/images/024d0122-724d-4c5a-bd83-cfe3c4b7a073/image.png',
 		},
 		{
 			label: t('badges.data-modeling.label'),

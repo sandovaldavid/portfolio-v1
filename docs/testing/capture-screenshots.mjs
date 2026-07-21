@@ -7,7 +7,7 @@
  * Usage: node docs/testing/capture-screenshots.mjs
  */
 
-import { chromium } from 'playwright';
+import { chromium } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { existsSync, mkdirSync } from 'fs';
@@ -38,13 +38,19 @@ const devices = {
 };
 
 const pages = [
-	{ url: '/', name: 'home' },
+	// English (default, no prefix)
+	{ url: '/', name: 'home-en' },
+	{ url: '/about', name: 'about-en' },
+	{ url: '/projects', name: 'projects-en' },
+	// Spanish (/es prefix)
 	{ url: '/es/', name: 'home-es' },
-	{ url: '/en/', name: 'home-en' },
+	{ url: '/es/about', name: 'about-es' },
+	{ url: '/es/projects', name: 'projects-es' },
 ];
 
 /**
- * Ensure directory exists
+ * Ensure directory exists.
+ * @param {string} dir
  */
 function ensureDir(dir) {
 	if (!existsSync(dir)) {
@@ -53,7 +59,10 @@ function ensureDir(dir) {
 }
 
 /**
- * Capture screenshot for a page at a specific device size
+ * Capture screenshot for a page at a specific device size.
+ * @param {import('@playwright/test').Page} page
+ * @param {{ width: number; height: number; name: string; dir: string }} device
+ * @param {{ url: string; name: string }} pageConfig
  */
 async function captureScreenshot(page, device, pageConfig) {
 	const viewport = {
@@ -83,7 +92,10 @@ async function captureScreenshot(page, device, pageConfig) {
 		console.log(`✓ ${device.name.padEnd(10)} | ${pageConfig.name.padEnd(10)} | ${filename}`);
 		return true;
 	} catch (error) {
-		console.error(`✗ ${device.name.padEnd(10)} | ${pageConfig.name.padEnd(10)} | Error: ${error.message}`);
+		const message = error instanceof Error ? error.message : String(error);
+		console.error(
+			`✗ ${device.name.padEnd(10)} | ${pageConfig.name.padEnd(10)} | Error: ${message}`
+		);
 		return false;
 	}
 }
@@ -96,7 +108,7 @@ async function main() {
 	console.log('==========================\n');
 
 	// Ensure directories exist
-	Object.values(devices).forEach((device) => {
+	Object.values(devices).forEach(device => {
 		ensureDir(path.join(__dirname, 'screenshots', device.dir));
 	});
 
@@ -144,14 +156,15 @@ async function main() {
 			process.exit(1);
 		}
 	} catch (error) {
-		console.error('❌ Error:', error.message);
+		const message = error instanceof Error ? error.message : String(error);
+		console.error('❌ Error:', message);
 		if (browser) await browser.close();
 		process.exit(1);
 	}
 }
 
 // Run main function
-main().catch((error) => {
+main().catch(error => {
 	console.error('Fatal error:', error);
 	process.exit(1);
 });

@@ -11,10 +11,9 @@
  * - Features: ThemeToggle, LanguagePicker
  */
 
-import { ThemeToggle } from '@features/theme-toggle';
-import { LanguagePicker } from '@features/language-picker';
 import { LinkButton } from '@shared/ui';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { siteConfig } from '@shared/config/site.config';
 import BrandLogo from './BrandLogo.astro';
 import DesktopNav from './DesktopNav.astro';
 import MobileNav from './MobileNav.astro';
@@ -25,23 +24,42 @@ const t = useTranslations(lang);
 const navItems = [
 	{
 		title: t('nav.experience'),
-		label: 'experiencia',
+		label: 'experience',
+		icon: 'experience',
 		url: getLocalizedPath(lang, '/#experience'),
 	},
 	{
+		title: t('nav.research'),
+		label: 'research',
+		icon: 'research',
+		url: getLocalizedPath(lang, '/#research'),
+	},
+	{
 		title: t('nav.projects'),
-		label: 'proyectos',
+		label: 'projects',
+		icon: 'projects',
+		prefetch: true,
 		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
+		title: t('nav.blog'),
+		label: 'blog',
+		icon: 'blog',
+		prefetch: true,
+		url: getLocalizedPath(lang, '/blog'),
+	},
+	{
 		title: t('nav.about'),
-		label: 'sobre-mi',
+		label: 'about-me',
+		icon: 'about-me',
+		prefetch: true,
 		url: getLocalizedPath(lang, '/#about-me'),
 	},
 	{
-		title: t('nav.contact'),
-		label: 'contacto',
-		url: getLocalizedPath(lang, '/#contact'),
+		title: t('nav.stack'),
+		label: 'technologies',
+		icon: 'technologies',
+		url: getLocalizedPath(lang, '/#technologies'),
 	},
 ];
 
@@ -49,11 +67,11 @@ const homeUrl = getLocalizedPath(lang, '/');
 ---
 
 <header
-	class="fixed top-0 left-0 right-0 z-40 navbar-header font-sans text-neutral-900 dark:text-neutral-100 backdrop-blur-md bg-neutral-50/80 dark:bg-neutral-900/80 border-b border-neutral-200/50 dark:border-neutral-800/50"
+	class="fixed top-0 left-0 right-0 z-40 navbar-header font-mono text-content-strong bg-surface border-b-2 border-edge-strong"
 >
 	<div class="flex items-center justify-between px-4 py-4 md:px-8 max-w-7xl mx-auto w-full">
 		<!-- Left: Brand Logo -->
-		<div class="shrink-0">
+		<div class="w-auto md:w-48 lg:w-72 shrink-0">
 			<BrandLogo href={homeUrl} />
 		</div>
 
@@ -63,21 +81,19 @@ const homeUrl = getLocalizedPath(lang, '/');
 		</div>
 
 		<!-- Right: Actions (Desktop) -->
-		<div class="hidden md:flex items-center gap-4 shrink-0">
+		<div class="hidden md:flex items-center justify-end gap-4 shrink-0 md:w-48 lg:w-72">
 			<LinkButton
-				href="/David_Sandoval_Salvador-resume.pdf"
+				href={lang === 'en' ? siteConfig.resume.en : siteConfig.resume.es}
 				target="_blank"
 				variant="primary"
+				class="font-mono text-xs uppercase tracking-wider px-3.5 py-1.5"
 			>
 				Resume
 			</LinkButton>
-			<ThemeToggle />
-			<LanguagePicker currentLang={lang} />
 		</div>
 
 		<!-- Mobile Menu Button -->
 		<div class="flex md:hidden items-center gap-3 shrink-0">
-			<ThemeToggle />
 			<MobileNav {navItems} {lang} />
 		</div>
 	</div>
@@ -85,44 +101,46 @@ const homeUrl = getLocalizedPath(lang, '/');
 
 <script>
 	// Active link highlighting with Intersection Observer
-	const sections = document.querySelectorAll('section');
-	const navLinks = document.querySelectorAll('header nav a[aria-label]');
+	const setupScrollSpy = () => {
+		const sections = document.querySelectorAll('section[id]');
+		const navLinks = document.querySelectorAll('header nav a[aria-label]');
 
-	const observerCallback = (entries: IntersectionObserverEntry[]) => {
-		entries.forEach((entry: IntersectionObserverEntry) => {
-			if (entry.isIntersecting) {
-				navLinks.forEach(link => {
-					const linkLabel = link.getAttribute('aria-label');
-					const sectionId = entry.target.id;
-
-					if (linkLabel === sectionId) {
-						link.classList.add('active', 'text-primary-600');
-					} else {
-						link.classList.remove('active', 'text-primary-600');
+		const observer = new IntersectionObserver(
+			(entries: IntersectionObserverEntry[]) => {
+				entries.forEach((entry: IntersectionObserverEntry) => {
+					if (entry.isIntersecting) {
+						navLinks.forEach(link => {
+							const linkLabel = link.getAttribute('aria-label');
+							if (linkLabel === entry.target.id) {
+								link.classList.add('active', 'text-primary-500');
+							} else {
+								link.classList.remove('active', 'text-primary-500');
+							}
+						});
 					}
 				});
-			}
-		});
+			},
+			{ root: null, rootMargin: '-30% 0px -70% 0px', threshold: 0 }
+		);
+
+		sections.forEach(section => observer.observe(section));
+		return observer;
 	};
 
-	const observer = new IntersectionObserver(observerCallback, {
-		root: null,
-		rootMargin: '-30% 0px -70% 0px',
-		threshold: 0,
-	});
+	let spyObserver = setupScrollSpy();
 
-	sections.forEach(section => {
-		observer.observe(section);
+	// Re-observe sections after client-side navigation
+	document.addEventListener('astro:page-load', () => {
+		spyObserver.disconnect();
+		spyObserver = setupScrollSpy();
 	});
 
 	// Handle visibility changes
 	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'hidden') {
-			observer.disconnect();
+			spyObserver.disconnect();
 		} else {
-			sections.forEach(section => {
-				observer.observe(section);
-			});
+			setupScrollSpy();
 		}
 	});
 </script>

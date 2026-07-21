@@ -1,7 +1,9 @@
 ---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
 interface Props {
 	label: string;
-	icon?: any; // Astro component for optional icon
+	icon?: AstroComponentFactory; // Astro component for optional icon
 	href?: string; // Optional link for the pill
 	size?: 'sm' | 'md';
 	variant?: 'card' | 'stack';
@@ -17,26 +19,37 @@ const {
 } = Astro.props as Props;
 
 // Base classes
-const baseClasses =
-	'inline-flex items-center rounded-full border border-neutral-300 dark:border-neutral-800/50 ' +
-	additionalClasses;
+const baseClasses = `inline-flex items-center rounded-none border-2 border-black dark:border-white transition-all duration-100 ${additionalClasses}`;
 
-// Variant-specific classes
-const cardClasses = 'px-3 py-1 transition-colors duration-200';
-const stackClasses =
-	'flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 border border-neutral-200/80 dark:border-neutral-700/80  text-neutral-900 dark:text-neutral-300 text-xs md:text-sm font-medium whitespace-nowrap shrink-0 transition-all duration-300 backdrop-blur-sm hover:bg-neutral-300 hover:dark:bg-neutral-800 hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/20 hover:-translate-y-1 cursor-default';
+// Size-specific classes for Card variant
+const cardPadding = 'px-3 py-1';
+const cardText = size === 'sm' ? 'text-xs' : 'text-sm';
+const cardIcon = 'mr-1.5 h-4 w-4';
+const cardShadow = 'shadow-retro-sm';
 
-// Text size classes
-const cardTextClasses = size === 'sm' ? 'text-xs' : 'text-sm';
-const stackTextClasses = 'text-sm md:text-base';
+// Size-specific classes for Stack variant
+const stackPadding = size === 'sm' ? 'px-2.5 py-1.5 gap-1.5' : 'px-4 md:px-5 py-2.5 md:py-3 gap-2';
+const stackText = size === 'sm' ? 'text-xs' : 'text-xs md:text-sm';
+const stackIcon = size === 'sm' ? 'w-4 h-4 mr-0.5' : 'w-5 h-5 mr-1';
+const stackBg =
+	'bg-neutral-200/80 dark:bg-neutral-800/80 hover:bg-neutral-300 hover:dark:bg-neutral-700 text-content-strong font-bold uppercase tracking-wider backdrop-blur-sm';
+const stackAnimation =
+	'hover:border-primary-500 hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-default';
+const stackShadow =
+	size === 'sm'
+		? 'shadow-retro-sm hover:shadow-retro-md active:shadow-retro-xs'
+		: 'shadow-retro-sm hover:shadow-retro-lg active:shadow-retro-xs';
 
-// Icon size classes
-const cardIconClasses = 'mr-1 h-4 w-4';
-const stackIconClasses = 'mr-1 w-5 h-5 md:w-6 md:h-6';
+// Final classes selection
+const hasBg = additionalClasses.includes('bg-');
+const hasText = additionalClasses.includes('text-');
 
-// Apply variant classes
-const containerClasses = `${baseClasses} ${variant === 'stack' ? stackClasses : cardClasses} ${variant === 'stack' ? stackTextClasses : cardTextClasses}`;
-const iconClasses = variant === 'stack' ? stackIconClasses : cardIconClasses;
+const containerClasses =
+	variant === 'stack'
+		? `${baseClasses} ${stackPadding} ${stackText} ${stackBg} ${stackAnimation} ${stackShadow}`
+		: `${baseClasses} ${cardPadding} ${cardText} ${cardShadow} ${hasBg ? '' : 'bg-neutral-100 dark:bg-neutral-800'} ${hasText ? '' : 'text-content-strong'} font-mono`;
+
+const iconClasses = variant === 'stack' ? stackIcon : cardIcon;
 ---
 
 {

@@ -1,5 +1,7 @@
 # Guía de Migración: Widgets Layer
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 🧩 Widgets Layer - Secciones Completas
 
 Widgets son **bloques UI grandes** que componen Features + Entities para crear secciones completas.
@@ -65,7 +67,7 @@ const t = useTranslations(lang);
 		set:html={t('hero.description')}
 	/>
 	<nav class="flex flex-wrap gap-4 mt-8">
-		<SocialPill href="mailto:devsandoval.me@gmail.com">
+		<SocialPill href="mailto:hello@sandovaldavid.com">
 			<MailIcon class="size-4" />
 			Contáctame
 		</SocialPill>
@@ -129,7 +131,7 @@ const navItems = [
 	{
 		title: t('nav.contact'),
 		label: 'contacto',
-		url: 'mailto:sandovaldavid2201@gmail.com',
+		url: 'mailto:hello@sandovaldavid.com',
 	},
 ];
 ---

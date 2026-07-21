@@ -1,0 +1,68 @@
+---
+import type { render } from 'astro:content';
+import type { BlogPost } from '@entities/blog';
+import ArrowLeftIcon from '@assets/icons/ArrowLeft.astro';
+import { LinkInline } from '@shared/ui';
+
+interface Props {
+	post: BlogPost;
+	Content: Awaited<ReturnType<typeof render>>['Content'];
+	backText: string;
+	backLink: string;
+	publishedLabel: string;
+	updatedLabel: string;
+	tagsLabel: string;
+}
+
+const { post, Content, backText, backLink, publishedLabel, updatedLabel, tagsLabel } = Astro.props;
+const { title, description, pubDate, updatedDate, tags } = post.data;
+---
+
+<article class="mx-auto max-w-3xl">
+	<header class="mb-10">
+		<LinkInline href={backLink} class="mb-8 inline-flex items-center gap-2 text-sm">
+			<ArrowLeftIcon class="size-4" />
+			{backText}
+		</LinkInline>
+
+		<div class="mb-3 flex flex-wrap items-center gap-2 font-mono text-xs text-content-muted">
+			<span>
+				{publishedLabel}
+				<time datetime={pubDate.toISOString()}>{pubDate.toISOString().split('T')[0]}</time>
+			</span>
+			{
+				updatedDate && (
+					<span class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400">
+						{updatedLabel}
+						<time datetime={updatedDate.toISOString()}>
+							{updatedDate.toISOString().split('T')[0]}
+						</time>
+					</span>
+				)
+			}
+			{
+				tags.length > 0 && (
+					<span class="flex flex-wrap items-center gap-2">
+						<span class="sr-only">{tagsLabel}</span>
+						{tags.map(tag => (
+							<span class="rounded-none border border-primary-500/40 bg-primary-500/10 px-2 py-0.5 font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+								{tag}
+							</span>
+						))}
+					</span>
+				)
+			}
+		</div>
+
+		<h1 class="mb-4 text-3xl font-bold font-pixel-clean tracking-wide md:text-4xl">
+			{title}
+		</h1>
+		<p class="max-w-2xl text-base leading-relaxed text-content-muted">
+			{description}
+		</p>
+	</header>
+
+	<div class="prose prose-neutral dark:prose-invert max-w-none">
+		<Content />
+	</div>
+</article>

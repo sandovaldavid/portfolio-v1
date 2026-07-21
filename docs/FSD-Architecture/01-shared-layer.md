@@ -1,5 +1,7 @@
 # Guía de Migración: Shared Layer
 
+> 🗃️ **ARCHIVADO** — Documento histórico de la migración a FSD (octubre 2025). La migración está **completada al 100%**. Este documento se conserva únicamente como referencia del proceso. **No utilizar para el desarrollo actual**.
+
 ## 📦 Shared Layer - Componentes UI Básicos
 
 El Shared layer contiene componentes UI genéricos, reutilizables y **sin lógica de negocio**. Son los building blocks de tu aplicación.
