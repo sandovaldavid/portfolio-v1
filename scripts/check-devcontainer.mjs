@@ -7,6 +7,7 @@ const postCreateScript = readFileSync('.devcontainer/post-create.sh', 'utf8');
 const repairScript = readFileSync('.devcontainer/repair-workspace-permissions.sh', 'utf8');
 const dockerTestScript = readFileSync('docker-test.sh', 'utf8');
 const prettierIgnore = readFileSync('.prettierignore', 'utf8');
+const eslintConfig = readFileSync('eslint.config.js', 'utf8');
 const devcontainerWorkflow = readFileSync('.github/workflows/build-devcontainer.yml', 'utf8');
 
 /** @type {string[]} */
@@ -116,12 +117,20 @@ expect(
 	'.prettierignore must exclude Docker runtime state.'
 );
 expect(
+	eslintConfig.includes("'**/.docker/**'"),
+	'ESLint must globally exclude Docker runtime state and nested cache configurations.'
+);
+expect(
 	(devcontainerWorkflow.match(/bun install --frozen-lockfile/g) ?? []).length >= 2,
 	'the devcontainer workflow must prove that two consecutive frozen installs succeed.'
 );
 expect(
 	devcontainerWorkflow.includes('Create stale generated ownership fixtures'),
 	'the devcontainer workflow must validate recovery from stale generated ownership.'
+);
+expect(
+	devcontainerWorkflow.includes('Create hostile nested ESLint fixture'),
+	'the devcontainer workflow must prove ESLint does not traverse Docker runtime state.'
 );
 expect(
 	devcontainer.containerEnv?.PLAYWRIGHT_BROWSERS_PATH === '/ms-playwright',
@@ -137,5 +146,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, isolated node_modules, repairable generated paths.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, isolated node_modules, repairable generated paths, isolated Docker lint scope.`
 );
