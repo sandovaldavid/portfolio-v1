@@ -9,7 +9,28 @@ fi
 REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
-owner="$(id -u):$(id -g)"
+owner_uid="$(id -u)"
+owner_gid="$(id -g)"
+owner="${owner_uid}:${owner_gid}"
+workspace_uid="$(stat -c '%u' "$REPOSITORY_ROOT")"
+workspace_gid="$(stat -c '%g' "$REPOSITORY_ROOT")"
+
+if [[ "$workspace_uid" != "$owner_uid" ]]; then
+	cat >&2 <<EOF
+Development container identity mismatch.
+- pwuser UID:GID: ${owner_uid}:${owner_gid}
+- workspace UID:GID: ${workspace_uid}:${workspace_gid}
+
+The Linux bind mount cannot be repaired safely while these UIDs differ.
+Remove the stale container and run "Dev Containers: Rebuild Container Without Cache".
+EOF
+	exit 1
+fi
+
+if [[ ! -w "$REPOSITORY_ROOT" ]]; then
+	echo "Repository root is not writable by $(id -un): $REPOSITORY_ROOT" >&2
+	exit 1
+fi
 
 git_directory="$(git rev-parse --absolute-git-dir 2>/dev/null || true)"
 if [[ -n "$git_directory" ]]; then
@@ -63,7 +84,9 @@ for path in "${generated_paths[@]}"; do
 	fi
 done
 
-mkdir -p .docker/runtime/node_modules .docker/runtime/home
+sudo mkdir -p .docker/runtime/node_modules .docker/runtime/home
+sudo chown -R --no-dereference "$owner" -- .docker
+sudo chmod -R u+rwX -- .docker
 
 for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime/home; do
 	if [[ ! -w "$path" ]]; then
@@ -72,4 +95,4 @@ for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime
 	fi
 done
 
-printf 'Git metadata and generated workspace paths are writable by %s.\n' "$(id -un)"
+printf 'Git metadata and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
