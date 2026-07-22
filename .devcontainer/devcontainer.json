@@ -24,12 +24,10 @@
 	},
 	"remoteUser": "pwuser",
 	"containerUser": "pwuser",
+	"updateRemoteUserUID": true,
 	"mounts": [
-		// Bind-mount Antigravity configurations to share authentication state and project registry
-		"source=${localEnv:HOME}/.gemini,target=/home/pwuser/.gemini,type=bind",
-		// Bind-mount Claude CLI credentials and command history
-		"source=${localEnv:HOME}/.claude,target=/home/pwuser/.claude,type=bind"
+		"source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
 	],
-	"postCreateCommand": "bun install",
+	"postCreateCommand": "sudo mkdir -p node_modules && sudo chown -R $(id -u):$(id -g) node_modules && bun install --frozen-lockfile",
 	"forwardPorts": [4321]
 }

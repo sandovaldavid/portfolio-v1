@@ -18,6 +18,10 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Free the base image's UID/GID 1000 so Dev Containers can align pwuser with the host user.
+RUN userdel --remove ubuntu \
+    && if getent group ubuntu >/dev/null; then groupdel ubuntu; fi
+
 # Allow the default non-root user (pwuser) to run sudo without password
 RUN echo "pwuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
