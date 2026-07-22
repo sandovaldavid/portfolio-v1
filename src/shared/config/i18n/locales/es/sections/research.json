@@ -1,0 +1,6 @@
+{
+	"eyebrow": "Investigación",
+	"title": "Predicción de abandono OSS con BiLSTM",
+	"summary": "Analizo la actividad de repositorios como secuencias temporales para identificar riesgo de abandono y comparar resultados de deep learning con modelos tradicionales de machine learning.",
+	"viewFull": "Ver investigación completa"
+}
