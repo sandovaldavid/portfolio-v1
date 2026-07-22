@@ -1,11 +1,7 @@
 ---
-import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
-import { siteConfig } from '@shared/config/site.config';
+import { getLangFromUrl } from '@shared/lib/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const resumeUrl = langCode === 'en' ? siteConfig.resume.en : siteConfig.resume.es;
 
 const copy =
 	langCode === 'en'
@@ -29,10 +25,6 @@ const copy =
 				current: 'Software Engineer @ Atena',
 				researchLabel: 'RESEARCH',
 				research: 'OSS abandonment prediction with BiLSTM',
-				viewWork: 'View selected work',
-				contact: 'Contact me',
-				resume: 'Download resume',
-				retro: 'Launch retro mode',
 			}
 		: {
 				banner: '[ DISPONIBLE PARA OPORTUNIDADES EN INGENIERÍA DE SOFTWARE ]',
@@ -54,10 +46,6 @@ const copy =
 				current: 'Software Engineer @ Atena',
 				researchLabel: 'INVESTIGACIÓN',
 				research: 'Predicción de abandono OSS con BiLSTM',
-				viewWork: 'Ver proyectos',
-				contact: 'Contactarme',
-				resume: 'Descargar CV',
-				retro: 'Iniciar modo retro',
 			};
 ---
 
@@ -188,50 +176,5 @@ const copy =
 				</dl>
 			</div>
 		</div>
-
-		<nav class="flex flex-wrap justify-center gap-3" aria-label="Primary professional actions">
-			<a
-				href={getLocalizedPath(lang, '/#projects')}
-				class="inline-flex items-center justify-center bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
-			>
-				{copy.viewWork}
-			</a>
-			<a
-				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
-				class="inline-flex items-center justify-center bg-surface text-content-strong border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
-			>
-				{copy.contact}
-			</a>
-			<a
-				href={resumeUrl}
-				target="_blank"
-				rel="noreferrer"
-				class="inline-flex items-center justify-center bg-surface text-content-strong border-2 border-black dark:border-white px-5 py-3 font-bold uppercase tracking-wider shadow-retro-md hover:-translate-x-px hover:-translate-y-px hover:shadow-retro-lg"
-			>
-				{copy.resume}
-			</a>
-			<a
-				href={siteConfig.social.github}
-				target="_blank"
-				rel="noreferrer"
-				class="inline-flex items-center justify-center px-4 py-3 font-bold uppercase tracking-wider underline underline-offset-4"
-			>
-				GitHub
-			</a>
-			<a
-				href={siteConfig.social.linkedin}
-				target="_blank"
-				rel="noreferrer"
-				class="inline-flex items-center justify-center px-4 py-3 font-bold uppercase tracking-wider underline underline-offset-4"
-			>
-				LinkedIn
-			</a>
-			<a
-				href="?retro=1"
-				class="inline-flex items-center justify-center px-4 py-3 text-content-muted font-bold uppercase tracking-wider underline underline-offset-4"
-			>
-				{copy.retro}
-			</a>
-		</nav>
 	</div>
 </section>
