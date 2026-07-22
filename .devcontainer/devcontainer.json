@@ -1,5 +1,5 @@
 {
-	"name": "Portfolio Dev Container",
+	"name": "Portfolio-v1",
 
 	// Build from local Dockerfile but pull cached layers from GHCR for instant startup
 	"build": {
