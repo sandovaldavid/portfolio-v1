@@ -1,0 +1,6 @@
+{
+	"eyebrow": "Research",
+	"title": "Predicting OSS abandonment with BiLSTM",
+	"summary": "Mining repository activity as temporal sequences to identify abandonment risk and compare deep-learning results with traditional machine-learning baselines.",
+	"viewFull": "View full research"
+}
