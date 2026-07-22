@@ -6,6 +6,7 @@ import globals from 'globals';
 
 const generatedFiles = [
 	'**/node_modules/**',
+	'**/.docker/**',
 	'**/dist/**',
 	'**/.astro/**',
 	'**/.vercel/**',
