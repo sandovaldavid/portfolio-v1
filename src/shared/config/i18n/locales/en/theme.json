@@ -1,0 +1,6 @@
+{
+	"select": "Choose theme",
+	"light": "Light",
+	"dark": "Dark",
+	"system": "System"
+}
