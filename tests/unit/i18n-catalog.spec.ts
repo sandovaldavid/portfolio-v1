@@ -1,0 +1,70 @@
+import { describe, expect, expectTypeOf, it } from 'vitest';
+import {
+	createScopedUiTranslator,
+	createUiTranslator,
+	getUiCatalog,
+	getUiCatalogNamespace,
+	Language,
+	MissingUiTranslationError,
+	translateUi,
+	UI_CATALOG_MODULES,
+	uiCatalogs,
+	validateUiCatalogs,
+	type UiCatalogKey,
+} from '@shared/config/i18n';
+
+describe('granular UI catalogs', () => {
+	it('defines unique mirrored catalog modules', () => {
+		expect(new Set(UI_CATALOG_MODULES).size).toBe(UI_CATALOG_MODULES.length);
+		expect(validateUiCatalogs()).toBe(true);
+	});
+
+	it('keeps English and Spanish keys in parity', () => {
+		const englishKeys = Object.keys(uiCatalogs[Language.ENGLISH]).sort();
+		const spanishKeys = Object.keys(uiCatalogs[Language.SPANISH]).sort();
+
+		expect(spanishKeys).toEqual(englishKeys);
+	});
+
+	it('contains only non-empty scalar strings', () => {
+		for (const catalog of Object.values(uiCatalogs)) {
+			for (const value of Object.values(catalog)) {
+				expect(typeof value).toBe('string');
+				expect(value.trim().length).toBeGreaterThan(0);
+			}
+		}
+	});
+
+	it('resolves typed translations without a fallback locale', () => {
+		const translateEnglish = createUiTranslator(Language.ENGLISH);
+		const translateSpanish = createUiTranslator(Language.SPANISH);
+
+		expect(translateEnglish('navigation.projects')).toBe('Projects');
+		expect(translateSpanish('navigation.projects')).toBe('Proyectos');
+		expect(translateSpanish('sections.hero.title')).not.toBe(
+			translateEnglish('sections.hero.title')
+		);
+	});
+
+	it('returns a typed namespace and scoped translator', () => {
+		const navigation = getUiCatalogNamespace(Language.SPANISH, 'navigation');
+		const translateHero = createScopedUiTranslator(Language.ENGLISH, 'sections.hero');
+
+		expect(navigation.projects).toBe('Proyectos');
+		expect(translateHero('roleLabel')).toBe('Role');
+	});
+
+	it('fails loudly for a missing key instead of returning a key or English fallback', () => {
+		expect(() =>
+			translateUi(Language.SPANISH, 'navigation.missing' as UiCatalogKey)
+		).toThrowError(MissingUiTranslationError);
+	});
+
+	it('exposes a readonly catalog with inferred leaf keys', () => {
+		const catalog = getUiCatalog(Language.ENGLISH);
+		const key: UiCatalogKey = 'sections.techStack.title';
+
+		expect(catalog[key]).toBe('Tools selected for the problem');
+		expectTypeOf<UiCatalogKey>().toMatchTypeOf<string>();
+	});
+});
