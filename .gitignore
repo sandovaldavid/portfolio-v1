@@ -54,6 +54,7 @@ bundle-analysis/
 
 # lighthouse ci
 .lhci-results/.docker/
+.docker/
 
 # route performance reports
 performance-report/
