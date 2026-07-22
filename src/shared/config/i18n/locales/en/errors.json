@@ -1,0 +1,7 @@
+{
+	"genericTitle": "Something went wrong",
+	"genericMessage": "The requested content could not be loaded.",
+	"notFoundTitle": "Page not found",
+	"notFoundMessage": "The page does not exist or has been moved.",
+	"missingTranslation": "A required translation is missing."
+}
