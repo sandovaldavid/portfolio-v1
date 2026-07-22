@@ -18,6 +18,8 @@ export default defineConfig({
 	},
 	integrations: [robotsTxt(), mdx(), sitemap()],
 	site: 'https://sandovaldavid.com',
+	// Keep the Astro 6 whitespace contract while adopting Astro 7's Rust compiler.
+	compressHTML: true,
 	// Only links marked with data-astro-prefetch participate in speculative loading.
 	prefetch: {
 		prefetchAll: false,
