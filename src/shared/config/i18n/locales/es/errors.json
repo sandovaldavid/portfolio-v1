@@ -1,0 +1,7 @@
+{
+	"genericTitle": "Algo salió mal",
+	"genericMessage": "No se pudo cargar el contenido solicitado.",
+	"notFoundTitle": "Página no encontrada",
+	"notFoundMessage": "La página no existe o fue movida.",
+	"missingTranslation": "Falta una traducción obligatoria."
+}
