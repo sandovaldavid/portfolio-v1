@@ -2,6 +2,8 @@
 import { useTranslations, useTranslationsList } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
+import ArrowLeftIcon from '@assets/icons/ArrowLeft.astro';
+import ArrowRightIcon from '@assets/icons/ArrowRight.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
 
 interface Props {
@@ -48,7 +50,11 @@ const metrics = [
 		href={backHref}
 		class="inline-flex items-center gap-2 mb-8 text-xs font-bold uppercase tracking-wider text-content-muted hover:text-primary-500 transition-colors group"
 	>
-		<span class="group-hover:-translate-x-1 transition-transform">◀</span>
+		<ArrowLeftIcon
+			class="size-4 group-hover:-translate-x-1 transition-transform"
+			aria-hidden="true"
+			focusable="false"
+		/>
 		{t('research.back-button')}
 	</a>
 
@@ -288,7 +294,7 @@ const metrics = [
 				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(t('research.contact-button'))}`}
 				class="shrink-0 flex items-center justify-center gap-1.5 px-5 py-2 bg-white dark:bg-black text-primary-500 dark:text-primary-400 font-gaming-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white/90 dark:hover:bg-black/90 hover:-translate-x-px hover:-translate-y-px transition-all whitespace-nowrap self-start sm:self-center"
 			>
-				<span aria-hidden="true">→</span>
+				<ArrowRightIcon class="size-4" aria-hidden="true" focusable="false" />
 				{t('research.contact-button')}
 			</a>
 		</div>
