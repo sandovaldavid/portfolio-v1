@@ -24,23 +24,23 @@
 			"implementedLabel": "IMPLEMENTADO // VERIFICADO EN LA DOCUMENTACIÓN DE LOS REPOSITORIOS",
 			"implemented": [
 				"SPA standalone en Angular 22 con rutas lazy, contexto del hogar, guards por capacidades y stores locales basados en signals.",
-				"Integración OIDC con Keycloak y clientes REST tipados para el backend.",
-				"Monolito modular .NET 10 con módulos de usuarios, hogares, contabilidad, tarjetas, deudas e ingresos.",
-				"Persistencia PostgreSQL 16 con esquema por módulo, migraciones EF Core y concurrencia optimista.",
-				"Reconciliación de notificaciones y estado recuperable mediante REST y SignalR.",
-				"Infraestructura de pruebas unitarias, integración, navegador y accesibilidad documentada en ambos repositorios."
+				"Integración Keycloak Authorization Code + PKCE, adjunto protegido de bearer tokens y autenticación mock limitada a loopback para desarrollo.",
+				"Monolito modular .NET 10 con ASP.NET Core Minimal APIs, módulos Users, Households, Accounting, Cards, Debts e Incomes y documento OpenAPI de desarrollo.",
+				"Persistencia PostgreSQL 16 con esquema por módulo, migraciones EF Core, concurrencia optimista y motor contable de partida doble.",
+				"Clientes REST tipados, presentación de ProblemDetails, normalización de paginación y reconciliación de notificaciones con SignalR.",
+				"Infraestructura de pruebas unitarias, integración, funcionales, navegador y accesibilidad documentada en ambos repositorios."
 			],
 			"plannedLabel": "PLANIFICADO // NO PRESENTADO COMO ENTREGADO",
 			"planned": [
-				"Mover los cálculos financieros legacy restantes detrás de contratos autoritativos de la API.",
-				"Reestructurar Planning para presupuestos, metas, suscripciones y activos.",
-				"Completar plantillas, localización y navegación de notificaciones.",
-				"Finalizar contratos contra el stack real y la verificación productiva.",
-				"Publicar una demo reproducible después de verificar privacidad y cutover."
+				"Mover cada cálculo y recomendación financiera legacy restante detrás de contratos autoritativos de la API.",
+				"Reestructurar Planning para presupuestos, metas, suscripciones y seguimiento de activos sobre el modelo actual de hogares.",
+				"Completar plantillas durables de notificaciones, localización, navegación de acciones y garantías del backend.",
+				"Finalizar contratos financieros contra el stack real, enforcement de internacionalización y verificación de preparación productiva.",
+				"Publicar un repositorio accesible para reclutadores o una demo pública reproducible después de verificar privacidad y cutover."
 			],
 			"architectureLabel": "ARQUITECTURA // IMPLEMENTACIÓN ACTUAL",
 			"architecture": {
-				"caption": "Angular es la capa de interacción; Keycloak emite identidad; la API .NET controla autorización del hogar y reglas financieras; PostgreSQL es el sistema de registro durable. Worker y migrator son procesos separados dentro del mismo monolito modular.",
+				"caption": "Forma actual de la V1: Angular es la capa de interacción; Keycloak emite identidad; la API .NET controla autorización del hogar y reglas financieras; PostgreSQL es el sistema de registro durable. Worker y migrator son procesos separados dentro del mismo código de monolito modular.",
 				"client": "SPA Angular 22\nRutas · signal stores · clientes REST tipados",
 				"identity": "Keycloak\nOIDC · Authorization Code + PKCE",
 				"api": "Minimal API .NET 10\nAlcance por hogar · reglas · ProblemDetails",
@@ -50,31 +50,31 @@
 			},
 			"securityLabel": "DECISIONES DE SEGURIDAD",
 			"security": [
-				"El navegador usa un flujo OIDC público sin secretos embebidos.",
-				"Keycloak controla identidad y roles globales; la API controla permisos y visibilidad por hogar.",
-				"Las rutas por hogar ocultan recursos a quienes no son miembros y usan concurrencia optimista.",
-				"La preparación productiva depende de verificar privacidad y autorización de extremo a extremo."
+				"El navegador es un cliente OIDC público y no contiene client secret; el inicio de sesión usa Authorization Code + PKCE.",
+				"Keycloak controla identidad y roles globales, mientras la API y PostgreSQL controlan membresía, permisos y visibilidad por registro.",
+				"Las rutas por hogar ocultan la existencia de recursos a quienes no son miembros y usan concurrencia optimista para escrituras en conflicto.",
+				"La preparación productiva continúa bloqueada hasta verificar privacidad y cobertura de autorización contra el stack real de extremo a extremo."
 			],
 			"testingLabel": "DECISIONES DE PRUEBAS",
 			"testing": [
-				"Angular usa Vitest y recorridos Playwright/Axe para comportamiento y accesibilidad.",
-				"La API usa xUnit y Testcontainers para rutas de dominio e integración.",
-				"La documentación registra comandos locales y no presenta workflows omitidos como aprobados.",
-				"La cobertura completa contra la API financiera real sigue planificada."
+				"Angular usa specs Vitest colocados con el código y recorridos Playwright/Axe para comportamiento de navegador y accesibilidad.",
+				"La API usa xUnit y NSubstitute para dominio/aplicación, con Testcontainers para rutas de integración con PostgreSQL y Keycloak reales.",
+				"La documentación registra comandos locales de calidad, pero GitHub Actions deshabilitados u omitidos no se reportan como evidencia aprobada.",
+				"La cobertura completa del frontend contra la API financiera real sigue planificada y no se contabiliza como implementada."
 			],
 			"deploymentLabel": "DECISIONES DE DESPLIEGUE",
 			"deployment": [
-				"El stack de desarrollo usa Docker Compose para PostgreSQL, Keycloak, migrator, API y worker.",
-				"El frontend separa endpoints de desarrollo, staging y producción.",
-				"El migrator es el único proceso autorizado para aplicar migraciones EF Core.",
-				"No se presenta un despliegue público como listo para producción."
+				"El stack de desarrollo de la API es reproducible con Docker Compose para PostgreSQL, Keycloak, migrator, API y worker.",
+				"El frontend configura endpoints de desarrollo, staging y producción; el desarrollo local puede usar json-server o la API .NET.",
+				"El migrator es el único proceso autorizado para aplicar migraciones EF Core; la API y el worker permanecen como procesos de aplicación stateless.",
+				"No se enlaza un despliegue público como listo para producción porque la verificación operativa y de privacidad está incompleta."
 			],
 			"limitationsLabel": "LIMITACIONES DE ACCESO Y EVIDENCIA",
 			"limitations": [
-				"Los repositorios de código son privados para revisores públicos.",
-				"No existe una demo pública presentada como lista para producción.",
-				"El diagrama resume la implementación actual y separa el trabajo planificado.",
-				"Los resultados son cualitativos y no afirman métricas no verificadas."
+				"Ambos repositorios de código son privados, por lo que revisores públicos no pueden inspeccionar directamente commits, pruebas o ADRs.",
+				"No se presenta una demo en vivo accesible para reclutadores como lista para producción.",
+				"El diagrama resume la implementación actual documentada; los módulos planificados se enumeran por separado.",
+				"Los resultados son cualitativos y respaldados por los repositorios; aquí no se afirman métricas de adopción, ingresos, rendimiento o cobertura."
 			],
 			"sourcesLabel": "REPOSITORIOS FUENTE",
 			"sources": [
