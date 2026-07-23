@@ -27,10 +27,7 @@ export async function getDevlogPosts(lang: Language): Promise<DevlogPost[]> {
 }
 
 /** Returns a single post by its locale-stripped slug, or undefined if not found. */
-export async function getDevlogPost(
-	lang: Language,
-	slug: string
-): Promise<DevlogPost | undefined> {
+export async function getDevlogPost(lang: Language, slug: string): Promise<DevlogPost | undefined> {
 	const posts = await getDevlogPosts(lang);
 	return posts.find(post => getDevlogSlug(post) === slug);
 }

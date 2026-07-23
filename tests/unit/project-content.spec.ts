@@ -145,7 +145,9 @@ describe('localized project and case-study content', () => {
 		expect(orders.sort((left, right) => right - left)).toEqual([50, 40, 30, 20, 10]);
 		expect(metadata).toContain('technologyIds:');
 		expect(metadata).toContain('evidenceSourceUrls:');
-		expect(metadata).toContain("'yukidoke-web': 'https://github.com/sandovaldavid/yukidoke-web'");
+		expect(metadata).toContain(
+			"'yukidoke-web': 'https://github.com/sandovaldavid/yukidoke-web'"
+		);
 
 		for (const entry of [...entries.en, ...entries.es]) {
 			expect(JSON.stringify(entry)).not.toContain('https://');

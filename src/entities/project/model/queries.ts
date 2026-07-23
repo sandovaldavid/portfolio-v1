@@ -1,17 +1,7 @@
 import { getCollection } from 'astro:content';
 import type { Language } from '@shared/config/i18n';
-import {
-	PROJECT_METADATA,
-	PROJECT_TECHNOLOGIES,
-	isProjectId,
-	type ProjectId,
-} from './metadata';
-import type {
-	CaseStudyEvidence,
-	ProjectContentEntry,
-	ProjectItem,
-	ProjectList,
-} from './types';
+import { PROJECT_METADATA, PROJECT_TECHNOLOGIES, isProjectId, type ProjectId } from './metadata';
+import type { CaseStudyEvidence, ProjectContentEntry, ProjectItem, ProjectList } from './types';
 
 function toEvidence(
 	entry: ProjectContentEntry,

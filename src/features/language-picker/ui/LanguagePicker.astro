@@ -72,19 +72,17 @@ const baseClass =
 	const syncLanguageLinkState = () => {
 		const preserveTrailingSlash = window.location.pathname.endsWith('/');
 
-		document
-			.querySelectorAll<HTMLAnchorElement>('[data-language-base-path]')
-			.forEach(link => {
-				const basePath = link.dataset.languageBasePath;
-				if (!basePath) return;
+		document.querySelectorAll<HTMLAnchorElement>('[data-language-base-path]').forEach(link => {
+			const basePath = link.dataset.languageBasePath;
+			if (!basePath) return;
 
-				const target = new URL(basePath, window.location.origin);
-				const targetPath = preservePathShape(target.pathname, preserveTrailingSlash);
+			const target = new URL(basePath, window.location.origin);
+			const targetPath = preservePathShape(target.pathname, preserveTrailingSlash);
 
-				target.search = window.location.search;
-				target.hash = window.location.hash;
-				link.href = `${targetPath}${target.search}${target.hash}`;
-			});
+			target.search = window.location.search;
+			target.hash = window.location.hash;
+			link.href = `${targetPath}${target.search}${target.hash}`;
+		});
 	};
 
 	syncLanguageLinkState();

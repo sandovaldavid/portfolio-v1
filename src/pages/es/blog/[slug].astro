@@ -3,12 +3,7 @@ import { render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { BlogDetail } from '@widgets/blog';
-import {
-	getBlogLocalizedPaths,
-	getBlogPost,
-	getBlogPosts,
-	getBlogSlug,
-} from '@entities/blog';
+import { getBlogLocalizedPaths, getBlogPost, getBlogPosts, getBlogSlug } from '@entities/blog';
 import { getLanguageFromLocale, Language } from '@shared/config/i18n';
 import { useTranslations } from '@shared/lib/i18n';
 

@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-	DEFAULT_LANGUAGE,
-	getLanguageFromLocale,
-	Language,
-} from '@shared/config/i18n';
+import { DEFAULT_LANGUAGE, getLanguageFromLocale, Language } from '@shared/config/i18n';
 
 describe('getLanguageFromLocale', () => {
 	it.each([

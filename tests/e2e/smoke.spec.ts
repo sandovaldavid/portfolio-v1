@@ -136,7 +136,9 @@ test.describe('Pull request smoke and accessibility gates', () => {
 			await expect(page.getByRole('img', { name: scenario.imageAlt }).first()).toBeVisible();
 
 			await page.goto(scenario.detailRoute);
-			await expect(page.getByRole('heading', { level: 1, name: 'UNP Campus Map' })).toBeVisible();
+			await expect(
+				page.getByRole('heading', { level: 1, name: 'UNP Campus Map' })
+			).toBeVisible();
 			await expect(page.getByText(scenario.banner)).toBeVisible();
 			await expect(page.getByText(scenario.timeline, { exact: true })).toBeVisible();
 			await expect(page.getByText(scenario.role, { exact: true })).toBeVisible();

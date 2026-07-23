@@ -64,12 +64,7 @@ export async function getBlogLocalizedPaths(post: BlogPost): Promise<LocalizedPa
 	for (const targetLanguage of [Language.ENGLISH, Language.SPANISH]) {
 		if (targetLanguage === sourceLanguage) continue;
 
-		const counterpart = findTranslationCounterpart(
-			posts,
-			post,
-			targetLanguage,
-			isPublished
-		);
+		const counterpart = findTranslationCounterpart(posts, post, targetLanguage, isPublished);
 		if (counterpart) {
 			localizedPaths[targetLanguage] = getBlogPath(targetLanguage, counterpart);
 		}

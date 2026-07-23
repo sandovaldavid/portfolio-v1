@@ -39,7 +39,10 @@ const posts = await getDevlogPosts(lang);
 						<DevlogCard
 							post={post}
 							readMoreText={t('devlog.read-more')}
-							readMoreLink={getRelativeLocaleUrl(lang, `devlog/${getDevlogSlug(post)}`)}
+							readMoreLink={getRelativeLocaleUrl(
+								lang,
+								`devlog/${getDevlogSlug(post)}`
+							)}
 						/>
 					))
 				}

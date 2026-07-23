@@ -2,11 +2,7 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { getProjectBySlug, getProjectsData } from '@entities/project';
-import {
-	createScopedUiTranslator,
-	getLanguageFromLocale,
-	Language,
-} from '@shared/config/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale, Language } from '@shared/config/i18n';
 import { ProjectCaseStudy } from '@widgets/project-case-study';
 
 export async function getStaticPaths() {
@@ -37,7 +33,7 @@ const pageTitle = `${project.title} — ${tProjects('caseStudy')} | David Sandov
 >
 	<div class="py-16 md:py-24">
 		<ProjectCaseStudy
-			project={project}
+			{project}
 			backLink={getRelativeLocaleUrl(lang, 'projects')}
 			backText={tProjects('back')}
 			codeButtonText={tProjects('codeButton')}
