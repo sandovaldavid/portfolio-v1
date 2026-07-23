@@ -75,12 +75,12 @@ const evidenceDecisionSections = evidence
 	: [];
 const architectureItems = evidence
 	? [
-			{ label: 'Client', value: evidence.architecture.client },
-			{ label: 'Identity', value: evidence.architecture.identity },
-			{ label: 'API', value: evidence.architecture.api },
-			{ label: 'Modules', value: evidence.architecture.modules },
-			{ label: 'Database', value: evidence.architecture.database },
-			{ label: 'Processes', value: evidence.architecture.processes },
+			evidence.architecture.client,
+			evidence.architecture.identity,
+			evidence.architecture.api,
+			evidence.architecture.modules,
+			evidence.architecture.database,
+			evidence.architecture.processes,
 		]
 	: [];
 ---
@@ -242,11 +242,14 @@ const architectureItems = evidence
 							<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 								{architectureItems.map(item => (
 									<div class="border-2 border-neutral-500 bg-neutral-900 p-4">
-										<p class="font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-300">
-											{item.label}
-										</p>
-										{item.value.split('\n').map(line => (
-											<p class="mt-2 text-sm text-neutral-200">{line}</p>
+										{item.split('\n').map((line, index) => (
+											<p
+												class={index === 0
+													? 'font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-300'
+													: 'mt-2 text-sm text-neutral-200'}
+											>
+												{line}
+											</p>
 										))}
 									</div>
 								))}
