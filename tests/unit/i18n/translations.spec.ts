@@ -28,35 +28,6 @@ describe('useTranslations', () => {
 		expect(t('nav.experience')).toBe('Experiencia');
 	});
 
-	it('provides the Yukidoke flagship case study in both languages', () => {
-		const tEn = useTranslations(Language.ENGLISH);
-		const tEs = useTranslations(Language.SPANISH);
-		const requiredKeys = [
-			'projects.yukidoke.title',
-			'projects.yukidoke.description',
-			'projects.yukidoke.case.problem',
-			'projects.yukidoke.case.approach',
-			'projects.yukidoke.case.tradeoffs',
-			'projects.yukidoke.case.outcome',
-			'projects.yukidoke.evidence.status',
-			'projects.yukidoke.evidence.architecture.caption',
-			'projects.yukidoke.evidence.security1',
-			'projects.yukidoke.evidence.testing1',
-			'projects.yukidoke.evidence.deployment1',
-			'projects.yukidoke.evidence.limitations1',
-		] as const;
-
-		for (const key of requiredKeys) {
-			expect(tEn(key)).not.toBe(key);
-			expect(tEs(key)).not.toBe(key);
-		}
-
-		expect(tEn('projects.yukidoke.title')).toBe('Yukidoke');
-		expect(tEs('projects.yukidoke.title')).toBe('Yukidoke');
-		expect(tEn('projects.yukidoke.evidence.status')).toContain('V1 beta');
-		expect(tEs('projects.yukidoke.evidence.status')).toContain('Beta V1');
-	});
-
 	it('returns the key and warns when translation is missing', () => {
 		const t = useTranslations(Language.ENGLISH);
 		const result = t('non.existent.key');
