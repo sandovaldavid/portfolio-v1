@@ -10,7 +10,13 @@ export function stripContentLocalePrefix(id: string): string {
 	return id.replace(SUPPORTED_LOCALE_PREFIX, '');
 }
 
+/** Returns the supported locale encoded in an Astro content entry id. */
+export function getContentLanguage(id: string): Language | undefined {
+	const locale = id.split('/', 1)[0];
+	return locale === 'en' || locale === 'es' ? locale : undefined;
+}
+
 /** Returns whether an Astro content entry id belongs to the requested locale. */
 export function isContentForLanguage(id: string, language: Language): boolean {
-	return id.startsWith(`${language}/`);
+	return getContentLanguage(id) === language;
 }
