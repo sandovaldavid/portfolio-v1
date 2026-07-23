@@ -8,13 +8,57 @@ The portfolio uses executable repository rules, focused unit tests, browser test
 bun install --frozen-lockfile
 ```
 
+## Recommended command guide
+
+The script list is intentionally broader than a minimal Astro project because it represents different validation depths. Use these groups instead of treating every command as part of the daily loop.
+
+### Daily development
+
+```bash
+bun run dev:host
+bun run check
+bun run test:unit:ci
+bun run build
+bun run test:e2e:smoke
+bun run test:e2e:report
+```
+
+- `dev:host` starts Astro on `0.0.0.0`; the Dev Container publishes it only on host loopback at `http://localhost:4321`.
+- `check` is the main non-mutating quality gate and matches the PR validation contract.
+- `test:unit:ci` is the deterministic one-shot unit suite.
+- `test:e2e:smoke` is the fastest browser and accessibility gate.
+- `test:e2e:report` serves the generated Playwright HTML report at `http://localhost:9323`.
+
+### Focused quality commands
+
+The `format:*`, `lint:*`, `typecheck:*`, `check:docs`, `check:devcontainer` and `check:links` scripts exist so a failing part of `check` can be reproduced independently. `format` and `lint:fix` modify files; their corresponding check commands do not.
+
+### Browser test depth
+
+- `test`, `test:local`, `test:e2e:desktop` and `test:e2e:extended` intentionally cover progressively broader browser/device matrices.
+- `test:ui` and `test:debug` are interactive diagnostics.
+- `test:e2e:visual` is a fast host-sensitive comparison; `test:e2e:visual:docker` is the reproducible merge-grade visual gate.
+- `test:snapshots` and `test:snapshots:all` modify visual baselines and must be used only for deliberate, reviewed updates.
+
+### Performance and bundle diagnostics
+
+- `lighthouse` runs the complete Lighthouse CI flow; `lighthouse:collect` and `lighthouse:assert` expose its phases for diagnosis.
+- `performance:check` is the blocking route-budget gate.
+- `bundle:analyze` creates the emitted-file report; `bundle:visualize` additionally enables the Rollup treemap.
+
+### VS Code Dev Container workflow
+
+From **Run and Debug**, select **Portfolio: Dev Server + Host Browser**. VS Code starts `bun run dev:host`, waits for Astro and opens `http://localhost:4321` in the host browser.
+
+Useful tasks are available through **Tasks: Run Task**, including quality checks, build, unit tests, Playwright smoke tests and the report server. **Portfolio: Serve Playwright Report on Host** serves the report on port `9323`; **Portfolio: Open Playwright Report** opens it in the host browser.
+
 ## Repository quality
 
 ```bash
 bun run check
 ```
 
-`check` runs repository-wide Prettier validation, active-document link validation, ESLint, the Feature-Sliced Design boundary checker, Astro diagnostics and strict tooling type-checking.
+`check` runs repository-wide Prettier validation, active-document link validation, Dev Container contract validation, ESLint, the Feature-Sliced Design boundary checker, Astro diagnostics and strict tooling type-checking.
 
 Documentation links can also be checked independently:
 
@@ -38,6 +82,7 @@ Coverage thresholds apply only to the risk-based pure-unit scope in [testing/UNI
 
 ```bash
 bun run test:e2e:smoke
+bun run test:e2e:report
 bun run test:e2e:desktop
 bun run test:e2e:extended
 RUN_VISUAL_TESTS=true bun run test:e2e:visual
@@ -47,6 +92,7 @@ bun run test:debug
 ```
 
 - `test:e2e:smoke` checks critical English and Spanish routes in Chromium and blocks serious or critical Axe violations.
+- `test:e2e:report` serves the latest local HTML report on `http://localhost:9323` from the rebuilt Dev Container.
 - `test:e2e:desktop` runs Chromium, Firefox and WebKit.
 - `test:e2e:extended` adds Mobile Chrome and Mobile Safari.
 - `test:e2e:visual` runs maintained Chromium, Firefox and Mobile Chrome snapshots directly on the host. Use it for fast diagnostics when the host matches the baseline environment.
