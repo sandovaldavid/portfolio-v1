@@ -54,9 +54,7 @@ describe('home section localization migration', () => {
 			expect(legacy).not.toHaveProperty('badges');
 			expect(legacy).not.toHaveProperty('vision');
 			expect(legacy).not.toHaveProperty('title');
-			expect(legacy).not.toHaveProperty('about-me.profile');
-			expect(legacy).not.toHaveProperty('about-me.atena');
-			expect(legacy).not.toHaveProperty('about-me.read-more');
+			expect(legacy).not.toHaveProperty('about-me');
 			expect(legacy).not.toHaveProperty('research.summary');
 			expect(legacy).not.toHaveProperty('research.tech-stack-label');
 			expect(legacy).not.toHaveProperty('research.full-methodology');

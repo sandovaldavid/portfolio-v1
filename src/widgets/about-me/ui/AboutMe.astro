@@ -1,9 +1,11 @@
 ---
+import { getPortfolioProfile } from '@entities/profile';
 import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const profile = (await getPortfolioProfile(lang)).data;
 const tAbout = createScopedUiTranslator(lang, 'sections.about');
 const tCommon = createScopedUiTranslator(lang, 'common');
 ---
@@ -20,7 +22,7 @@ const tCommon = createScopedUiTranslator(lang, 'common');
 					{tAbout('profileTitle')}
 				</h3>
 				<p class="text-content text-base leading-relaxed text-pretty">
-					{tAbout('profileSummary')}
+					{profile.summary}
 				</p>
 				<div class="pt-2">
 					<a
@@ -59,7 +61,7 @@ const tCommon = createScopedUiTranslator(lang, 'common');
 				{tAbout('currentTitle')}
 			</h3>
 			<p class="text-content text-base leading-relaxed text-pretty">
-				{tAbout('currentSummary')}
+				{profile.currentRoleSummary}
 			</p>
 			<div class="pt-2">
 				<a

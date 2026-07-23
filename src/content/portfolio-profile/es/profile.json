@@ -1,0 +1,27 @@
+{
+	"profileId": "david-sandoval",
+	"locale": "es",
+	"seo": {
+		"title": "Sobre David Sandoval — Ingeniero de Software",
+		"description": "Conoce a David Sandoval, ingeniero de software que construye productos web mantenibles con Angular, .NET y TypeScript e investiga el abandono de proyectos OSS con modelos BiLSTM."
+	},
+	"summary": "Ingeniero Informático que construye productos web mantenibles con Angular, .NET y TypeScript. Mi trabajo incluye modernización frontend, APIs REST y mejoras de rendimiento. También investigo la predicción de abandono de proyectos OSS mediante modelos BiLSTM.",
+	"biography": [
+		"Ingeniero Informático enfocado en construir productos web mantenibles con Angular, .NET y TypeScript. Valoro una arquitectura clara cuando reduce riesgos de entrega, no como un objetivo por sí misma.",
+		"Mi experiencia profesional incluye modernización de módulos frontend, contribución en APIs REST, mejoras en la entrega de bundles y apoyo en migraciones desde sistemas legacy. El portafolio documenta los proyectos y trade-offs que pueden compartirse públicamente.",
+		"En paralelo al desarrollo de productos, investigo Mining Software Repositories y el uso de modelos BiLSTM para estudiar el abandono de proyectos OSS. Esta investigación es una especialización secundaria que complementa mi trabajo en ingeniería de software."
+	],
+	"focusAreas": [
+		"Angular y arquitectura frontend reactiva",
+		"APIs .NET y límites backend mantenibles",
+		"TypeScript y rendimiento web",
+		"Pruebas automatizadas y quality gates en CI",
+		"Modelos BiLSTM para predecir abandono OSS",
+		"Documentación y contribución open source"
+	],
+	"availabilityStatement": "Disponible para oportunidades remotas de ingeniería de software en Europa y Latinoamérica.",
+	"location": "Lima, Perú (UTC-5)",
+	"workMode": "Remoto para Europa y Latinoamérica",
+	"researchSummary": "Investigación sobre predicción de abandono OSS mediante modelos BiLSTM y datos de actividad de repositorios.",
+	"currentRoleSummary": "Actualmente trabajo en Atena como Software Engineer, contribuyendo en frontends Angular y APIs .NET. Mi enfoque es entregar software mantenible, aplicar mejoras de rendimiento medibles y documentar las decisiones técnicas."
+}

@@ -73,23 +73,6 @@
 			]
 		}
 	},
-	"about-me": {
-		"page-title": "Sobre Mí - David Sandoval",
-		"page-description": "Conoce más sobre la formación, trayectoria profesional y motivaciones de David Sandoval en el desarrollo de software.",
-		"bio-title": "Biografía Completa",
-		"user-record": "[ REGISTRO DE USUARIO: DAVID_S // ESTADO: ARCHIVADO ]",
-		"return-button": "[ RETORNAR AL INICIO ]",
-		"paragraph1": "Ingeniero Informático enfocado en la intersección de arquitecturas empresariales robustas y Deep Learning aplicado. Especialista en el ecosistema <strong>.NET 8 (Clean Architecture/CQRS)</strong> y <strong>Angular 19 (Signals/Zoneless)</strong>. Mi trabajo de investigación se centra en <strong>Mining Software Repositories (MSR)</strong> mediante redes <strong>LSTM</strong>, buscando patrones de evolución y mantenibilidad en repositorios de gran escala.",
-		"paragraph2": "Mi experiencia profesional incluye diseñar y desplegar sistemas de alta disponibilidad que sirven a miles de usuarios finales, implementar arquitecturas reactivas modernas que eliminaron la dependencia de Zone.js, y aplicar machine learning para predecir el abandono de proyectos OSS. Lidero revisiones de código, mentoreo a desarrolladores junior, y tomo decisiones arquitectónicas que equilibran rendimiento con mantenibilidad.",
-		"paragraph3": "Colaboro con equipos multifuncionales — desde producto hasta infraestructura — para entregar funcionalidades que resisten la escala de producción. Mi trabajo abarca todo el stack: APIs REST (CQRS/Clean Architecture), pipelines de datos en tiempo real y optimización de rendimiento UI a nivel de píxel. Combino ingeniería de software rigurosa con enfoques basados en datos para construir sistemas que perduran.",
-		"currently-focused": "Enfocado actualmente en:",
-		"focus1": "BiLSTM para predicción de abandono OSS",
-		"focus2": "Minería de Repositorios de Software (MSR)",
-		"focus3": "Empresarial .NET 8 & Angular 19",
-		"focus4": "Optimización de sistemas de alta disponibilidad",
-		"focus5": "Deep Learning aplicado a ingeniería de software",
-		"focus6": "Contribuciones de código abierto"
-	},
 	"projects": {
 		"code-button": "Código",
 		"preview-button": "Vista previa",
