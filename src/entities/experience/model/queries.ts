@@ -4,13 +4,9 @@ import {
 	EXPERIENCE_METADATA,
 	EXPERIENCE_TECHNOLOGIES,
 	isExperienceId,
+	type ExperienceId,
 } from './metadata';
-import type {
-	ExperienceContentEntry,
-	ExperienceId,
-	ExperienceItem,
-	ExperienceList,
-} from './types';
+import type { ExperienceContentEntry, ExperienceItem, ExperienceList } from './types';
 
 interface LocalizedExperienceItem extends ExperienceItem {
 	locale: 'en' | 'es';
