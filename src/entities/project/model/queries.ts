@@ -13,10 +13,6 @@ import type {
 	ProjectList,
 } from './types';
 
-interface LocalizedProjectItem extends ProjectItem {
-	locale: 'en' | 'es';
-}
-
 function toEvidence(
 	entry: ProjectContentEntry,
 	projectId: ProjectId
@@ -58,8 +54,8 @@ function toEvidence(
 	};
 }
 
-function toProjectItem(entry: ProjectContentEntry): LocalizedProjectItem {
-	const { projectId, locale, title, description, category, imageAlt, caseStudy } = entry.data;
+function toProjectItem(entry: ProjectContentEntry): ProjectItem {
+	const { projectId, title, description, category, imageAlt, caseStudy } = entry.data;
 
 	if (!isProjectId(projectId)) {
 		throw new Error(`Missing language-neutral metadata for project "${projectId}".`);
@@ -90,7 +86,6 @@ function toProjectItem(entry: ProjectContentEntry): LocalizedProjectItem {
 			role: caseStudy.role,
 			...(evidence ? { evidence } : {}),
 		},
-		locale,
 		...link,
 		...github,
 	};
@@ -101,20 +96,18 @@ export async function getProjectsData(lang: Language): Promise<ProjectList> {
 	const seen = new Set<string>();
 
 	const projects = entries.map(entry => {
+		if (entry.data.locale !== lang) {
+			throw new Error(
+				`Project locale mismatch: requested "${lang}", received "${entry.data.locale}".`
+			);
+		}
+
 		if (seen.has(entry.data.projectId)) {
 			throw new Error(`Duplicate project ID "${entry.data.projectId}" for locale "${lang}".`);
 		}
 		seen.add(entry.data.projectId);
 
-		const item = toProjectItem(entry);
-		if (item.locale !== lang) {
-			throw new Error(
-				`Project locale mismatch: requested "${lang}", received "${item.locale}".`
-			);
-		}
-
-		const { locale: _locale, ...localizedItem } = item;
-		return localizedItem;
+		return toProjectItem(entry);
 	});
 
 	const expectedIds = Object.keys(PROJECT_METADATA) as ProjectId[];
