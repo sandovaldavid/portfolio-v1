@@ -25,9 +25,10 @@ The versioned configuration owns these guarantees:
 - recovery of inherited Bun, dependency-volume, command-history, Git and generated-path ownership;
 - repair during create, container start and VS Code attach lifecycle events;
 - explicit propagation of the real host workspace path to nested test containers;
+- deterministic publication of Astro port `4321` on host loopback as `http://localhost:4321`;
 - documented Fedora SELinux compatibility for the trusted local development container.
 
-`bun run check:devcontainer` rejects version, Feature, lockfile, shell, user, init, IPC, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, Feature, lockfile, shell, user, init, IPC, port-publication, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
 
 ## Intentional project-specific choices
 
@@ -40,6 +41,7 @@ This repository does not copy the generic Astro template literally:
 - the named `node_modules` volume isolates Linux dependencies from the host and from the nested pinned Playwright container.
 - Zsh is the default interactive shell. Bash remains configured as a supported fallback.
 - the host Docker daemon is reused rather than starting a second daemon inside the development container.
+- Astro is published through Docker on host loopback instead of depending on the VS Code port-forwarding tunnel.
 
 ## Exact Features
 
@@ -151,7 +153,7 @@ Prerequisites:
 
 Run **Dev Containers: Reopen in Container**.
 
-After changing image arguments, Features, the lockfile, mounts, users, lifecycle commands, `containerEnv`, `init` or `runArgs`, use **Dev Containers: Rebuild Container Without Cache**. Reopening an existing container does not apply those creation-time changes.
+After changing image arguments, Features, the lockfile, mounts, users, lifecycle commands, `containerEnv`, `appPort`, `portsAttributes`, `init` or `runArgs`, use **Dev Containers: Rebuild Container Without Cache**. Reopening an existing container does not apply those creation-time changes.
 
 The post-create lifecycle executes:
 
@@ -166,6 +168,30 @@ docker compose version
 ```
 
 A stopped host Docker daemon produces a warning; start Docker before Docker-backed tests.
+
+## Host port publication
+
+The Dev Container publishes:
+
+```json
+"appPort": ["127.0.0.1:4321:4321"]
+```
+
+This is a Docker port publication, not a VS Code forwarding tunnel. Port `4321` is bound only to the host loopback interface, so it is available at `http://localhost:4321` but is not exposed to other machines on the LAN. VS Code auto-forwarding is disabled for this port to avoid a second URL or a silently remapped local port.
+
+Astro must listen on all container interfaces:
+
+```bash
+bun run dev -- --host 0.0.0.0
+```
+
+The terminal can still print both `localhost` and the container bridge address. The canonical host URL is `http://localhost:4321`.
+
+If the rebuild fails because the host port is already allocated, identify the owner from a host terminal before retrying:
+
+```bash
+ss -ltnp '( sport = :4321 )'
+```
 
 ## Validate a configuration update
 
@@ -193,6 +219,12 @@ bun run build
 bun run test:e2e:smoke
 VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh
 git status --short
+```
+
+With `bun run dev -- --host 0.0.0.0` still running in the container, validate from a host terminal:
+
+```bash
+curl --fail --head http://localhost:4321/
 ```
 
 Expected core versions:
@@ -244,7 +276,7 @@ Only restore ownership for known generated paths that were previously written by
 ## Daily development
 
 ```bash
-bun run dev
+bun run dev -- --host 0.0.0.0
 bun run check
 bun run test:unit:ci
 bun run build
@@ -253,7 +285,7 @@ bun run test:e2e:desktop
 bun run test:e2e:extended
 ```
 
-Astro uses port `4321`, which the Dev Container forwards automatically.
+Astro uses container port `4321`, published only on the host loopback interface at `http://localhost:4321`.
 
 ## Visual testing
 
@@ -283,6 +315,8 @@ The repository includes:
 
 Use this configuration only with trusted repository code. It is not a production runtime definition. A stricter environment should replace the direct bind mount with a Compose mount using explicit SELinux relabeling and remove `label=disable` after host validation.
 
+The Astro development port is published only to `127.0.0.1`; it is not bound to `0.0.0.0` on the host. Inside the container, Astro still listens on `0.0.0.0` so Docker can route host-loopback traffic to it.
+
 `docker-outside-of-docker` exposes the host Docker daemon to the development user. Processes with access to that socket effectively have host-level container control. Do not run untrusted code inside this environment.
 
 ## Coordinated version updates
@@ -291,11 +325,11 @@ A Playwright, Bun, Feature or shell-tool upgrade is one coordinated change. Upda
 
 1. `package.json` and `bun.lock`;
 2. `.devcontainer/Dockerfile` build arguments;
-3. `.devcontainer/devcontainer.json` build arguments and Feature references;
+3. `.devcontainer/devcontainer.json` build arguments, Feature references and port publication;
 4. `.devcontainer/devcontainer-lock.json`;
 5. shell installer versions and checksums;
 6. Docker test images and reviewed visual baselines;
-7. `scripts/check-devcontainer.mjs` and the Dev Container workflow assertions;
+7. `scripts/check-devcontainer.mjs`, `scripts/check-devcontainer-port.mjs` and the Dev Container workflow assertions;
 8. this document.
 
 Playwright image and package versions must match. A mismatch can prevent the installed client from locating the image's browser executables.
