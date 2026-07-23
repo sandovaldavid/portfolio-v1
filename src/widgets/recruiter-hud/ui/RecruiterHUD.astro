@@ -16,6 +16,7 @@ const { localizedPaths } = Astro.props;
 const lang = getLanguageFromLocale(Astro.currentLocale);
 const tRecruiter = createScopedUiTranslator(lang, 'recruiter');
 const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.resume.es;
+const emailHref = `mailto:${siteConfig.email}?subject=${encodeURIComponent(tRecruiter('emailSubject'))}`;
 ---
 
 <div id="recruiter-hud" class="fixed bottom-5 right-5 z-50 font-mono">
@@ -64,7 +65,7 @@ const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.
 
 		<div class="grid gap-2">
 			<a
-				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
+				href={emailHref}
 				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm"
 			>
 				{tRecruiter('sendEmail')}
