@@ -73,23 +73,6 @@
 			]
 		}
 	},
-	"about-me": {
-		"page-title": "About Me - David Sandoval",
-		"page-description": "Learn more about the background, professional journey, and motivations of David Sandoval in software engineering.",
-		"bio-title": "Full Biography",
-		"user-record": "[ USER RECORD: DAVID_S // STATUS: ARCHIVED ]",
-		"return-button": "[ RETURN TO HOME ]",
-		"paragraph1": "Computer Engineer focused on the intersection of robust enterprise architectures and applied Deep Learning. Specialist in the <strong>.NET 8 ecosystem (Clean Architecture/CQRS)</strong> and <strong>Angular 19 (Signals/Zoneless)</strong>. My research work centers on <strong>Mining Software Repositories (MSR)</strong> using <strong>LSTM networks</strong>, seeking patterns of evolution and maintainability in large-scale repositories.",
-		"paragraph2": "My professional experience includes designing and shipping high-availability systems serving thousands of end-users, implementing modern reactive architectures that eliminated Zone.js dependency, and applying machine learning to predict OSS project abandonment. I lead code reviews, mentor junior developers, and drive architectural decisions that balance performance with maintainability.",
-		"paragraph3": "I collaborate across cross-functional teams — from product to infrastructure — to deliver features that withstand production scale. My work spans the entire stack: REST APIs (CQRS/Clean Architecture), real-time data pipelines, and pixel-level UI performance tuning. I combine rigorous software engineering with data-driven approaches to build systems that last.",
-		"currently-focused": "Currently focused on:",
-		"focus1": "BiLSTM for OSS abandonment prediction",
-		"focus2": "Mining Software Repositories (MSR)",
-		"focus3": "Enterprise .NET 8 & Angular 19",
-		"focus4": "High-availability system optimization",
-		"focus5": "Deep Learning applied to software eng.",
-		"focus6": "Open source contributions"
-	},
 	"projects": {
 		"code-button": "Code",
 		"preview-button": "Preview",

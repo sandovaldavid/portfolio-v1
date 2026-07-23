@@ -102,3 +102,17 @@ bun run build
 ```
 
 Issue #141 will add repository-wide hardcoded-copy and counterpart enforcement after the migration issues have moved production consumers to this API.
+
+## Structured profile content
+
+Issue #135 moves long-form profile and biography records out of UI catalogs and legacy dictionaries. The authoritative localized entries are:
+
+```text
+src/content/portfolio-profile/
+├── en/profile.json
+└── es/profile.json
+```
+
+The `portfolioProfile` collection validates stable identity, locale, SEO metadata, summary, biography paragraphs, focus areas, availability, location, work mode, research positioning and the current-role summary. Language-neutral identity and contact values remain in `siteConfig`.
+
+Consumers load the entry through the public `@entities/profile` API. UI catalogs retain only headings, labels, actions and accessibility text; they do not own long biography records.

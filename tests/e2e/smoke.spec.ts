@@ -17,14 +17,14 @@ async function prepareRouteForAxe(page: Page, route: string) {
 	await page.waitForLoadState('networkidle');
 	await page.addStyleTag({
 		content: `
-			*, *::before, *::after {
-				animation-delay: -1ms !important;
-				animation-duration: 0s !important;
-				animation-iteration-count: 1 !important;
-				transition-duration: 0s !important;
-				transition-delay: 0s !important;
-			}
-		`,
+            *, *::before, *::after {
+                animation-delay: -1ms !important;
+                animation-duration: 0s !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0s !important;
+                transition-delay: 0s !important;
+            }
+        `,
 	});
 }
 
@@ -42,4 +42,18 @@ test.describe('Pull request smoke and accessibility gates', () => {
 			expect(blockingViolations).toEqual([]);
 		});
 	}
+
+	test('localized About routes render their profile entry', async ({ page }) => {
+		await page.goto('/about');
+		await expect(page).toHaveTitle('About David Sandoval — Software Engineer');
+		await expect(page.getByRole('heading', { level: 1, name: 'Full biography' })).toBeVisible();
+		await expect(page.getByText('Angular and reactive frontend architecture')).toBeVisible();
+
+		await page.goto('/es/about');
+		await expect(page).toHaveTitle('Sobre David Sandoval — Ingeniero de Software');
+		await expect(
+			page.getByRole('heading', { level: 1, name: 'Biografía completa' })
+		).toBeVisible();
+		await expect(page.getByText('Angular y arquitectura frontend reactiva')).toBeVisible();
+	});
 });
