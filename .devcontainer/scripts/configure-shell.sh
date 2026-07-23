@@ -136,6 +136,11 @@ replace_managed_block() {
       $0 == "# devcontainer-starship" { legacy = 1; next }
       legacy && $0 == "fi" { legacy = 0; next }
       !legacy { print }
+    ' \
+    | awk '
+      $0 == "# devcontainer-prompt-customization" { legacy_lines = 2; next }
+      legacy_lines > 0 { legacy_lines--; next }
+      { print }
     ' > "$temp_file"
 
   cat >> "$temp_file" <<EOF_RC
