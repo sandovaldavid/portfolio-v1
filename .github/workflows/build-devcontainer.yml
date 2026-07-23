@@ -55,6 +55,11 @@ jobs:
                   git config --global user.name 'Devcontainer CI'
                   git config --global user.email 'devcontainer-ci@example.invalid'
 
+            - name: Validate official Playwright image manifest
+              run: |
+                  playwright_version="$(node -p "require('./package.json').devDependencies['@playwright/test']")"
+                  docker buildx imagetools inspect "mcr.microsoft.com/playwright:v${playwright_version}-noble" >/dev/null
+
             - name: Log in to GitHub Container Registry
               if: github.event_name == 'push'
               uses: docker/login-action@v4
@@ -84,6 +89,7 @@ jobs:
                       test -w node_modules
                       test -n "$HOST_WORKSPACE_FOLDER"
                       test "$TERM" = "xterm-256color"
+                      test "$ZSH_HISTORY_FILE" = "/commandhistory/.zsh_history"
 
                       echo "Verify Git identity propagated to container"
                       test "$(git config --global --get user.name)" = "Devcontainer CI"
@@ -95,6 +101,13 @@ jobs:
                       sudo touch "$BUN_INSTALL/install/cache/inherited/state"
                       sudo chown -R 12345:12345 "$BUN_INSTALL/install/cache"
                       sudo chmod -R u+rwX,go-rX "$BUN_INSTALL/install/cache"
+
+                      echo "Create stale command history fixture"
+                      sudo rm -f "$ZSH_HISTORY_FILE"
+                      sudo mkdir -p "$(dirname "$ZSH_HISTORY_FILE")"
+                      sudo touch "$ZSH_HISTORY_FILE"
+                      sudo chown 12345:12345 "$ZSH_HISTORY_FILE"
+                      sudo chmod 0644 "$ZSH_HISTORY_FILE"
 
                       echo "Create stale dependency volume fixture"
                       sudo rm -f node_modules/.devcontainer-volume-state
@@ -119,6 +132,9 @@ jobs:
                       test "$(cat "$BUN_INSTALL/.devcontainer-owner-state")" = "schema=1 uid=$(id -u) gid=$(id -g)"
                       test "$(stat -c '%u:%g' "$BUN_INSTALL/install/cache/inherited/state")" = "$(id -u):$(id -g)"
                       test -w "$BUN_INSTALL/install/cache"
+                      test "$(stat -c '%u:%g' "$ZSH_HISTORY_FILE")" = "$(id -u):$(id -g)"
+                      test "$(stat -c '%a' "$ZSH_HISTORY_FILE")" = "600"
+                      test -w "$ZSH_HISTORY_FILE"
                       test "$(cat node_modules/.devcontainer-volume-state)" = "schema=1 uid=$(id -u) gid=$(id -g)"
                       test "$(stat -c '%u:%g' node_modules/.vite-temp/stale-config.mjs)" = "$(id -u):$(id -g)"
                       test -w node_modules/.vite-temp
@@ -130,6 +146,15 @@ jobs:
                       test -w junit-results.xml
                       test -w .docker/runtime/node_modules
                       test -w .docker/runtime/home
+
+                      echo "Verify personalized shell contract"
+                      "$HOME/.local/bin/eza" --version | grep -q '0.23.5'
+                      zsh -ic 'starship --version | grep -q "1.26.0"'
+                      zsh -ic 'alias ls | grep -q eza'
+                      zsh -ic 'zle -l | grep -q history-substring-search-up'
+                      zsh -ic 'test -n "$ZSH_AUTOSUGGEST_STRATEGY"'
+                      test -f "$HOME/.local/share/zsh/plugins/zsh-completions-0.36.0/zsh-completions.plugin.zsh"
+                      test -f "$HOME/.config/starship.toml"
 
                       echo "Create hostile nested ESLint fixture"
                       mkdir -p .docker/runtime/home/.bun/install/cache/hostile-package
@@ -144,12 +169,11 @@ jobs:
                       sudo chown -R root:root .docker/runtime/home/.cache/dconf
                       sudo chmod 000 .docker/runtime/home/.cache/dconf
 
-                      echo "Create staged generated devcontainer lock fixture"
-                      printf '{"features":{"fixture":{"version":"1"}}}\n' > .devcontainer/devcontainer-lock.json
-                      git add -f .devcontainer/devcontainer-lock.json
+                      echo "Verify tracked Dev Container lockfile"
+                      test -f .devcontainer/devcontainer-lock.json
+                      git ls-files --error-unmatch .devcontainer/devcontainer-lock.json
+                      node -e "JSON.parse(require('node:fs').readFileSync('.devcontainer/devcontainer-lock.json', 'utf8'))"
                       bun run format:check
-                      git reset -- .devcontainer/devcontainer-lock.json
-                      rm -f .devcontainer/devcontainer-lock.json
 
                       bun install --frozen-lockfile
                       bun install --frozen-lockfile

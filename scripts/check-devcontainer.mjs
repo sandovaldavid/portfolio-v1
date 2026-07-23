@@ -2,9 +2,19 @@ import { readFileSync } from 'node:fs';
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 'utf8'));
+const devcontainerLock = JSON.parse(readFileSync('.devcontainer/devcontainer-lock.json', 'utf8'));
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
 const postCreateScript = readFileSync('.devcontainer/scripts/post-create.sh', 'utf8');
 const postStartScript = readFileSync('.devcontainer/scripts/post-start.sh', 'utf8');
+const configureShellScript = readFileSync('.devcontainer/scripts/configure-shell.sh', 'utf8');
+const configureGitSigningScript = readFileSync(
+	'.devcontainer/scripts/configure-git-ssh-signing.sh',
+	'utf8'
+);
+const shellZsh = readFileSync('.devcontainer/config/shell.zsh', 'utf8');
+const shellBash = readFileSync('.devcontainer/config/shell.bash', 'utf8');
+const starshipConfig = readFileSync('.devcontainer/config/starship.toml', 'utf8');
+const gitConfigAtena = readFileSync('.devcontainer/config/gitconfig-atena', 'utf8');
 const dockerCompose = readFileSync('docker-compose.yml', 'utf8');
 const dockerTestScript = readFileSync('docker-test.sh', 'utf8');
 const runPlaywrightScript = readFileSync('scripts/run-playwright.mjs', 'utf8');
@@ -33,7 +43,26 @@ const runArgs = Array.isArray(devcontainer.runArgs) ? devcontainer.runArgs : [];
 const workspaceFolder = '/workspaces/portfolio-v1';
 const dependencyVolumeMount =
 	'source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume';
+const historyVolumeMount =
+	'source=devcontainer-${localWorkspaceFolderBasename}-zsh-history,target=/commandhistory,type=volume';
 const postStartCommand = 'bash .devcontainer/scripts/post-start.sh';
+const commonUtilsFeature = 'ghcr.io/devcontainers/features/common-utils:2.5.9';
+const dockerFeature = 'ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0';
+const githubCliFeature = 'ghcr.io/devcontainers/features/github-cli:1.1.0';
+const expectedFeatureLocks = {
+	[commonUtilsFeature]: {
+		version: '2.5.9',
+		integrity: 'sha256:cb0c4d3c276f157eed17935747e364178d75fee17f55c4e129966f64633deb3a',
+	},
+	[dockerFeature]: {
+		version: '1.10.0',
+		integrity: 'sha256:c2c2cf829505ead8e4892c88c31b6594ae94a2bbb209e16e1fac456c1a3a624e',
+	},
+	[githubCliFeature]: {
+		version: '1.1.0',
+		integrity: 'sha256:d22f50b70ed75339b4eed1ba9ecde3a1791f90e88d37936517e3bace0bbad671',
+	},
+};
 
 expect(Boolean(bunVersion), 'packageManager must pin Bun as bun@<version>.');
 expect(
@@ -82,16 +111,40 @@ expect(
 	'devcontainer.json must isolate node_modules in a named Docker volume.'
 );
 expect(
-	Boolean(devcontainer.features?.['ghcr.io/devcontainers/features/docker-outside-of-docker:1']),
-	'devcontainer.json must enable Docker outside of Docker.'
+	mounts.includes(historyVolumeMount),
+	'devcontainer.json must persist Zsh history in a project-specific named volume.'
 );
 expect(
-	Boolean(devcontainer.features?.['ghcr.io/devcontainers/features/github-cli:1']),
-	'devcontainer.json must install GitHub CLI support.'
+	devcontainer.containerEnv?.ZSH_HISTORY_FILE === '/commandhistory/.zsh_history',
+	'devcontainer.json must point Zsh history at the persistent private volume.'
 );
+
+for (const [feature, expected] of Object.entries(expectedFeatureLocks)) {
+	expect(Boolean(devcontainer.features?.[feature]), `devcontainer.json must pin ${feature}.`);
+	const lock = devcontainerLock.features?.[feature];
+	expect(
+		lock?.version === expected.version,
+		`${feature} must use lock version ${expected.version}.`
+	);
+	expect(
+		lock?.integrity === expected.integrity,
+		`${feature} must use the reviewed integrity digest.`
+	);
+	expect(
+		lock?.resolved?.endsWith(`@${expected.integrity}`),
+		`${feature} must resolve to the reviewed digest.`
+	);
+}
+
+const commonUtilsOptions = devcontainer.features?.[commonUtilsFeature];
 expect(
-	Boolean(devcontainer.features?.['ghcr.io/devcontainers/features/common-utils:2']),
-	'devcontainer.json must include common-utils for consistent shell environment.'
+	commonUtilsOptions?.installZsh === true &&
+		commonUtilsOptions?.configureZshAsDefaultShell === true &&
+		commonUtilsOptions?.installOhMyZsh === false &&
+		commonUtilsOptions?.installOhMyZshConfig === false &&
+		commonUtilsOptions?.upgradePackages === false &&
+		commonUtilsOptions?.username === 'pwuser',
+	'common-utils must configure a minimal pinned Zsh environment for pwuser without floating OS upgrades or Oh My Zsh.'
 );
 expect(
 	devcontainer.hostRequirements?.cpus >= 2 && devcontainer.hostRequirements?.memory === '4gb',
@@ -110,6 +163,10 @@ expect(devcontainer.init === true, 'The devcontainer must use an init process as
 expect(
 	runArgs.includes('--ipc=host'),
 	'The devcontainer must share host IPC for direct Chromium execution.'
+);
+expect(
+	runArgs.includes('--security-opt') && runArgs.includes('label=disable'),
+	'The trusted local devcontainer must include the documented Fedora SELinux compatibility setting.'
 );
 expect(
 	devcontainer.postCreateCommand === 'bash .devcontainer/scripts/post-create.sh',
@@ -143,9 +200,20 @@ expect(
 	devcontainer.containerEnv?.TERM === 'xterm-256color',
 	'devcontainer.json must expose a consistent interactive terminal capability.'
 );
+
 expect(
 	postCreateScript.includes(postStartCommand),
 	'post-create setup must repair generated workspace paths before validation.'
+);
+expect(
+	postCreateScript.includes('bash .devcontainer/scripts/configure-shell.sh') &&
+		postCreateScript.includes('bash .devcontainer/scripts/configure-git-ssh-signing.sh'),
+	'post-create setup must install the shared dotfiles shell and SSH signing configuration.'
+);
+expect(
+	!postCreateScript.includes('devcontainer-prompt-customization') &&
+		!postCreateScript.includes('__git_branch'),
+	'post-create setup must not retain the legacy ad-hoc prompt implementation.'
 );
 expect(
 	postCreateScript.includes('/proc/self/mountinfo'),
@@ -182,6 +250,16 @@ expect(
 	'the repair script must version, repair and verify the writable Bun home.'
 );
 expect(
+	postStartScript.includes('history_file="${ZSH_HISTORY_FILE:-$HOME/.zsh_history}"') &&
+		postStartScript.includes('chmod 0600 "$history_file"') &&
+		postStartScript.includes('Refusing to repair command history through a symbolic link'),
+	'the repair script must protect and verify private persistent command history.'
+);
+expect(
+	postStartScript.includes('bash .devcontainer/scripts/configure-git-ssh-signing.sh'),
+	'the startup lifecycle must refresh SSH signing when the forwarded agent becomes available.'
+);
+expect(
 	postStartScript.includes('.devcontainer-volume-state') &&
 		postStartScript.includes('Repairing inherited node_modules volume') &&
 		postStartScript.includes('dependency_probe='),
@@ -199,6 +277,58 @@ expect(
 	!postStartScript.includes('chown -R "$owner" -- "$REPOSITORY_ROOT"'),
 	'the repair script must never recursively change ownership of the repository root.'
 );
+
+expect(
+	configureShellScript.includes('STARSHIP_VERSION="${STARSHIP_VERSION:-v1.26.0}"') &&
+		configureShellScript.includes('EZA_VERSION="${EZA_VERSION:-0.23.5}"') &&
+		configureShellScript.includes(
+			'ZSH_AUTOSUGGESTIONS_VERSION="${ZSH_AUTOSUGGESTIONS_VERSION:-0.7.1}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_SYNTAX_HIGHLIGHTING_VERSION="${ZSH_SYNTAX_HIGHLIGHTING_VERSION:-0.8.0}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_COMPLETIONS_VERSION="${ZSH_COMPLETIONS_VERSION:-0.36.0}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_HISTORY_SUBSTRING_SEARCH_VERSION="${ZSH_HISTORY_SUBSTRING_SEARCH_VERSION:-1.1.0}"'
+		),
+	'the shared shell installer must pin the reviewed dotfiles tool versions.'
+);
+expect(
+	(configureShellScript.match(/sha256sum --check --status/g) ?? []).length >= 2 &&
+		!configureShellScript.includes('/latest/') &&
+		!configureShellScript.includes(':latest'),
+	'the shared shell installer must verify downloads and avoid floating latest references.'
+);
+expect(
+	shellZsh.includes('HISTSIZE=50000') &&
+		shellZsh.includes('setopt HIST_IGNORE_SPACE') &&
+		shellZsh.includes('history-substring-search-up') &&
+		shellZsh.includes("alias ls='eza --icons=auto --group-directories-first'") &&
+		shellZsh.includes('eval "$(starship init zsh)"'),
+	'the managed Zsh configuration must provide private history, substring search, eza aliases and Starship.'
+);
+expect(
+	shellBash.includes("alias ls='eza --icons=auto --group-directories-first'") &&
+		shellBash.includes('eval "$(starship init bash)"'),
+	'the managed Bash fallback must provide the shared eza aliases and Starship prompt.'
+);
+expect(
+	starshipConfig.includes('[git_status]') &&
+		starshipConfig.includes('[bun]') &&
+		starshipConfig.includes('[container]'),
+	'the portable Starship configuration must retain the personalized Git, Bun and container modules.'
+);
+expect(
+	configureGitSigningScript.includes('namespaces="git"') &&
+		configureGitSigningScript.includes('ssh-add -L') &&
+		configureGitSigningScript.includes('gitconfig-atena') &&
+		gitConfigAtena.includes('david.sandoval@atena.la') &&
+		gitConfigAtena.includes('signingKey = key::ssh-ed25519'),
+	'the container must configure Git signing through the forwarded SSH agent without copying private keys.'
+);
+
 expect(
 	dockerCompose.includes('init: true') && dockerCompose.includes('ipc: host'),
 	'the pinned Playwright container must use init and host IPC.'
@@ -259,6 +389,12 @@ expect(
 	'the devcontainer workflow must assert that the remote user owns the bind-mounted workspace.'
 );
 expect(
+	devcontainerWorkflow.includes('Verify personalized shell contract') &&
+		devcontainerWorkflow.includes('history-substring-search-up') &&
+		devcontainerWorkflow.includes('Verify tracked Dev Container lockfile'),
+	'the devcontainer workflow must verify the dotfiles shell and committed Feature lockfile.'
+);
+expect(
 	devcontainerWorkflow.includes('Create stale Git metadata fixture'),
 	'the devcontainer workflow must validate recovery from an unwritable FETCH_HEAD.'
 );
@@ -296,5 +432,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, normalized Linux identity, init and IPC isolation settings, writable Git metadata and Bun home, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, and host-aware Docker mounts.`
+	`Devcontainer contract verified: Bun ${bunVersion}, Playwright ${playwrightVersion}, exact Feature locks, personalized Starship/eza/Zsh shell, private persistent history, normalized Linux identity, init and IPC settings, SELinux compatibility, writable Git metadata and Bun home, isolated node_modules, lifecycle repair, tracked-file formatting, permission-aware Playwright, SSH-backed signing and host-aware Docker mounts.`
 );

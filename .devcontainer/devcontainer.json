@@ -14,12 +14,16 @@
 	"updateRemoteUserUID": true,
 
 	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
+		"ghcr.io/devcontainers/features/common-utils:2.5.9": {
 			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": false,
+			"installOhMyZshConfig": false,
+			"upgradePackages": false,
 			"username": "pwuser"
 		},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-		"ghcr.io/devcontainers/features/github-cli:1": {}
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {},
+		"ghcr.io/devcontainers/features/github-cli:1.1.0": {}
 	},
 
 	"customizations": {
@@ -52,14 +56,19 @@
 	"workspaceFolder": "/workspaces/portfolio-v1",
 
 	"mounts": [
-		"source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+		"source=${localWorkspaceFolderBasename}-devcontainer-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+		"source=devcontainer-${localWorkspaceFolderBasename}-zsh-history,target=/commandhistory,type=volume"
 	],
 
-	"forwardPorts": [4321],
+	"appPort": ["127.0.0.1:4321:4321", "127.0.0.1:9323:9323"],
 	"portsAttributes": {
 		"4321": {
-			"label": "Astro development server",
-			"onAutoForward": "notify"
+			"label": "Astro development server (published on host localhost)",
+			"onAutoForward": "ignore"
+		},
+		"9323": {
+			"label": "Playwright HTML report (published on host localhost)",
+			"onAutoForward": "ignore"
 		}
 	},
 
@@ -68,11 +77,12 @@
 		"HOST_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
 		"NODE_ENV": "development",
 		"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright",
-		"TERM": "xterm-256color"
+		"TERM": "xterm-256color",
+		"ZSH_HISTORY_FILE": "/commandhistory/.zsh_history"
 	},
 
 	"init": true,
-	"runArgs": ["--ipc=host"],
+	"runArgs": ["--ipc=host", "--security-opt", "label=disable"],
 
 	"postCreateCommand": "bash .devcontainer/scripts/post-create.sh",
 	"postStartCommand": "bash .devcontainer/scripts/post-start.sh",

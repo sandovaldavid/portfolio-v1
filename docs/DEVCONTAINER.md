@@ -1,98 +1,230 @@
 # Development container
 
-The repository devcontainer is the recommended environment for implementation, repository checks, Astro development and Playwright work. It keeps the core toolchain aligned with CI while still using the host Docker daemon for nested Docker-based validation.
+The repository Dev Container is the recommended environment for implementation, repository checks, Astro development and Playwright work. It keeps the project toolchain aligned with CI, uses the host Docker daemon for nested Docker validation and applies the portable shell contract maintained in `sandovaldavid/dotfiles`.
 
 ## Guarantees
 
 The versioned configuration owns these guarantees:
 
-- Ubuntu 24.04 through the Playwright Noble image;
+- Ubuntu 24.04 through the official Playwright Noble image;
 - Bun `1.3.14`, matching `packageManager`;
 - Playwright `1.61.1`, matching the exact `@playwright/test` dependency;
 - browsers supplied by the Playwright image through `/ms-playwright`;
 - a normalized `pwuser` UID/GID of `1000:1000` before Dev Containers applies host-specific remapping;
-- the same non-root `pwuser` identity for the default container process, VS Code, terminals, tasks and lifecycle commands;
+- the same non-root `pwuser` identity for the default process, VS Code, terminals, tasks and lifecycle commands;
 - a Docker init process as PID 1 and host IPC for direct Chromium execution;
 - frozen dependency installation from `bun.lock`;
 - a writable, versioned Bun home at `/home/pwuser/.bun`;
 - a container-owned named volume for `node_modules`;
-- one-time recovery of inherited dependency-volume ownership through a versioned owner marker;
-- repair of Git metadata and known ignored/generated workspace paths left by another UID;
+- a project-specific named volume for private Zsh command history;
+- exact, digest-locked Dev Container Features;
+- GitHub CLI, Docker CLI, Docker Compose and access to the host Docker daemon;
+- Starship `1.26.0` with the portable personalized prompt from `dotfiles`;
+- eza `0.23.5` and pinned Zsh completions, autosuggestions, syntax highlighting and history substring search;
+- Git SSH signing through the forwarded host agent without copying private keys;
+- recovery of inherited Bun, dependency-volume, command-history, Git and generated-path ownership;
 - repair during create, container start and VS Code attach lifecycle events;
-- GitHub CLI and Docker Compose support;
-- Docker-outside-of-Docker access to the host daemon;
-- explicit propagation of the real host workspace path to nested test containers.
+- explicit propagation of the real host workspace path to nested test containers;
+- deterministic publication of Astro port `4321` and Playwright report port `9323` on host loopback;
+- documented Fedora SELinux compatibility for the trusted local development container.
 
-`bun run check:devcontainer` rejects version, user, init, IPC, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
+`bun run check:devcontainer` rejects version, Feature, lockfile, shell, user, init, IPC, port-publication, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
 
 ## Intentional project-specific choices
 
-This repository does not copy a generic `vscode` and `/workspace` template literally:
+This repository does not copy the generic Astro template literally:
 
-- `pwuser` is retained because it is the non-root user supplied by the pinned Playwright base image. The Dockerfile normalizes it before Dev Containers applies host-specific remapping and ends with `USER pwuser`.
-- `/workspaces/portfolio-v1` remains the canonical workspace because the devcontainer, validation workflow and repository scripts share that contract.
-- `waitFor` remains `postStartCommand`. Lifecycle stages execute in order, so a first creation still completes `postCreateCommand`; later starts also block VS Code attachment until Git, Bun, dependency and generated-state repair has completed.
-- the named `node_modules` volume remains enabled to isolate Linux dependencies from the host and from the pinned nested Playwright container. Its ownership is managed explicitly instead of relying on the volume's previous state.
-- Bash remains the default terminal because it is installed and versioned by the image. The repository does not declare zsh unless the Dockerfile owns that dependency.
+- `mcr.microsoft.com/playwright` remains the base image because the repository executes Playwright directly inside the development container and requires browser binaries compatible with the exact project client.
+- `pwuser` remains the non-root identity supplied by that image. The Dockerfile normalizes it before Dev Containers applies host-specific remapping and ends with `USER pwuser`.
+- `/workspaces/portfolio-v1` remains the canonical workspace because the Dev Container, validation workflow and repository scripts share that contract.
+- `waitFor` remains `postStartCommand`. A first creation still completes `postCreateCommand`; later starts block VS Code attachment until writable state and Git signing have been refreshed.
+- the named `node_modules` volume isolates Linux dependencies from the host and from the nested pinned Playwright container.
+- Zsh is the default interactive shell. Bash remains configured as a supported fallback.
+- the host Docker daemon is reused rather than starting a second daemon inside the development container.
+- Astro and the Playwright report are published through Docker on host loopback instead of depending on VS Code port-forwarding tunnels.
 
-## Prerequisites
+## Exact Features
 
-Install and start:
+The Dev Container and `.devcontainer/devcontainer-lock.json` use:
 
-1. Docker Engine or Docker Desktop.
-2. Visual Studio Code.
-3. The Dev Containers extension.
+```text
+ghcr.io/devcontainers/features/common-utils:2.5.9
+ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0
+ghcr.io/devcontainers/features/github-cli:1.1.0
+```
 
-Assistant CLIs are optional user tools configured on the host and are not part of the repository's reproducible core toolchain.
+The lockfile records the reviewed OCI digests. Whenever a Feature reference or option changes, regenerate and review the lockfile with the Dev Container CLI before merging.
+
+`common-utils` installs Zsh, configures it as the default shell for `pwuser`, disables Oh My Zsh and does not perform floating operating-system upgrades.
+
+## Personalized shell contract
+
+The lifecycle installs checksum-verified releases under the remote user's home:
+
+| Component                    |  Version |
+| ---------------------------- | -------: |
+| Starship                     | `1.26.0` |
+| eza                          | `0.23.5` |
+| zsh-autosuggestions          |  `0.7.1` |
+| zsh-syntax-highlighting      |  `0.8.0` |
+| zsh-completions              | `0.36.0` |
+| zsh-history-substring-search |  `1.1.0` |
+
+The files below are synchronized from the portable Dev Container templates in `dotfiles`:
+
+```text
+.devcontainer/config/starship.toml
+.devcontainer/config/shell.zsh
+.devcontainer/config/shell.bash
+.devcontainer/config/gitconfig-atena
+.devcontainer/scripts/configure-shell.sh
+.devcontainer/scripts/configure-git-ssh-signing.sh
+```
+
+Zsh provides:
+
+- history-based autosuggestions;
+- syntax highlighting;
+- completion menus;
+- substring history search with Up/Down and `Ctrl-P`/`Ctrl-N`;
+- `HISTSIZE=50000` and `SAVEHIST=50000`;
+- duplicate reduction and immediate sharing between project terminals;
+- `HIST_IGNORE_SPACE`, so a command prefixed with one space is not persisted.
+
+The following aliases use eza when available:
+
+```text
+ls        icon-aware listing; native flags such as `ls -a` are appended
+l         compact listing
+la        hidden entries
+ll        long listing with Git status and ISO timestamps
+tree      recursive tree
+tree2     tree limited to depth 2
+tree3     tree limited to depth 3
+tree-d    directories only
+lsd       directories only
+lsf       files only
+ls-native native Coreutils ls escape hatch
+```
+
+Icons require a Nerd Font in the host terminal.
+
+## Persistent command history
+
+Each checkout mounts:
+
+```text
+source=devcontainer-${localWorkspaceFolderBasename}-zsh-history
+target=/commandhistory
+```
+
+Zsh stores history in `/commandhistory/.zsh_history`. The lifecycle creates the directory with mode `0700` and the file with mode `0600`, repairs stale ownership and rejects symbolic-link redirection.
+
+The volume survives container rebuilds but is scoped by the local workspace directory name. Command history may contain internal paths, hostnames or accidentally pasted secrets. Prefix sensitive commands with one space, and remove the named history volume if sensitive material was stored without that prefix.
+
+## Git identity and SSH signing
+
+VS Code can inherit the host Git configuration and SSH agent. The lifecycle:
+
+1. installs the bundled conditional Atena identity when the host configuration references it;
+2. resolves the effective repository email and inline SSH public signing key;
+3. verifies that the exact public key is loaded in the forwarded agent;
+4. writes `$HOME/.config/git/allowed_signers` with mode `0600`.
+
+No private key is copied into the repository, image or container filesystem. Missing identity or agent keys produce warnings and do not block dependency installation.
 
 ## Workspace and dependencies
 
 The repository source is bind-mounted at `/workspaces/portfolio-v1`. The host checkout remains the source of truth for code, documentation and Git state.
 
-On native Linux, a bind mount preserves the numeric host UID and GID. The development image therefore normalizes `pwuser` to `1000:1000`, and Dev Containers may remap that identity when a different host UID is detected during container creation. The startup repair refuses to change repository ownership when the running user and workspace owner do not match.
+On native Linux, the bind mount preserves numeric host ownership. Dev Containers may remap `pwuser` during creation. The startup lifecycle refuses to recursively change repository ownership when the running UID and workspace owner do not match.
 
-`node_modules` is deliberately different. The path `/workspaces/portfolio-v1/node_modules` is overlaid with the Docker named volume `portfolio-v1-devcontainer-node_modules` when the local repository directory is named `portfolio-v1`.
+`node_modules` is overlaid with the named volume `${localWorkspaceFolderBasename}-devcontainer-node_modules`. The lifecycle stores `.devcontainer-volume-state` inside it. When the marker identifies another schema or UID/GID, the complete disposable volume is repaired once; later starts repair mutable tool paths and verify write access.
 
-This separation prevents the devcontainer from reusing dependency links created by:
+Bun is installed under `/home/pwuser/.bun`. A separate owner marker controls safe repair of Bun's cache and prevents recursive changes outside the managed home.
 
-- a native host installation;
-- another package manager;
-- the pinned visual-test container;
-- an interrupted or differently configured Bun installation.
+## Open or rebuild
 
-The permission lifecycle stores `.devcontainer-volume-state` inside the named volume. When the marker is missing, uses another schema or identifies another UID/GID, the lifecycle repairs the complete volume once. Later starts repair only mutable tool paths such as `.bin`, `.cache`, `.vite` and `.vite-temp`, then verify that a probe file can be created and removed.
+Prerequisites:
 
-Bun itself is installed under `/home/pwuser/.bun`. The lifecycle stores `.devcontainer-owner-state` there, repairs inherited ownership only when the schema or numeric identity changes, restores the mutable global cache and verifies write access. This matters on Linux because Bun can populate project dependencies from its global cache using hardlinks.
+1. Docker Engine or Docker Desktop;
+2. Visual Studio Code;
+3. the Dev Containers extension.
 
-The post-create lifecycle verifies that `node_modules` is a separate mount and prepared for `pwuser` before performing a frozen Bun installation. The permanent workflow deliberately changes both the Bun cache and the entire dependency volume to another numeric UID, creates a stale Vite cache and proves that two consecutive frozen installations plus Vitest succeed after recovery.
+Run **Dev Containers: Reopen in Container**.
 
-## Open the repository
+After changing image arguments, Features, the lockfile, mounts, users, lifecycle commands, `containerEnv`, `appPort`, `portsAttributes`, `init` or `runArgs`, use **Dev Containers: Rebuild Container Without Cache**. Reopening an existing container does not apply those creation-time changes.
 
-From Visual Studio Code, run **Dev Containers: Reopen in Container**.
-
-After changing `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, the dependency mount, lifecycle commands, `init`, `runArgs` or a referenced Feature, run **Dev Containers: Rebuild Container**. Reopening an existing container does not rebuild its image or apply new mount, user, init or environment declarations.
-
-The post-create script performs the following checks:
+The post-create lifecycle executes:
 
 ```bash
 bash .devcontainer/scripts/post-start.sh
-bun --version
+bash .devcontainer/scripts/configure-shell.sh
+bash .devcontainer/scripts/configure-git-ssh-signing.sh
 bun install --frozen-lockfile
-bunx playwright --version
 bun run check:devcontainer
 docker --version
 docker compose version
 ```
 
-A successful setup prints the resolved Bun, Playwright, workspace and isolated dependency paths. A stopped host Docker daemon produces a warning; start Docker before running Docker-backed commands.
+A stopped host Docker daemon produces a warning; start Docker before Docker-backed tests.
 
-## Validate a runtime configuration update
+## Host port publication
 
-Changes to `init`, `runArgs`, users, mounts or container-wide environment variables require a real rebuild. After pulling such a change, run **Dev Containers: Rebuild Container** and verify inside the new container:
+The Dev Container publishes:
+
+```json
+"appPort": [
+  "127.0.0.1:4321:4321",
+  "127.0.0.1:9323:9323"
+]
+```
+
+These are Docker port publications, not VS Code forwarding tunnels. Both ports are bound only to the host loopback interface and are not exposed to other machines on the LAN. VS Code auto-forwarding is disabled for both ports to avoid duplicate URLs or silently remapped local ports.
+
+| Service                | Container port | Host URL                |
+| ---------------------- | -------------: | ----------------------- |
+| Astro development      |           4321 | `http://localhost:4321` |
+| Playwright HTML report |           9323 | `http://localhost:9323` |
+
+Astro must listen on all container interfaces:
+
+```bash
+bun run dev -- --host 0.0.0.0
+```
+
+Generate a Playwright report and serve it on the published report port:
+
+```bash
+bun run test:e2e:smoke
+bun run test:e2e:report
+```
+
+`test:e2e:report` runs the project-local Playwright binary with `--host 0.0.0.0 --port 9323`. It blocks the terminal until stopped with `Ctrl+C`.
+
+If a rebuild fails because either host port is already allocated, identify the owner from a host terminal before retrying:
+
+```bash
+ss -ltnp '( sport = :4321 or sport = :9323 )'
+```
+
+## Validate a configuration update
+
+Inside a newly rebuilt container run:
 
 ```bash
 test "$(id -u)" = "$(stat -c '%u' /workspaces/portfolio-v1)"
 test "$TERM" = "xterm-256color"
+test "$ZSH_HISTORY_FILE" = "/commandhistory/.zsh_history"
+test "$(stat -c '%a' "$ZSH_HISTORY_FILE")" = "600"
+
+bun --version
+bunx playwright --version
+"$HOME/.local/bin/eza" --version
+zsh -ic 'starship --version'
+zsh -ic 'alias ls'
+zsh -ic 'zle -l | grep history-substring-search-up'
+
 cat "$BUN_INSTALL/.devcontainer-owner-state"
 cat node_modules/.devcontainer-volume-state
 bun install --frozen-lockfile
@@ -100,17 +232,33 @@ bun run check
 bun run test:unit:ci
 bun run build
 bun run test:e2e:smoke
-bun run test:e2e:visual:docker
+VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh
 git status --short
 ```
 
-The visual suite must complete without updating snapshots. The final Git status must not contain generated output or local-only assistant configuration staged for commit.
+With Astro and the Playwright report servers running in separate container terminals, validate from the host:
+
+```bash
+curl --fail --head http://localhost:4321/
+curl --fail --head http://localhost:9323/
+```
+
+Expected core versions:
+
+```text
+Bun 1.3.14
+Playwright 1.61.1
+Starship 1.26.0
+eza 0.23.5
+```
+
+The final Git status must not contain generated output or local-only assistant configuration staged for commit.
 
 ## Recover a stale dependency volume
 
-A normal rebuild preserves the named `node_modules` volume to avoid reinstalling every package from scratch. An inherited volume can contain links or Vite caches written by the UID of an older container. Typical symptoms are repeated Bun `EEXIST` link failures or `EACCES` under `node_modules/.vite-temp`.
+A normal rebuild preserves `node_modules`. Typical stale-volume symptoms are Bun `EEXIST` link failures or `EACCES` under Vite cache directories.
 
-After updating the branch, run inside a correctly aligned devcontainer:
+Run inside an identity-aligned Dev Container:
 
 ```bash
 bash .devcontainer/scripts/post-start.sh
@@ -119,29 +267,19 @@ cat node_modules/.devcontainer-volume-state
 bun install --frozen-lockfile
 ```
 
-Both states must identify the current numeric UID/GID, for example:
-
-```text
-schema=1 uid=1000 gid=1000
-```
-
-This repair is safe because `node_modules` is a disposable named volume and the Bun path is restricted to `/home/pwuser/.bun`; neither operation recursively changes tracked source.
-
-If the isolated volume remains structurally corrupted after the automatic recovery, close the devcontainer and remove only that volume from a host terminal:
+If the disposable dependency volume remains corrupted, close the container and remove only that volume from the host:
 
 ```bash
 docker volume rm portfolio-v1-devcontainer-node_modules
 ```
 
-Then run **Dev Containers: Rebuild Container**. Docker creates a fresh empty volume and the post-create lifecycle restores dependencies from `bun.lock`.
-
-Do not delete the repository or reset Git to repair dependencies. Removing this named volume affects installed packages only.
+Then rebuild. Do not delete the repository or recursively change ownership of tracked source.
 
 ## Recover a stale container identity
 
-A log that starts an existing container and includes `--skip-post-create` is not a rebuild. On Linux, an old container may retain a different numeric UID from the host checkout. The repair script reports both identities and exits before changing `.git` or generated paths.
+A log containing `--skip-post-create` describes a restart, not a rebuild. When the startup lifecycle reports an identity mismatch, remove the stale container and run **Dev Containers: Rebuild Container Without Cache**.
 
-From a host terminal in the repository, inspect the ownership first:
+Inspect from the host first:
 
 ```bash
 id
@@ -149,109 +287,66 @@ stat -c 'workspace=%u:%g %n' .
 docker inspect --format '{{.Config.User}}' <container-id>
 ```
 
-Restore host ownership only for paths that currently exist and were previously changed by a container:
-
-```bash
-for path in \
-	.git .astro dist coverage playwright-report test-results \
-	test-results.json junit-results.xml .docker; do
-	if [ -e "$path" ]; then
-		sudo chown -R "$(id -u):$(id -g)" "$path"
-	fi
-done
-```
-
-Remove the stale container shown in the Dev Containers log:
-
-```bash
-docker rm -f <container-id>
-```
-
-Then run **Dev Containers: Rebuild Container Without Cache**. A successful container must satisfy:
-
-```bash
-test "$(id -u)" = "$(stat -c '%u' /workspaces/portfolio-v1)"
-test -w /workspaces/portfolio-v1
-```
-
-Do not use recursive `chown` on the entire repository. Tracked source remains owned by the host user.
-
-## Recover stale Git or generated artifacts
-
-The source checkout is a host bind mount, so Git metadata and generated output from a previous native command, container or UID can remain visible after a rebuild. Typical symptoms are `EACCES` errors involving:
-
-- `.git/FETCH_HEAD`;
-- `.astro`;
-- `playwright-report` or `test-results`;
-- `test-results.json` or `junit-results.xml`;
-- `.docker/runtime`.
-
-The create, start and attach lifecycles repair the actual Git directory and the known ignored/generated paths automatically. Direct Playwright commands repeat the repair before creating reports, and the Docker visual wrapper repeats it before using `.docker/runtime`.
-
-Run the repair manually inside a correctly aligned devcontainer when needed:
-
-```bash
-bash .devcontainer/scripts/post-start.sh
-```
-
-The script first requires the running UID to match the Linux workspace owner. It then restricts Bun repair to `/home/pwuser/.bun`, resolves the actual Git directory, requires it to remain under the repository and refuses symbolic links. It repairs Bun state, Git metadata, the isolated dependency volume and an explicit generated-path allowlist; it never recursively changes ownership of the repository root or tracked source files. `.docker/` is outside both Prettier and ESLint scope because it contains container runtime state rather than repository content.
+Only restore ownership for known generated paths that were previously written by another container. Never run recursive `chown` over the complete repository.
 
 ## Daily development
 
 ```bash
-bun run dev
+bun run dev -- --host 0.0.0.0
 bun run check
 bun run test:unit:ci
 bun run build
 bun run test:e2e:smoke
+bun run test:e2e:report
 bun run test:e2e:desktop
 bun run test:e2e:extended
 ```
 
-All direct Playwright scripts use `scripts/run-playwright.mjs`, which repairs stale generated reports only when `DEVCONTAINER=true` and then delegates to the pinned project client.
-
-Astro uses port `4321`, which the devcontainer forwards automatically.
+Astro is available at `http://localhost:4321`. After a Playwright run creates `playwright-report`, `bun run test:e2e:report` serves it at `http://localhost:9323`.
 
 ## Visual testing
 
-A native visual run executes directly in the devcontainer:
+A native visual run executes directly in the Dev Container:
 
 ```bash
 RUN_VISUAL_TESTS=true bun run test:e2e:visual
 ```
 
-The outer devcontainer uses Docker init and host IPC, matching Playwright's recommended process and Chromium shared-memory settings for direct browser execution.
-
-Use the native run for diagnostics and local UI iteration. Screenshot rendering can differ across host kernels, graphics stacks and container configurations.
-
-The merge-grade visual command is:
+The merge-grade visual command remains the nested pinned container:
 
 ```bash
 bun run test:e2e:visual:docker
 ```
 
-The devcontainer exports the real host checkout as `HOST_WORKSPACE_FOLDER`. Docker Compose uses that host path rather than `/workspaces/portfolio-v1`, which exists only inside the outer devcontainer. The wrapper verifies that `/workspace/package.json` and `/workspace/bun.lock` are visible in the inner pinned container before installation or tests begin.
+The outer Dev Container exports the real host checkout as `HOST_WORKSPACE_FOLDER`. Docker Compose mounts that host path into the nested Playwright container and verifies `package.json` and `bun.lock` before running tests.
 
-The inner pinned test container also uses `init: true` and `ipc: host` and remains the authoritative visual environment; the outer devcontainer is the development shell.
+## SELinux and security boundary
 
-Never regenerate committed snapshots merely to satisfy a native devcontainer mismatch. Reviewed updates must be generated in the pinned visual container and followed by a complete run without `--update-snapshots`.
+The repository includes:
 
-## Version updates
-
-A Playwright or Bun upgrade is one coordinated change. Update all applicable owners together:
-
-1. `package.json`;
-2. `bun.lock` when dependency resolution changes;
-3. `.devcontainer/Dockerfile` build arguments;
-4. `.devcontainer/devcontainer.json` build arguments;
-5. Docker test images and reviewed visual baselines when applicable.
-
-Then rebuild the devcontainer and run:
-
-```bash
-bun run check
-bun run test:unit:ci
-bun run build
+```json
+"runArgs": ["--ipc=host", "--security-opt", "label=disable"]
 ```
 
-Playwright image and package versions must match. A mismatch can prevent the installed Playwright client from locating the image's browser executables.
+`--ipc=host` is required for direct Chromium work. `label=disable` avoids Fedora SELinux denials on the direct workspace bind mount, including lifecycle `Permission denied` failures. It also disables SELinux label confinement for this development container.
+
+Use this configuration only with trusted repository code. It is not a production runtime definition. A stricter environment should replace the direct bind mount with a Compose mount using explicit SELinux relabeling and remove `label=disable` after host validation.
+
+The development ports are published only to `127.0.0.1`; they are not bound to `0.0.0.0` on the host. Inside the container, the corresponding servers listen on `0.0.0.0` so Docker can route host-loopback traffic to them.
+
+`docker-outside-of-docker` exposes the host Docker daemon to the development user. Processes with access to that socket effectively have host-level container control. Do not run untrusted code inside this environment.
+
+## Coordinated version updates
+
+A Playwright, Bun, Feature or shell-tool upgrade is one coordinated change. Update all applicable owners together:
+
+1. `package.json` and `bun.lock`;
+2. `.devcontainer/Dockerfile` build arguments;
+3. `.devcontainer/devcontainer.json` build arguments, Feature references and port publication;
+4. `.devcontainer/devcontainer-lock.json`;
+5. shell installer versions and checksums;
+6. Docker test images and reviewed visual baselines;
+7. `scripts/check-devcontainer.mjs`, `scripts/check-devcontainer-port.mjs` and the Dev Container workflow assertions;
+8. this document.
+
+Playwright image and package versions must match. A mismatch can prevent the installed client from locating the image's browser executables.
