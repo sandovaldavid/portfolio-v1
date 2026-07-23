@@ -4,7 +4,9 @@ test.describe('Localized home sections', () => {
 	test('renders complete English home copy', async ({ page }) => {
 		await page.goto('/');
 
-		await expect(page.getByText('[ AVAILABLE FOR SOFTWARE ENGINEERING OPPORTUNITIES ]')).toBeVisible();
+		await expect(
+			page.getByText('[ AVAILABLE FOR SOFTWARE ENGINEERING OPPORTUNITIES ]')
+		).toBeVisible();
 		await expect(page.getByText('Professional profile').first()).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Experience' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Research' })).toBeVisible();

@@ -35,9 +35,9 @@ describe('home section localization migration', () => {
 				'vision',
 				'tech-stack',
 			]) {
-				expect(existsSync(`src/shared/config/i18n/locales/${locale}/sections/${module}.json`)).toBe(
-					true
-				);
+				expect(
+					existsSync(`src/shared/config/i18n/locales/${locale}/sections/${module}.json`)
+				).toBe(true);
 			}
 		}
 
