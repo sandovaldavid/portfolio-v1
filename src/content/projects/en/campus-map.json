@@ -11,7 +11,7 @@
 		"tradeoffs": "Chose Cloudinary for image hosting over local assets to keep the bundle lean and enable on-demand transformations. Decided against real-time GPS tracking to focus on the core directory use case first.",
 		"outcome": "Reduced campus orientation time from days to minutes. Serves as the go-to directory for faculty locations, event spaces, and administrative offices across the university.",
 		"learnings": [
-			"App Router data fetching patterns with server components and API routes",
+			"App Router data fetching patterns (server components + API routes)",
 			"Geolocation indexing for campus-scale spatial queries",
 			"Cloudinary image transformations for responsive map markers"
 		],
