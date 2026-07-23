@@ -19,7 +19,7 @@
 		"typecheck:tooling": "tsc --noEmit --project tsconfig.tooling.json",
 		"typecheck": "bun run typecheck:astro && bun run typecheck:tooling",
 		"check:docs": "node scripts/check-doc-links.mjs",
-		"check:devcontainer": "node scripts/check-devcontainer.mjs",
+		"check:devcontainer": "node scripts/check-devcontainer.mjs && node scripts/check-devcontainer-port.mjs",
 		"check": "bun run format:check && bun run check:docs && bun run check:devcontainer && bun run lint && bun run typecheck",
 		"check:links": "node scripts/check-built-links.mjs",
 		"screenshots": "node docs/testing/capture-screenshots.mjs",
