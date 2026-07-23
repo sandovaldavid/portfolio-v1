@@ -2,22 +2,38 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch Chrome",
+			"name": "Portfolio: Dev Server + Host Browser",
 			"request": "launch",
-			"type": "chrome",
+			"type": "node-terminal",
+			"command": "bun run dev:host",
+			"serverReadyAction": {
+				"pattern": "Local:\\s+(https?://\\S+)",
+				"uriFormat": "http://localhost:4321",
+				"action": "openExternally"
+			}
+		},
+		{
+			"name": "Portfolio: Debug in Host Chrome",
+			"request": "launch",
+			"type": "pwa-chrome",
 			"url": "http://localhost:4321",
 			"webRoot": "${workspaceFolder}"
 		},
 		{
-			"command": "bun run dev",
-			"name": "Development server (Bun)",
+			"name": "Portfolio: Serve Playwright Report",
 			"request": "launch",
-			"type": "node-terminal"
+			"type": "node-terminal",
+			"command": "bun run test:e2e:report",
+			"serverReadyAction": {
+				"pattern": "Serving HTML report at (https?://\\S+)",
+				"uriFormat": "http://localhost:9323",
+				"action": "openExternally"
+			}
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Debug Unit Tests (Vitest)",
+			"name": "Portfolio: Debug Unit Tests",
 			"autoAttachChildProcesses": true,
 			"program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
 			"args": ["run"],
