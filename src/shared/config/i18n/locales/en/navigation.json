@@ -1,9 +1,12 @@
 {
+	"home": "Home",
 	"experience": "Experience",
 	"research": "Research",
 	"projects": "Projects",
+	"devlog": "Devlog",
 	"blog": "Blog",
 	"about": "About me",
+	"skills": "Skills inventory",
 	"stack": "Stack",
 	"resume": "Resume"
 }

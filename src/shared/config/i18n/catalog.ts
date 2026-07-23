@@ -1,6 +1,9 @@
 import accessibilityEn from './locales/en/accessibility.json';
+import breadcrumbsEn from './locales/en/breadcrumbs.json';
+import cliEn from './locales/en/cli.json';
 import commonEn from './locales/en/common.json';
 import errorsEn from './locales/en/errors.json';
+import footerEn from './locales/en/footer.json';
 import navigationEn from './locales/en/navigation.json';
 import recruiterEn from './locales/en/recruiter.json';
 import aboutEn from './locales/en/sections/about.json';
@@ -11,8 +14,11 @@ import visionEn from './locales/en/sections/vision.json';
 import splashEn from './locales/en/splash.json';
 import themeEn from './locales/en/theme.json';
 import accessibilityEs from './locales/es/accessibility.json';
+import breadcrumbsEs from './locales/es/breadcrumbs.json';
+import cliEs from './locales/es/cli.json';
 import commonEs from './locales/es/common.json';
 import errorsEs from './locales/es/errors.json';
+import footerEs from './locales/es/footer.json';
 import navigationEs from './locales/es/navigation.json';
 import recruiterEs from './locales/es/recruiter.json';
 import aboutEs from './locales/es/sections/about.json';
@@ -29,6 +35,9 @@ const englishCatalog = {
 	common: commonEn,
 	navigation: navigationEn,
 	accessibility: accessibilityEn,
+	breadcrumbs: breadcrumbsEn,
+	cli: cliEn,
+	footer: footerEn,
 	theme: themeEn,
 	errors: errorsEn,
 	recruiter: recruiterEn,
@@ -46,6 +55,9 @@ const spanishCatalog = {
 	common: commonEs,
 	navigation: navigationEs,
 	accessibility: accessibilityEs,
+	breadcrumbs: breadcrumbsEs,
+	cli: cliEs,
+	footer: footerEs,
 	theme: themeEs,
 	errors: errorsEs,
 	recruiter: recruiterEs,
@@ -63,6 +75,9 @@ export const UI_CATALOG_MODULES = [
 	'common',
 	'navigation',
 	'accessibility',
+	'breadcrumbs',
+	'cli',
+	'footer',
 	'theme',
 	'errors',
 	'recruiter',

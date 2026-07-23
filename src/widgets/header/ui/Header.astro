@@ -12,51 +12,53 @@
  */
 
 import { LinkButton } from '@shared/ui';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
+import { createScopedUiTranslator } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 import BrandLogo from './BrandLogo.astro';
 import DesktopNav from './DesktopNav.astro';
 import MobileNav from './MobileNav.astro';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
-const t = useTranslations(lang);
+const tNavigation = createScopedUiTranslator(lang, 'navigation');
+const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
 
 const navItems = [
 	{
-		title: t('nav.experience'),
+		title: tNavigation('experience'),
 		label: 'experience',
 		icon: 'experience',
 		url: getLocalizedPath(lang, '/#experience'),
 	},
 	{
-		title: t('nav.research'),
+		title: tNavigation('research'),
 		label: 'research',
 		icon: 'research',
 		url: getLocalizedPath(lang, '/#research'),
 	},
 	{
-		title: t('nav.projects'),
+		title: tNavigation('projects'),
 		label: 'projects',
 		icon: 'projects',
 		prefetch: true,
 		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
-		title: t('nav.blog'),
+		title: tNavigation('blog'),
 		label: 'blog',
 		icon: 'blog',
 		prefetch: true,
 		url: getLocalizedPath(lang, '/blog'),
 	},
 	{
-		title: t('nav.about'),
+		title: tNavigation('about'),
 		label: 'about-me',
 		icon: 'about-me',
 		prefetch: true,
 		url: getLocalizedPath(lang, '/#about-me'),
 	},
 	{
-		title: t('nav.stack'),
+		title: tNavigation('stack'),
 		label: 'technologies',
 		icon: 'technologies',
 		url: getLocalizedPath(lang, '/#technologies'),
@@ -77,7 +79,7 @@ const homeUrl = getLocalizedPath(lang, '/');
 
 		<!-- Center: Desktop Navigation -->
 		<div class="flex-1 flex justify-center">
-			<DesktopNav {lang} {navItems} />
+			<DesktopNav navLabel={tAccessibility('mainNavigation')} {navItems} />
 		</div>
 
 		<!-- Right: Actions (Desktop) -->
@@ -88,13 +90,20 @@ const homeUrl = getLocalizedPath(lang, '/');
 				variant="primary"
 				class="font-mono text-xs uppercase tracking-wider px-3.5 py-1.5"
 			>
-				Resume
+				{tNavigation('resume')}
 			</LinkButton>
 		</div>
 
 		<!-- Mobile Menu Button -->
 		<div class="flex md:hidden items-center gap-3 shrink-0">
-			<MobileNav {navItems} {lang} />
+			<MobileNav
+				{navItems}
+				{lang}
+				menuLabel={tAccessibility('mobileNavigation')}
+				openLabel={tAccessibility('openMenu')}
+				closeLabel={tAccessibility('closeMenu')}
+				resumeLabel={tNavigation('resume')}
+			/>
 		</div>
 	</div>
 </header>
@@ -103,15 +112,14 @@ const homeUrl = getLocalizedPath(lang, '/');
 	// Active link highlighting with Intersection Observer
 	const setupScrollSpy = () => {
 		const sections = document.querySelectorAll('section[id]');
-		const navLinks = document.querySelectorAll('header nav a[aria-label]');
+		const navLinks = document.querySelectorAll<HTMLElement>('header nav a[data-section-id]');
 
 		const observer = new IntersectionObserver(
 			(entries: IntersectionObserverEntry[]) => {
 				entries.forEach((entry: IntersectionObserverEntry) => {
 					if (entry.isIntersecting) {
 						navLinks.forEach(link => {
-							const linkLabel = link.getAttribute('aria-label');
-							if (linkLabel === entry.target.id) {
+							if (link.dataset.sectionId === entry.target.id) {
 								link.classList.add('active', 'text-primary-500');
 							} else {
 								link.classList.remove('active', 'text-primary-500');

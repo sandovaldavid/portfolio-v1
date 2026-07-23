@@ -1,26 +1,28 @@
 ---
-import { AVAILABLE_LANGUAGES, DEFAULT_LANGUAGE } from '@shared/config/i18n';
+import {
+	AVAILABLE_LANGUAGES,
+	DEFAULT_LANGUAGE,
+	LANGUAGE_LABELS,
+	createScopedUiTranslator,
+} from '@shared/config/i18n';
 import { getLangFromUrl } from '@shared/lib/i18n';
 
 const url = new URL(Astro.request.url);
 const currentLang = getLangFromUrl(url);
 const pathname = url.pathname;
+const tAccessibility = createScopedUiTranslator(currentLang, 'accessibility');
 
 /**
- * Generates the correct path for language switching
- * English (default): / or /page
- * Spanish: /es/ or /es/page
+ * Generates the correct path for language switching.
+ * Astro-native counterpart resolution is implemented by issue #139.
  */
 const getLanguagePath = (targetLang: string): string => {
-	// Remove any language prefix (/es or /en) from the pathname
 	const cleanPath = pathname.replace(/^\/(es|en)(\/|$)/, '/');
 
 	if (targetLang === DEFAULT_LANGUAGE) {
-		// For English (default), return path without prefix
 		return cleanPath === '' ? '/' : cleanPath;
 	}
 
-	// For Spanish, add /es prefix
 	if (cleanPath === '/' || cleanPath === '') {
 		return '/es/';
 	}
@@ -29,11 +31,18 @@ const getLanguagePath = (targetLang: string): string => {
 };
 ---
 
-<div class="flex items-center gap-2 font-mono">
+<div
+	class="flex items-center gap-2 font-mono"
+	role="group"
+	aria-label={tAccessibility('chooseLanguage')}
+>
 	{
 		AVAILABLE_LANGUAGES.map(lang => {
 			const isActive = currentLang === lang;
 			const path = isActive ? '#' : getLanguagePath(lang);
+			const label = isActive
+				? `${LANGUAGE_LABELS[lang]}, ${tAccessibility('currentPage')}`
+				: LANGUAGE_LABELS[lang];
 
 			return (
 				<a
@@ -43,6 +52,7 @@ const getLanguagePath = (targetLang: string): string => {
 							? 'bg-primary-500 text-white dark:text-black shadow-retro-xs translate-x-[1.5px] translate-y-[1.5px] cursor-default pointer-events-none'
 							: 'bg-surface text-content-strong shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-retro-xs'
 					}`}
+					aria-label={label}
 					aria-current={isActive ? 'page' : undefined}
 				>
 					{lang.toUpperCase()}

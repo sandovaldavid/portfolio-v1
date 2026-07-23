@@ -6,12 +6,11 @@ import QuoteRight from '@assets/icons/QuoteRight.astro';
 import '@app/styles/global.css';
 
 import { SectionContainer, LinkButton, Button } from '@shared/ui';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { getLangFromUrl } from '@shared/lib/i18n';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 
-// Detect language from URL
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const tErrors = createScopedUiTranslator(lang, 'errors');
 ---
 
 <!doctype html>
@@ -19,11 +18,10 @@ const t = useTranslations(lang);
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content={t('not-found.description')} />
+		<meta name="description" content={tErrors('notFoundDescription')} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{t('not-found.title')}</title>
+		<title>{tErrors('notFoundPageTitle')}</title>
 		<script is:inline>
-			// Theme initialization
 			document.documentElement.classList.toggle(
 				'dark',
 				localStorage.theme === 'dark' ||
@@ -39,7 +37,6 @@ const t = useTranslations(lang);
 		<main class="w-full px-4 py-16">
 			<SectionContainer>
 				<div class="text-center space-y-8">
-					<!-- Animated 404 Number -->
 					<div class="relative">
 						<div
 							class="text-[clamp(8rem,20vw,16rem)] font-bold leading-none select-none"
@@ -52,7 +49,6 @@ const t = useTranslations(lang);
 							</span>
 						</div>
 
-						<!-- Decorative elements -->
 						<div
 							class="absolute inset-0 -z-10 blur-3xl opacity-10 dark:opacity-30"
 							aria-hidden="true"
@@ -72,37 +68,38 @@ const t = useTranslations(lang);
 						</div>
 					</div>
 
-					<!-- Error Message -->
 					<div class="space-y-4">
 						<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-content-strong">
-							{t('not-found.heading')}
+							{tErrors('notFoundTitle')}
 						</h1>
 						<p class="text-lg md:text-xl text-content max-w-2xl mx-auto">
-							{t('not-found.message')}
+							{tErrors('notFoundMessage')}
 						</p>
 					</div>
-					<!-- Action Buttons -->
+
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
 						<LinkButton href={lang === Language.ENGLISH ? '/' : '/es/'} target="_self">
-							<Home class="size-5" />
-							{t('not-found.home-button')}
+							<Home class="size-5" aria-hidden="true" />
+							{tErrors('homeButton')}
 						</LinkButton>
 						<Button variant="secondary" onclick="history.back()">
-							<ArrowLeft class="size-5" />
-							{t('not-found.back-button')}
+							<ArrowLeft class="size-5" aria-hidden="true" />
+							{tErrors('backButton')}
 						</Button>
 					</div>
-					<!-- Fun fact -->
+
 					<div class="pt-8">
 						<div class="flex items-start justify-center gap-2 max-w-2xl mx-auto">
 							<QuoteLeft
 								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
+								aria-hidden="true"
 							/>
 							<p class="text-base text-content italic leading-relaxed">
-								{t('not-found.quote')}
+								{tErrors('notFoundQuote')}
 							</p>
 							<QuoteRight
 								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
+								aria-hidden="true"
 							/>
 						</div>
 					</div>

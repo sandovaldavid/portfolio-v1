@@ -5,134 +5,160 @@ on:
         branches: [main]
 
 permissions:
-    contents: write
+    contents: read
 
 concurrency:
     group: pr-quality-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
 jobs:
-    rebuild-issue-133:
-        name: Rebuild issue 133 branch from main
-        if: github.actor != 'github-actions[bot]'
+    validate:
+        name: Code Quality & Commits
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout writable pull request branch
+            - name: Checkout pull request head
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event.pull_request.head.ref }}
-                  fetch-depth: 0
+                  ref: ${{ github.event.pull_request.head.sha }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Restore issue 133 implementation
-              shell: bash
+            - name: Run repository quality checks
+              run: bun run check
+
+            - name: Validate squash-merge title
               env:
-                  OLD_HEAD: a1b3dcc03540d7e43f938d6d7d22e5f6d84c9f6a
-              run: |
-                  set -euo pipefail
-                  git fetch origin "${OLD_HEAD}"
-                  git checkout "${OLD_HEAD}" -- \
-                    docs/I18N-CATALOGS.md \
-                    docs/README.md \
-                    scripts/prepare-issue-133-repair.py \
-                    src/app/layouts/Layout.astro \
-                    src/features/cli-terminal/index.ts \
-                    src/features/cli-terminal/model/runtime.ts \
-                    src/features/cli-terminal/ui/CLITerminalCatalog.astro \
-                    src/features/language-picker/ui/LanguagePicker.astro \
-                    src/features/splash-screen/ui/SplashScreen.astro \
-                    src/features/theme-toggle/ui/ThemeToggle.astro \
-                    src/pages/404.astro \
-                    src/shared/config/i18n/catalog.ts \
-                    src/shared/config/i18n/index.ts \
-                    src/shared/config/i18n/locales/en/accessibility.json \
-                    src/shared/config/i18n/locales/en/breadcrumbs.json \
-                    src/shared/config/i18n/locales/en/cli.json \
-                    src/shared/config/i18n/locales/en/common.json \
-                    src/shared/config/i18n/locales/en/errors.json \
-                    src/shared/config/i18n/locales/en/footer.json \
-                    src/shared/config/i18n/locales/en/navigation.json \
-                    src/shared/config/i18n/locales/en/recruiter.json \
-                    src/shared/config/i18n/locales/en/sections/about.json \
-                    src/shared/config/i18n/locales/en/sections/hero.json \
-                    src/shared/config/i18n/locales/en/sections/research.json \
-                    src/shared/config/i18n/locales/en/sections/tech-stack.json \
-                    src/shared/config/i18n/locales/en/sections/vision.json \
-                    src/shared/config/i18n/locales/en/splash.json \
-                    src/shared/config/i18n/locales/en/theme.json \
-                    src/shared/config/i18n/locales/es/accessibility.json \
-                    src/shared/config/i18n/locales/es/breadcrumbs.json \
-                    src/shared/config/i18n/locales/es/cli.json \
-                    src/shared/config/i18n/locales/es/common.json \
-                    src/shared/config/i18n/locales/es/errors.json \
-                    src/shared/config/i18n/locales/es/footer.json \
-                    src/shared/config/i18n/locales/es/navigation.json \
-                    src/shared/config/i18n/locales/es/recruiter.json \
-                    src/shared/config/i18n/locales/es/sections/about.json \
-                    src/shared/config/i18n/locales/es/sections/hero.json \
-                    src/shared/config/i18n/locales/es/sections/research.json \
-                    src/shared/config/i18n/locales/es/sections/tech-stack.json \
-                    src/shared/config/i18n/locales/es/sections/vision.json \
-                    src/shared/config/i18n/locales/es/splash.json \
-                    src/shared/config/i18n/locales/es/theme.json \
-                    src/shared/config/i18n/types.ts \
-                    src/widgets/contact-sidebar/ui/ContactSidebar.astro \
-                    src/widgets/experience/ui/Experience.astro \
-                    src/widgets/footer/ui/Footer.astro \
-                    src/widgets/header/ui/DesktopNav.astro \
-                    src/widgets/header/ui/Header.astro \
-                    src/widgets/header/ui/MobileNav.astro \
-                    src/widgets/recruiter-hud/ui/RecruiterHUD.astro \
-                    tests/e2e/i18n-shell.spec.ts \
-                    tests/unit/i18n-catalog.spec.ts \
-                    tests/unit/i18n-shell-migration.spec.ts
-                  rm -f src/features/cli-terminal/ui/CLITerminal.astro
-                  python scripts/prepare-issue-133-repair.py
-                  rm scripts/prepare-issue-133-repair.py
-                  sed -i 's/\\"/"/g' tests/unit/i18n-shell-migration.spec.ts
-                  git checkout origin/main -- .github/workflows/ci.yml
-                  bun run format
+                  PR_TITLE: ${{ github.event.pull_request.title }}
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+              run: echo "${PR_TITLE} (#${PR_NUMBER})" | bunx commitlint
 
-            - name: Capture reconstruction validation
-              shell: bash
-              run: |
-                  mkdir -p issue-133-diagnostics
-                  set +e
-                  bun run check > issue-133-diagnostics/check.log 2>&1
-                  echo "$?" > issue-133-diagnostics/check.exit
-                  bun run test:unit:ci > issue-133-diagnostics/unit.log 2>&1
-                  echo "$?" > issue-133-diagnostics/unit.exit
-                  bun run build > issue-133-diagnostics/build.log 2>&1
-                  echo "$?" > issue-133-diagnostics/build.exit
-                  git diff --check > issue-133-diagnostics/diff-check.log 2>&1
-                  echo "$?" > issue-133-diagnostics/diff-check.exit
-                  exit 0
+    test-unit:
+        name: Unit Tests (Vitest)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
 
-            - name: Upload reconstruction diagnostics
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Run unit tests
+              run: bun run test:unit:ci
+
+    build:
+        name: Build & Bundle Analysis
+        runs-on: ubuntu-latest
+        outputs:
+            build-url: ${{ steps.upload-build.outputs.artifact-url }}
+            bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Restore Astro cache
+              uses: actions/cache@v6
+              with:
+                  path: .astro
+                  key: ${{ runner.os }}-astro-pr-${{ hashFiles('bun.lock', 'src/**', 'astro.config.mjs') }}
+                  restore-keys: |
+                      ${{ runner.os }}-astro-pr-
+
+            - name: Build production output
+              run: bun run build
+
+            - name: Generate bundle report
+              run: bun run bundle:analyze
+
+            - name: Enforce route performance budgets
+              run: bun run performance:check
+
+            - name: Upload production build
+              id: upload-build
               uses: actions/upload-artifact@v7
               with:
-                  name: issue-133-rebuild-diagnostics
-                  path: issue-133-diagnostics/
+                  name: pr-build-output
+                  path: dist/
                   if-no-files-found: error
                   retention-days: 1
 
-            - name: Require successful reconstruction
-              shell: bash
-              run: |
-                  set -euo pipefail
-                  test "$(cat issue-133-diagnostics/check.exit)" = "0"
-                  test "$(cat issue-133-diagnostics/unit.exit)" = "0"
-                  test "$(cat issue-133-diagnostics/build.exit)" = "0"
-                  test "$(cat issue-133-diagnostics/diff-check.exit)" = "0"
+            - name: Upload bundle report
+              id: upload-bundle
+              uses: actions/upload-artifact@v7
+              with:
+                  name: pr-bundle-analysis
+                  path: |
+                      bundle-analysis/
+                      performance-report/
+                  if-no-files-found: error
+                  retention-days: 7
 
-            - name: Commit clean reconstruction
+    smoke:
+        name: Playwright Chromium Smoke
+        runs-on: ubuntu-latest
+        needs: build
+        outputs:
+            report-url: ${{ steps.upload-report.outputs.artifact-url }}
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Download production build
+              uses: actions/download-artifact@v8
+              with:
+                  name: pr-build-output
+                  path: dist
+
+            - name: Install Chromium
+              run: bunx playwright install --with-deps chromium
+
+            - name: Run Chromium smoke and axe gates
+              run: bun run test:e2e:smoke
+
+            - name: Upload Playwright diagnostics
+              id: upload-report
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: pr-playwright-smoke
+                  path: |
+                      playwright-report/
+                      test-results/
+                      test-results.json
+                      junit-results.xml
+                  if-no-files-found: warn
+                  retention-days: 7
+
+    summary:
+        name: PR Summary Report
+        runs-on: ubuntu-latest
+        needs: [validate, test-unit, build, smoke]
+        if: always()
+        steps:
+            - name: Write proportional CI summary
               shell: bash
               run: |
-                  set -euo pipefail
-                  git config user.name "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add -A
-                  git commit -m "refactor(i18n): rebuild shared shell migration on main"
-                  git push origin HEAD:${{ github.event.pull_request.head.ref }}
+                  {
+                    echo "## Pull request quality summary"
+                    echo
+                    echo "| Gate | Result |"
+                    echo "|---|---|"
+                    echo "| Code quality and squash title | ${{ needs.validate.result }} |"
+                    echo "| Unit tests | ${{ needs.test-unit.result }} |"
+                    echo "| Production build and bundle report | ${{ needs.build.result }} |"
+                    echo "| Chromium smoke and axe | ${{ needs.smoke.result }} |"
+                    echo
+                    echo "Full desktop-browser and Lighthouse suites run after integration into main; extended device and visual suites run on the scheduled/manual pipeline."
+                  } >> "$GITHUB_STEP_SUMMARY"

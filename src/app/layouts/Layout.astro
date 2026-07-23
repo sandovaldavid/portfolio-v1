@@ -18,7 +18,7 @@ import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
@@ -45,24 +45,28 @@ const {
 } = Astro.props;
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
+const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
+const tBreadcrumbs = createScopedUiTranslator(lang, 'breadcrumbs');
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
 const ogLocale = langCode === 'en' ? 'en_US' : 'es_PE';
 const ogType = article ? 'article' : 'website';
 
-// BreadcrumbList generation
 const breadcrumbLabels: Record<string, string> = {
-	projects: t('nav.projects'),
-	skills: 'Skills Inventory',
-	about: t('nav.about'),
-	research: t('nav.research'),
+	projects: tBreadcrumbs('projects'),
+	skills: tBreadcrumbs('skills'),
+	about: tBreadcrumbs('about'),
+	research: tBreadcrumbs('research'),
 	atena: 'Atena',
 };
 const breadcrumbSegments = Astro.url.pathname.replace(/^\/es/, '').split('/').filter(Boolean);
 const breadcrumbItems: { name: string; url: string }[] = [];
 if (breadcrumbSegments.length > 0) {
-	breadcrumbItems.push({ name: 'Home', url: langCode === 'en' ? '/' : '/es/' });
+	breadcrumbItems.push({
+		name: tBreadcrumbs('home'),
+		url: langCode === 'en' ? '/' : '/es/',
+	});
 	breadcrumbSegments.forEach((segment, i) => {
 		const url =
 			langCode === 'en'
@@ -88,7 +92,6 @@ const breadcrumbSchema =
 			}
 		: null;
 
-// JSON-LD structured data
 const personSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
@@ -147,7 +150,6 @@ const articleSchema = article
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<!-- Primary meta -->
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
@@ -155,7 +157,6 @@ const articleSchema = article
 		<meta name="robots" content="index, follow" />
 		<link rel="canonical" href={canonicalUrl} />
 
-		<!-- Favicon & PWA -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="theme-color" content="#0096ff" />
@@ -164,19 +165,17 @@ const articleSchema = article
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="apple-mobile-web-app-title" content="DevSandoval" />
 
-		<!-- Open Graph -->
 		<meta property="og:type" content={ogType} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImageUrl} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content={`${siteConfig.name} — Portfolio preview`} />
+		<meta property="og:image:alt" content={tAccessibility('portfolioPreviewAlt')} />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:site_name" content={siteConfig.defaultTitle} />
 		<meta property="og:locale" content={ogLocale} />
 
-		<!-- Twitter / X Card -->
 		<meta name="twitter:card" content={siteConfig.twitterCard} />
 		<meta name="twitter:site" content={`@${siteConfig.handle}`} />
 		<meta name="twitter:creator" content={`@${siteConfig.handle}`} />
@@ -184,12 +183,10 @@ const articleSchema = article
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
 
-		<!-- hreflang alternates for bilingual SEO -->
 		<link rel="alternate" hreflang="en" href={enUrl} />
 		<link rel="alternate" hreflang="es" href={esUrl} />
 		<link rel="alternate" hreflang="x-default" href={enUrl} />
 
-		<!-- RSS feeds -->
 		<link
 			rel="alternate"
 			type="application/rss+xml"
@@ -203,14 +200,12 @@ const articleSchema = article
 			href="/es/rss.xml"
 		/>
 
-		<!-- Fonts: self-hosted via Astro Fonts API (no third-party CDN) -->
 		<Font cssVariable="--font-pixel" />
 		<Font cssVariable="--font-pixel-clean" preload />
 		<Font cssVariable="--font-retro-tag" />
 		<Font cssVariable="--font-gaming-mono" />
 		<Font cssVariable="--font-mono" />
 
-		<!-- Structured Data (JSON-LD) -->
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 		{
@@ -262,7 +257,7 @@ const articleSchema = article
 			href="#main-content"
 			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white dark:focus:text-black focus:font-bold focus:uppercase focus:tracking-wider focus:border-2 focus:border-black dark:focus:border-white focus:shadow-retro-lg focus:rounded-none focus:no-underline"
 		>
-			Skip to main content
+			{tAccessibility('skipToContent')}
 		</a>
 		<div class="flex flex-col justify-center items-center w-full">
 			<Header />
@@ -338,9 +333,7 @@ const articleSchema = article
 			</main>
 			<Footer />
 			<RecruiterHUD />
-			<div transition:persist="cli-terminal">
-				<CLITerminal />
-			</div>
+			<CLITerminal />
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
 		</div>
