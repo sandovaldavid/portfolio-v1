@@ -1,0 +1,21 @@
+{
+	"projectId": "auctions",
+	"locale": "es",
+	"title": "Auctions",
+	"description": "Una aplicación web donde los usuarios pueden crear, pujar y gestionar subastas en línea. Incluye publicaciones, ofertas competitivas, comentarios, listas de seguimiento y navegación por categorías.",
+	"category": "Desarrollo Full-Stack",
+	"imageAlt": "Vista previa de la interfaz de publicaciones y pujas de Auctions",
+	"caseStudy": {
+		"problem": "Construir una plataforma de subastas Django desde cero requería implementar lógica de pujas competitivas, gestión de listas de seguimiento, hilos de comentarios y filtrado por categorías, todo con autenticación adecuada y restricciones de integridad de datos.",
+		"approach": "Diseñé una arquitectura de modelos Django con Listing, Bid, Comment y Watchlist conectados mediante claves foráneas. Implementé validación de pujas para impedir ofertas inferiores, cierre de publicaciones vencidas y descubrimiento por categoría.",
+		"tradeoffs": "Elegí plantillas Django renderizadas en el servidor en lugar de una SPA JavaScript para lanzar más rápido y reducir la complejidad de un proyecto monolítico educativo. Acepté menor interactividad a cambio de despliegue y pruebas más simples.",
+		"outcome": "Una plataforma de subastas funcional con autenticación, gestión de pujas, listas de seguimiento, comentarios y navegación por categorías. Los mecanismos principales incluyen validación y controles de integridad de datos.",
+		"learnings": [
+			"Relaciones del ORM de Django y optimización de consultas entre modelos relacionados",
+			"Lógica de pujas transaccional con validación consciente de concurrencia",
+			"Patrones de formularios renderizados en servidor para aplicaciones con operaciones CRUD"
+		],
+		"timeline": "1 mes",
+		"role": "Desarrollador independiente"
+	}
+}
