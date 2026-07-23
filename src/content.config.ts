@@ -10,6 +10,7 @@ const blog = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
 	schema: ({ image }) =>
 		z.object({
+			translationKey: stableContentId,
 			title: z.string(),
 			description: z.string(),
 			pubDate: z.coerce.date(),
@@ -24,6 +25,7 @@ const blog = defineCollection({
 const devlog = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/devlog' }),
 	schema: z.object({
+		translationKey: stableContentId,
 		title: z.string(),
 		summary: z.string(),
 		pubDate: z.coerce.date(),
