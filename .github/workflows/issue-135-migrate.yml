@@ -25,6 +25,27 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
+            - name: Escape nested target templates
+              shell: bash
+              run: |
+                  python3 - <<'PY'
+                  from pathlib import Path
+
+                  path = Path('scripts/apply-issue-135.mjs')
+                  source = path.read_text(encoding='utf-8')
+                  replacements = {
+                      '${lang}': '\\${lang}',
+                      '${profile.data.locale}': '\\${profile.data.locale}',
+                      '${idx * 50}': '\\${idx * 50}',
+                      '`${route} renders unique content': '`\\${route} renders unique content',
+                      '`src/shared/config/i18n/locales/${locale}/sections/about.json`': '`src/shared/config/i18n/locales/\\${locale}/sections/about.json`',
+                      '`src/shared/config/i18n/locales/${locale}.json`': '`src/shared/config/i18n/locales/\\${locale}.json`',
+                  }
+                  for old, new in replacements.items():
+                      source = source.replace(old, new)
+                  path.write_text(source, encoding='utf-8')
+                  PY
+
             - name: Apply localized profile migration
               run: node scripts/apply-issue-135.mjs
 
