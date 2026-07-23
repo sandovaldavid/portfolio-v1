@@ -18,7 +18,6 @@ import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
 import {
-	AVAILABLE_LANGUAGES,
 	createScopedUiTranslator,
 	getLanguageFromLocale,
 	Language,
@@ -50,16 +49,15 @@ const lang = getLanguageFromLocale(Astro.currentLocale);
 const pathname = Astro.url.pathname;
 const pathnameSegments = pathname.split('/').filter(Boolean);
 const localePath = getPathByLocale(lang);
-const routeSegments =
-	pathHasLocale(pathname) && pathnameSegments[0] === localePath
-		? pathnameSegments.slice(1)
-		: pathnameSegments;
+const hasLocalePrefix = pathHasLocale(pathname) && pathnameSegments[0] === localePath;
+const routeSegments = hasLocalePrefix ? pathnameSegments.slice(1) : pathnameSegments;
 const routeWithoutLocale = routeSegments.join('/');
-const routePath =
-	routeWithoutLocale && pathname.endsWith('/') ? `${routeWithoutLocale}/` : routeWithoutLocale;
-const ordinaryLocalizedPaths = Object.fromEntries(
-	AVAILABLE_LANGUAGES.map(locale => [locale, getRelativeLocaleUrl(locale, routePath)])
-) as LocalizedPathMap;
+const hasTrailingSlash = routeWithoutLocale.length > 0 && pathname.endsWith('/');
+const routePath = hasTrailingSlash ? `${routeWithoutLocale}/` : routeWithoutLocale;
+const ordinaryLocalizedPaths: LocalizedPathMap = {
+	[Language.ENGLISH]: getRelativeLocaleUrl(Language.ENGLISH, routePath),
+	[Language.SPANISH]: getRelativeLocaleUrl(Language.SPANISH, routePath),
+};
 const resolvedLocalizedPaths = localizedPaths ?? ordinaryLocalizedPaths;
 const enPath = resolvedLocalizedPaths[Language.ENGLISH];
 const esPath = resolvedLocalizedPaths[Language.SPANISH];
