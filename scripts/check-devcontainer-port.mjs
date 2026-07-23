@@ -10,10 +10,20 @@ const expectedPublications = new Map([
 ]);
 const appPorts = Array.isArray(devcontainer.appPort) ? devcontainer.appPort : [];
 const forwardedPorts = Array.isArray(devcontainer.forwardPorts) ? devcontainer.forwardPorts : [];
+/** @type {{ label?: string; command?: string }[]} */
 const tasks = Array.isArray(vscodeTasks.tasks) ? vscodeTasks.tasks : [];
+/**
+ * @type {{
+ *   name?: string;
+ *   type?: string;
+ *   command?: string;
+ *   serverReadyAction?: { uriFormat?: string; action?: string };
+ * }[]}
+ */
 const launchConfigurations = Array.isArray(vscodeLaunch.configurations)
 	? vscodeLaunch.configurations
 	: [];
+/** @type {string[]} */
 const failures = [];
 
 for (const [port, publication] of expectedPublications) {
@@ -45,9 +55,7 @@ if (
 	failures.push('test:e2e:report must serve the local Playwright report on container port 9323.');
 }
 
-const hostDevelopmentTask = tasks.find(
-	task => task.label === 'Portfolio: Start Dev Server on Host'
-);
+const hostDevelopmentTask = tasks.find(task => task.label === 'Portfolio: Start Dev Server on Host');
 if (hostDevelopmentTask?.command !== 'bun run dev:host') {
 	failures.push('VS Code must expose a task that starts the reviewed host development command.');
 }
