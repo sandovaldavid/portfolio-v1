@@ -29,7 +29,8 @@ jobs:
             - name: Apply home section catalog migration
               run: |
                   python scripts/migrate-issue-134.py
-                  rm scripts/migrate-issue-134.py
+                  python scripts/update-issue-134-tests.py
+                  rm scripts/migrate-issue-134.py scripts/update-issue-134-tests.py
                   git checkout origin/main -- .github/workflows/ci.yml
                   bun run format
 
