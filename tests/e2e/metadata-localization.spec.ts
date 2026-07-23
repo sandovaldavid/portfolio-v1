@@ -79,12 +79,14 @@ async function expectMetadata(
 		'content',
 		scenario.imageAlt
 	);
-	await expect(
-		page.locator('link[type="application/rss+xml"][hreflang="en"]')
-	).toHaveAttribute('title', scenario.rssEnglishTitle);
-	await expect(
-		page.locator('link[type="application/rss+xml"][hreflang="es"]')
-	).toHaveAttribute('title', scenario.rssSpanishTitle);
+	await expect(page.locator('link[type="application/rss+xml"][hreflang="en"]')).toHaveAttribute(
+		'title',
+		scenario.rssEnglishTitle
+	);
+	await expect(page.locator('link[type="application/rss+xml"][hreflang="es"]')).toHaveAttribute(
+		'title',
+		scenario.rssSpanishTitle
+	);
 	await expect(page.locator('a[href="#main-content"]')).toHaveText(scenario.skipText);
 }
 
@@ -128,7 +130,8 @@ test.describe('localized SEO, social, RSS and structured metadata', () => {
 	test('dynamic route schemas match their content family and locale', async ({ page }) => {
 		await page.goto('/blog/building-this-portfolio-with-astro-and-fsd');
 		const blog = await getJsonLd(page, 'BlogPosting');
-		const blogHeading = (await page.getByRole('heading', { level: 1 }).textContent())?.trim() ?? '';
+		const blogHeading =
+			(await page.getByRole('heading', { level: 1 }).textContent())?.trim() ?? '';
 		expect(getString(blog, 'inLanguage')).toBe('en');
 		expect(getString(blog, 'headline')).toBe(blogHeading);
 		expect(getString(blog, 'datePublished')).toBeTruthy();

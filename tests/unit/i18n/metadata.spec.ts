@@ -35,18 +35,9 @@ describe('localized SEO, RSS and structured metadata', () => {
 
 	it('requires dynamic routes to provide semantic metadata from canonical content', () => {
 		const routes = {
-			blog: [
-				'src/pages/blog/[slug].astro',
-				'src/pages/es/blog/[slug].astro',
-			],
-			devlog: [
-				'src/pages/devlog/[slug].astro',
-				'src/pages/es/devlog/[slug].astro',
-			],
-			project: [
-				'src/pages/projects/[slug].astro',
-				'src/pages/es/projects/[slug].astro',
-			],
+			blog: ['src/pages/blog/[slug].astro', 'src/pages/es/blog/[slug].astro'],
+			devlog: ['src/pages/devlog/[slug].astro', 'src/pages/es/devlog/[slug].astro'],
+			project: ['src/pages/projects/[slug].astro', 'src/pages/es/projects/[slug].astro'],
 		};
 
 		for (const path of routes.blog) {

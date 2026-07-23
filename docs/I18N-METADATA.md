@@ -6,15 +6,15 @@ This document defines how localized routes expose SEO, social, RSS, structured-d
 
 Metadata has the same single-owner rule as visible content.
 
-| Metadata category | Canonical owner |
-| --- | --- |
+| Metadata category                                                            | Canonical owner                                         |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------- |
 | Site-wide title, description, person role/description and RSS discovery copy | `src/shared/config/i18n/locales/{locale}/metadata.json` |
-| Reusable accessible names and image alternatives | granular UI catalogs such as `accessibility.json` |
-| Profile page title and description | `portfolio-profile` content entry |
-| Project title, description and image alternative | localized project content entry |
-| Blog/devlog title, summary, dates and tags | localized editorial entry |
-| URLs, social profiles, email and technology identifiers | language-neutral `siteConfig` or entity metadata |
-| Canonical, alternate, Open Graph, Twitter and JSON-LD assembly | `src/app/layouts/Layout.astro` |
+| Reusable accessible names and image alternatives                             | granular UI catalogs such as `accessibility.json`       |
+| Profile page title and description                                           | `portfolio-profile` content entry                       |
+| Project title, description and image alternative                             | localized project content entry                         |
+| Blog/devlog title, summary, dates and tags                                   | localized editorial entry                               |
+| URLs, social profiles, email and technology identifiers                      | language-neutral `siteConfig` or entity metadata        |
+| Canonical, alternate, Open Graph, Twitter and JSON-LD assembly               | `src/app/layouts/Layout.astro`                          |
 
 Do not duplicate localized title or description text in `siteConfig`. Brand names, repository URLs, technologies and stable IDs remain language-neutral.
 
@@ -22,14 +22,14 @@ Do not duplicate localized title or description text in `siteConfig`. Brand name
 
 Routes identify their semantic family through the typed `pageType` layout property:
 
-| `pageType` | JSON-LD type | Typical owner |
-| --- | --- | --- |
-| `website` | `WebSite` only | ordinary static route |
-| `profile` | `ProfilePage` | About/profile content |
-| `project` | `SoftwareSourceCode` | project content entry |
-| `blog` | `BlogPosting` | blog entry |
-| `devlog` | `TechArticle` | devlog entry |
-| `research` | `ScholarlyArticle` | research route/content |
+| `pageType` | JSON-LD type         | Typical owner          |
+| ---------- | -------------------- | ---------------------- |
+| `website`  | `WebSite` only       | ordinary static route  |
+| `profile`  | `ProfilePage`        | About/profile content  |
+| `project`  | `SoftwareSourceCode` | project content entry  |
+| `blog`     | `BlogPosting`        | blog entry             |
+| `devlog`   | `TechArticle`        | devlog entry           |
+| `research` | `ScholarlyArticle`   | research route/content |
 
 Dynamic routes also pass their localized title as `breadcrumbLabel`. Project routes pass `project.imageAlt`; editorial routes pass the entry title as the social image alternative. Blog and devlog routes pass publication dates, and blog routes pass an optional modification date.
 

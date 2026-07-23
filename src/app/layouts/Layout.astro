@@ -119,7 +119,10 @@ if (routeSegments.length > 0) {
 		const segmentPath = routeSegments.slice(0, i + 1).join('/');
 		const isCurrentPage = i === routeSegments.length - 1;
 		breadcrumbItems.push({
-			name: isCurrentPage && breadcrumbLabel ? breadcrumbLabel : breadcrumbLabels[segment] || segment,
+			name:
+				isCurrentPage && breadcrumbLabel
+					? breadcrumbLabel
+					: breadcrumbLabels[segment] || segment,
 			url: getRelativeLocaleUrl(lang, segmentPath),
 		});
 	});
