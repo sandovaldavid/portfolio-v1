@@ -59,6 +59,12 @@ Home-section copy has no duplicate entries in the legacy dictionaries. Those com
 
 The CLI uses `cli.json` for all visible and runtime-generated text. `CLITerminalCatalog.astro` passes one locale namespace to `model/runtime.ts`; the runtime owns behavior and interpolation but contains no parallel English/Spanish copy map. Repository-authored terminal markup is assembled in code around escaped scalar translations instead of storing HTML inside locale files.
 
+## Locale-aware catalog consumers
+
+Issue #139 makes Astro the source of truth for locale routing. Astro components read `Astro.currentLocale` and convert it through `getLanguageFromLocale()` only when the catalog API requires the typed `Language` enum.
+
+`Layout.astro` creates ordinary English and Spanish route paths with `astro:i18n` and passes the resolved map through `RecruiterHUD` to `LanguagePicker`. Editorial detail routes may replace that map with verified `translationKey` counterparts. The picker owns labels and unavailable-state presentation, but it does not parse locale prefixes or generate routes.
+
 ## Public API
 
 `src/shared/config/i18n/catalog.ts` exports:
