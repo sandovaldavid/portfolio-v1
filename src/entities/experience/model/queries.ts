@@ -20,7 +20,7 @@ function toExperienceItem(entry: ExperienceContentEntry): LocalizedExperienceIte
 	}
 
 	const metadata = EXPERIENCE_METADATA[experienceId];
-	const evidence = 'evidenceUrl' in metadata ? { link: metadata.evidenceUrl } : {};
+	const evidence = metadata.evidenceUrl ? { link: metadata.evidenceUrl } : {};
 
 	return {
 		experienceId,
