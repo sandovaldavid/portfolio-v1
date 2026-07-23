@@ -24,7 +24,8 @@ function toEvidence(
 	const evidence = entry.data.caseStudy.evidence;
 	if (!evidence) return undefined;
 
-	const sourceUrls = PROJECT_METADATA[projectId].evidenceSourceUrls ?? {};
+	const sourceUrls: Readonly<Record<string, string>> =
+		PROJECT_METADATA[projectId].evidenceSourceUrls ?? {};
 	const seenSources = new Set<string>();
 	const sources = evidence.sources.map(source => {
 		if (seenSources.has(source.sourceId)) {
@@ -123,7 +124,8 @@ export async function getProjectsData(lang: Language): Promise<ProjectList> {
 	}
 
 	return projects.sort(
-		(left, right) => PROJECT_METADATA[right.projectId].order - PROJECT_METADATA[left.projectId].order
+		(left, right) =>
+			PROJECT_METADATA[right.projectId].order - PROJECT_METADATA[left.projectId].order
 	);
 }
 
