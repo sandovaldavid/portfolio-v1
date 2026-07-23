@@ -1,5 +1,6 @@
 {
-	"eyebrow": "Stack tecnológico",
-	"title": "Herramientas elegidas para el problema",
-	"summary": "Angular, .NET y TypeScript forman el stack principal de producto, complementados por Astro, PostgreSQL, pruebas y automatización de entrega cuando corresponde."
+	"sectionTitle": "Tecnologías",
+	"frontendTitle": "Stack frontend principal",
+	"backendTitle": "Stack backend principal",
+	"viewAll": "Ver todas las habilidades y herramientas"
 }

@@ -27,6 +27,9 @@ src/shared/config/i18n/locales/{locale}/
 └── sections/
     ├── hero.json
     ├── about.json
+    ├── badges.json
+    ├── experience.json
+    ├── projects.json
     ├── research.json
     ├── vision.json
     └── tech-stack.json
@@ -48,7 +51,8 @@ The following production surfaces consume granular catalogs directly:
 - optional retro splash screen;
 - 404 page;
 - experience-tab accessibility label;
-- CLI terminal, shortcuts and secret-mode messages.
+- CLI terminal, shortcuts and secret-mode messages;
+- home hero, About, Research, Vision, Tech Stack, badges and section headings.
 
 The CLI uses `cli.json` for all visible and runtime-generated text. `CLITerminalCatalog.astro` passes one locale namespace to `model/runtime.ts`; the runtime owns behavior and interpolation but contains no parallel English/Spanish copy map. Repository-authored terminal markup is assembled in code around escaped scalar translations instead of storing HTML inside locale files.
 

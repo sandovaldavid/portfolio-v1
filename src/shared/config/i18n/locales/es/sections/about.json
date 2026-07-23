@@ -1,6 +1,9 @@
 {
-	"eyebrow": "Sobre mí",
-	"title": "Ingeniería con claridad y responsabilidad",
-	"summary": "Construyo productos web mantenibles con Angular, .NET y TypeScript mientras investigo la salud de repositorios de software mediante modelos BiLSTM.",
-	"readMore": "Leer biografía completa"
+	"sectionTitle": "Sobre mí",
+	"profileTitle": "Perfil profesional",
+	"profileSummary": "Ingeniero Informático que construye productos web con Angular, .NET y TypeScript. Mi trabajo incluye modernización frontend, APIs REST y mejoras de rendimiento. También investigo la predicción de abandono de proyectos OSS mediante modelos BiLSTM.",
+	"readMore": "Leer biografía completa",
+	"currentTitle": "Rol actual @ Atena",
+	"currentSummary": "Actualmente trabajo en Atena como Software Engineer, contribuyendo en frontends Angular y APIs .NET. Mi enfoque es entregar software mantenible, aplicar mejoras de rendimiento medibles y documentar las decisiones técnicas.",
+	"imageAlt": "Juan David Sandoval, ingeniero de software"
 }

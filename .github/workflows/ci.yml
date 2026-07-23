@@ -5,71 +5,160 @@ on:
         branches: [main]
 
 permissions:
-    contents: write
+    contents: read
 
 concurrency:
     group: pr-quality-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
 jobs:
-    migrate-issue-134:
-        name: Apply and validate issue 134 migration
-        if: github.actor != 'github-actions[bot]'
+    validate:
+        name: Code Quality & Commits
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout writable pull request branch
+            - name: Checkout pull request head
               uses: actions/checkout@v7
               with:
-                  ref: ${{ github.event.pull_request.head.ref }}
-                  fetch-depth: 0
+                  ref: ${{ github.event.pull_request.head.sha }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Apply home section catalog migration
-              run: |
-                  python scripts/migrate-issue-134.py
-                  python scripts/update-issue-134-tests.py
-                  rm scripts/migrate-issue-134.py scripts/update-issue-134-tests.py
-                  git checkout origin/main -- .github/workflows/ci.yml
-                  bun run format
+            - name: Run repository quality checks
+              run: bun run check
 
-            - name: Capture validation diagnostics
-              shell: bash
-              run: |
-                  mkdir -p issue-134-diagnostics
-                  set +e
-                  bun run check > issue-134-diagnostics/check.log 2>&1
-                  echo $? > issue-134-diagnostics/check.exit
-                  bun run test:unit:ci > issue-134-diagnostics/unit.log 2>&1
-                  echo $? > issue-134-diagnostics/unit.exit
-                  bun run build > issue-134-diagnostics/build.log 2>&1
-                  echo $? > issue-134-diagnostics/build.exit
-                  git diff --check > issue-134-diagnostics/diff-check.log 2>&1
-                  echo $? > issue-134-diagnostics/diff-check.exit
-                  exit 0
+            - name: Validate squash-merge title
+              env:
+                  PR_TITLE: ${{ github.event.pull_request.title }}
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+              run: echo "${PR_TITLE} (#${PR_NUMBER})" | bunx commitlint
 
-            - name: Upload migration diagnostics
+    test-unit:
+        name: Unit Tests (Vitest)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Run unit tests
+              run: bun run test:unit:ci
+
+    build:
+        name: Build & Bundle Analysis
+        runs-on: ubuntu-latest
+        outputs:
+            build-url: ${{ steps.upload-build.outputs.artifact-url }}
+            bundle-url: ${{ steps.upload-bundle.outputs.artifact-url }}
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Restore Astro cache
+              uses: actions/cache@v6
+              with:
+                  path: .astro
+                  key: ${{ runner.os }}-astro-pr-${{ hashFiles('bun.lock', 'src/**', 'astro.config.mjs') }}
+                  restore-keys: |
+                      ${{ runner.os }}-astro-pr-
+
+            - name: Build production output
+              run: bun run build
+
+            - name: Generate bundle report
+              run: bun run bundle:analyze
+
+            - name: Enforce route performance budgets
+              run: bun run performance:check
+
+            - name: Upload production build
+              id: upload-build
               uses: actions/upload-artifact@v7
               with:
-                  name: issue-134-migration-diagnostics
-                  path: issue-134-diagnostics/
+                  name: pr-build-output
+                  path: dist/
                   if-no-files-found: error
                   retention-days: 1
 
-            - name: Require successful validation
+            - name: Upload bundle report
+              id: upload-bundle
+              uses: actions/upload-artifact@v7
+              with:
+                  name: pr-bundle-analysis
+                  path: |
+                      bundle-analysis/
+                      performance-report/
+                  if-no-files-found: error
+                  retention-days: 7
+
+    smoke:
+        name: Playwright Chromium Smoke
+        runs-on: ubuntu-latest
+        needs: build
+        outputs:
+            report-url: ${{ steps.upload-report.outputs.artifact-url }}
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Download production build
+              uses: actions/download-artifact@v8
+              with:
+                  name: pr-build-output
+                  path: dist
+
+            - name: Install Chromium
+              run: bunx playwright install --with-deps chromium
+
+            - name: Run Chromium smoke and axe gates
+              run: bun run test:e2e:smoke
+
+            - name: Upload Playwright diagnostics
+              id: upload-report
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: pr-playwright-smoke
+                  path: |
+                      playwright-report/
+                      test-results/
+                      test-results.json
+                      junit-results.xml
+                  if-no-files-found: warn
+                  retention-days: 7
+
+    summary:
+        name: PR Summary Report
+        runs-on: ubuntu-latest
+        needs: [validate, test-unit, build, smoke]
+        if: always()
+        steps:
+            - name: Write proportional CI summary
               shell: bash
               run: |
-                  test "$(cat issue-134-diagnostics/check.exit)" = "0"
-                  test "$(cat issue-134-diagnostics/unit.exit)" = "0"
-                  test "$(cat issue-134-diagnostics/build.exit)" = "0"
-                  test "$(cat issue-134-diagnostics/diff-check.exit)" = "0"
-
-            - name: Commit validated migration
-              run: |
-                  rm -rf issue-134-diagnostics
-                  git config user.name "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add -A
-                  git commit -m "refactor(i18n): migrate home sections to granular catalogs"
-                  git push origin HEAD:${{ github.event.pull_request.head.ref }}
+                  {
+                    echo "## Pull request quality summary"
+                    echo
+                    echo "| Gate | Result |"
+                    echo "|---|---|"
+                    echo "| Code quality and squash title | ${{ needs.validate.result }} |"
+                    echo "| Unit tests | ${{ needs.test-unit.result }} |"
+                    echo "| Production build and bundle report | ${{ needs.build.result }} |"
+                    echo "| Chromium smoke and axe | ${{ needs.smoke.result }} |"
+                    echo
+                    echo "Full desktop-browser and Lighthouse suites run after integration into main; extended device and visual suites run on the scheduled/manual pipeline."
+                  } >> "$GITHUB_STEP_SUMMARY"

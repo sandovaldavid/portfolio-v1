@@ -1,13 +1,13 @@
 ---
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { TAGS } from '@shared/config/technology';
-import { TechPill } from '@shared/ui';
 import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { TechPill } from '@shared/ui';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const tTechStack = createScopedUiTranslator(lang, 'sections.techStack');
 
-// Home page shows only key/relevant skills
 const coreFrontend = [
 	TAGS.TYPESCRIPT,
 	TAGS.ANGULAR,
@@ -20,20 +20,17 @@ const coreFrontend = [
 const coreBackend = [TAGS.JAVA, TAGS.PYTHON, TAGS.DJANGO, TAGS.POSTGRESQL, TAGS.MYSQL].filter(
 	Boolean
 );
-
-const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS HABILIDADES';
 ---
 
 <div class="font-sans w-full flex flex-col items-center gap-8 mt-2">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
-		<!-- Frontend Spells Card -->
 		<article
 			class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-retro-md hover:-translate-y-1 hover:shadow-retro-xl transition-all duration-100 flex flex-col gap-4"
 		>
 			<h3
 				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-edge-subtle pb-2"
 			>
-				[ CORE FRONTEND SPELLS ]
+				[ {tTechStack('frontendTitle')} ]
 			</h3>
 			<div class="flex flex-wrap gap-2.5">
 				{
@@ -44,14 +41,13 @@ const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS H
 			</div>
 		</article>
 
-		<!-- Backend Runes Card -->
 		<article
 			class="rounded-none bg-surface border-2 border-black dark:border-white p-6 shadow-retro-md hover:-translate-y-1 hover:shadow-retro-xl transition-all duration-100 flex flex-col gap-4"
 		>
 			<h3
 				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 border-b-2 border-dashed border-edge-subtle pb-2"
 			>
-				[ CORE BACKEND RUNES ]
+				[ {tTechStack('backendTitle')} ]
 			</h3>
 			<div class="flex flex-wrap gap-2.5">
 				{
@@ -63,13 +59,12 @@ const viewAllText = lang === 'en' ? 'VIEW ALL SKILLS & TOOLS' : 'VER TODAS LAS H
 		</article>
 	</div>
 
-	<!-- Link to Full Skills Inventory -->
 	<div class="w-full flex justify-center">
 		<a
 			href={getLocalizedPath(lang, '/skills')}
 			class="inline-flex items-center justify-center rounded-none bg-surface text-content-strong border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-md hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-retro-xl active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 		>
-			{viewAllText}
+			{tTechStack('viewAll')}
 		</a>
 	</div>
 </div>

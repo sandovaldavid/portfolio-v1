@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-	translations,
-	DEFAULT_LANGUAGE,
 	AVAILABLE_LANGUAGES,
-	Language,
-	LANGUAGE_LABELS,
+	DEFAULT_LANGUAGE,
 	LANGUAGE_FLAGS,
+	LANGUAGE_LABELS,
+	Language,
+	translations,
 } from '@shared/config/i18n';
 
-describe('translations', () => {
+describe('legacy translations', () => {
 	it('has English translations', () => {
 		expect(translations[Language.ENGLISH]).toBeDefined();
 	});
@@ -17,23 +17,25 @@ describe('translations', () => {
 		expect(translations[Language.SPANISH]).toBeDefined();
 	});
 
-	it('English and Spanish have the same keys', () => {
+	it('keeps English and Spanish keys in parity', () => {
 		const enKeys = Object.keys(translations[Language.ENGLISH]).sort();
 		const esKeys = Object.keys(translations[Language.SPANISH]).sort();
 		expect(enKeys).toEqual(esKeys);
 	});
 
-	it('contains expected navigation keys', () => {
+	it('contains compatibility keys for domains not migrated yet', () => {
 		const en = translations[Language.ENGLISH];
 		expect(en['nav.experience']).toBeDefined();
-		expect(en['nav.projects']).toBeDefined();
-		expect(en['nav.about']).toBeDefined();
+		expect(en['projects.code-button']).toBeDefined();
+		expect(en['experience.atena.title']).toBeDefined();
 	});
 
-	it('contains expected hero keys', () => {
+	it('does not retain home copy migrated to granular catalogs', () => {
 		const en = translations[Language.ENGLISH];
-		expect(en['hero.intro']).toBeDefined();
-		expect(en['hero.title']).toBeDefined();
+		expect(en['hero.intro']).toBeUndefined();
+		expect(en['title.experience']).toBeUndefined();
+		expect(en['vision.title']).toBeUndefined();
+		expect(en['badges.github-foundations.label']).toBeUndefined();
 	});
 });
 
