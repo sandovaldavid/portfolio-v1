@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import ArrowLeftIcon from '@assets/icons/ArrowLeft.astro';
-import LinkIcon from '@assets/icons/Link.astro';
 import GitHubIcon from '@assets/technologies/GitHub.astro';
+import LinkIcon from '@assets/icons/Link.astro';
+import ArrowLeftIcon from '@assets/icons/ArrowLeft.astro';
+import { TechPill, LinkButton, LinkInline } from '@shared/ui';
 import type { ProjectItem } from '@entities/project';
-import { LinkButton, LinkInline, TechPill } from '@shared/ui';
 
 interface Props {
 	project: ProjectItem;
@@ -40,47 +40,11 @@ const {
 
 const { caseStudy } = project;
 const evidence = caseStudy.evidence;
-const narrativeSections = [
-	{
-		label: labelProblem,
-		value: caseStudy.problem,
-		borderClass: 'border-red-500',
-		labelClass: 'text-error-500',
-	},
-	{
-		label: labelApproach,
-		value: caseStudy.approach,
-		borderClass: 'border-yellow-500',
-		labelClass: 'text-warning-500',
-	},
-	{
-		label: labelTradeoffs,
-		value: caseStudy.tradeoffs,
-		borderClass: 'border-orange-500',
-		labelClass: 'text-orange-500',
-	},
-	{
-		label: labelOutcome,
-		value: caseStudy.outcome,
-		borderClass: 'border-green-500',
-		labelClass: 'text-success-500',
-	},
-] as const;
 const evidenceDecisionSections = evidence
 	? [
 			{ label: evidence.securityLabel, items: evidence.security },
 			{ label: evidence.testingLabel, items: evidence.testing },
 			{ label: evidence.deploymentLabel, items: evidence.deployment },
-		]
-	: [];
-const architectureItems = evidence
-	? [
-			evidence.architecture.client,
-			evidence.architecture.identity,
-			evidence.architecture.api,
-			evidence.architecture.modules,
-			evidence.architecture.database,
-			evidence.architecture.processes,
 		]
 	: [];
 ---
@@ -172,18 +136,33 @@ const architectureItems = evidence
 				)
 			}
 
-			{
-				narrativeSections.map(section => (
-					<section class={`border-l-4 pl-6 ${section.borderClass}`}>
-						<h2
-							class={`mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest ${section.labelClass}`}
-						>
-							{section.label}
-						</h2>
-						<p class="text-base leading-relaxed">{section.value}</p>
-					</section>
-				))
-			}
+			<div class="border-l-4 border-red-500 pl-6">
+				<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-error-500">
+					{labelProblem}
+				</div>
+				<p class="text-base leading-relaxed">{caseStudy.problem}</p>
+			</div>
+
+			<div class="border-l-4 border-yellow-500 pl-6">
+				<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-warning-500">
+					{labelApproach}
+				</div>
+				<p class="text-base leading-relaxed">{caseStudy.approach}</p>
+			</div>
+
+			<div class="border-l-4 border-orange-500 pl-6">
+				<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-orange-500">
+					{labelTradeoffs}
+				</div>
+				<p class="text-base leading-relaxed">{caseStudy.tradeoffs}</p>
+			</div>
+
+			<div class="border-l-4 border-green-500 pl-6">
+				<div class="mb-2 font-retro-tag text-xs font-bold uppercase tracking-widest text-success-500">
+					{labelOutcome}
+				</div>
+				<p class="text-base leading-relaxed">{caseStudy.outcome}</p>
+			</div>
 
 			{
 				evidence && (
@@ -198,7 +177,10 @@ const architectureItems = evidence
 							<ul class="space-y-3">
 								{evidence.implemented.map(item => (
 									<li class="flex items-start gap-3 text-sm leading-relaxed">
-										<span class="mt-1 font-bold text-success-500" aria-hidden="true">
+										<span
+											class="mt-1 font-bold text-success-500"
+											aria-hidden="true"
+										>
 											✓
 										</span>
 										<span>{item}</span>
@@ -217,7 +199,10 @@ const architectureItems = evidence
 							<ul class="space-y-3">
 								{evidence.planned.map(item => (
 									<li class="flex items-start gap-3 text-sm leading-relaxed">
-										<span class="mt-1 font-bold text-warning-500" aria-hidden="true">
+										<span
+											class="mt-1 font-bold text-warning-500"
+											aria-hidden="true"
+										>
 											○
 										</span>
 										<span>{item}</span>
@@ -239,20 +224,108 @@ const architectureItems = evidence
 							{evidence.architectureLabel}
 						</h2>
 						<figure class="border-2 border-black bg-neutral-950 p-5 text-white shadow-retro-lg dark:border-white">
-							<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-								{architectureItems.map(item => (
-									<div class="border-2 border-neutral-500 bg-neutral-900 p-4">
-										{item.split('\n').map((line, index) => (
+							<div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
+								<div class="border-2 border-red-500 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.client
+										.split('\n')
+										.map((line, index) => (
 											<p
-												class={index === 0
-													? 'font-retro-tag text-xs font-bold uppercase tracking-wider text-primary-300'
-													: 'mt-2 text-sm text-neutral-200'}
+												class={
+													index === 0
+														? 'font-bold text-white'
+														: 'mt-1 text-xs text-neutral-300'
+												}
 											>
 												{line}
 											</p>
 										))}
-									</div>
-								))}
+								</div>
+								<div class="hidden text-2xl md:block" aria-hidden="true">
+									→
+								</div>
+								<div class="border-2 border-purple-500 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.api
+										.split('\n')
+										.map((line, index) => (
+											<p
+												class={
+													index === 0
+														? 'font-bold text-white'
+														: 'mt-1 text-xs text-neutral-300'
+												}
+											>
+												{line}
+											</p>
+										))}
+								</div>
+							</div>
+
+							<div class="my-4 text-center text-2xl" aria-hidden="true">
+								↓
+							</div>
+
+							<div class="grid gap-4 md:grid-cols-3">
+								<div class="border-2 border-sky-400 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.identity
+										.split('\n')
+										.map((line, index) => (
+											<p
+												class={
+													index === 0
+														? 'font-bold text-white'
+														: 'mt-1 text-xs text-neutral-300'
+												}
+											>
+												{line}
+											</p>
+										))}
+								</div>
+								<div class="border-2 border-emerald-400 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.modules
+										.split('\n')
+										.map((line, index) => (
+											<p
+												class={
+													index === 0
+														? 'font-bold text-white'
+														: 'mt-1 text-xs text-neutral-300'
+												}
+											>
+												{line}
+											</p>
+										))}
+								</div>
+								<div class="border-2 border-blue-400 bg-neutral-900 p-4 text-center">
+									{evidence.architecture.database
+										.split('\n')
+										.map((line, index) => (
+											<p
+												class={
+													index === 0
+														? 'font-bold text-white'
+														: 'mt-1 text-xs text-neutral-300'
+												}
+											>
+												{line}
+											</p>
+										))}
+								</div>
+							</div>
+
+							<div class="mt-4 border-2 border-neutral-500 bg-neutral-900 p-4 text-center">
+								{evidence.architecture.processes
+									.split('\n')
+									.map((line, index) => (
+										<p
+											class={
+												index === 0
+													? 'font-bold text-white'
+													: 'mt-1 text-xs text-neutral-300'
+											}
+										>
+											{line}
+										</p>
+									))}
 							</div>
 							<figcaption class="mt-5 text-sm leading-relaxed text-neutral-300">
 								{evidence.architecture.caption}
@@ -296,13 +369,10 @@ const architectureItems = evidence
 				</div>
 			</div>
 
-			<section aria-labelledby="case-study-learnings">
-				<h2
-					id="case-study-learnings"
-					class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-purple-500"
-				>
+			<div>
+				<div class="mb-4 font-retro-tag text-xs font-bold uppercase tracking-widest text-purple-500">
 					{labelLearnings}
-				</h2>
+				</div>
 				<ul class="space-y-3">
 					{
 						caseStudy.learnings.map(learning => (
@@ -313,7 +383,7 @@ const architectureItems = evidence
 						))
 					}
 				</ul>
-			</section>
+			</div>
 
 			{
 				evidence && (
