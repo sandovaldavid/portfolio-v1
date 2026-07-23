@@ -1,10 +1,10 @@
 # Granular UI catalog implementation
 
-This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133 and the home-section migration implemented by issue #134. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
+This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133, the home-section migration implemented by issue #134 and the structured profile, experience and project migrations completed by issues #135–#137. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
 
 ## Scope
 
-The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects, case studies, blog posts and devlog entries remain outside this API and migrate to schema-validated content sources in roadmap issues #135–#138.
+The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects and case studies live in schema-validated content collections. Blog posts and devlog entries remain outside this API and migrate through roadmap issue #138.
 
 The legacy monolithic dictionaries and `useTranslationsList()` remain temporarily for consumers that have not yet migrated. They are compatibility debt and must not receive new domains.
 
@@ -51,6 +51,7 @@ The following production surfaces consume granular catalogs directly:
 - optional retro splash screen;
 - 404 page;
 - experience-tab accessibility and action labels;
+- project-card actions, card types, case-study labels and project-catalog metadata;
 - CLI terminal, shortcuts and secret-mode messages;
 - home hero, About, Research, Vision, Tech Stack, badges and section headings.
 
@@ -137,4 +138,22 @@ Each entry owns localized company presentation, role title, date label and achie
 
 Technical tags intentionally use stable language-neutral labels in both locales. The `sections.experience` UI module owns only reusable labels such as the section title and optional evidence-link action.
 
-`useTranslationsList()` remains transitional only because the unmigrated research detail still consumes structured arrays. Experience is no longer a consumer, and the helper must not receive new domains before issue #143 removes the legacy runtime.
+## Structured project content
+
+Issue #137 moves project summaries and case studies into one validated entry per stable project and locale:
+
+```text
+src/content/projects/
+├── en/
+│   └── <project-id>.json
+└── es/
+    └── <project-id>.json
+```
+
+Each entry owns localized title, description, category, image alternative text, case-study narrative, duration, role and optional evidence copy. `src/entities/project/model/metadata.ts` owns slugs, repository and demo URLs, image imports, technology IDs, ordering, featured state and evidence-source URLs.
+
+The project entity joins both sources by `projectId`, rejects duplicate or missing locale entries and rejects localized evidence sources without matching language-neutral URLs. Project lists and detail routes consume the public entity API asynchronously. The `sections.projects` UI module owns only reusable card, action, case-study and catalog labels.
+
+The previous project records in `en.json` and `es.json`, the dictionary-backed `model/data.ts` builder and the special Yukidoke dictionary merge have been removed.
+
+`useTranslationsList()` remains transitional only because the unmigrated research detail still consumes structured arrays. Experience and projects are no longer consumers, and the helper must not receive new domains before issue #143 removes the legacy runtime.
