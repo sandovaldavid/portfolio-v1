@@ -2,16 +2,11 @@ import { readFileSync } from 'node:fs';
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const devcontainer = JSON.parse(readFileSync('.devcontainer/devcontainer.json', 'utf8'));
-const devcontainerLock = JSON.parse(
-	readFileSync('.devcontainer/devcontainer-lock.json', 'utf8')
-);
+const devcontainerLock = JSON.parse(readFileSync('.devcontainer/devcontainer-lock.json', 'utf8'));
 const dockerfile = readFileSync('.devcontainer/Dockerfile', 'utf8');
 const postCreateScript = readFileSync('.devcontainer/scripts/post-create.sh', 'utf8');
 const postStartScript = readFileSync('.devcontainer/scripts/post-start.sh', 'utf8');
-const configureShellScript = readFileSync(
-	'.devcontainer/scripts/configure-shell.sh',
-	'utf8'
-);
+const configureShellScript = readFileSync('.devcontainer/scripts/configure-shell.sh', 'utf8');
 const configureGitSigningScript = readFileSync(
 	'.devcontainer/scripts/configure-git-ssh-signing.sh',
 	'utf8'
@@ -127,8 +122,14 @@ expect(
 for (const [feature, expected] of Object.entries(expectedFeatureLocks)) {
 	expect(Boolean(devcontainer.features?.[feature]), `devcontainer.json must pin ${feature}.`);
 	const lock = devcontainerLock.features?.[feature];
-	expect(lock?.version === expected.version, `${feature} must use lock version ${expected.version}.`);
-	expect(lock?.integrity === expected.integrity, `${feature} must use the reviewed integrity digest.`);
+	expect(
+		lock?.version === expected.version,
+		`${feature} must use lock version ${expected.version}.`
+	);
+	expect(
+		lock?.integrity === expected.integrity,
+		`${feature} must use the reviewed integrity digest.`
+	);
 	expect(
 		lock?.resolved?.endsWith(`@${expected.integrity}`),
 		`${feature} must resolve to the reviewed digest.`
@@ -280,10 +281,18 @@ expect(
 expect(
 	configureShellScript.includes('STARSHIP_VERSION="${STARSHIP_VERSION:-v1.26.0}"') &&
 		configureShellScript.includes('EZA_VERSION="${EZA_VERSION:-0.23.5}"') &&
-		configureShellScript.includes('ZSH_AUTOSUGGESTIONS_VERSION="${ZSH_AUTOSUGGESTIONS_VERSION:-0.7.1}"') &&
-		configureShellScript.includes('ZSH_SYNTAX_HIGHLIGHTING_VERSION="${ZSH_SYNTAX_HIGHLIGHTING_VERSION:-0.8.0}"') &&
-		configureShellScript.includes('ZSH_COMPLETIONS_VERSION="${ZSH_COMPLETIONS_VERSION:-0.36.0}"') &&
-		configureShellScript.includes('ZSH_HISTORY_SUBSTRING_SEARCH_VERSION="${ZSH_HISTORY_SUBSTRING_SEARCH_VERSION:-1.1.0}"'),
+		configureShellScript.includes(
+			'ZSH_AUTOSUGGESTIONS_VERSION="${ZSH_AUTOSUGGESTIONS_VERSION:-0.7.1}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_SYNTAX_HIGHLIGHTING_VERSION="${ZSH_SYNTAX_HIGHLIGHTING_VERSION:-0.8.0}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_COMPLETIONS_VERSION="${ZSH_COMPLETIONS_VERSION:-0.36.0}"'
+		) &&
+		configureShellScript.includes(
+			'ZSH_HISTORY_SUBSTRING_SEARCH_VERSION="${ZSH_HISTORY_SUBSTRING_SEARCH_VERSION:-1.1.0}"'
+		),
 	'the shared shell installer must pin the reviewed dotfiles tool versions.'
 );
 expect(

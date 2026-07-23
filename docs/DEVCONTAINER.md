@@ -59,14 +59,14 @@ The lockfile records the reviewed OCI digests. Whenever a Feature reference or o
 
 The lifecycle installs checksum-verified releases under the remote user's home:
 
-| Component | Version |
-|---|---:|
-| Starship | `1.26.0` |
-| eza | `0.23.5` |
-| zsh-autosuggestions | `0.7.1` |
-| zsh-syntax-highlighting | `0.8.0` |
-| zsh-completions | `0.36.0` |
-| zsh-history-substring-search | `1.1.0` |
+| Component                    |  Version |
+| ---------------------------- | -------: |
+| Starship                     | `1.26.0` |
+| eza                          | `0.23.5` |
+| zsh-autosuggestions          |  `0.7.1` |
+| zsh-syntax-highlighting      |  `0.8.0` |
+| zsh-completions              | `0.36.0` |
+| zsh-history-substring-search |  `1.1.0` |
 
 The files below are synchronized from the portable Dev Container templates in `dotfiles`:
 
