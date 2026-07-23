@@ -76,7 +76,7 @@
 	},
 	"tailwindCSS.experimental.classRegex": [
 		["class:\\s*['\"`]([^'\"`]*?)['\"`]", "([^\\s]+)"],
-		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" ]
+		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
 	],
 
 	// TypeScript path completions
