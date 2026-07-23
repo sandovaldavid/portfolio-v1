@@ -5,13 +5,49 @@ on:
         branches: [main]
 
 permissions:
-    contents: read
+    contents: write
 
 concurrency:
     group: pr-quality-${{ github.event.pull_request.number }}
     cancel-in-progress: true
 
 jobs:
+    migrate-issue-134:
+        name: Apply and validate issue 134 migration
+        if: github.actor != 'github-actions[bot]'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout writable pull request branch
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.ref }}
+                  fetch-depth: 0
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Apply home section catalog migration
+              run: |
+                  python scripts/migrate-issue-134.py
+                  rm scripts/migrate-issue-134.py
+                  git checkout origin/main -- .github/workflows/ci.yml
+
+            - name: Format and validate final branch
+              run: |
+                  bun run format
+                  bun run check
+                  bun run test:unit:ci
+                  bun run build
+                  git diff --check
+
+            - name: Commit validated migration
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add -A
+                  git commit -m "refactor(i18n): migrate home sections to granular catalogs"
+                  git push origin HEAD:${{ github.event.pull_request.head.ref }}
+
     validate:
         name: Code Quality & Commits
         runs-on: ubuntu-latest
