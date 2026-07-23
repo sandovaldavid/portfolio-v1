@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { Language } from '@shared/config/i18n';
-import { isContentForLanguage, stripContentLocalePrefix } from '@shared/lib/content';
+import {
+	getContentLanguage,
+	isContentForLanguage,
+	stripContentLocalePrefix,
+} from '@shared/lib/content';
 
 describe('stripContentLocalePrefix', () => {
 	it.each([
@@ -18,6 +22,17 @@ describe('stripContentLocalePrefix', () => {
 			expect(stripContentLocalePrefix(id)).toBe(id);
 		}
 	);
+});
+
+describe('getContentLanguage', () => {
+	it('resolves supported editorial locale folders', () => {
+		expect(getContentLanguage('en/post')).toBe(Language.ENGLISH);
+		expect(getContentLanguage('es/post')).toBe(Language.SPANISH);
+	});
+
+	it.each(['fr/post', 'english/post', 'en-post', ''])('rejects unsupported content IDs %s', id => {
+		expect(getContentLanguage(id)).toBeUndefined();
+	});
 });
 
 describe('isContentForLanguage', () => {
