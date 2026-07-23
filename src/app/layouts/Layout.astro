@@ -17,7 +17,7 @@ import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { getLangFromUrl } from '@shared/lib/i18n';
 import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
@@ -44,9 +44,13 @@ const {
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
 } = Astro.props;
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
 const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
 const tBreadcrumbs = createScopedUiTranslator(lang, 'breadcrumbs');
+const tExperience = createScopedUiTranslator(lang, 'sections.experience');
+const tResearchSection = createScopedUiTranslator(lang, 'sections.research');
+const tProjects = createScopedUiTranslator(lang, 'sections.projects');
+const tAbout = createScopedUiTranslator(lang, 'sections.about');
+const tTechStack = createScopedUiTranslator(lang, 'sections.techStack');
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
@@ -275,7 +279,7 @@ const articleSchema = article
 								>
 									<TitleSection className="mb-0">
 										<BriefCaseIcon class="size-12" />
-										{t('title.experience')}
+										{tExperience('sectionTitle')}
 									</TitleSection>
 									<slot name="experience" />
 								</SectionContainer>
@@ -285,7 +289,7 @@ const articleSchema = article
 								>
 									<TitleSection className="mb-0">
 										<BrainIcon class="size-12" />
-										{t('title.research')}
+										{tResearchSection('sectionTitle')}
 									</TitleSection>
 									<slot name="research" />
 								</SectionContainer>
@@ -296,7 +300,7 @@ const articleSchema = article
 								>
 									<TitleSection className="mb-0">
 										<CodeIcon class="size-12" />
-										{t('title.projects')}
+										{tProjects('sectionTitle')}
 									</TitleSection>
 									<slot name="projects" />
 								</SectionContainer>
@@ -307,7 +311,7 @@ const articleSchema = article
 								>
 									<TitleSection className="mb-0">
 										<ProfileCheckIcon class="size-12" />
-										{t('title.about-me')}
+										{tAbout('sectionTitle')}
 									</TitleSection>
 									<slot name="about-me" />
 								</SectionContainer>
@@ -318,7 +322,7 @@ const articleSchema = article
 								>
 									<TitleSection className="mb-0">
 										<CodeIcon class="size-12" />
-										{t('title.technologies')}
+										{tTechStack('sectionTitle')}
 									</TitleSection>
 									<TechStack />
 								</SectionContainer>

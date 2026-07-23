@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTranslations, useTranslationsList } from '@shared/lib/i18n/translations';
 import { Language } from '@shared/config/i18n';
 
@@ -26,16 +26,6 @@ describe('useTranslations', () => {
 	it('translates a known key in Spanish', () => {
 		const t = useTranslations(Language.SPANISH);
 		expect(t('nav.experience')).toBe('Experiencia');
-	});
-
-	it('translates hero.intro in English', () => {
-		const t = useTranslations(Language.ENGLISH);
-		expect(t('hero.intro')).toBe("Hello, I'm David Sandoval");
-	});
-
-	it('translates hero.intro in Spanish', () => {
-		const t = useTranslations(Language.SPANISH);
-		expect(t('hero.intro')).toContain('Hola');
 	});
 
 	it('provides the Yukidoke flagship case study in both languages', () => {
@@ -81,18 +71,11 @@ describe('useTranslations', () => {
 		expect(result.length).toBeGreaterThan(0);
 	});
 
-	it('returns both translations keys in English and Spanish for nav', () => {
+	it('returns both translation keys in English and Spanish for nav', () => {
 		const tEn = useTranslations(Language.ENGLISH);
 		const tEs = useTranslations(Language.SPANISH);
 		expect(tEn('nav.projects')).toBe('Projects');
 		expect(tEs('nav.projects')).toBe('Proyectos');
-	});
-
-	it('returns hero.available in both languages', () => {
-		const tEn = useTranslations(Language.ENGLISH);
-		const tEs = useTranslations(Language.SPANISH);
-		expect(tEn('hero.available')).toMatch(/.+/);
-		expect(tEs('hero.available')).toMatch(/.+/);
 	});
 });
 

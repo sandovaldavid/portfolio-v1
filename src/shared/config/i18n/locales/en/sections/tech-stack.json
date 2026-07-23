@@ -1,5 +1,6 @@
 {
-	"eyebrow": "Technology stack",
-	"title": "Tools selected for the problem",
-	"summary": "Angular, .NET and TypeScript form the core product stack, supported by Astro, PostgreSQL, testing and delivery automation where appropriate."
+	"sectionTitle": "Technologies",
+	"frontendTitle": "Core frontend stack",
+	"backendTitle": "Core backend stack",
+	"viewAll": "View all skills and tools"
 }

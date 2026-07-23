@@ -1,6 +1,6 @@
 # Granular UI catalog implementation
 
-This document describes the executable UI-catalog foundation introduced by issue #132 and the shared-shell migration completed by issue #133. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
+This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133 and the home-section migration implemented by issue #134. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
 
 ## Scope
 
@@ -27,6 +27,9 @@ src/shared/config/i18n/locales/{locale}/
 └── sections/
     ├── hero.json
     ├── about.json
+    ├── badges.json
+    ├── experience.json
+    ├── projects.json
     ├── research.json
     ├── vision.json
     └── tech-stack.json
@@ -34,7 +37,7 @@ src/shared/config/i18n/locales/{locale}/
 
 Every module contains scalar strings only. The Spanish catalog is checked against the English shape at compile time, while runtime validation checks flattened-key parity, unique namespaces and non-empty values.
 
-## Shared shell ownership
+## Catalog consumers
 
 The following production surfaces consume granular catalogs directly:
 
@@ -48,7 +51,10 @@ The following production surfaces consume granular catalogs directly:
 - optional retro splash screen;
 - 404 page;
 - experience-tab accessibility label;
-- CLI terminal, shortcuts and secret-mode messages.
+- CLI terminal, shortcuts and secret-mode messages;
+- home hero, About, Research, Vision, Tech Stack, badges and section headings.
+
+Home-section copy has no duplicate entries in the legacy dictionaries. Those compatibility dictionaries retain only domains that are still awaiting later roadmap migrations. Each focused home module is owned by its corresponding widget or by the application layout when the copy labels a page section.
 
 The CLI uses `cli.json` for all visible and runtime-generated text. `CLITerminalCatalog.astro` passes one locale namespace to `model/runtime.ts`; the runtime owns behavior and interpolation but contains no parallel English/Spanish copy map. Repository-authored terminal markup is assembled in code around escaped scalar translations instead of storing HTML inside locale files.
 

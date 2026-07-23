@@ -62,9 +62,9 @@ describe('granular UI catalogs', () => {
 
 	it('exposes a readonly catalog with inferred leaf keys', () => {
 		const catalog = getUiCatalog(Language.ENGLISH);
-		const key: UiCatalogKey = 'sections.techStack.title';
+		const key: UiCatalogKey = 'sections.techStack.sectionTitle';
 
-		expect(catalog[key]).toBe('Tools selected for the problem');
+		expect(catalog[key]).toBe('Technologies');
 		expectTypeOf<UiCatalogKey>().toMatchTypeOf<string>();
 	});
 });

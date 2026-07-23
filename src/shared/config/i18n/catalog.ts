@@ -7,7 +7,10 @@ import footerEn from './locales/en/footer.json';
 import navigationEn from './locales/en/navigation.json';
 import recruiterEn from './locales/en/recruiter.json';
 import aboutEn from './locales/en/sections/about.json';
+import badgesEn from './locales/en/sections/badges.json';
+import experienceEn from './locales/en/sections/experience.json';
 import heroEn from './locales/en/sections/hero.json';
+import projectsEn from './locales/en/sections/projects.json';
 import researchEn from './locales/en/sections/research.json';
 import techStackEn from './locales/en/sections/tech-stack.json';
 import visionEn from './locales/en/sections/vision.json';
@@ -22,7 +25,10 @@ import footerEs from './locales/es/footer.json';
 import navigationEs from './locales/es/navigation.json';
 import recruiterEs from './locales/es/recruiter.json';
 import aboutEs from './locales/es/sections/about.json';
+import badgesEs from './locales/es/sections/badges.json';
+import experienceEs from './locales/es/sections/experience.json';
 import heroEs from './locales/es/sections/hero.json';
+import projectsEs from './locales/es/sections/projects.json';
 import researchEs from './locales/es/sections/research.json';
 import techStackEs from './locales/es/sections/tech-stack.json';
 import visionEs from './locales/es/sections/vision.json';
@@ -45,6 +51,9 @@ const englishCatalog = {
 	sections: {
 		hero: heroEn,
 		about: aboutEn,
+		badges: badgesEn,
+		experience: experienceEn,
+		projects: projectsEn,
 		research: researchEn,
 		vision: visionEn,
 		techStack: techStackEn,
@@ -65,6 +74,9 @@ const spanishCatalog = {
 	sections: {
 		hero: heroEs,
 		about: aboutEs,
+		badges: badgesEs,
+		experience: experienceEs,
+		projects: projectsEs,
 		research: researchEs,
 		vision: visionEs,
 		techStack: techStackEs,
@@ -84,6 +96,9 @@ export const UI_CATALOG_MODULES = [
 	'splash',
 	'sections.hero',
 	'sections.about',
+	'sections.badges',
+	'sections.experience',
+	'sections.projects',
 	'sections.research',
 	'sections.vision',
 	'sections.techStack',
