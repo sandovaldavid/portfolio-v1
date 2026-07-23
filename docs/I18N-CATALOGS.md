@@ -116,3 +116,5 @@ src/content/portfolio-profile/
 The `portfolioProfile` collection validates stable identity, locale, SEO metadata, summary, biography paragraphs, focus areas, availability, location, work mode, research positioning and the current-role summary. Language-neutral identity and contact values remain in `siteConfig`.
 
 Consumers load the entry through the public `@entities/profile` API. UI catalogs retain only headings, labels, actions and accessibility text; they do not own long biography records.
+
+The home About widget reuses the localized profile summary, while `/about` and `/es/about` use the corresponding biography, focus areas and SEO metadata from the same entry.
