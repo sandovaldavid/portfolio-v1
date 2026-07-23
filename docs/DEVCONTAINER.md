@@ -25,7 +25,7 @@ The versioned configuration owns these guarantees:
 - recovery of inherited Bun, dependency-volume, command-history, Git and generated-path ownership;
 - repair during create, container start and VS Code attach lifecycle events;
 - explicit propagation of the real host workspace path to nested test containers;
-- deterministic publication of Astro port `4321` on host loopback as `http://localhost:4321`;
+- deterministic publication of Astro port `4321` and Playwright report port `9323` on host loopback;
 - documented Fedora SELinux compatibility for the trusted local development container.
 
 `bun run check:devcontainer` rejects version, Feature, lockfile, shell, user, init, IPC, port-publication, mount, lifecycle, identity, repair-policy or configuration drift. The command also runs as part of `bun run check`.
@@ -41,7 +41,7 @@ This repository does not copy the generic Astro template literally:
 - the named `node_modules` volume isolates Linux dependencies from the host and from the nested pinned Playwright container.
 - Zsh is the default interactive shell. Bash remains configured as a supported fallback.
 - the host Docker daemon is reused rather than starting a second daemon inside the development container.
-- Astro is published through Docker on host loopback instead of depending on the VS Code port-forwarding tunnel.
+- Astro and the Playwright report are published through Docker on host loopback instead of depending on VS Code port-forwarding tunnels.
 
 ## Exact Features
 
@@ -174,10 +174,18 @@ A stopped host Docker daemon produces a warning; start Docker before Docker-back
 The Dev Container publishes:
 
 ```json
-"appPort": ["127.0.0.1:4321:4321"]
+"appPort": [
+  "127.0.0.1:4321:4321",
+  "127.0.0.1:9323:9323"
+]
 ```
 
-This is a Docker port publication, not a VS Code forwarding tunnel. Port `4321` is bound only to the host loopback interface, so it is available at `http://localhost:4321` but is not exposed to other machines on the LAN. VS Code auto-forwarding is disabled for this port to avoid a second URL or a silently remapped local port.
+These are Docker port publications, not VS Code forwarding tunnels. Both ports are bound only to the host loopback interface and are not exposed to other machines on the LAN. VS Code auto-forwarding is disabled for both ports to avoid duplicate URLs or silently remapped local ports.
+
+| Service                | Container port | Host URL                |
+| ---------------------- | -------------: | ----------------------- |
+| Astro development      |           4321 | `http://localhost:4321` |
+| Playwright HTML report |           9323 | `http://localhost:9323` |
 
 Astro must listen on all container interfaces:
 
@@ -185,12 +193,19 @@ Astro must listen on all container interfaces:
 bun run dev -- --host 0.0.0.0
 ```
 
-The terminal can still print both `localhost` and the container bridge address. The canonical host URL is `http://localhost:4321`.
-
-If the rebuild fails because the host port is already allocated, identify the owner from a host terminal before retrying:
+Generate a Playwright report and serve it on the published report port:
 
 ```bash
-ss -ltnp '( sport = :4321 )'
+bun run test:e2e:smoke
+bun run test:e2e:report
+```
+
+`test:e2e:report` runs the project-local Playwright binary with `--host 0.0.0.0 --port 9323`. It blocks the terminal until stopped with `Ctrl+C`.
+
+If a rebuild fails because either host port is already allocated, identify the owner from a host terminal before retrying:
+
+```bash
+ss -ltnp '( sport = :4321 or sport = :9323 )'
 ```
 
 ## Validate a configuration update
@@ -221,10 +236,11 @@ VERIFY_DOCKER_WORKSPACE_ONLY=true bash docker-test.sh
 git status --short
 ```
 
-With `bun run dev -- --host 0.0.0.0` still running in the container, validate from a host terminal:
+With Astro and the Playwright report servers running in separate container terminals, validate from the host:
 
 ```bash
 curl --fail --head http://localhost:4321/
+curl --fail --head http://localhost:9323/
 ```
 
 Expected core versions:
@@ -281,11 +297,12 @@ bun run check
 bun run test:unit:ci
 bun run build
 bun run test:e2e:smoke
+bun run test:e2e:report
 bun run test:e2e:desktop
 bun run test:e2e:extended
 ```
 
-Astro uses container port `4321`, published only on the host loopback interface at `http://localhost:4321`.
+Astro is available at `http://localhost:4321`. After a Playwright run creates `playwright-report`, `bun run test:e2e:report` serves it at `http://localhost:9323`.
 
 ## Visual testing
 
@@ -315,7 +332,7 @@ The repository includes:
 
 Use this configuration only with trusted repository code. It is not a production runtime definition. A stricter environment should replace the direct bind mount with a Compose mount using explicit SELinux relabeling and remove `label=disable` after host validation.
 
-The Astro development port is published only to `127.0.0.1`; it is not bound to `0.0.0.0` on the host. Inside the container, Astro still listens on `0.0.0.0` so Docker can route host-loopback traffic to it.
+The development ports are published only to `127.0.0.1`; they are not bound to `0.0.0.0` on the host. Inside the container, the corresponding servers listen on `0.0.0.0` so Docker can route host-loopback traffic to them.
 
 `docker-outside-of-docker` exposes the host Docker daemon to the development user. Processes with access to that socket effectively have host-level container control. Do not run untrusted code inside this environment.
 
