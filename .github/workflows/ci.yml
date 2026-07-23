@@ -12,6 +12,29 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    format-i18n-doc:
+        name: Export formatted i18n documentation
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Format tracked files
+              run: bun run format
+
+            - name: Upload formatted documentation
+              uses: actions/upload-artifact@v7
+              with:
+                  name: formatted-i18n-catalogs
+                  path: docs/I18N-CATALOGS.md
+                  if-no-files-found: error
+                  retention-days: 1
+
     validate:
         name: Code Quality & Commits
         runs-on: ubuntu-latest
