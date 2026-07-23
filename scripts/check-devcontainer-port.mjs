@@ -46,14 +46,14 @@ if (
 }
 
 const hostDevelopmentTask = tasks.find(
-	(task) => task.label === 'Portfolio: Start Dev Server on Host'
+	task => task.label === 'Portfolio: Start Dev Server on Host'
 );
 if (hostDevelopmentTask?.command !== 'bun run dev:host') {
 	failures.push('VS Code must expose a task that starts the reviewed host development command.');
 }
 
 const hostDevelopmentLaunch = launchConfigurations.find(
-	(configuration) => configuration.name === 'Portfolio: Dev Server + Host Browser'
+	configuration => configuration.name === 'Portfolio: Dev Server + Host Browser'
 );
 if (
 	hostDevelopmentLaunch?.type !== 'node-terminal' ||
