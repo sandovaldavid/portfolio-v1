@@ -130,7 +130,8 @@ describe('editorial translation pairing', () => {
 			'src/pages/es/devlog/[slug].astro',
 		];
 
-		expect(picker).toContain('localizedPaths !== undefined && !verifiedPath');
+		expect(picker).toContain('const path = localizedPaths[lang]');
+		expect(picker).toContain('const isUnavailable = !path');
 		expect(picker).toContain('<button');
 		expect(picker).toContain('disabled');
 		expect(picker).toContain("tAccessibility('translationUnavailable')");
