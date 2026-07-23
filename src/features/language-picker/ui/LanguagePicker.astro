@@ -1,38 +1,15 @@
 ---
 import {
 	AVAILABLE_LANGUAGES,
-	DEFAULT_LANGUAGE,
 	LANGUAGE_LABELS,
 	createScopedUiTranslator,
+	getLanguageFromLocale,
 } from '@shared/config/i18n';
-import { getLangFromUrl } from '@shared/lib/i18n';
 import type { LanguagePickerProps } from '../model';
 
-const url = new URL(Astro.request.url);
 const { currentLang: providedCurrentLang, localizedPaths } = Astro.props as LanguagePickerProps;
-const currentLang = providedCurrentLang ?? getLangFromUrl(url);
-const pathname = url.pathname;
+const currentLang = providedCurrentLang ?? getLanguageFromLocale(Astro.currentLocale);
 const tAccessibility = createScopedUiTranslator(currentLang, 'accessibility');
-
-/**
- * Generates the provisional path for ordinary static pages.
- * Editorial detail routes provide verified localizedPaths instead.
- * Astro-native ordinary route switching is completed by issue #139.
- */
-const getFallbackLanguagePath = (targetLang: string): string => {
-	const cleanPath = pathname.replace(/^\/(es|en)(\/|$)/, '/');
-
-	if (targetLang === DEFAULT_LANGUAGE) {
-		return cleanPath === '' ? '/' : cleanPath;
-	}
-
-	if (cleanPath === '/' || cleanPath === '') {
-		return '/es/';
-	}
-
-	return `/es${cleanPath}`;
-};
-
 const baseClass =
 	'px-2.5 py-1 text-xs font-bold transition-all duration-100 uppercase tracking-wider border-2 border-black dark:border-white';
 ---
@@ -45,9 +22,8 @@ const baseClass =
 	{
 		AVAILABLE_LANGUAGES.map(lang => {
 			const isActive = currentLang === lang;
-			const verifiedPath = localizedPaths?.[lang];
-			const isUnavailable = !isActive && localizedPaths !== undefined && !verifiedPath;
-			const path = isActive ? '#' : verifiedPath ?? getFallbackLanguagePath(lang);
+			const path = localizedPaths[lang];
+			const isUnavailable = !path;
 			const label = isActive
 				? `${LANGUAGE_LABELS[lang]}, ${tAccessibility('currentPage')}`
 				: isUnavailable
@@ -70,6 +46,7 @@ const baseClass =
 			return (
 				<a
 					href={path}
+					data-language-base-path={path}
 					class={`${baseClass} ${
 						isActive
 							? 'bg-primary-500 text-white dark:text-black shadow-retro-xs translate-x-[1.5px] translate-y-[1.5px] cursor-default pointer-events-none'
@@ -84,3 +61,22 @@ const baseClass =
 		})
 	}
 </div>
+
+<script>
+	const syncLanguageLinkState = () => {
+		document
+			.querySelectorAll<HTMLAnchorElement>('[data-language-base-path]')
+			.forEach(link => {
+				const basePath = link.dataset.languageBasePath;
+				if (!basePath) return;
+
+				const target = new URL(basePath, window.location.origin);
+				target.search = window.location.search;
+				target.hash = window.location.hash;
+				link.href = `${target.pathname}${target.search}${target.hash}`;
+			});
+	};
+
+	document.addEventListener('astro:page-load', syncLanguageLinkState);
+	window.addEventListener('hashchange', syncLanguageLinkState);
+</script>
