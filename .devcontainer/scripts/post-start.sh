@@ -69,6 +69,26 @@ bun_probe="$bun_home/.devcontainer-write-probe.$$"
 touch "$bun_probe"
 rm -f "$bun_probe"
 
+history_file="${ZSH_HISTORY_FILE:-$HOME/.zsh_history}"
+history_directory="$(dirname "$history_file")"
+
+if [[ -L "$history_directory" || -L "$history_file" ]]; then
+	echo "Refusing to repair command history through a symbolic link: $history_file" >&2
+	exit 1
+fi
+
+sudo mkdir -p "$history_directory"
+sudo chown "$owner" -- "$history_directory"
+sudo chmod 0700 "$history_directory"
+touch "$history_file"
+sudo chown "$owner" -- "$history_file"
+chmod 0600 "$history_file"
+
+if [[ ! -w "$history_file" ]]; then
+	echo "Zsh history is not writable after repair: $history_file" >&2
+	exit 1
+fi
+
 git_directory="$(git rev-parse --absolute-git-dir 2>/dev/null || true)"
 if [[ -n "$git_directory" ]]; then
 	case "$git_directory" in
@@ -162,4 +182,7 @@ for path in .docker .docker/runtime .docker/runtime/node_modules .docker/runtime
 	fi
 done
 
-printf 'Git metadata, Bun home, dependency volume and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
+# The forwarded agent can become available after the first container creation.
+bash .devcontainer/scripts/configure-git-ssh-signing.sh
+
+printf 'Git metadata, Bun home, command history, dependency volume and generated workspace paths are writable by %s (%s).\n' "$(id -un)" "$owner"
