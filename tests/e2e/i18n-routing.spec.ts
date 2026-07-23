@@ -52,11 +52,10 @@ test.describe('Astro-native locale routing', () => {
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 	});
 
-	test.each(['/en/about', '/fr/about'])(
-		'does not accept unsupported locale route %s',
-		async ({ page }, path) => {
+	for (const path of ['/en/about', '/fr/about']) {
+		test(`${path} is not accepted as a locale route`, async ({ page }) => {
 			const response = await page.goto(path);
 			expect(response?.status()).toBe(404);
-		}
-	);
+		});
+	}
 });
