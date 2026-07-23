@@ -2,9 +2,14 @@
 import { render } from 'astro:content';
 import Layout from '@app/layouts/Layout.astro';
 import { DevlogDetail } from '@widgets/devlog';
-import { getDevlogPosts, getDevlogSlug } from '@entities/devlog';
+import {
+	getDevlogLocalizedPaths,
+	getDevlogPost,
+	getDevlogPosts,
+	getDevlogSlug,
+} from '@entities/devlog';
 import { Language } from '@shared/config/i18n';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { useTranslations } from '@shared/lib/i18n';
 
 export async function getStaticPaths() {
 	const posts = await getDevlogPosts(Language.SPANISH);
@@ -13,16 +18,15 @@ export async function getStaticPaths() {
 	}));
 }
 
-const { slug } = Astro.params;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const posts = await getDevlogPosts(lang);
-const post = posts.find(p => getDevlogSlug(p) === slug);
+const slug = Astro.params.slug ?? '';
+const t = useTranslations(Language.SPANISH);
+const post = await getDevlogPost(Language.SPANISH, slug);
 
 if (!post) {
 	return Astro.redirect('/404');
 }
 
+const localizedPaths = await getDevlogLocalizedPaths(post);
 const { Content } = await render(post);
 ---
 
@@ -31,6 +35,7 @@ const { Content } = await render(post);
 	description={post.data.summary}
 	img_preview="/projects/portfolio.webp"
 	isHome={false}
+	{localizedPaths}
 >
 	<div class="py-16 md:py-24">
 		<DevlogDetail {post} {Content} backText={t('devlog.back')} backLink="/es/devlog" />
