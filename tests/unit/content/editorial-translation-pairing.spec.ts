@@ -95,24 +95,48 @@ describe('editorial translation pairing', () => {
 		}
 	});
 
-	it('pairs published articles and devlog entries while allowing the draft fixture to stand alone', () => {
-		const blogKeys = readTranslationKeys('blog');
-		const devlogKeys = readTranslationKeys('devlog');
+	it(
+		'pairs published articles and devlog entries while allowing the draft fixture to stand alone',
+		() => {
+			const blogKeys = readTranslationKeys('blog');
+			const devlogKeys = readTranslationKeys('devlog');
 
-		const countByKey = (entries: typeof blogKeys) =>
-			entries.reduce<Record<string, number>>((counts, entry) => {
-				if (entry.translationKey) {
-					counts[entry.translationKey] = (counts[entry.translationKey] ?? 0) + 1;
-				}
-				return counts;
-			}, {});
+			const countByKey = (entries: typeof blogKeys) =>
+				entries.reduce<Record<string, number>>((counts, entry) => {
+					if (entry.translationKey) {
+						counts[entry.translationKey] = (counts[entry.translationKey] ?? 0) + 1;
+					}
+					return counts;
+				}, {});
 
-		expect(countByKey(blogKeys)).toEqual({
-			'building-this-portfolio-with-astro-and-fsd': 2,
-			'predicting-oss-abandonment-with-bilstm': 2,
-			'draft-rss-test': 1,
-		});
-		expect(Object.values(countByKey(devlogKeys)).every(count => count === 2)).toBe(true);
+			expect(countByKey(blogKeys)).toEqual({
+				'building-this-portfolio-with-astro-and-fsd': 2,
+				'predicting-oss-abandonment-with-bilstm': 2,
+				'draft-rss-test': 1,
+			});
+			expect(Object.values(countByKey(devlogKeys)).every(count => count === 2)).toBe(true);
+		}
+	);
+
+	it('disables an unavailable target locale instead of constructing a link', () => {
+		const picker = readFileSync(
+			'src/features/language-picker/ui/LanguagePicker.astro',
+			'utf8'
+		);
+		const detailRoutes = [
+			'src/pages/blog/[slug].astro',
+			'src/pages/es/blog/[slug].astro',
+			'src/pages/devlog/[slug].astro',
+			'src/pages/es/devlog/[slug].astro',
+		];
+
+		expect(picker).toContain('localizedPaths !== undefined && !verifiedPath');
+		expect(picker).toContain('<button');
+		expect(picker).toContain('disabled');
+		expect(picker).toContain("tAccessibility('translationUnavailable')");
+		for (const route of detailRoutes) {
+			expect(readFileSync(route, 'utf8'), route).toContain('{localizedPaths}');
+		}
 	});
 
 	it('keeps RSS feeds locale-specific and production drafts excluded', () => {
