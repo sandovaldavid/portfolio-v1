@@ -38,7 +38,7 @@ describe('localized portfolio profile content', () => {
 		expect(config).toContain('const portfolioProfile = defineCollection');
 		expect(config).toContain("base: './src/content/portfolio-profile'");
 		expect(config).toContain(
-			'export const collections = { blog, devlog, portfolioProfile, experience }'
+			'export const collections = { blog, devlog, portfolioProfile, experience, projects }'
 		);
 	});
 

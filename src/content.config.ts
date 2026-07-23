@@ -64,4 +64,64 @@ const experience = defineCollection({
 	}),
 });
 
-export const collections = { blog, devlog, portfolioProfile, experience };
+const projectEvidence = z.object({
+	statusLabel: nonEmptyString,
+	status: nonEmptyString,
+	statusDetail: nonEmptyString,
+	implementedLabel: nonEmptyString,
+	implemented: z.array(nonEmptyString).min(1),
+	plannedLabel: nonEmptyString,
+	planned: z.array(nonEmptyString).min(1),
+	architectureLabel: nonEmptyString,
+	architecture: z.object({
+		caption: nonEmptyString,
+		client: nonEmptyString,
+		identity: nonEmptyString,
+		api: nonEmptyString,
+		modules: nonEmptyString,
+		database: nonEmptyString,
+		processes: nonEmptyString,
+	}),
+	securityLabel: nonEmptyString,
+	security: z.array(nonEmptyString).min(1),
+	testingLabel: nonEmptyString,
+	testing: z.array(nonEmptyString).min(1),
+	deploymentLabel: nonEmptyString,
+	deployment: z.array(nonEmptyString).min(1),
+	limitationsLabel: nonEmptyString,
+	limitations: z.array(nonEmptyString).min(1),
+	sourcesLabel: nonEmptyString,
+	sources: z
+		.array(
+			z.object({
+				sourceId: stableContentId,
+				label: nonEmptyString,
+				access: nonEmptyString,
+			})
+		)
+		.min(1),
+});
+
+const projects = defineCollection({
+	loader: glob({ pattern: '**/*.json', base: './src/content/projects' }),
+	schema: z.object({
+		projectId: stableContentId,
+		locale,
+		title: nonEmptyString,
+		description: nonEmptyString,
+		category: nonEmptyString,
+		imageAlt: nonEmptyString,
+		caseStudy: z.object({
+			problem: nonEmptyString,
+			approach: nonEmptyString,
+			tradeoffs: nonEmptyString,
+			outcome: nonEmptyString,
+			learnings: z.array(nonEmptyString).min(1),
+			timeline: nonEmptyString,
+			role: nonEmptyString,
+			evidence: projectEvidence.optional(),
+		}),
+	}),
+});
+
+export const collections = { blog, devlog, portfolioProfile, experience, projects };
