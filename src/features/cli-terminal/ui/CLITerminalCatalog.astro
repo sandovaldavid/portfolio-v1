@@ -10,8 +10,10 @@ import { siteConfig } from '@shared/config/site.config';
 const lang = getLanguageFromLocale(Astro.currentLocale);
 const tCli = createScopedUiTranslator(lang, 'cli');
 const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
+const tRecruiter = createScopedUiTranslator(lang, 'recruiter');
 const runtimeCopy = getUiCatalogNamespace(lang, 'cli');
 const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.resume.es;
+const emailHref = `mailto:${siteConfig.email}?subject=${encodeURIComponent(tRecruiter('emailSubject'))}`;
 
 const navigationShortcuts: [string, string][] = [
 	['j', tCli('shortcuts.scrollDown')],
@@ -303,7 +305,7 @@ const easterRows = [
 
 			<div class="flex gap-3">
 				<a
-					href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
+					href={emailHref}
 					class="flex-1 py-2.5 border-2 border-[#00ff88] bg-[#00ff88]/10 text-[#00ff88] text-xs uppercase tracking-widest font-bold hover:bg-[#00ff88]/20 transition-colors cursor-pointer text-center"
 				>
 					{tCli('easter.hire')}
