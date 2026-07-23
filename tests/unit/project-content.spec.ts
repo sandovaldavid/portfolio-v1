@@ -185,8 +185,11 @@ describe('localized project and case-study content', () => {
 		expect(widget).toContain('await getProjectsData(lang)');
 		expect(widget).toContain("createScopedUiTranslator(lang, 'sections.projects')");
 		expect(widget).not.toContain('useTranslations');
-		expect(englishRoute).toContain('await getProjectBySlug(Language.ENGLISH');
-		expect(spanishRoute).toContain('await getProjectBySlug(Language.SPANISH');
+		for (const route of [englishRoute, spanishRoute]) {
+			expect(route).toContain('const lang = getLanguageFromLocale(Astro.currentLocale)');
+			expect(route).toContain('await getProjectBySlug(lang, slug)');
+			expect(route).toContain("getRelativeLocaleUrl(lang, 'projects')");
+		}
 	});
 
 	it('contains no known hardcoded English project presentation on Spanish surfaces', () => {
