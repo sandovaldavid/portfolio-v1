@@ -63,6 +63,12 @@ const baseClass =
 </div>
 
 <script>
+	const preservePathShape = (pathname: string, trailingSlash: boolean): string => {
+		if (pathname === '/') return pathname;
+		if (trailingSlash) return pathname.endsWith('/') ? pathname : `${pathname}/`;
+		return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+	};
+
 	const syncLanguageLinkState = () => {
 		const preserveTrailingSlash = window.location.pathname.endsWith('/');
 
@@ -73,16 +79,7 @@ const baseClass =
 				if (!basePath) return;
 
 				const target = new URL(basePath, window.location.origin);
-				const targetPath =
-					target.pathname === '/'
-						? '/'
-						: preserveTrailingSlash
-							? target.pathname.endsWith('/')
-								? target.pathname
-								: `${target.pathname}/`
-							: target.pathname.endsWith('/')
-								? target.pathname.slice(0, -1)
-								: target.pathname;
+				const targetPath = preservePathShape(target.pathname, preserveTrailingSlash);
 
 				target.search = window.location.search;
 				target.hash = window.location.hash;
