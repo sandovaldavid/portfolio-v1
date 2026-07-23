@@ -14,11 +14,10 @@ interface TestEntry {
 	};
 }
 
-const makeEntry = (
-	id: string,
-	translationKey: string,
-	draft = false
-): TestEntry => ({ id, data: { translationKey, draft } });
+const makeEntry = (id: string, translationKey: string, draft = false): TestEntry => ({
+	id,
+	data: { translationKey, draft },
+});
 
 function readTranslationKeys(collection: 'blog' | 'devlog') {
 	return (['en', 'es'] as const).flatMap(locale => {
@@ -96,7 +95,7 @@ describe('editorial translation pairing', () => {
 		}
 	});
 
-	it('pairs every published article and every devlog entry while allowing the draft fixture to stand alone', () => {
+	it('pairs published articles and devlog entries while allowing the draft fixture to stand alone', () => {
 		const blogKeys = readTranslationKeys('blog');
 		const devlogKeys = readTranslationKeys('devlog');
 
@@ -114,5 +113,18 @@ describe('editorial translation pairing', () => {
 			'draft-rss-test': 1,
 		});
 		expect(Object.values(countByKey(devlogKeys)).every(count => count === 2)).toBe(true);
+	});
+
+	it('keeps RSS feeds locale-specific and production drafts excluded', () => {
+		const englishRss = readFileSync('src/pages/rss.xml.ts', 'utf8');
+		const spanishRss = readFileSync('src/pages/es/rss.xml.ts', 'utf8');
+		const blogQueries = readFileSync('src/entities/blog/model/queries.ts', 'utf8');
+
+		expect(englishRss).toContain('getBlogPosts(Language.ENGLISH)');
+		expect(englishRss).toContain('link: `/blog/${getBlogSlug(post)}/`');
+		expect(spanishRss).toContain('getBlogPosts(Language.SPANISH)');
+		expect(spanishRss).toContain('link: `/es/blog/${getBlogSlug(post)}/`');
+		expect(blogQueries).toContain('isContentForLanguage(post.id, lang)');
+		expect(blogQueries).toContain('import.meta.env.PROD ? !post.data.draft : true');
 	});
 });
