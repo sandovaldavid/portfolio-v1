@@ -1,4 +1,4 @@
-import type { Language } from '@shared/config/i18n';
+import { Language } from '@shared/config/i18n';
 
 const SUPPORTED_LOCALE_PREFIX = /^(en|es)\//;
 
@@ -13,7 +13,9 @@ export function stripContentLocalePrefix(id: string): string {
 /** Returns the supported locale encoded in an Astro content entry id. */
 export function getContentLanguage(id: string): Language | undefined {
 	const locale = id.split('/', 1)[0];
-	return locale === 'en' || locale === 'es' ? locale : undefined;
+	if (locale === Language.ENGLISH) return Language.ENGLISH;
+	if (locale === Language.SPANISH) return Language.SPANISH;
+	return undefined;
 }
 
 /** Returns whether an Astro content entry id belongs to the requested locale. */
