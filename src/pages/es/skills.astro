@@ -1,8 +1,8 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { TAGS } from '@shared/config/technology';
 import { SectionContainer } from '@shared/ui';
-import { getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 const lang = Language.SPANISH;
@@ -143,7 +143,7 @@ const toolsTechs = [TAGS.CLOUDINARY, TAGS.SANITY, TAGS.CHARTJS, TAGS.MARKDOWN].f
 		<!-- Back Button -->
 		<div class="w-full flex justify-center mt-8">
 			<a
-				href={getLocalizedPath(lang, '/')}
+				href={getRelativeLocaleUrl(lang, '')}
 				class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-md hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-retro-xl active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
 			>
 				[ RETORNAR AL INICIO ]

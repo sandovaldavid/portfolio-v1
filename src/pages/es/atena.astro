@@ -1,8 +1,8 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { TAGS } from '@shared/config/technology';
 import { TechPill, SectionContainer } from '@shared/ui';
-import { getLocalizedPath } from '@shared/lib/i18n';
 import { Language } from '@shared/config/i18n';
 
 const lang = Language.SPANISH;
@@ -25,7 +25,6 @@ const atenaTechs = [
 	isHome={false}
 >
 	<SectionContainer id="atena-details" class="w-full max-w-4xl px-4 flex flex-col gap-8">
-		<!-- Section Header -->
 		<div class="text-center space-y-3">
 			<h1
 				class="text-4xl md:text-5xl font-bold font-pixel-clean text-content-strong uppercase tracking-wide"
@@ -37,24 +36,20 @@ const atenaTechs = [
 			</p>
 		</div>
 
-		<!-- Mission Card Dashboard -->
 		<div
 			class="border-2 border-black dark:border-white bg-surface shadow-retro-2xl p-6 md:p-8 flex flex-col gap-6"
 		>
-			<!-- Header Block -->
 			<div
 				class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-dashed border-edge-subtle pb-4 gap-4"
 			>
 				<div>
-					<span
-						class="text-content-muted text-xs font-bold tracking-wider uppercase block"
+					<span class="text-content-muted text-xs font-bold tracking-wider uppercase block"
 						>COMPAÑÍA / ORGANIZACIÓN</span
 					>
 					<span class="text-2xl font-bold text-content-strong font-mono">ATENA</span>
 				</div>
 				<div class="sm:text-right">
-					<span
-						class="text-content-muted text-xs font-bold tracking-wider uppercase block"
+					<span class="text-content-muted text-xs font-bold tracking-wider uppercase block"
 						>PERÍODO OPERATIVO</span
 					>
 					<span
@@ -64,7 +59,6 @@ const atenaTechs = [
 				</div>
 			</div>
 
-			<!-- Core Duties & Achievements -->
 			<div class="space-y-6">
 				<div>
 					<h2
@@ -130,7 +124,6 @@ const atenaTechs = [
 					</ul>
 				</div>
 
-				<!-- Weapon & Tech Arsenal -->
 				<div class="border-t-2 border-dashed border-edge-subtle pt-4">
 					<h2
 						class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400 mb-3"
@@ -153,10 +146,9 @@ const atenaTechs = [
 			</div>
 		</div>
 
-		<!-- Back Button -->
 		<div class="w-full flex justify-center mt-4">
 			<a
-				href={getLocalizedPath(lang, '/')}
+				href={getRelativeLocaleUrl(lang, '')}
 				class="inline-flex items-center justify-center rounded-none bg-surface text-content-strong border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-md hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-retro-xl active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 			>
 				[ RETORNAR AL INICIO ]
