@@ -104,11 +104,10 @@ const developmentLaunch = launchConfigurations.find(
 if (
 	developmentLaunch?.type !== 'node-terminal' ||
 	developmentLaunch?.command !== 'bun run dev' ||
-	developmentLaunch?.serverReadyAction?.uriFormat !== 'http://localhost:4321' ||
-	developmentLaunch?.serverReadyAction?.action !== 'openExternally'
+	developmentLaunch?.serverReadyAction !== undefined
 ) {
 	failures.push(
-		'VS Code must start the standard Astro server and open the forwarded localhost URL.'
+		'VS Code must start Astro and rely on port forwarding as the single automatic browser opener.'
 	);
 }
 
