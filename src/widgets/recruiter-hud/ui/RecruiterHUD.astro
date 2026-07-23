@@ -1,9 +1,14 @@
 ---
 import { getLangFromUrl } from '@shared/lib/i18n';
-import { createScopedUiTranslator, Language } from '@shared/config/i18n';
+import { createScopedUiTranslator, Language, type LocalizedPathMap } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 import { LanguagePicker } from '@features/language-picker';
 
+interface Props {
+	localizedPaths?: LocalizedPathMap;
+}
+
+const { localizedPaths } = Astro.props;
 const lang = getLangFromUrl(new URL(Astro.request.url));
 const tRecruiter = createScopedUiTranslator(lang, 'recruiter');
 const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.resume.es;
@@ -92,7 +97,7 @@ const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.
 			<span class="text-xs font-bold text-content-muted uppercase tracking-widest">
 				{tRecruiter('language')}
 			</span>
-			<LanguagePicker />
+			<LanguagePicker {localizedPaths} />
 		</div>
 	</div>
 </div>
