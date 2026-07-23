@@ -80,7 +80,9 @@ const baseClass =
 							? target.pathname.endsWith('/')
 								? target.pathname
 								: `${target.pathname}/`
-							: target.pathname.replace(/\/+$/, '');
+							: target.pathname.endsWith('/')
+								? target.pathname.slice(0, -1)
+								: target.pathname;
 
 				target.search = window.location.search;
 				target.hash = window.location.hash;
