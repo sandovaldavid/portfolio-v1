@@ -76,7 +76,9 @@
 	},
 	"tailwindCSS.experimental.classRegex": [
 		["class:\\s*['\"`]([^'\"`]*?)['\"`]", "([^\\s]+)"],
-		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" ]
 	],
-	"js/ts.tsdk.path": "node_modules/typescript/lib"
+
+	// TypeScript path completions
+	"typescript.preferences.importModuleSpecifier": "non-relative"
 }
