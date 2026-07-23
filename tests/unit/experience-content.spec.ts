@@ -40,7 +40,7 @@ describe('localized professional experience content', () => {
 		expect(config).toContain('experienceId: stableContentId');
 		expect(config).toContain('achievements: z.array(nonEmptyString).min(1)');
 		expect(config).toContain(
-			'export const collections = { blog, devlog, portfolioProfile, experience }'
+			'export const collections = { blog, devlog, portfolioProfile, experience, projects }'
 		);
 	});
 
