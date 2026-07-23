@@ -35,7 +35,7 @@ interface ExperienceMetadata {
 	evidenceUrl?: string;
 }
 
-export const EXPERIENCE_METADATA = {
+const experienceMetadata = {
 	'atena-software-engineer': {
 		startDate: '2026-01',
 		endDate: null,
@@ -85,9 +85,10 @@ export const EXPERIENCE_METADATA = {
 			'troubleshooting',
 		],
 	},
-} as const satisfies Record<string, ExperienceMetadata>;
+} as const;
 
-export type ExperienceId = keyof typeof EXPERIENCE_METADATA;
+export type ExperienceId = keyof typeof experienceMetadata;
+export const EXPERIENCE_METADATA: Record<ExperienceId, ExperienceMetadata> = experienceMetadata;
 
 export function isExperienceId(value: string): value is ExperienceId {
 	return value in EXPERIENCE_METADATA;
