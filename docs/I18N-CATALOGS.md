@@ -1,10 +1,10 @@
 # Granular UI catalog implementation
 
-This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133, the home-section migration implemented by issue #134 and the structured profile, experience and project migrations completed by issues #135–#137. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
+This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133, the home-section migration implemented by issue #134 and the structured profile, experience, project and editorial migrations completed by issues #135–#138. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
 
 ## Scope
 
-The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects and case studies live in schema-validated content collections. Blog posts and devlog entries remain outside this API and migrate through roadmap issue #138.
+The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects and case studies live in schema-validated content collections. Blog posts and devlog entries remain localized editorial Content Collections paired through explicit stable identities; they do not move into the UI catalog.
 
 The legacy monolithic dictionaries and `useTranslationsList()` remain temporarily for consumers that have not yet migrated. They are compatibility debt and must not receive new domains.
 
@@ -155,5 +155,13 @@ Each entry owns localized title, description, category, image alternative text, 
 The project entity joins both sources by `projectId`, rejects duplicate or missing locale entries and rejects localized evidence sources without matching language-neutral URLs. Project lists and detail routes consume the public entity API asynchronously. The `sections.projects` UI module owns only reusable card, action, case-study and catalog labels.
 
 The previous project records in `en.json` and `es.json`, the dictionary-backed `model/data.ts` builder and the special Yukidoke dictionary merge have been removed.
+
+## Editorial translation identities
+
+Issue #138 adds an explicit `translationKey` to every blog and devlog entry. The identity is immutable and language-neutral; filenames and public slugs remain locale-owned and may differ.
+
+The blog and devlog entity APIs validate duplicate keys per locale and resolve counterparts through `translationKey`. Detail routes pass only verified paths to the language picker. An intentionally absent translation, or a draft-only blog counterpart in production, is rendered as unavailable instead of receiving a mechanically generated link.
+
+Editorial content remains outside the UI catalog. RSS continues to read published blog entries independently for English and Spanish.
 
 `useTranslationsList()` remains transitional only because the unmigrated research detail still consumes structured arrays. Experience and projects are no longer consumers, and the helper must not receive new domains before issue #143 removes the legacy runtime.
