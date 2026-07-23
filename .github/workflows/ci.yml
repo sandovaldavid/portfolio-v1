@@ -93,12 +93,17 @@ jobs:
                   rm scripts/prepare-issue-133-repair.py
                   git checkout origin/main -- .github/workflows/ci.yml
 
-            - name: Format and validate reconstructed branch
-              run: |
-                  bun run format
-                  bun run check
-                  bun run test:unit:ci
-                  bun run build
+            - name: Format reconstructed branch
+              run: bun run format
+
+            - name: Check reconstructed branch
+              run: bun run check
+
+            - name: Test reconstructed branch
+              run: bun run test:unit:ci
+
+            - name: Build reconstructed branch
+              run: bun run build
 
             - name: Commit clean reconstruction
               shell: bash
