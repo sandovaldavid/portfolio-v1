@@ -28,6 +28,14 @@ jobs:
             - name: Apply localized profile migration
               run: python3 scripts/apply-issue-135.py
 
+            - name: Remove migration infrastructure and stage final tree
+              shell: bash
+              run: |
+                  rm scripts/apply-issue-135.mjs
+                  rm scripts/apply-issue-135.py
+                  rm .github/workflows/issue-135-migrate.yml
+                  git add -A
+
             - name: Format final tracked tree
               run: bun run format
 
