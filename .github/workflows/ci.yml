@@ -91,6 +91,7 @@ jobs:
                   rm -f src/features/cli-terminal/ui/CLITerminal.astro
                   python scripts/prepare-issue-133-repair.py
                   rm scripts/prepare-issue-133-repair.py
+                  sed -i 's/\\"/"/g' tests/unit/i18n-shell-migration.spec.ts
                   git checkout origin/main -- .github/workflows/ci.yml
                   bun run format
 
