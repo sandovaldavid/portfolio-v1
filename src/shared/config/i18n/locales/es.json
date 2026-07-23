@@ -64,9 +64,9 @@
 			"label": "Tesis de Pregrado",
 			"title": "Predicción del Estado de Abandono de Repositorios OSS usando Redes Neuronales BiLSTM",
 			"problem": "Un número significativo de repositorios de Software de Código Abierto (OSS) son abandonados con el tiempo, dejando expuestos a proyectos dependientes ante vulnerabilidades de seguridad, falta de actualizaciones y deuda técnica. La detección temprana del riesgo de abandono es un desafío crítico y poco explorado en la salud de los ecosistemas de software.",
-			"hypothesis": "¿Pueden las redes BiLSTM, entrenadas con métricas históricas de actividad de repositorios GitHub, predecir el estado de abandono de un repositorio OSS con mayor precisión que los baselines de ML tradicionales?",
-			"approach": "Mining Software Repositories (MSR) — extracción de secuencias temporales de señales de actividad desde la API de GitHub, ingeniería de características y entrenamiento de modelos BiLSTM para clasificar la probabilidad futura de abandono.",
-			"dataset": "Dataset curado de repositorios OSS en GitHub de múltiples dominios, etiquetados por estado de abandono usando umbrales de actividad histórica.",
+			"hypothesis": "¿Pueden las redes BiLSTM (Bidirectional Long Short-Term Memory), entrenadas con métricas históricas de actividad de repositorios GitHub (commits, issues, pull requests, patrones de contribuidores), predecir el estado de abandono de un repositorio OSS con mayor precisión que los baselines de ML tradicionales?",
+			"approach": "Mining Software Repositories (MSR) — extracción de secuencias temporales de señales de actividad desde la API de GitHub (GH Archive), ingeniería de características que capturan decaimiento de contribuciones, tasas de resolución de issues y tendencias del bus factor, para luego entrenar modelos BiLSTM que clasifiquen la probabilidad futura de abandono.",
+			"dataset": "Dataset curado de repositorios OSS en GitHub de múltiples dominios, etiquetados por estado de abandono usando umbrales de actividad histórica (frecuencia de commits, fecha del último aporte, antigüedad de issues abiertos).",
 			"metrics-title": "Métricas de Evaluación",
 			"metrics": {
 				"accuracy": "Accuracy de clasificación vs. baselines Logistic Regression y Random Forest",
