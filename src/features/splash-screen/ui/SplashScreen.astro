@@ -1,9 +1,8 @@
 ---
-import { getLangFromUrl } from '@shared/lib/i18n';
-import { createScopedUiTranslator } from '@shared/config/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
-const lang = getLangFromUrl(new URL(Astro.request.url));
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const tSplash = createScopedUiTranslator(lang, 'splash');
 const year = new Date().getFullYear();
 const lines = [tSplash('line1'), tSplash('line2'), tSplash('line3'), tSplash('line4')];

@@ -1,10 +1,12 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { BlogCard } from '@widgets/blog';
 import { getBlogPosts, getBlogSlug } from '@entities/blog';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { getLanguageFromLocale } from '@shared/config/i18n';
+import { useTranslations } from '@shared/lib/i18n';
 
-const lang = getLangFromUrl(Astro.url);
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const t = useTranslations(lang);
 const posts = await getBlogPosts(lang);
 ---
@@ -37,7 +39,7 @@ const posts = await getBlogPosts(lang);
 						<BlogCard
 							post={post}
 							readMoreText={t('blog.read-more')}
-							readMoreLink={`/blog/${getBlogSlug(post)}`}
+							readMoreLink={getRelativeLocaleUrl(lang, `blog/${getBlogSlug(post)}`)}
 						/>
 					))
 				}
