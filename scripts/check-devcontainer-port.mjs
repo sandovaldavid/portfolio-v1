@@ -25,4 +25,6 @@ if (failures.length > 0) {
 	process.exit(1);
 }
 
-console.log('Devcontainer host-port contract verified: http://localhost:4321 is published on host loopback only.');
+console.log(
+	'Devcontainer host-port contract verified: http://localhost:4321 is published on host loopback only.'
+);
