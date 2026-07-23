@@ -60,11 +60,11 @@
 		"source=devcontainer-${localWorkspaceFolderBasename}-zsh-history,target=/commandhistory,type=volume"
 	],
 
-	"forwardPorts": [4321],
+	"appPort": ["127.0.0.1:4321:4321"],
 	"portsAttributes": {
 		"4321": {
-			"label": "Astro development server",
-			"onAutoForward": "notify"
+			"label": "Astro development server (published on host localhost)",
+			"onAutoForward": "ignore"
 		}
 	},
 
