@@ -26,12 +26,13 @@ describe('legacy translations', () => {
 	it('contains compatibility keys only for domains not migrated yet', () => {
 		const en = translations[Language.ENGLISH];
 		expect(en['nav.experience']).toBeDefined();
-		expect(en['projects.code-button']).toBeDefined();
 		expect(en['research.thesis.keywords']).toBeDefined();
 		expect(en['experience.atena.title']).toBeUndefined();
+		expect(en['projects.code-button']).toBeUndefined();
+		expect(en['projects.yukidoke.title']).toBeUndefined();
 	});
 
-	it('does not retain home or experience copy migrated to canonical sources', () => {
+	it('does not retain home, experience or project content migrated to canonical sources', () => {
 		const en = translations[Language.ENGLISH];
 		expect(en['hero.intro']).toBeUndefined();
 		expect(en['title.experience']).toBeUndefined();
@@ -40,6 +41,8 @@ describe('legacy translations', () => {
 		expect(en['experience.atena.description']).toBeUndefined();
 		expect(en['experience.chirasoft.title']).toBeUndefined();
 		expect(en['experience.programador-ti.company']).toBeUndefined();
+		expect(en['projects.campus-map.title']).toBeUndefined();
+		expect(en['projects.auctions.case.problem']).toBeUndefined();
 	});
 });
 
