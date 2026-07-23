@@ -31,7 +31,9 @@ Routes identify their semantic family through the typed `pageType` layout proper
 | `devlog`   | `TechArticle`        | devlog entry           |
 | `research` | `ScholarlyArticle`   | research route/content |
 
-Dynamic routes also pass their localized title as `breadcrumbLabel`. Project routes pass `project.imageAlt`; editorial routes pass the entry title as the social image alternative. Blog and devlog routes pass publication dates, and blog routes pass an optional modification date.
+Dynamic routes pass their canonical localized content title as `breadcrumbLabel`. `Layout.astro` reuses that value for JSON-LD `name` and article `headline`, while the separate `title` prop remains free to include SEO suffixes such as the content family and author name. This prevents machine-readable content titles from inheriting presentation-only title decorations without duplicating the localized value.
+
+Project routes pass `project.imageAlt`; editorial routes pass the entry title as the social image alternative. Blog and devlog routes pass publication dates, and blog routes pass an optional modification date.
 
 ## Canonical and alternate URLs
 
