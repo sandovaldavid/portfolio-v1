@@ -5,6 +5,8 @@ REPOSITORY_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPOSITORY_ROOT"
 
 bash .devcontainer/scripts/post-start.sh
+bash .devcontainer/scripts/configure-shell.sh
+bash .devcontainer/scripts/configure-git-ssh-signing.sh
 
 dependency_directory="$REPOSITORY_ROOT/node_modules"
 
@@ -47,14 +49,6 @@ if [[ "$actual_playwright_version" != "$expected_playwright_version" ]]; then
 	exit 1
 fi
 
-mkdir -p "$HOME/.config/git"
-if ssh-add -L >/dev/null 2>&1; then
-	email="$(git config --global --get user.email || echo 'dev@example.com')"
-	ssh-add -L 2>/dev/null | while read -r key; do
-		echo "$email namespaces=\"git\" $key"
-	done > "$HOME/.config/git/allowed_signers"
-fi
-
 bun run check:devcontainer
 
 docker --version
@@ -66,20 +60,11 @@ else
 	echo "Docker daemon connection: unavailable. Start the host Docker daemon before running Docker-backed tests." >&2
 fi
 
-prompt_marker="# devcontainer-prompt-customization"
-for rc_file in "$HOME/.zshrc" "$HOME/.bashrc"; do
-	if [[ -f "$rc_file" ]] && ! grep -qF "$prompt_marker" "$rc_file" 2>/dev/null; then
-		cat >> "$rc_file" <<- 'PROMPT_EOF'
-
-		# devcontainer-prompt-customization
-		__git_branch() { git branch --show-current 2>/dev/null; }
-		PROMPT='%F{green}%1~%f %F{blue}$(__git_branch)%f %# '
-PROMPT_EOF
-	fi
-done
-
 printf '\nDevelopment container ready.\n'
 printf 'Bun: %s\n' "$actual_bun_version"
 printf 'Playwright: %s\n' "$actual_playwright_version"
+printf 'Starship: %s\n' "$("$HOME/.local/bin/starship" --version | awk 'NR == 1 { print $2 }')"
+printf 'eza: %s\n' "$("$HOME/.local/bin/eza" --version | awk 'NR == 1 { print $2 }')"
 printf 'Workspace: %s\n' "$REPOSITORY_ROOT"
 printf 'Dependencies: %s (isolated volume)\n' "$dependency_directory"
+printf 'Zsh history: %s (persistent project volume)\n' "${ZSH_HISTORY_FILE:-$HOME/.zsh_history}"
