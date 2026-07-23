@@ -78,7 +78,5 @@
 		["class:\\s*['\"`]([^'\"`]*?)['\"`]", "([^\\s]+)"],
 		["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
 	],
-
-	// TypeScript path completions
-	"typescript.preferences.importModuleSpecifier": "non-relative"
+	"js/ts.tsdk.path": "node_modules/typescript/lib"
 }
