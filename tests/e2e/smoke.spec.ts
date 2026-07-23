@@ -66,7 +66,8 @@ test.describe('Pull request smoke and accessibility gates', () => {
 		{
 			route: '/es/',
 			tablistName: 'Pestañas de experiencia',
-			achievement: 'Realicé la migración de un sitio institucional educativo de WordPress a Angular',
+			achievement:
+				'Realicé la migración de un sitio institucional educativo de WordPress a Angular',
 		},
 	] as const) {
 		test(`${scenario.route} renders localized keyboard-accessible experience tabs`, async ({
