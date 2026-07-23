@@ -2,6 +2,7 @@
 import Analytics from '@vercel/analytics/astro';
 import { ClientRouter } from 'astro:transitions';
 import { Font } from 'astro:assets';
+import { getPathByLocale, getRelativeLocaleUrl, pathHasLocale } from 'astro:i18n';
 import '@app/styles/global.css';
 import '@app/styles/print.css';
 import BriefCaseIcon from '@assets/icons/Briefcase.astro';
@@ -16,20 +17,14 @@ import { TechStack } from '@widgets/tech-stack';
 import { CLITerminal } from '@features/cli-terminal';
 import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import { getLangFromUrl } from '@shared/lib/i18n';
 import {
+	AVAILABLE_LANGUAGES,
 	createScopedUiTranslator,
+	getLanguageFromLocale,
 	Language,
 	type LocalizedPathMap,
 } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
-
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const canonicalPath =
-	langCode === 'en' ? Astro.url.pathname : Astro.url.pathname.replace(/^\/es/, '') || '/';
-const enUrl = new URL(getRelativeLocaleUrl('en', canonicalPath), siteConfig.url).toString();
-const esUrl = new URL(getRelativeLocaleUrl('es', canonicalPath), siteConfig.url).toString();
 
 interface Props {
 	title: string;
@@ -40,6 +35,7 @@ interface Props {
 	keywords?: string;
 	localizedPaths?: LocalizedPathMap;
 }
+
 const {
 	description,
 	title,
@@ -49,7 +45,27 @@ const {
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
 	localizedPaths,
 } = Astro.props;
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+
+const lang = getLanguageFromLocale(Astro.currentLocale);
+const pathname = Astro.url.pathname;
+const pathnameSegments = pathname.split('/').filter(Boolean);
+const localePath = getPathByLocale(lang);
+const routeSegments =
+	pathHasLocale(pathname) && pathnameSegments[0] === localePath
+		? pathnameSegments.slice(1)
+		: pathnameSegments;
+const routeWithoutLocale = routeSegments.join('/');
+const routePath =
+	routeWithoutLocale && pathname.endsWith('/') ? `${routeWithoutLocale}/` : routeWithoutLocale;
+const ordinaryLocalizedPaths = Object.fromEntries(
+	AVAILABLE_LANGUAGES.map(locale => [locale, getRelativeLocaleUrl(locale, routePath)])
+) as LocalizedPathMap;
+const resolvedLocalizedPaths = localizedPaths ?? ordinaryLocalizedPaths;
+const enPath = resolvedLocalizedPaths[Language.ENGLISH];
+const esPath = resolvedLocalizedPaths[Language.SPANISH];
+const enUrl = enPath ? new URL(enPath, siteConfig.url).toString() : undefined;
+const esUrl = esPath ? new URL(esPath, siteConfig.url).toString() : undefined;
+
 const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
 const tBreadcrumbs = createScopedUiTranslator(lang, 'breadcrumbs');
 const tExperience = createScopedUiTranslator(lang, 'sections.experience');
@@ -60,7 +76,7 @@ const tTechStack = createScopedUiTranslator(lang, 'sections.techStack');
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 const ogImageUrl = new URL(img_preview, siteConfig.url).toString();
-const ogLocale = langCode === 'en' ? 'en_US' : 'es_PE';
+const ogLocale = lang === Language.ENGLISH ? 'en_US' : 'es_PE';
 const ogType = article ? 'article' : 'website';
 
 const breadcrumbLabels: Record<string, string> = {
@@ -70,21 +86,17 @@ const breadcrumbLabels: Record<string, string> = {
 	research: tBreadcrumbs('research'),
 	atena: 'Atena',
 };
-const breadcrumbSegments = Astro.url.pathname.replace(/^\/es/, '').split('/').filter(Boolean);
 const breadcrumbItems: { name: string; url: string }[] = [];
-if (breadcrumbSegments.length > 0) {
+if (routeSegments.length > 0) {
 	breadcrumbItems.push({
 		name: tBreadcrumbs('home'),
-		url: langCode === 'en' ? '/' : '/es/',
+		url: getRelativeLocaleUrl(lang, ''),
 	});
-	breadcrumbSegments.forEach((segment, i) => {
-		const url =
-			langCode === 'en'
-				? '/' + breadcrumbSegments.slice(0, i + 1).join('/')
-				: '/es/' + breadcrumbSegments.slice(0, i + 1).join('/');
+	routeSegments.forEach((segment, i) => {
+		const segmentPath = routeSegments.slice(0, i + 1).join('/');
 		breadcrumbItems.push({
 			name: breadcrumbLabels[segment] || segment,
-			url,
+			url: getRelativeLocaleUrl(lang, segmentPath),
 		});
 	});
 }
@@ -135,7 +147,7 @@ const websiteSchema = {
 	name: siteConfig.defaultTitle,
 	url: siteConfig.url,
 	description: siteConfig.defaultDescription,
-	inLanguage: [langCode],
+	inLanguage: [lang],
 	author: { '@type': 'Person', name: siteConfig.fullName },
 };
 const articleSchema = article
@@ -155,7 +167,7 @@ const articleSchema = article
 ---
 
 <!doctype html>
-<html lang={langCode}>
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -193,9 +205,9 @@ const articleSchema = article
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
 
-		<link rel="alternate" hreflang="en" href={enUrl} />
-		<link rel="alternate" hreflang="es" href={esUrl} />
-		<link rel="alternate" hreflang="x-default" href={enUrl} />
+		{enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
+		{esUrl && <link rel="alternate" hreflang="es" href={esUrl} />}
+		{enUrl && <link rel="alternate" hreflang="x-default" href={enUrl} />}
 
 		<link
 			rel="alternate"
@@ -342,7 +354,7 @@ const articleSchema = article
 				}
 			</main>
 			<Footer />
-			<RecruiterHUD {localizedPaths} />
+			<RecruiterHUD localizedPaths={resolvedLocalizedPaths} />
 			<CLITerminal />
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
