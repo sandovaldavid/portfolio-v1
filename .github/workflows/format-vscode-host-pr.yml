@@ -1,9 +1,14 @@
 name: Format VS Code Host Workflow
 
 on:
-    pull_request:
-        branches: [main]
+    push:
+        branches: [chore/vscode-host-development]
         paths:
+            - 'package.json'
+            - '.vscode/tasks.json'
+            - '.vscode/launch.json'
+            - 'docs/TESTING.md'
+            - 'scripts/check-devcontainer-port.mjs'
             - '.github/workflows/format-vscode-host-pr.yml'
 
 permissions:
@@ -13,10 +18,8 @@ jobs:
     format:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout pull request branch
+            - name: Checkout branch
               uses: actions/checkout@v7
-              with:
-                  ref: ${{ github.event.pull_request.head.ref }}
 
             - name: Setup repository
               uses: ./.github/actions/setup-bun
@@ -45,4 +48,4 @@ jobs:
                     docs/TESTING.md \
                     scripts/check-devcontainer-port.mjs
                   git commit -m 'style(vscode): format host development workflow'
-                  git push origin HEAD:${{ github.event.pull_request.head.ref }}
+                  git push origin HEAD:${GITHUB_REF_NAME}
