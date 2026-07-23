@@ -54,7 +54,7 @@ The following production surfaces consume granular catalogs directly:
 - CLI terminal, shortcuts and secret-mode messages;
 - home hero, About, Research, Vision, Tech Stack, badges and section headings.
 
-Home-section copy has no duplicate entries in the legacy dictionaries. Those compatibility dictionaries retain only domains that are still awaiting later roadmap migrations.
+Home-section copy has no duplicate entries in the legacy dictionaries. Those compatibility dictionaries retain only domains that are still awaiting later roadmap migrations. Each focused home module is owned by its corresponding widget or by the application layout when the copy labels a page section.
 
 The CLI uses `cli.json` for all visible and runtime-generated text. `CLITerminalCatalog.astro` passes one locale namespace to `model/runtime.ts`; the runtime owns behavior and interpolation but contains no parallel English/Spanish copy map. Repository-authored terminal markup is assembled in code around escaped scalar translations instead of storing HTML inside locale files.
 
