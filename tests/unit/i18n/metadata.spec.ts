@@ -30,6 +30,9 @@ describe('localized SEO, RSS and structured metadata', () => {
 		expect(layout).toContain('ScholarlyArticle');
 		expect(layout).toContain('SoftwareSourceCode');
 		expect(layout).toContain('breadcrumbLabel');
+		expect(layout).toContain('const structuredTitle = breadcrumbLabel ?? title;');
+		expect(layout).toContain('name: structuredTitle');
+		expect(layout).toContain('headline: structuredTitle');
 		expect(layout).not.toContain("'@type': 'ScholarlyArticle',\n\t\t\tname: title");
 	});
 
