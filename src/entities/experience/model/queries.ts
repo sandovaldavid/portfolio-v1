@@ -5,7 +5,12 @@ import {
 	EXPERIENCE_TECHNOLOGIES,
 	isExperienceId,
 } from './metadata';
-import type { ExperienceContentEntry, ExperienceItem, ExperienceList } from './types';
+import type {
+	ExperienceContentEntry,
+	ExperienceId,
+	ExperienceItem,
+	ExperienceList,
+} from './types';
 
 interface LocalizedExperienceItem extends ExperienceItem {
 	locale: 'en' | 'es';
@@ -59,6 +64,14 @@ export async function getExperienceData(lang: Language): Promise<ExperienceList>
 		const { locale: _locale, ...localizedItem } = item;
 		return localizedItem;
 	});
+
+	const expectedIds = Object.keys(EXPERIENCE_METADATA) as ExperienceId[];
+	const missingIds = expectedIds.filter(experienceId => !seen.has(experienceId));
+	if (missingIds.length > 0) {
+		throw new Error(
+			`Missing experience content for locale "${lang}": ${missingIds.join(', ')}.`
+		);
+	}
 
 	return experience.sort(
 		(left, right) =>
