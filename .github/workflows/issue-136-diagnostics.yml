@@ -1,0 +1,43 @@
+name: Issue 136 diagnostics
+
+on:
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+
+jobs:
+    diagnose:
+        if: github.event.pull_request.head.ref == 'feat/136-localized-experience-content'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Format complete tracked tree
+              shell: bash
+              run: |
+                  bun run format
+                  git diff --name-only --diff-filter=ACM > formatted-files.txt
+                  mkdir -p formatted-output
+                  while IFS= read -r file; do
+                      [ -n "$file" ] || continue
+                      mkdir -p "formatted-output/$(dirname "$file")"
+                      cp "$file" "formatted-output/$file"
+                  done < formatted-files.txt
+
+            - name: Upload formatted files
+              uses: actions/upload-artifact@v7
+              with:
+                  name: issue-136-formatted-tree
+                  path: |
+                      formatted-files.txt
+                      formatted-output
+                  if-no-files-found: error
+                  retention-days: 1
