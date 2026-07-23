@@ -38,6 +38,8 @@ describe('Astro-native locale routing ownership', () => {
 
 		expect(picker).toContain('Astro.currentLocale');
 		expect(picker).toContain('data-language-base-path');
+		expect(picker).toContain('preservePathShape');
+		expect(picker).toContain('syncLanguageLinkState();');
 		expect(picker).toContain('window.location.search');
 		expect(picker).toContain('window.location.hash');
 		expect(picker).not.toContain('.replace(');
