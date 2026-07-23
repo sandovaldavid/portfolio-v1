@@ -1,42 +1,41 @@
 ---
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
-import CodeIcon from '@assets/icons/Code.astro';
+import ArrowRightIcon from '@assets/icons/ArrowRight.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
+import CodeIcon from '@assets/icons/Code.astro';
 import LinkIcon from '@assets/icons/Link.astro';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
+import { getLangFromUrl } from '@shared/lib/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
+const tVision = createScopedUiTranslator(lang, 'sections.vision');
 
 const visionItems = [
 	{
 		icon: CodeIcon,
-		title: t('vision.leetcode.title'),
-		description: t('vision.leetcode.description'),
-		link: t('vision.leetcode.link'),
+		title: tVision('leetcodeTitle'),
+		description: tVision('leetcodeDescription'),
+		link: '#',
 	},
 	{
 		icon: LinkIcon,
-		title: t('vision.writing.title'),
-		description: t('vision.writing.description'),
-		link: t('vision.writing.link'),
+		title: tVision('writingTitle'),
+		description: tVision('writingDescription'),
+		link: '#',
 	},
 	{
 		icon: BrainIcon,
-		title: t('vision.lab.title'),
-		description: t('vision.lab.description'),
-		link: t('vision.lab.link'),
+		title: tVision('labTitle'),
+		description: tVision('labDescription'),
+		link: '#',
 	},
 ];
 ---
 
 <section class="space-y-6">
-	<div>
-		<p class="text-sm font-medium text-content-muted mb-2">
-			{t('vision.subtitle')}
-		</p>
-	</div>
+	<p class="text-sm font-medium text-content-muted mb-2">
+		{tVision('subtitle')}
+	</p>
 
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 		{
@@ -49,9 +48,9 @@ const visionItems = [
 						<div class="shrink-0 w-10 h-10 rounded-lg bg-badge-brand-bg flex items-center justify-center group-hover:bg-badge-brand-bg-hover transition-colors">
 							<item.icon class="w-5 h-5 text-primary-500 dark:text-primary-400" />
 						</div>
-						<div class="flex-1">
-							<h3 class="text-lg font-bold text-content-strong mb-2">{item.title}</h3>
-						</div>
+						<h3 class="flex-1 text-lg font-bold text-content-strong mb-2">
+							{item.title}
+						</h3>
 					</div>
 
 					<p class="text-sm text-content leading-relaxed mb-4">{item.description}</p>
@@ -59,7 +58,7 @@ const visionItems = [
 					{item.link === '#' ? (
 						<span class="inline-flex items-center gap-2 text-sm font-medium text-content-muted italic">
 							<span class="w-1.5 h-1.5 rounded-full bg-neutral-400 dark:bg-neutral-600" />
-							{t('vision.coming-soon')}
+							{tVision('comingSoon')}
 						</span>
 					) : (
 						<a
@@ -68,20 +67,12 @@ const visionItems = [
 							rel="noopener noreferrer"
 							class="inline-flex items-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
 						>
-							{t('vision.view-project')}
-							<svg
-								class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M13 7l5 5m0 0l-5 5m5-5H6"
-								/>
-							</svg>
+							{tVision('viewProject')}
+							<ArrowRightIcon
+								class="size-4 group-hover:translate-x-1 transition-transform"
+								aria-hidden="true"
+								focusable="false"
+							/>
 						</a>
 					)}
 				</article>

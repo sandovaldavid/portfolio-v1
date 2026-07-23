@@ -1,40 +1,4 @@
 {
-	"hero": {
-		"available": "Disponible para trabajar",
-		"intro": "Hola, soy David Sandoval",
-		"description": "<strong>Ingeniero Informático</strong> egresado de la <strong>Universidad Nacional de Piura</strong> con formación en <strong>desarrollo web</strong> y certificación en <strong>frontend</strong> por <strong>Alura Latam</strong> (ONE EDUCATION).",
-		"title": "Ingeniería de Sistemas Escalables",
-		"subtitle": "Ingeniero de Software · Investigador BiLSTM/OSS · Ing. Informática",
-		"credential": "Actualmente en Atena (Remoto) · Investigando predicción de abandono OSS con BiLSTM",
-		"banner": "[ ESTADO DEL SISTEMA: ACTIVO // JUGADOR 1 LISTO ]",
-		"stats": {
-			"characterStats": "ESTADÍSTICAS",
-			"online": "EN LÍNEA",
-			"class": "CLASE:",
-			"alignment": "ALINEACIÓN:",
-			"specialties": "ESPECIALIDADES:",
-			"loc": "LOC:",
-			"hpMana": "HP / MANA:",
-			"skillLevel": "NIVEL:",
-			"systemsArchitect": "Arquitecto de Sistemas",
-			"cleanCode": "Código Limpio",
-			"techStack": "Java, Angular, React",
-			"location": "Lima, Perú",
-			"hpValue": "99 / 99",
-			"lvlValue": "Nvl. 99 (Experto)",
-			"expPoints": "PUNTOS DE EXPERIENCIA:",
-			"expComplete": "100% COMPLETO",
-			"level": "INGENIERO NIVEL 5+",
-			"player": "P1: DAVID_S"
-		},
-		"cta": {
-			"contact": "Contáctame",
-			"view-work": "Ver mi Trabajo",
-			"download-resume": "Descargar CV",
-			"view-research": "Ver Investigación",
-			"start": "PRESIONA START // VER TRABAJO"
-		}
-	},
 	"nav": {
 		"experience": "Experiencia",
 		"projects": "Proyectos",
@@ -124,16 +88,7 @@
 		"focus3": "Empresarial .NET 8 & Angular 19",
 		"focus4": "Optimización de sistemas de alta disponibilidad",
 		"focus5": "Deep Learning aplicado a ingeniería de software",
-		"focus6": "Contribuciones de código abierto",
-		"profile": {
-			"title": "PERFIL PROFESIONAL"
-		},
-		"atena": {
-			"title": "TRABAJO ACTUAL EN ATENA",
-			"summary": "Actualmente trabajo como Desarrollador de Software en <strong>Atena</strong>, liderando el desarrollo frontend de productos clave usando Angular. Me enfoco en optimizar el rendimiento, diseñar arquitecturas de interfaz escalables y coordinar integraciones con servicios backend.",
-			"button": "VER DETALLES DEL TRABAJO"
-		},
-		"read-more": "VER BIOGRAFÍA COMPLETA"
+		"focus6": "Contribuciones de código abierto"
 	},
 	"projects": {
 		"code-button": "Código",
@@ -212,21 +167,6 @@
 			}
 		}
 	},
-	"badges": {
-		"title": "Insignias",
-		"github-foundations": {
-			"label": "GitHub Foundations | GitHub"
-		},
-		"data-modeling": {
-			"label": "Modelado de Datos con Python | ONE - G8"
-		},
-		"etl": {
-			"label": "ETL | ONE - G8"
-		},
-		"statistics-ml": {
-			"label": "Estadisticas y Machine Learning | ONE - G8"
-		}
-	},
 	"footer": {
 		"rights": "Todos los derechos reservados",
 		"about": "Sobre mí",
@@ -272,20 +212,7 @@
 		"back-button": "Volver atrás",
 		"quote": "En un multiverso infinito, esta página existe... solo que no en este."
 	},
-	"title": {
-		"experience": "Experiencia",
-		"projects": "Proyectos",
-		"about-me": "Sobre Mí",
-		"technologies": "Tecnologías",
-		"research": "Investigación",
-		"vision": "Visión e Impacto"
-	},
 	"research": {
-		"title": "Investigación",
-		"summary": "Aplicación de redes BiLSTM para detectar el riesgo de abandono de repositorios OSS a partir de series temporales de actividad en GitHub — commits, issues, PRs y patrones de contribuidores — evaluado frente a baselines de ML tradicional.",
-		"tech-stack-label": "TECNOLOGÍAS",
-		"full-methodology": "Metodología completa, arquitectura y pipeline en la página de investigación.",
-		"view-full-button": "▸ VER COMPLETO",
 		"page-title": "Investigación — BiLSTM Abandono OSS | David Sandoval",
 		"page-description": "Investigación de tesis: predicción del abandono de repositorios OSS usando redes neuronales BiLSTM. Minería de repositorios, deep learning.",
 		"back-button": "Volver al Portfolio",
@@ -341,12 +268,30 @@
 				"label": "Entrada",
 				"value": "Serie temporal de señales de actividad del repo (T pasos)"
 			},
-			{ "label": "Capa 1", "value": "BiLSTM — 128 unidades forward + backward" },
-			{ "label": "Capa 2", "value": "BiLSTM — 64 unidades con dropout (0.3)" },
-			{ "label": "Capa 3", "value": "Dense — 32 unidades, activación ReLU" },
-			{ "label": "Salida", "value": "Sigmoid — P(abandonado) ∈ [0,1]" },
-			{ "label": "Pérdida", "value": "Binary Cross-Entropy + pesos de clase" },
-			{ "label": "Optimizador", "value": "Adam (lr=1e-3)" }
+			{
+				"label": "Capa 1",
+				"value": "BiLSTM — 128 unidades forward + backward"
+			},
+			{
+				"label": "Capa 2",
+				"value": "BiLSTM — 64 unidades con dropout (0.3)"
+			},
+			{
+				"label": "Capa 3",
+				"value": "Dense — 32 unidades, activación ReLU"
+			},
+			{
+				"label": "Salida",
+				"value": "Sigmoid — P(abandonado) ∈ [0,1]"
+			},
+			{
+				"label": "Pérdida",
+				"value": "Binary Cross-Entropy + pesos de clase"
+			},
+			{
+				"label": "Optimizador",
+				"value": "Adam (lr=1e-3)"
+			}
 		],
 		"engineered-features": [
 			"Frecuencia de commits (promedio semanal)",
@@ -361,27 +306,6 @@
 		"current-status": "Entrenamiento activo de modelos BiLSTM y comparación con baselines de ML. Los resultados se publicarán al completar la tesis.",
 		"contact-cta": "Colaboraciones, preguntas u oportunidades.",
 		"contact-button": "Contactar"
-	},
-	"vision": {
-		"title": "Visión e Impacto",
-		"subtitle": "Evidencia Verificable",
-		"leetcode": {
-			"title": "Soluciones LeetCode",
-			"description": "Repositorio con soluciones documentadas en O(n) para patrones \"Blind 75\"",
-			"link": "#"
-		},
-		"writing": {
-			"title": "Escritura Técnica",
-			"description": "Cómo implementé mi primera arquitectura Zoneless en Angular 19",
-			"link": "#"
-		},
-		"lab": {
-			"title": "DevSolution Lab",
-			"description": "POC: Predictor de Churn básico usando LSTM (Dockerizado)",
-			"link": "#"
-		},
-		"view-project": "Ver Proyecto",
-		"coming-soon": "Próximamente"
 	},
 	"splash": {
 		"press-enter": "[ PRESIONA ENTER / CLICK INICIAR ]",

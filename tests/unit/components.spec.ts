@@ -1,70 +1,36 @@
-import { describe, it, expect } from 'vitest';
-import { useTranslations } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { describe, expect, it } from 'vitest';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 
-describe('useTranslations', () => {
-	const t = useTranslations(Language.ENGLISH);
+describe('home section catalog consumers', () => {
+	it('resolves English hero and section copy', () => {
+		const hero = createScopedUiTranslator(Language.ENGLISH, 'sections.hero');
+		const research = createScopedUiTranslator(Language.ENGLISH, 'sections.research');
+		const techStack = createScopedUiTranslator(Language.ENGLISH, 'sections.techStack');
 
-	it('should resolve hero.title', () => {
-		expect(t('hero.title')).toBe('Engineering Scalable Systems');
+		expect(hero('title')).toBe('Software Engineer building reliable web products');
+		expect(hero('credential')).toContain('BiLSTM/OSS research');
+		expect(research('sectionTitle')).toBe('Research');
+		expect(techStack('frontendTitle')).toBe('Core frontend stack');
 	});
 
-	it('should resolve hero.stats.characterStats', () => {
-		expect(t('hero.stats.characterStats')).toBe('CHARACTER STATS');
+	it('resolves Spanish hero and section copy', () => {
+		const hero = createScopedUiTranslator(Language.SPANISH, 'sections.hero');
+		const research = createScopedUiTranslator(Language.SPANISH, 'sections.research');
+		const techStack = createScopedUiTranslator(Language.SPANISH, 'sections.techStack');
+
+		expect(hero('title')).toBe('Ingeniero de software que construye productos web confiables');
+		expect(hero('banner')).toContain('DISPONIBLE');
+		expect(research('sectionTitle')).toBe('Investigación');
+		expect(techStack('frontendTitle')).toBe('Stack frontend principal');
 	});
 
-	it('should resolve hero.stats.online', () => {
-		expect(t('hero.stats.online')).toBe('ONLINE');
-	});
+	it('reuses shared status and action labels', () => {
+		const commonEn = createScopedUiTranslator(Language.ENGLISH, 'common');
+		const commonEs = createScopedUiTranslator(Language.SPANISH, 'common');
 
-	it('should resolve hero.cta.start', () => {
-		expect(t('hero.cta.start')).toBe('PRESS START // VIEW WORK');
-	});
-
-	it('should resolve hero.subtitle', () => {
-		expect(t('hero.subtitle')).toContain('Software Engineer');
-	});
-
-	it('should resolve hero.credential', () => {
-		expect(t('hero.credential')).toContain('Atena');
-	});
-
-	it('should resolve nav keys', () => {
-		expect(t('nav.experience')).toBe('Experience');
-		expect(t('nav.projects')).toBe('Projects');
-		expect(t('nav.research')).toBe('Research');
-		expect(t('nav.about')).toBe('About me');
-		expect(t('nav.stack')).toBe('Stack');
-	});
-
-	it('should return key name for missing keys', () => {
-		const result = t('nonexistent.key.path');
-		expect(result).toBe('nonexistent.key.path');
-	});
-});
-
-describe('useTranslations — Spanish', () => {
-	const t = useTranslations(Language.SPANISH);
-
-	it('should resolve hero.title in ES', () => {
-		expect(t('hero.title')).toBe('Ingeniería de Sistemas Escalables');
-	});
-
-	it('should resolve hero.stats.characterStats in ES', () => {
-		expect(t('hero.stats.characterStats')).toBe('ESTADÍSTICAS');
-	});
-
-	it('should resolve hero.banner in ES', () => {
-		expect(t('hero.banner')).toBe('[ ESTADO DEL SISTEMA: ACTIVO // JUGADOR 1 LISTO ]');
-	});
-
-	it('should resolve hero.cta.start in ES', () => {
-		expect(t('hero.cta.start')).toBe('PRESIONA START // VER TRABAJO');
-	});
-
-	it('should resolve nav keys in ES', () => {
-		expect(t('nav.experience')).toBe('Experiencia');
-		expect(t('nav.projects')).toBe('Proyectos');
-		expect(t('nav.stack')).toBe('Stack');
+		expect(commonEn('status.available')).toBe('Available');
+		expect(commonEs('status.inProgress')).toBe('En progreso');
+		expect(commonEn('actions.viewWork')).toBe('View work');
+		expect(commonEs('actions.viewWork')).toBe('Ver proyectos');
 	});
 });

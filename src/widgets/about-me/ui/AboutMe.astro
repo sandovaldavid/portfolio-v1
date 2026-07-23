@@ -1,33 +1,11 @@
 ---
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const personalImageAlt = 'Juan David Sandoval';
-
-const copy =
-	langCode === 'en'
-		? {
-				profileTitle: 'PROFESSIONAL PROFILE',
-				profile:
-					'Computer Engineer building web products with <strong>Angular, .NET and TypeScript</strong>. My work includes frontend modernization, REST APIs and performance improvements. I also research OSS abandonment prediction using BiLSTM models.',
-				readMore: 'READ FULL BIOGRAPHY',
-				currentTitle: 'CURRENT ROLE @ ATENA',
-				currentSummary:
-					'I currently work at <strong>Atena</strong> as a Software Engineer contributing to Angular frontends and .NET APIs. My focus is maintainable delivery, measurable performance improvements and clear technical documentation.',
-				currentButton: 'VIEW WORK DETAILS',
-			}
-		: {
-				profileTitle: 'PERFIL PROFESIONAL',
-				profile:
-					'Ingeniero Informático que construye productos web con <strong>Angular, .NET y TypeScript</strong>. Mi trabajo incluye modernización frontend, APIs REST y mejoras de rendimiento. También investigo la predicción de abandono de proyectos OSS mediante modelos BiLSTM.',
-				readMore: 'LEER BIOGRAFÍA COMPLETA',
-				currentTitle: 'ROL ACTUAL @ ATENA',
-				currentSummary:
-					'Actualmente trabajo en <strong>Atena</strong> como Software Engineer, contribuyendo en frontends Angular y APIs .NET. Mi enfoque es entregar software mantenible, aplicar mejoras de rendimiento medibles y documentar las decisiones técnicas.',
-				currentButton: 'VER DETALLES DEL TRABAJO',
-			};
+const tAbout = createScopedUiTranslator(lang, 'sections.about');
+const tCommon = createScopedUiTranslator(lang, 'common');
 ---
 
 <div class="space-y-6">
@@ -39,19 +17,17 @@ const copy =
 				<h3
 					class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
 				>
-					{copy.profileTitle}
+					{tAbout('profileTitle')}
 				</h3>
-				<div
-					class="space-y-4 [&>p]:text-content [&>p>strong]:text-primary-500 dark:[&>p>strong]:text-primary-400 [&>p>strong]:font-semibold text-pretty"
-				>
-					<p set:html={copy.profile} />
-				</div>
+				<p class="text-content text-base leading-relaxed text-pretty">
+					{tAbout('profileSummary')}
+				</p>
 				<div class="pt-2">
 					<a
 						href={getLocalizedPath(lang, '/about')}
 						class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 					>
-						{copy.readMore}
+						{tAbout('readMore')}
 					</a>
 				</div>
 			</div>
@@ -65,7 +41,7 @@ const copy =
 					width="240"
 					height="240"
 					src="/profile/perfil.webp"
-					alt={personalImageAlt}
+					alt={tAbout('imageAlt')}
 					class="relative w-48 h-48 md:w-56 md:h-56 object-cover aspect-square rounded-none border-2 border-black dark:border-white transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
 					style="object-position: 50% 50%"
 				/>
@@ -80,18 +56,17 @@ const copy =
 			<h3
 				class="font-pixel-clean text-2xl font-bold uppercase tracking-wider text-primary-500 dark:text-primary-400"
 			>
-				{copy.currentTitle}
+				{tAbout('currentTitle')}
 			</h3>
-			<p
-				class="text-content text-base leading-relaxed text-pretty"
-				set:html={copy.currentSummary}
-			/>
+			<p class="text-content text-base leading-relaxed text-pretty">
+				{tAbout('currentSummary')}
+			</p>
 			<div class="pt-2">
 				<a
 					href={getLocalizedPath(lang, '/atena')}
 					class="inline-flex items-center justify-center rounded-none bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white text-xs px-5 py-3 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 				>
-					{copy.currentButton}
+					{tCommon('actions.viewWork')}
 				</a>
 			</div>
 		</div>

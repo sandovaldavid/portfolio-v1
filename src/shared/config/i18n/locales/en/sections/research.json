@@ -1,6 +1,10 @@
 {
-	"eyebrow": "Research",
-	"title": "Predicting OSS abandonment with BiLSTM",
-	"summary": "Mining repository activity as temporal sequences to identify abandonment risk and compare deep-learning results with traditional machine-learning baselines.",
+	"sectionTitle": "Research",
+	"institution": "National University of Piura",
+	"label": "Bachelor thesis",
+	"title": "Predicting the Abandonment State of OSS Repositories using BiLSTM Neural Networks",
+	"summary": "Applying Bidirectional LSTM neural networks to detect OSS repository abandonment risk from GitHub activity time series and benchmarking the results against traditional machine-learning baselines.",
+	"techStackLabel": "Technology stack",
+	"methodologyHint": "Full methodology, architecture and pipeline are available on the research page.",
 	"viewFull": "View full research"
 }
