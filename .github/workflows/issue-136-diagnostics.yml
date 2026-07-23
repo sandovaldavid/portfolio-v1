@@ -1,0 +1,40 @@
+name: Issue 136 diagnostics
+
+on:
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+
+jobs:
+    diagnose:
+        if: github.event.pull_request.head.ref == 'feat/136-localized-experience-content'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request head
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Capture repository quality output
+              shell: bash
+              run: |
+                  set +e
+                  bun run check > issue-136-check.log 2>&1
+                  status=$?
+                  echo "$status" > issue-136-check.exit
+                  exit 0
+
+            - name: Upload diagnostics
+              uses: actions/upload-artifact@v7
+              with:
+                  name: issue-136-quality-diagnostics
+                  path: |
+                      issue-136-check.log
+                      issue-136-check.exit
+                  if-no-files-found: error
+                  retention-days: 1
