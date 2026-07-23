@@ -5,9 +5,13 @@ import {
 	EXPERIENCE_TECHNOLOGIES,
 	isExperienceId,
 } from './metadata';
-import type { ExperienceItem, ExperienceList } from './types';
+import type { ExperienceContentEntry, ExperienceItem, ExperienceList } from './types';
 
-function toExperienceItem(entry: Awaited<ReturnType<typeof getCollection<'experience'>>>[number]) {
+interface LocalizedExperienceItem extends ExperienceItem {
+	locale: 'en' | 'es';
+}
+
+function toExperienceItem(entry: ExperienceContentEntry): LocalizedExperienceItem {
 	const { experienceId, locale, company, title, dateLabel, achievements } = entry.data;
 
 	if (!isExperienceId(experienceId)) {
@@ -15,6 +19,7 @@ function toExperienceItem(entry: Awaited<ReturnType<typeof getCollection<'experi
 	}
 
 	const metadata = EXPERIENCE_METADATA[experienceId];
+	const evidence = 'evidenceUrl' in metadata ? { link: metadata.evidenceUrl } : {};
 
 	return {
 		experienceId,
@@ -27,8 +32,8 @@ function toExperienceItem(entry: Awaited<ReturnType<typeof getCollection<'experi
 		endDate: metadata.endDate,
 		isCurrent: metadata.isCurrent,
 		featured: metadata.featured,
-		link: metadata.evidenceUrl,
 		locale,
+		...evidence,
 	};
 }
 
@@ -52,7 +57,7 @@ export async function getExperienceData(lang: Language): Promise<ExperienceList>
 		}
 
 		const { locale: _locale, ...localizedItem } = item;
-		return localizedItem satisfies ExperienceItem;
+		return localizedItem;
 	});
 
 	return experience.sort(
