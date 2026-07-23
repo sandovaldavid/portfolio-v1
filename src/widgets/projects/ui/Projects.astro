@@ -1,15 +1,14 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getProjectsData, ProjectCard } from '@entities/project';
-import { createScopedUiTranslator, Language } from '@shared/config/i18n';
-import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale } from '@shared/config/i18n';
 
 interface Props {
 	showAll?: boolean;
 }
 const { showAll = false } = Astro.props;
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const tProjects = createScopedUiTranslator(lang, 'sections.projects');
 const projects = await getProjectsData(lang);
 
@@ -31,7 +30,7 @@ const projectsToDisplay = showAll
 						previewButtonText={tProjects('previewButton')}
 						cardTypeText={tProjects(project.featured ? 'cardFeature' : 'cardProject')}
 						caseStudyText={tProjects('caseStudy')}
-						caseStudyLink={getLocalizedPath(lang, `/projects/${project.slug}`)}
+						caseStudyLink={getRelativeLocaleUrl(lang, `projects/${project.slug}`)}
 						priority={i < 2}
 					/>
 				</div>
@@ -43,7 +42,7 @@ const projectsToDisplay = showAll
 		!showAll && (
 			<div class="w-full flex justify-center mt-12">
 				<a
-					href={getLocalizedPath(lang, '/projects')}
+					href={getRelativeLocaleUrl(lang, 'projects')}
 					class="inline-flex items-center justify-center rounded-none bg-surface text-content-strong border-2 border-black dark:border-white text-base px-6 py-3.5 font-bold uppercase tracking-wider transition-all duration-100 shadow-retro-md hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-retro-xl active:translate-x-[1px] active:translate-y-[1px] active:shadow-retro-xs"
 				>
 					{tProjects('viewAll')}

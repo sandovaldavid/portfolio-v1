@@ -30,9 +30,12 @@ describe('getContentLanguage', () => {
 		expect(getContentLanguage('es/post')).toBe(Language.SPANISH);
 	});
 
-	it.each(['fr/post', 'english/post', 'en-post', ''])('rejects unsupported content IDs %s', id => {
-		expect(getContentLanguage(id)).toBeUndefined();
-	});
+	it.each(['fr/post', 'english/post', 'en-post', ''])(
+		'rejects unsupported content IDs %s',
+		id => {
+			expect(getContentLanguage(id)).toBeUndefined();
+		}
+	);
 });
 
 describe('isContentForLanguage', () => {

@@ -40,7 +40,9 @@ test.describe('editorial translation switching', () => {
 		});
 	}
 
-	test('paired blog detail remains free of serious accessibility violations', async ({ page }) => {
+	test('paired blog detail remains free of serious accessibility violations', async ({
+		page,
+	}) => {
 		await page.goto('/blog/building-this-portfolio-with-astro-and-fsd');
 		const results = await new AxeBuilder({ page })
 			.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

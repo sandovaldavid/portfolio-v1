@@ -145,7 +145,9 @@ describe('localized project and case-study content', () => {
 		expect(orders.sort((left, right) => right - left)).toEqual([50, 40, 30, 20, 10]);
 		expect(metadata).toContain('technologyIds:');
 		expect(metadata).toContain('evidenceSourceUrls:');
-		expect(metadata).toContain("'yukidoke-web': 'https://github.com/sandovaldavid/yukidoke-web'");
+		expect(metadata).toContain(
+			"'yukidoke-web': 'https://github.com/sandovaldavid/yukidoke-web'"
+		);
 
 		for (const entry of [...entries.en, ...entries.es]) {
 			expect(JSON.stringify(entry)).not.toContain('https://');
@@ -185,8 +187,11 @@ describe('localized project and case-study content', () => {
 		expect(widget).toContain('await getProjectsData(lang)');
 		expect(widget).toContain("createScopedUiTranslator(lang, 'sections.projects')");
 		expect(widget).not.toContain('useTranslations');
-		expect(englishRoute).toContain('await getProjectBySlug(Language.ENGLISH');
-		expect(spanishRoute).toContain('await getProjectBySlug(Language.SPANISH');
+		for (const route of [englishRoute, spanishRoute]) {
+			expect(route).toContain('const lang = getLanguageFromLocale(Astro.currentLocale)');
+			expect(route).toContain('await getProjectBySlug(lang, slug)');
+			expect(route).toContain("getRelativeLocaleUrl(lang, 'projects')");
+		}
 	});
 
 	it('contains no known hardcoded English project presentation on Spanish surfaces', () => {

@@ -12,9 +12,9 @@ export function stripContentLocalePrefix(id: string): string {
 
 /** Returns the supported locale encoded in an Astro content entry id. */
 export function getContentLanguage(id: string): Language | undefined {
-	const locale = id.split('/', 1)[0];
-	if (locale === Language.ENGLISH) return Language.ENGLISH;
-	if (locale === Language.SPANISH) return Language.SPANISH;
+	const localePrefix = id.match(SUPPORTED_LOCALE_PREFIX)?.[1];
+	if (localePrefix === Language.ENGLISH) return Language.ENGLISH;
+	if (localePrefix === Language.SPANISH) return Language.SPANISH;
 	return undefined;
 }
 

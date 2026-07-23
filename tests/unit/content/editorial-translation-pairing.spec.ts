@@ -1,10 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { Language } from '@shared/config/i18n';
-import {
-	assertUniqueTranslationKeys,
-	findTranslationCounterpart,
-} from '@shared/lib/content';
+import { assertUniqueTranslationKeys, findTranslationCounterpart } from '@shared/lib/content';
 
 interface TestEntry {
 	id: string;
@@ -57,9 +54,9 @@ describe('editorial translation pairing', () => {
 		const source = makeEntry('en/english-slug', 'shared-article');
 		const spanish = makeEntry('es/slug-localizado', 'shared-article');
 
-		expect(
-			findTranslationCounterpart([source, spanish], source, Language.SPANISH)
-		).toBe(spanish);
+		expect(findTranslationCounterpart([source, spanish], source, Language.SPANISH)).toBe(
+			spanish
+		);
 	});
 
 	it('treats a draft counterpart as unavailable when the caller excludes drafts', () => {
@@ -78,9 +75,7 @@ describe('editorial translation pairing', () => {
 
 	it('returns undefined when a translation is intentionally absent', () => {
 		const source = makeEntry('en/single-language', 'single-language');
-		expect(
-			findTranslationCounterpart([source], source, Language.SPANISH)
-		).toBeUndefined();
+		expect(findTranslationCounterpart([source], source, Language.SPANISH)).toBeUndefined();
 	});
 
 	it('requires an explicit stable identity in every blog and devlog entry', () => {
@@ -95,34 +90,28 @@ describe('editorial translation pairing', () => {
 		}
 	});
 
-	it(
-		'pairs published articles and devlog entries while allowing the draft fixture to stand alone',
-		() => {
-			const blogKeys = readTranslationKeys('blog');
-			const devlogKeys = readTranslationKeys('devlog');
+	it('pairs published articles and devlog entries while allowing the draft fixture to stand alone', () => {
+		const blogKeys = readTranslationKeys('blog');
+		const devlogKeys = readTranslationKeys('devlog');
 
-			const countByKey = (entries: typeof blogKeys) =>
-				entries.reduce<Record<string, number>>((counts, entry) => {
-					if (entry.translationKey) {
-						counts[entry.translationKey] = (counts[entry.translationKey] ?? 0) + 1;
-					}
-					return counts;
-				}, {});
+		const countByKey = (entries: typeof blogKeys) =>
+			entries.reduce<Record<string, number>>((counts, entry) => {
+				if (entry.translationKey) {
+					counts[entry.translationKey] = (counts[entry.translationKey] ?? 0) + 1;
+				}
+				return counts;
+			}, {});
 
-			expect(countByKey(blogKeys)).toEqual({
-				'building-this-portfolio-with-astro-and-fsd': 2,
-				'predicting-oss-abandonment-with-bilstm': 2,
-				'draft-rss-test': 1,
-			});
-			expect(Object.values(countByKey(devlogKeys)).every(count => count === 2)).toBe(true);
-		}
-	);
+		expect(countByKey(blogKeys)).toEqual({
+			'building-this-portfolio-with-astro-and-fsd': 2,
+			'predicting-oss-abandonment-with-bilstm': 2,
+			'draft-rss-test': 1,
+		});
+		expect(Object.values(countByKey(devlogKeys)).every(count => count === 2)).toBe(true);
+	});
 
 	it('disables an unavailable target locale instead of constructing a link', () => {
-		const picker = readFileSync(
-			'src/features/language-picker/ui/LanguagePicker.astro',
-			'utf8'
-		);
+		const picker = readFileSync('src/features/language-picker/ui/LanguagePicker.astro', 'utf8');
 		const detailRoutes = [
 			'src/pages/blog/[slug].astro',
 			'src/pages/es/blog/[slug].astro',
@@ -130,7 +119,8 @@ describe('editorial translation pairing', () => {
 			'src/pages/es/devlog/[slug].astro',
 		];
 
-		expect(picker).toContain('localizedPaths !== undefined && !verifiedPath');
+		expect(picker).toContain('const path = localizedPaths[lang]');
+		expect(picker).toContain('const isUnavailable = !path');
 		expect(picker).toContain('<button');
 		expect(picker).toContain('disabled');
 		expect(picker).toContain("tAccessibility('translationUnavailable')");

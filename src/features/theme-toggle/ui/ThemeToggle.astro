@@ -2,10 +2,9 @@
 import SunIcon from '@assets/icons/Sun.astro';
 import MoonIcon from '@assets/icons/Moon.astro';
 import SystemIcon from '@assets/icons/System.astro';
-import { getLangFromUrl } from '@shared/lib/i18n';
-import { createScopedUiTranslator } from '@shared/config/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale } from '@shared/config/i18n';
 
-const lang = getLangFromUrl(new URL(Astro.request.url));
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const tTheme = createScopedUiTranslator(lang, 'theme');
 
 const THEMES = [

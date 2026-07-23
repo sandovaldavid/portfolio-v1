@@ -21,9 +21,7 @@ export function assertUniqueTranslationKeys<T extends TranslationEntry>(
 	for (const entry of entries) {
 		const locale = getContentLanguage(entry.id);
 		if (!locale) {
-			throw new Error(
-				`Unsupported locale prefix for ${collectionName} entry "${entry.id}".`
-			);
+			throw new Error(`Unsupported locale prefix for ${collectionName} entry "${entry.id}".`);
 		}
 
 		const identity = `${locale}:${entry.data.translationKey}`;

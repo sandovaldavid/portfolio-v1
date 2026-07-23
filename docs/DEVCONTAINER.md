@@ -179,10 +179,10 @@ The Dev Container asks VS Code to forward:
 
 Both ports use `requireLocalPort: true`, so VS Code must preserve the expected local URLs instead of silently selecting different host ports. Astro opens once automatically when detected; the Playwright report produces a notification when its server starts.
 
-| Service                | Container port | Forwarded host URL       |
-| ---------------------- | -------------: | ------------------------ |
-| Astro development      |           4321 | `http://localhost:4321`  |
-| Playwright HTML report |           9323 | `http://localhost:9323`  |
+| Service                | Container port | Forwarded host URL      |
+| ---------------------- | -------------: | ----------------------- |
+| Astro development      |           4321 | `http://localhost:4321` |
+| Playwright HTML report |           9323 | `http://localhost:9323` |
 
 The forwarding tunnel presents requests to each application as local container traffic. Astro therefore uses its standard development command and does not need to listen on every container interface:
 

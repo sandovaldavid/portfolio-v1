@@ -1,9 +1,13 @@
 ---
-import { getLangFromUrl } from '@shared/lib/i18n';
-import { createScopedUiTranslator, getUiCatalogNamespace, Language } from '@shared/config/i18n';
+import {
+	createScopedUiTranslator,
+	getLanguageFromLocale,
+	getUiCatalogNamespace,
+	Language,
+} from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
-const lang = getLangFromUrl(new URL(Astro.request.url));
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const tCli = createScopedUiTranslator(lang, 'cli');
 const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
 const runtimeCopy = getUiCatalogNamespace(lang, 'cli');

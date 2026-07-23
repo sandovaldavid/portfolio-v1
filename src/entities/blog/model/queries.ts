@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { Language, type LocalizedPathMap } from '@shared/config/i18n';
 import {
 	assertUniqueTranslationKeys,
@@ -42,8 +43,7 @@ export function getBlogSlug(post: BlogPost): string {
 }
 
 function getBlogPath(lang: Language, post: BlogPost): string {
-	const slug = getBlogSlug(post);
-	return lang === Language.ENGLISH ? `/blog/${slug}` : `/es/blog/${slug}`;
+	return getRelativeLocaleUrl(lang, `blog/${getBlogSlug(post)}`);
 }
 
 /**
@@ -64,12 +64,7 @@ export async function getBlogLocalizedPaths(post: BlogPost): Promise<LocalizedPa
 	for (const targetLanguage of [Language.ENGLISH, Language.SPANISH]) {
 		if (targetLanguage === sourceLanguage) continue;
 
-		const counterpart = findTranslationCounterpart(
-			posts,
-			post,
-			targetLanguage,
-			isPublished
-		);
+		const counterpart = findTranslationCounterpart(posts, post, targetLanguage, isPublished);
 		if (counterpart) {
 			localizedPaths[targetLanguage] = getBlogPath(targetLanguage, counterpart);
 		}
