@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { BlogDetail } from '@widgets/blog';
 import {
@@ -8,7 +9,7 @@ import {
 	getBlogPosts,
 	getBlogSlug,
 } from '@entities/blog';
-import { Language } from '@shared/config/i18n';
+import { getLanguageFromLocale, Language } from '@shared/config/i18n';
 import { useTranslations } from '@shared/lib/i18n';
 
 export async function getStaticPaths() {
@@ -18,9 +19,10 @@ export async function getStaticPaths() {
 	}));
 }
 
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const slug = Astro.params.slug ?? '';
-const t = useTranslations(Language.SPANISH);
-const post = await getBlogPost(Language.SPANISH, slug);
+const t = useTranslations(lang);
+const post = await getBlogPost(lang, slug);
 
 if (!post) {
 	return Astro.redirect('/404');
@@ -43,7 +45,7 @@ const { Content } = await render(post);
 			{post}
 			{Content}
 			backText={t('blog.back')}
-			backLink="/es/blog"
+			backLink={getRelativeLocaleUrl(lang, 'blog')}
 			publishedLabel={t('blog.published')}
 			updatedLabel={t('blog.updated')}
 			tagsLabel={t('blog.tags')}

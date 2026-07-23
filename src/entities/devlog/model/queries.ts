@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { Language, type LocalizedPathMap } from '@shared/config/i18n';
 import {
 	assertUniqueTranslationKeys,
@@ -40,8 +41,7 @@ export function getDevlogSlug(post: DevlogPost): string {
 }
 
 function getDevlogPath(lang: Language, post: DevlogPost): string {
-	const slug = getDevlogSlug(post);
-	return lang === Language.ENGLISH ? `/devlog/${slug}` : `/es/devlog/${slug}`;
+	return getRelativeLocaleUrl(lang, `devlog/${getDevlogSlug(post)}`);
 }
 
 /** Returns only verified locale paths for a devlog entry and its counterpart. */
