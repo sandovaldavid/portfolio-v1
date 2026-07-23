@@ -23,19 +23,23 @@ describe('legacy translations', () => {
 		expect(enKeys).toEqual(esKeys);
 	});
 
-	it('contains compatibility keys for domains not migrated yet', () => {
+	it('contains compatibility keys only for domains not migrated yet', () => {
 		const en = translations[Language.ENGLISH];
 		expect(en['nav.experience']).toBeDefined();
 		expect(en['projects.code-button']).toBeDefined();
-		expect(en['experience.atena.title']).toBeDefined();
+		expect(en['research.thesis.keywords']).toBeDefined();
+		expect(en['experience.atena.title']).toBeUndefined();
 	});
 
-	it('does not retain home copy migrated to granular catalogs', () => {
+	it('does not retain home or experience copy migrated to canonical sources', () => {
 		const en = translations[Language.ENGLISH];
 		expect(en['hero.intro']).toBeUndefined();
 		expect(en['title.experience']).toBeUndefined();
 		expect(en['vision.title']).toBeUndefined();
 		expect(en['badges.github-foundations.label']).toBeUndefined();
+		expect(en['experience.atena.description']).toBeUndefined();
+		expect(en['experience.chirasoft.title']).toBeUndefined();
+		expect(en['experience.programador-ti.company']).toBeUndefined();
 	});
 });
 

@@ -11,68 +11,6 @@
 	"avatar": {
 		"alt": "{{name}} - Web Developer"
 	},
-	"experience": {
-		"learn-more": "Learn more",
-		"atena": {
-			"date": "Jan 2026 – Present",
-			"title": "Software Engineer — Full-Stack",
-			"company": "Atena",
-			"description": [
-				"Implemented migration of critical modules to Angular 19 Signals, reducing Event Loop load by eliminating Zone.js dependency in data visualization components",
-				"Developed and documented 3 new REST APIs using .NET 8 and Clean Architecture, ensuring >80% unit test coverage and facilitating system scalability",
-				"Reduced frontend Bundle Size by 35% through implementation of Standalone Components and Lazy Loading, optimizing Time to Interactive (TTI) for low-latency connections"
-			],
-			"technologies": [
-				".NET 8",
-				"Clean Architecture",
-				"CQRS",
-				"Angular 19",
-				"Signals",
-				"Zoneless",
-				"Standalone Components",
-				"Lazy Loading",
-				"Unit Testing"
-			]
-		},
-		"chirasoft": {
-			"date": "May 2025 – Jul 2025",
-			"title": "Fullstack Developer Freelance",
-			"company": "Chirasoft",
-			"description": [
-				"Migrated an educational institutional site from WordPress to Angular, improving performance, maintainability, and user experience",
-				"Contributed to the comprehensive development of an e-commerce platform, from frontend to backend business logic",
-				"Implemented responsive design patterns and optimized component architecture for scalability"
-			],
-			"technologies": [
-				"Angular",
-				"TypeScript",
-				"WordPress",
-				"E-commerce",
-				"Responsive Design",
-				"Java",
-				"Spring Boot"
-			]
-		},
-		"programador-ti": {
-			"date": "Jun 2024 - Oct 2024",
-			"title": "Software Developer and IT Specialist",
-			"company": "Provincial Municipality of Piura",
-			"description": [
-				"Provided technical support for the maintenance and configuration of technological infrastructure",
-				"Performed diagnosis and incident resolution, optimizing technological processes within the institutional environment",
-				"Supported the migration of institutional platforms from FoxPro to React (frontend), modernizing the technology stack",
-				"Strengthened my ability to tackle technical challenges and improve systems management"
-			],
-			"technologies": [
-				"React",
-				"FoxPro",
-				"Systems Migration",
-				"Systems Administration",
-				"Infrastructure",
-				"Troubleshooting"
-			]
-		}
-	},
 	"projects": {
 		"code-button": "Code",
 		"preview-button": "Preview",

@@ -3,6 +3,8 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const nonEmptyString = z.string().trim().min(1);
+const stableContentId = z.string().regex(/^[a-z0-9-]+$/);
+const locale = z.enum(['en', 'es']);
 
 const blog = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
@@ -33,8 +35,8 @@ const devlog = defineCollection({
 const portfolioProfile = defineCollection({
 	loader: glob({ pattern: '**/*.json', base: './src/content/portfolio-profile' }),
 	schema: z.object({
-		profileId: z.string().regex(/^[a-z0-9-]+$/),
-		locale: z.enum(['en', 'es']),
+		profileId: stableContentId,
+		locale,
 		seo: z.object({
 			title: nonEmptyString,
 			description: nonEmptyString,
@@ -50,4 +52,16 @@ const portfolioProfile = defineCollection({
 	}),
 });
 
-export const collections = { blog, devlog, portfolioProfile };
+const experience = defineCollection({
+	loader: glob({ pattern: '**/*.json', base: './src/content/experience' }),
+	schema: z.object({
+		experienceId: stableContentId,
+		locale,
+		company: nonEmptyString,
+		title: nonEmptyString,
+		dateLabel: nonEmptyString,
+		achievements: z.array(nonEmptyString).min(1),
+	}),
+});
+
+export const collections = { blog, devlog, portfolioProfile, experience };

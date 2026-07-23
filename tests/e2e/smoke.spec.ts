@@ -56,4 +56,41 @@ test.describe('Pull request smoke and accessibility gates', () => {
 		).toBeVisible();
 		await expect(page.getByText('Angular y arquitectura frontend reactiva')).toBeVisible();
 	});
+
+	for (const scenario of [
+		{
+			route: '/',
+			tablistName: 'Experience tabs',
+			achievement: 'Migrated an educational institutional site from WordPress to Angular',
+		},
+		{
+			route: '/es/',
+			tablistName: 'Pestañas de experiencia',
+			achievement:
+				'Realicé la migración de un sitio institucional educativo de WordPress a Angular',
+		},
+	] as const) {
+		test(`${scenario.route} renders localized keyboard-accessible experience tabs`, async ({
+			page,
+		}) => {
+			await page.goto(scenario.route);
+
+			const tablist = page.getByRole('tablist', { name: scenario.tablistName });
+			const tabs = tablist.getByRole('tab');
+			await expect(tabs).toHaveCount(3);
+			await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+			await tabs.nth(0).focus();
+			await tabs.nth(0).press('ArrowDown');
+			await expect(tabs.nth(1)).toBeFocused();
+			await tabs.nth(1).press('Enter');
+			await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+			const panel = page.locator(
+				'[role="tabpanel"][data-experience-id="chirasoft-fullstack-developer"]'
+			);
+			await expect(panel).toHaveAttribute('data-active', 'true');
+			await expect(panel.getByText(scenario.achievement, { exact: false })).toBeVisible();
+		});
+	}
 });

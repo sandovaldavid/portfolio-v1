@@ -4,7 +4,7 @@ This document describes the executable UI-catalog foundation introduced by issue
 
 ## Scope
 
-The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects, case studies, blog posts and devlog entries remain outside this API and migrate to schema-validated content sources in later roadmap issues.
+The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects, case studies, blog posts and devlog entries remain outside this API and migrate to schema-validated content sources in roadmap issues #135–#138.
 
 The legacy monolithic dictionaries and `useTranslationsList()` remain temporarily for consumers that have not yet migrated. They are compatibility debt and must not receive new domains.
 
@@ -50,7 +50,7 @@ The following production surfaces consume granular catalogs directly:
 - recruiter quick links;
 - optional retro splash screen;
 - 404 page;
-- experience-tab accessibility label;
+- experience-tab accessibility and action labels;
 - CLI terminal, shortcuts and secret-mode messages;
 - home hero, About, Research, Vision, Tech Stack, badges and section headings.
 
@@ -118,3 +118,23 @@ The `portfolioProfile` collection validates stable identity, locale, SEO metadat
 Consumers load the entry through the public `@entities/profile` API. UI catalogs retain only headings, labels, actions and accessibility text; they do not own long biography records.
 
 The home About widget reuses the localized profile summary, while `/about` and `/es/about` use the corresponding biography, focus areas and SEO metadata from the same entry.
+
+## Structured experience content
+
+Issue #136 moves professional experience out of the mixed-value translator and into one validated entry per stable role and locale:
+
+```text
+src/content/experience/
+├── en/
+│   ├── atena-software-engineer.json
+│   ├── chirasoft-fullstack-developer.json
+│   └── municipality-piura-software-developer.json
+└── es/
+    └── ... mirrored entries
+```
+
+Each entry owns localized company presentation, role title, date label and achievement bullets. `src/entities/experience/model/metadata.ts` owns language-neutral dates, ordering, featured status and technology IDs. The entity joins both sources by `experienceId`, rejects duplicates or missing locale counterparts and exposes deterministic records to the experience widget.
+
+Technical tags intentionally use stable language-neutral labels in both locales. The `sections.experience` UI module owns only reusable labels such as the section title and optional evidence-link action.
+
+`useTranslationsList()` remains transitional only because the unmigrated research detail still consumes structured arrays. Experience is no longer a consumer, and the helper must not receive new domains before issue #143 removes the legacy runtime.
