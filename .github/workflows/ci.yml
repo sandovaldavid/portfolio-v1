@@ -24,20 +24,8 @@ jobs:
             - name: Setup repository
               uses: ./.github/actions/setup-bun
 
-            - name: Validate formatting
-              run: bun run format:check
-
-            - name: Validate documentation
-              run: bun run check:docs
-
-            - name: Validate Dev Container and VS Code contracts
-              run: bun run check:devcontainer
-
-            - name: Run lint and architecture checks
-              run: bun run lint
-
-            - name: Run Astro and tooling type checks
-              run: bun run typecheck
+            - name: Run repository quality checks
+              run: bun run check
 
             - name: Validate squash-merge title
               env:
