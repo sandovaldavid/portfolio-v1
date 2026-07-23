@@ -5,6 +5,8 @@ const routePairs = [
 	{ source: '/es/', label: 'English', target: '/' },
 	{ source: '/about', label: 'Español', target: '/es/about' },
 	{ source: '/es/about', label: 'English', target: '/about' },
+	{ source: '/about/', label: 'Español', target: '/es/about/' },
+	{ source: '/es/about/', label: 'English', target: '/about/' },
 	{ source: '/blog', label: 'Español', target: '/es/blog' },
 	{ source: '/es/blog', label: 'English', target: '/blog' },
 	{ source: '/projects/yukidoke', label: 'Español', target: '/es/projects/yukidoke' },
@@ -49,4 +51,12 @@ test.describe('Astro-native locale routing', () => {
 		await expect(page).toHaveURL(/\/about\?source=e2e#focus$/);
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 	});
+
+	test.each(['/en/about', '/fr/about'])(
+		'does not accept unsupported locale route %s',
+		async ({ page }, path) => {
+			const response = await page.goto(path);
+			expect(response?.status()).toBe(404);
+		}
+	);
 });
