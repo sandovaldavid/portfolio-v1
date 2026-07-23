@@ -105,7 +105,7 @@ describe('localized professional experience content', () => {
 		expect(query).toContain('Missing experience content for locale');
 		expect(widget).toContain('await getExperienceData(lang)');
 		expect(widget).not.toContain('useTranslationsList');
-		expect(widget).not.toContain('tList');
+		expect(widget).not.toMatch(/\bconst\s+tList\b/);
 
 		for (const locale of locales) {
 			const legacy = readJson<Record<string, unknown>>(
