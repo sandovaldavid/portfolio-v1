@@ -64,9 +64,9 @@ describe('useTranslations', () => {
 		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Missing translation'));
 	});
 
-	it('returns first element when value is an array', () => {
+	it('returns the first element for a remaining transitional array value', () => {
 		const t = useTranslations(Language.ENGLISH);
-		const result = t('experience.atena.description');
+		const result = t('research.thesis.keywords');
 		expect(typeof result).toBe('string');
 		expect(result.length).toBeGreaterThan(0);
 	});
@@ -102,9 +102,9 @@ describe('useTranslationsList', () => {
 		expect(result).toBe('Experience');
 	});
 
-	it('returns an array for an array key', () => {
+	it('returns an array for a remaining transitional research key', () => {
 		const tList = useTranslationsList(Language.ENGLISH);
-		const result = tList('experience.atena.description');
+		const result = tList('research.thesis.keywords');
 		expect(Array.isArray(result)).toBe(true);
 		expect((result as string[]).length).toBeGreaterThan(0);
 	});

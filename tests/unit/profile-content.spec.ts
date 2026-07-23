@@ -37,7 +37,9 @@ describe('localized portfolio profile content', () => {
 		const config = readSource('src/content.config.ts');
 		expect(config).toContain('const portfolioProfile = defineCollection');
 		expect(config).toContain("base: './src/content/portfolio-profile'");
-		expect(config).toContain('export const collections = { blog, devlog, portfolioProfile }');
+		expect(config).toContain(
+			'export const collections = { blog, devlog, portfolioProfile, experience }'
+		);
 	});
 
 	it('keeps stable identity and required structure in parity', () => {
