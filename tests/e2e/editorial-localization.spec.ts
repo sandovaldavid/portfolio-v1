@@ -45,7 +45,10 @@ test.describe('editorial translation switching', () => {
 		const results = await new AxeBuilder({ page })
 			.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
 			.analyze();
+		const blockingViolations = results.violations.filter(violation =>
+			['serious', 'critical'].includes(violation.impact ?? '')
+		);
 
-		expect(results.violations.filter(violation => ['serious', 'critical'].includes(violation.impact ?? ''))).toEqual([]);
+		expect(blockingViolations).toEqual([]);
 	});
 });
