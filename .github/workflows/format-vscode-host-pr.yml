@@ -1,0 +1,48 @@
+name: Format VS Code Host Workflow
+
+on:
+    pull_request:
+        branches: [main]
+        paths:
+            - '.github/workflows/format-vscode-host-pr.yml'
+
+permissions:
+    contents: write
+
+jobs:
+    format:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout pull request branch
+              uses: actions/checkout@v7
+              with:
+                  ref: ${{ github.event.pull_request.head.ref }}
+
+            - name: Setup repository
+              uses: ./.github/actions/setup-bun
+
+            - name: Format VS Code host workflow changes
+              run: |
+                  bunx prettier --write \
+                    package.json \
+                    .vscode/tasks.json \
+                    .vscode/launch.json \
+                    docs/TESTING.md \
+                    scripts/check-devcontainer-port.mjs
+
+            - name: Commit formatting changes
+              run: |
+                  if git diff --quiet; then
+                    exit 0
+                  fi
+
+                  git config user.name 'github-actions[bot]'
+                  git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+                  git add \
+                    package.json \
+                    .vscode/tasks.json \
+                    .vscode/launch.json \
+                    docs/TESTING.md \
+                    scripts/check-devcontainer-port.mjs
+                  git commit -m 'style(vscode): format host development workflow'
+                  git push origin HEAD:${{ github.event.pull_request.head.ref }}
