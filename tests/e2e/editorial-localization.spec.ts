@@ -36,7 +36,7 @@ test.describe('editorial translation switching', () => {
 				'href',
 				scenario.target
 			);
-			await expect(panel.locator('[aria-disabled="true"]')).toHaveCount(0);
+			await expect(panel.locator('button:disabled')).toHaveCount(0);
 		});
 	}
 
