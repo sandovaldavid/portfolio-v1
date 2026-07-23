@@ -3,26 +3,46 @@ import { expect, test } from './fixtures';
 
 const siteUrl = 'https://sandovaldavid.com';
 
-async function getJsonLd(page: Page, type: string): Promise<Record<string, unknown>> {
+type JsonLd = Record<string, unknown>;
+
+async function getJsonLd(page: Page, type: string): Promise<JsonLd> {
 	const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
-	const parsed = schemas.map(schema => JSON.parse(schema) as Record<string, unknown>);
+	const parsed = schemas.map(schema => JSON.parse(schema) as JsonLd);
 	const match = parsed.find(schema => schema['@type'] === type);
 	expect(match, `Expected JSON-LD type ${type}`).toBeDefined();
 	return match ?? {};
 }
 
-async function expectMetadata(page: Page, scenario: {
-	path: string;
-	lang: 'en' | 'es';
-	title: string;
-	description: string;
-	ogLocale: 'en_US' | 'es_PE';
-	alternateOgLocale: 'en_US' | 'es_PE';
-	imageAlt: string;
-	rssEnglishTitle: string;
-	rssSpanishTitle: string;
-	skipText: string;
-}) {
+function getString(schema: JsonLd, key: string): string {
+	const value = schema[key];
+	expect(typeof value, `Expected ${key} to be a string`).toBe('string');
+	return typeof value === 'string' ? value : '';
+}
+
+function getObject(schema: JsonLd, key: string): JsonLd {
+	const value = schema[key];
+	expect(value, `Expected ${key} to be an object`).toBeTruthy();
+	expect(Array.isArray(value)).toBe(false);
+	return typeof value === 'object' && value !== null && !Array.isArray(value)
+		? (value as JsonLd)
+		: {};
+}
+
+async function expectMetadata(
+	page: Page,
+	scenario: {
+		path: string;
+		lang: 'en' | 'es';
+		title: string;
+		description: string;
+		ogLocale: 'en_US' | 'es_PE';
+		alternateOgLocale: 'en_US' | 'es_PE';
+		imageAlt: string;
+		rssEnglishTitle: string;
+		rssSpanishTitle: string;
+		skipText: string;
+	}
+) {
 	await page.goto(scenario.path);
 
 	await expect(page.locator('html')).toHaveAttribute('lang', scenario.lang);
@@ -100,36 +120,36 @@ test.describe('localized SEO, social, RSS and structured metadata', () => {
 
 		const website = await getJsonLd(page, 'WebSite');
 		const person = await getJsonLd(page, 'Person');
-		expect(website.inLanguage).toBe('es');
-		expect(website.description).toContain('Ingeniero de software');
-		expect(person.jobTitle).toBe('Ingeniero de Software');
+		expect(getString(website, 'inLanguage')).toBe('es');
+		expect(getString(website, 'description')).toContain('Ingeniero de software');
+		expect(getString(person, 'jobTitle')).toBe('Ingeniero de Software');
 	});
 
 	test('dynamic route schemas match their content family and locale', async ({ page }) => {
 		await page.goto('/blog/building-this-portfolio-with-astro-and-fsd');
 		const blog = await getJsonLd(page, 'BlogPosting');
-		const blogHeading = await page.getByRole('heading', { level: 1 }).textContent();
-		expect(blog.inLanguage).toBe('en');
-		expect(blog.headline).toContain(blogHeading?.trim());
-		expect(blog.datePublished).toBeTruthy();
+		const blogHeading = (await page.getByRole('heading', { level: 1 }).textContent())?.trim() ?? '';
+		expect(getString(blog, 'inLanguage')).toBe('en');
+		expect(getString(blog, 'headline')).toBe(blogHeading);
+		expect(getString(blog, 'datePublished')).toBeTruthy();
 		const blogBreadcrumbs = await getJsonLd(page, 'BreadcrumbList');
-		expect(JSON.stringify(blogBreadcrumbs)).toContain(blogHeading?.trim());
+		expect(JSON.stringify(blogBreadcrumbs)).toContain(blogHeading);
 
 		await page.goto('/es/devlog/phase-3-complete');
 		const devlog = await getJsonLd(page, 'TechArticle');
-		expect(devlog.inLanguage).toBe('es');
-		expect(devlog.datePublished).toBeTruthy();
+		expect(getString(devlog, 'inLanguage')).toBe('es');
+		expect(getString(devlog, 'datePublished')).toBeTruthy();
 
 		await page.goto('/es/research');
 		const research = await getJsonLd(page, 'ScholarlyArticle');
-		expect(research.inLanguage).toBe('es');
+		expect(getString(research, 'inLanguage')).toBe('es');
 
 		await page.goto('/es/projects/yukidoke');
 		const project = await getJsonLd(page, 'SoftwareSourceCode');
-		expect(project.inLanguage).toBe('es');
-		expect(project.image).toMatchObject({
-			caption: 'Vista previa de la arquitectura de la plataforma financiera familiar Yukidoke',
-		});
+		expect(getString(project, 'inLanguage')).toBe('es');
+		expect(getString(getObject(project, 'image'), 'caption')).toBe(
+			'Vista previa de la arquitectura de la plataforma financiera familiar Yukidoke'
+		);
 	});
 
 	test('profile routes expose localized ProfilePage and Person data', async ({ page }) => {
@@ -137,13 +157,16 @@ test.describe('localized SEO, social, RSS and structured metadata', () => {
 		const profile = await getJsonLd(page, 'ProfilePage');
 		const person = await getJsonLd(page, 'Person');
 
-		expect(profile.inLanguage).toBe('es');
-		expect(profile.description).toContain('Conoce a David Sandoval');
-		expect(person.jobTitle).toBe('Ingeniero de Software');
-		expect(person.description).toContain('productos web mantenibles');
+		expect(getString(profile, 'inLanguage')).toBe('es');
+		expect(getString(profile, 'description')).toContain('Conoce a David Sandoval');
+		expect(getString(person, 'jobTitle')).toBe('Ingeniero de Software');
+		expect(getString(person, 'description')).toContain('productos web mantenibles');
 	});
 
-	test('canonical alternate targets resolve for representative route families', async ({ page, request }) => {
+	test('canonical alternate targets resolve for representative route families', async ({
+		page,
+		request,
+	}) => {
 		for (const path of [
 			'/',
 			'/es/about',
@@ -152,9 +175,7 @@ test.describe('localized SEO, social, RSS and structured metadata', () => {
 		]) {
 			await page.goto(path);
 			const hrefs = await page
-				.locator(
-					'link[rel="alternate"][hreflang]:not([type="application/rss+xml"])'
-				)
+				.locator('link[rel="alternate"][hreflang]:not([type="application/rss+xml"])')
 				.evaluateAll(links => links.map(link => (link as HTMLLinkElement).href));
 
 			for (const href of hrefs) {
