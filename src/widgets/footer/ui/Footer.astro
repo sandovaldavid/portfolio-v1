@@ -1,5 +1,6 @@
 ---
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
+import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
+import { createScopedUiTranslator } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 import MailIcon from '@assets/icons/Mail.astro';
 import LinkedInIcon from '@assets/social-networks/LinkedIn.astro';
@@ -8,7 +9,8 @@ import LinkHubIcon from '@assets/social-networks/LinkHub.astro';
 import CodeIcon from '@assets/icons/Code.astro';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
-const t = useTranslations(lang);
+const tFooter = createScopedUiTranslator(lang, 'footer');
+const tNavigation = createScopedUiTranslator(lang, 'navigation');
 
 const currentYear = new Date().getFullYear();
 
@@ -24,12 +26,12 @@ const socialLinks = [
 		icon: LinkedInIcon,
 	},
 	{
-		name: 'Email',
+		name: tFooter('email'),
 		href: `mailto:${siteConfig.email}`,
 		icon: MailIcon,
 	},
 	{
-		name: 'Link Hub',
+		name: tFooter('linkHub'),
 		href: siteConfig.social.linkHub,
 		icon: LinkHubIcon,
 	},
@@ -40,28 +42,26 @@ const socialLinks = [
 	class="mt-28 px-4 sm:px-6 lg:px-8 pb-8 w-full border-t-2 border-edge-strong pt-20"
 	id="contact"
 >
-	<!-- CTA Section -->
 	<div class="text-center space-y-4 mb-10 max-w-2xl mx-auto">
 		<h2
 			class="text-4xl sm:text-5xl md:text-6xl font-bold font-pixel-clean uppercase tracking-wider text-content-strong"
 		>
-			{t('footer.title')}
+			{tFooter('title')}
 		</h2>
 		<p class="text-sm font-mono uppercase text-content-muted tracking-wide">
-			{t('footer.subtitle')}
+			{tFooter('subtitle')}
 		</p>
 		<div class="pt-4">
 			<a
 				href={`mailto:${siteConfig.email}`}
 				class="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white font-mono text-sm font-bold uppercase tracking-wider shadow-[3px_3px_0px_var(--color-primary-500)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[5px_5px_0px_var(--color-primary-500)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
 			>
-				<MailIcon class="w-5 h-5" />
-				{t('footer.cta')}
+				<MailIcon class="w-5 h-5" aria-hidden="true" />
+				{tFooter('contact')}
 			</a>
 		</div>
 	</div>
 
-	<!-- Social Links -->
 	<div class="flex justify-center gap-4 sm:gap-5 mb-14 flex-wrap">
 		{
 			socialLinks.map(({ name, href, icon: Icon }) => (
@@ -70,29 +70,29 @@ const socialLinks = [
 					target="_blank"
 					rel="noopener noreferrer"
 					title={name}
+					aria-label={name}
 					class="flex items-center justify-center p-3.5 bg-surface border-2 border-black dark:border-white text-content-strong shadow-[2.5px_2.5px_0px_var(--color-primary-500)] hover:-translate-x-[1.5px] hover:-translate-y-[1.5px] hover:shadow-[4px_4px_0px_var(--color-primary-500)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
 				>
-					<Icon class="w-6 h-6" />
+					<Icon class="w-6 h-6" aria-hidden="true" />
 				</a>
 			))
 		}
 	</div>
 
-	<!-- Bottom Bar -->
 	<div
 		class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 sm:pt-8 px-4 sm:px-8 border-t border-neutral-300 dark:border-neutral-800 font-mono text-xs sm:text-sm text-content-muted text-center md:text-left"
 	>
-		<p>© {currentYear} {siteConfig.fullName}. {t('footer.rights')}.</p>
+		<p>© {currentYear} {siteConfig.fullName}. {tFooter('rights')}.</p>
 		<p class="flex items-center gap-2">
-			{t('footer.built-with')}
-			<CodeIcon class="w-4 h-4 text-primary-500" />
+			{tFooter('builtWith')}
+			<CodeIcon class="w-4 h-4 text-primary-500" aria-hidden="true" />
 			<span class="text-content-muted">v2.0.0</span>
 			<span aria-hidden="true">·</span>
 			<a
 				href={getLocalizedPath(lang, '/devlog')}
 				class="underline decoration-dotted underline-offset-2 hover:text-primary-500 transition-colors"
 			>
-				{t('nav.devlog')}
+				{tNavigation('devlog')}
 			</a>
 		</p>
 	</div>

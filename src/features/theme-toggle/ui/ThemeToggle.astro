@@ -2,26 +2,25 @@
 import SunIcon from '@assets/icons/Sun.astro';
 import MoonIcon from '@assets/icons/Moon.astro';
 import SystemIcon from '@assets/icons/System.astro';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { getLangFromUrl } from '@shared/lib/i18n';
+import { createScopedUiTranslator } from '@shared/config/i18n';
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const t = useTranslations(lang);
+const lang = getLangFromUrl(new URL(Astro.request.url));
+const tTheme = createScopedUiTranslator(lang, 'theme');
 
 const THEMES = [
-	{ id: 'light', name: t('theme.light') },
-	{ id: 'dark', name: t('theme.dark') },
-	{ id: 'system', name: t('theme.system') },
+	{ id: 'light', name: tTheme('light') },
+	{ id: 'dark', name: tTheme('dark') },
+	{ id: 'system', name: tTheme('system') },
 ];
 ---
 
 <div class="theme-toggle relative ml-1 mr-1">
 	<button
 		class="theme-toggle-btn relative appearance-none border-none size-7 flex justify-center items-center rounded-lg hover:bg-neutral-200/80 dark:hover:bg-neutral-800/80 hover:scale-110 transition-all duration-300 p-1"
-		aria-label={t('theme.select')}
+		aria-label={tTheme('select')}
 	>
-		<span class="sr-only">{t('theme.select')}</span>
+		<span class="sr-only">{tTheme('select')}</span>
 		<SunIcon data-icon="light" class="theme-icon absolute size-5 transition-all text-content" />
 		<MoonIcon
 			data-icon="dark"

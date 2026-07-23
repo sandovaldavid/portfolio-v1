@@ -1,35 +1,12 @@
 ---
 import { getLangFromUrl } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 import { LanguagePicker } from '@features/language-picker';
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
-const resumeUrl = langCode === 'en' ? siteConfig.resume.en : siteConfig.resume.es;
-
-const copy =
-	langCode === 'en'
-		? {
-				toggle: 'Recruiter links',
-				title: 'RECRUITER QUICK LINKS',
-				summary: 'Software Engineer focused on Angular, .NET and TypeScript.',
-				availability: 'Available for remote opportunities across Europe and Latin America.',
-				email: 'Send email',
-				resume: 'Download resume',
-				close: 'Close recruiter links',
-				language: 'Language',
-			}
-		: {
-				toggle: 'Enlaces para reclutadores',
-				title: 'ENLACES PARA RECLUTADORES',
-				summary: 'Ingeniero de software enfocado en Angular, .NET y TypeScript.',
-				availability: 'Disponible para oportunidades remotas en Europa y Latinoamérica.',
-				email: 'Enviar correo',
-				resume: 'Descargar CV',
-				close: 'Cerrar enlaces para reclutadores',
-				language: 'Idioma',
-			};
+const lang = getLangFromUrl(new URL(Astro.request.url));
+const tRecruiter = createScopedUiTranslator(lang, 'recruiter');
+const resumeUrl = lang === Language.ENGLISH ? siteConfig.resume.en : siteConfig.resume.es;
 ---
 
 <div id="recruiter-hud" class="fixed bottom-5 right-5 z-50 font-mono">
@@ -37,12 +14,12 @@ const copy =
 		id="recruiter-hud-toggle"
 		type="button"
 		class="flex items-center gap-2 px-4 py-3 bg-primary-500 hover:bg-primary-400 text-white dark:text-black border-2 border-black dark:border-white font-bold uppercase tracking-wider shadow-retro-md hover:shadow-retro-lg cursor-pointer"
-		aria-label={copy.toggle}
+		aria-label={tRecruiter('openPanel')}
 		aria-controls="recruiter-hud-panel"
 		aria-expanded="false"
 	>
 		<span aria-hidden="true">[ CV ]</span>
-		<span class="sr-only sm:not-sr-only">{copy.toggle}</span>
+		<span class="sr-only sm:not-sr-only">{tRecruiter('openPanel')}</span>
 	</button>
 
 	<div
@@ -60,28 +37,28 @@ const copy =
 					id="recruiter-hud-title"
 					class="font-pixel-clean text-xl font-bold text-primary-500"
 				>
-					{copy.title}
+					{tRecruiter('title')}
 				</h2>
-				<p class="mt-2 text-sm text-content-strong">{copy.summary}</p>
+				<p class="mt-2 text-sm text-content-strong">{tRecruiter('summary')}</p>
 			</div>
 			<button
 				id="recruiter-hud-close"
 				type="button"
 				class="px-2 py-1 border border-black dark:border-white font-bold cursor-pointer"
-				aria-label={copy.close}
+				aria-label={tRecruiter('closePanel')}
 			>
-				×
+				<span aria-hidden="true">×</span>
 			</button>
 		</div>
 
-		<p class="text-sm text-content-muted">{copy.availability}</p>
+		<p class="text-sm text-content-muted">{tRecruiter('availability')}</p>
 
 		<div class="grid gap-2">
 			<a
 				href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(siteConfig.emailSubjectRecruiter)}`}
 				class="w-full text-center px-4 py-2 bg-primary-500 text-white dark:text-black font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm"
 			>
-				{copy.email}
+				{tRecruiter('sendEmail')}
 			</a>
 			<a
 				href={resumeUrl}
@@ -89,7 +66,7 @@ const copy =
 				rel="noreferrer"
 				class="w-full text-center px-4 py-2 bg-surface text-content-strong font-bold uppercase tracking-wider border-2 border-black dark:border-white shadow-retro-sm"
 			>
-				{copy.resume}
+				{tRecruiter('downloadResume')}
 			</a>
 			<div class="grid grid-cols-2 gap-2">
 				<a
@@ -98,7 +75,7 @@ const copy =
 					rel="noreferrer"
 					class="text-center px-3 py-2 border-2 border-black dark:border-white font-bold uppercase"
 				>
-					GitHub
+					{tRecruiter('github')}
 				</a>
 				<a
 					href={siteConfig.social.linkedin}
@@ -106,16 +83,16 @@ const copy =
 					rel="noreferrer"
 					class="text-center px-3 py-2 border-2 border-black dark:border-white font-bold uppercase"
 				>
-					LinkedIn
+					{tRecruiter('linkedin')}
 				</a>
 			</div>
 		</div>
 
 		<div class="flex items-center justify-between gap-3 border-t border-edge-subtle pt-3">
 			<span class="text-xs font-bold text-content-muted uppercase tracking-widest">
-				{copy.language}
+				{tRecruiter('language')}
 			</span>
-			<LanguagePicker currentLang={lang} />
+			<LanguagePicker />
 		</div>
 	</div>
 </div>

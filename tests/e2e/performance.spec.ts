@@ -10,7 +10,7 @@ test.describe('Selective prefetch and font loading', () => {
 			await page.goto(route);
 
 			for (const label of PRIORITY_LINKS) {
-				const links = page.locator(`header a[aria-label="${label}"]`);
+				const links = page.locator(`header a[data-section-id="${label}"]`);
 				const count = await links.count();
 				expect(count).toBeGreaterThan(0);
 				for (let index = 0; index < count; index++) {
@@ -19,7 +19,7 @@ test.describe('Selective prefetch and font loading', () => {
 			}
 
 			for (const label of NON_PRIORITY_LINKS) {
-				const links = page.locator(`header a[aria-label="${label}"]`);
+				const links = page.locator(`header a[data-section-id="${label}"]`);
 				const count = await links.count();
 				expect(count).toBeGreaterThan(0);
 				for (let index = 0; index < count; index++) {

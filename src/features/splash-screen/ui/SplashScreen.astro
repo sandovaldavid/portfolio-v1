@@ -1,36 +1,12 @@
 ---
 import { getLangFromUrl } from '@shared/lib/i18n';
+import { createScopedUiTranslator } from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = getLangFromUrl(new URL(Astro.request.url));
+const tSplash = createScopedUiTranslator(lang, 'splash');
 const year = new Date().getFullYear();
-
-const copy =
-	langCode === 'en'
-		? {
-				title: 'RETRO MODE',
-				intro: 'Optional portfolio boot sequence',
-				lines: [
-					'Loading Angular, .NET and TypeScript profile…',
-					'Connecting project case studies…',
-					'Loading BiLSTM/OSS research notes…',
-					'Professional profile ready.',
-				],
-				continue: 'Continue to portfolio',
-				close: 'Close retro mode',
-			}
-		: {
-				title: 'MODO RETRO',
-				intro: 'Secuencia de inicio opcional del portafolio',
-				lines: [
-					'Cargando perfil Angular, .NET y TypeScript…',
-					'Conectando casos de estudio…',
-					'Cargando investigación BiLSTM/OSS…',
-					'Perfil profesional listo.',
-				],
-				continue: 'Continuar al portafolio',
-				close: 'Cerrar modo retro',
-			};
+const lines = [tSplash('line1'), tSplash('line2'), tSplash('line3'), tSplash('line4')];
 ---
 
 <div
@@ -55,23 +31,26 @@ const copy =
 					id="retro-mode-title"
 					class="mt-2 text-2xl sm:text-3xl font-pixel-clean text-[#00ff88]"
 				>
-					{copy.title}
+					{tSplash('title')}
 				</h2>
-				<p class="mt-2 text-sm text-neutral-300">{copy.intro}</p>
+				<p class="mt-2 text-sm text-neutral-300">{tSplash('intro')}</p>
 			</div>
 			<button
 				id="retro-close"
 				type="button"
 				class="border border-[#00ff88]/60 px-2 py-1 text-[#00ff88] cursor-pointer"
-				aria-label={copy.close}
+				aria-label={tSplash('close')}
 			>
-				×
+				<span aria-hidden="true">×</span>
 			</button>
 		</div>
 
-		<ul class="mt-6 space-y-3 text-sm sm:text-base text-neutral-200" aria-label={copy.intro}>
+		<ul
+			class="mt-6 space-y-3 text-sm sm:text-base text-neutral-200"
+			aria-label={tSplash('intro')}
+		>
 			{
-				copy.lines.map((line, index) => (
+				lines.map((line, index) => (
 					<li style={`animation-delay:${index * 120}ms`}>
 						[{index + 1}/4] {line}
 					</li>
@@ -84,7 +63,7 @@ const copy =
 			type="button"
 			class="mt-8 w-full sm:w-auto px-8 py-3 bg-primary-500 text-white dark:text-black font-pixel text-xs tracking-widest border-2 border-white shadow-retro-lg hover:bg-primary-400 focus:outline-none cursor-pointer"
 		>
-			{copy.continue}
+			{tSplash('continue')}
 		</button>
 	</div>
 </div>

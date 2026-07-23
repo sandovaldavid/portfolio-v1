@@ -1,9 +1,18 @@
 {
 	"skipToContent": "Skip to main content",
+	"mainNavigation": "Main navigation",
+	"mobileNavigation": "Mobile navigation",
 	"openMenu": "Open navigation menu",
 	"closeMenu": "Close navigation menu",
 	"chooseLanguage": "Choose language",
 	"externalLink": "Opens in a new tab",
 	"currentPage": "Current page",
-	"profileImageAlt": "David Sandoval, Software Engineer"
+	"socialContactLinks": "Social and contact links",
+	"profileImageAlt": "David Sandoval, Software Engineer",
+	"portfolioPreviewAlt": "David Sandoval portfolio preview",
+	"experienceTabs": "Experience tabs",
+	"terminalDialog": "Portfolio CLI terminal",
+	"terminalInput": "Terminal command input",
+	"closeTerminal": "Close terminal",
+	"secretMode": "Developer secret mode"
 }

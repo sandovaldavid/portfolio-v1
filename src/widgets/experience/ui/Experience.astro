@@ -3,11 +3,12 @@ import ArrowRightIcon from '@assets/icons/ArrowRight.astro';
 import ExperienceItem from './ExperienceItem.astro';
 import { getExperienceData } from '@entities/experience';
 import { getLangFromUrl, useTranslationsList } from '@shared/lib/i18n';
-import { Language } from '@shared/config/i18n';
+import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const tList = useTranslationsList(lang);
+const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
 
 const EXPERIENCE = getExperienceData(tList);
 ---
@@ -19,7 +20,7 @@ const EXPERIENCE = getExperienceData(tList);
 			<div
 				id="experience-tablist"
 				role="tablist"
-				aria-label="Experience tabs"
+				aria-label={tAccessibility('experienceTabs')}
 				class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible bg-surface border-2 border-edge-strong p-4 rounded-none shadow-retro-sm"
 			>
 				{

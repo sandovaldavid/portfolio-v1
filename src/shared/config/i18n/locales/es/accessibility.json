@@ -1,9 +1,18 @@
 {
 	"skipToContent": "Saltar al contenido principal",
+	"mainNavigation": "Navegación principal",
+	"mobileNavigation": "Navegación móvil",
 	"openMenu": "Abrir menú de navegación",
 	"closeMenu": "Cerrar menú de navegación",
 	"chooseLanguage": "Elegir idioma",
 	"externalLink": "Se abre en una pestaña nueva",
 	"currentPage": "Página actual",
-	"profileImageAlt": "David Sandoval, ingeniero de software"
+	"socialContactLinks": "Enlaces sociales y de contacto",
+	"profileImageAlt": "David Sandoval, ingeniero de software",
+	"portfolioPreviewAlt": "Vista previa del portafolio de David Sandoval",
+	"experienceTabs": "Pestañas de experiencia",
+	"terminalDialog": "Terminal CLI del portafolio",
+	"terminalInput": "Entrada de comandos de la terminal",
+	"closeTerminal": "Cerrar terminal",
+	"secretMode": "Modo secreto para desarrolladores"
 }
