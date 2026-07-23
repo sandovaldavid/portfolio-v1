@@ -1,11 +1,10 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import ArrowRightIcon from '@assets/icons/ArrowRight.astro';
 import BrainIcon from '@assets/icons/Brain.astro';
-import { createScopedUiTranslator, Language } from '@shared/config/i18n';
-import { getLangFromUrl, getLocalizedPath } from '@shared/lib/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale } from '@shared/config/i18n';
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const lang = getLanguageFromLocale(Astro.currentLocale);
 const tResearch = createScopedUiTranslator(lang, 'sections.research');
 const tCommon = createScopedUiTranslator(lang, 'common');
 const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'GitHub API'];
@@ -70,7 +69,7 @@ const techStack = ['BiLSTM', 'Deep Learning', 'MSR', 'Python', 'TensorFlow', 'Gi
 					{tResearch('methodologyHint')}
 				</p>
 				<a
-					href={getLocalizedPath(lang, '/research')}
+					href={getRelativeLocaleUrl(lang, 'research')}
 					class="shrink-0 inline-flex items-center gap-2 font-retro-tag text-xs font-bold uppercase tracking-widest px-4 py-2 bg-primary-500 text-white dark:text-black border-2 border-black dark:border-white shadow-retro-sm hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-retro-md active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all whitespace-nowrap"
 				>
 					{tResearch('viewFull')}
