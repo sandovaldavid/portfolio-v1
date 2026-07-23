@@ -98,6 +98,7 @@ const toIsoDate = (value: Date | string | undefined): string | undefined => {
 };
 const publishedIso = toIsoDate(publishedTime);
 const modifiedIso = toIsoDate(modifiedTime);
+const structuredTitle = breadcrumbLabel ?? title;
 
 const breadcrumbLabels: Record<string, string> = {
 	projects: tBreadcrumbs('projects'),
@@ -198,7 +199,7 @@ const structuredPageSchema =
 				'@context': 'https://schema.org',
 				'@type': 'ProfilePage',
 				'@id': canonicalUrl,
-				name: title,
+				name: structuredTitle,
 				description,
 				url: canonicalUrl,
 				inLanguage: lang,
@@ -209,7 +210,7 @@ const structuredPageSchema =
 					'@context': 'https://schema.org',
 					'@type': structuredType,
 					'@id': canonicalUrl,
-					name: title,
+					name: structuredTitle,
 					description,
 					url: canonicalUrl,
 					inLanguage: lang,
@@ -221,7 +222,7 @@ const structuredPageSchema =
 					author: { '@id': personId },
 					...(isArticlePage
 						? {
-								headline: title,
+								headline: structuredTitle,
 								mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
 								...(publishedIso ? { datePublished: publishedIso } : {}),
 								...(modifiedIso ? { dateModified: modifiedIso } : {}),
