@@ -29,7 +29,9 @@ const pageTitle = `${project.title} — ${tProjects('caseStudy')} | David Sandov
 	title={pageTitle}
 	description={project.description}
 	img_preview={project.image.src}
-	isHome={false}
+	imageAlt={project.imageAlt}
+	pageType="project"
+	breadcrumbLabel={project.title}
 >
 	<div class="py-16 md:py-24">
 		<ProjectCaseStudy
