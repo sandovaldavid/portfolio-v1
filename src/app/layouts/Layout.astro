@@ -18,7 +18,11 @@ import { SplashScreen } from '@features/splash-screen';
 import { SectionContainer, TitleSection } from '@shared/ui';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLangFromUrl } from '@shared/lib/i18n';
-import { createScopedUiTranslator, Language } from '@shared/config/i18n';
+import {
+	createScopedUiTranslator,
+	Language,
+	type LocalizedPathMap,
+} from '@shared/config/i18n';
 import { siteConfig } from '@shared/config/site.config';
 
 const langCode = getLangFromUrl(new URL(Astro.request.url));
@@ -34,6 +38,7 @@ interface Props {
 	isHome?: boolean;
 	article?: boolean;
 	keywords?: string;
+	localizedPaths?: LocalizedPathMap;
 }
 const {
 	description,
@@ -42,6 +47,7 @@ const {
 	isHome = false,
 	article = false,
 	keywords = 'Software Engineer, .NET 8, Angular 19, BiLSTM, Machine Learning, OSS, Portfolio, Peru, Astro',
+	localizedPaths,
 } = Astro.props;
 const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const tAccessibility = createScopedUiTranslator(lang, 'accessibility');
@@ -336,7 +342,7 @@ const articleSchema = article
 				}
 			</main>
 			<Footer />
-			<RecruiterHUD />
+			<RecruiterHUD {localizedPaths} />
 			<CLITerminal />
 			<ContactSidebar />
 			{isHome && <SplashScreen />}
