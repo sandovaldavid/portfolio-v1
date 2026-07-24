@@ -35,10 +35,12 @@ describe('legacy localization removal', () => {
 		expect(libIndex).toContain('interpolation');
 	});
 
-	it('keeps production free from legacy translators and direct locale imports', () => {
+	it('keeps production free from legacy translators, path helpers and direct locale imports', () => {
 		for (const filePath of listProductionSources('src')) {
 			const source = readSource(filePath);
 			expect(source, filePath).not.toMatch(/\buseTranslations(?:List)?\b/);
+			expect(source, filePath).not.toMatch(/\bgetLangFromUrl\b/);
+			expect(source, filePath).not.toMatch(/\bgetLocalizedPath\b/);
 			expect(source, filePath).not.toContain('config/i18n/dictionaries');
 
 			if (filePath !== path.join('src', 'shared', 'config', 'i18n', 'catalog.ts')) {
