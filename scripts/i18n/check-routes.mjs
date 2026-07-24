@@ -96,7 +96,9 @@ export function validateGeneratedLocaleRoutes({
 	}
 
 	const htmlFiles = listFiles(distDir, HTML_EXTENSIONS);
-	const routes = new Set(htmlFiles.map(filePath => normalizeRoute(routeFromHtml(filePath, distDir))));
+	const routes = new Set(
+		htmlFiles.map(filePath => normalizeRoute(routeFromHtml(filePath, distDir)))
+	);
 	for (const pair of REPRESENTATIVE_ROUTE_PAIRS) {
 		for (const route of [pair.english, pair.spanish]) {
 			if (!routeExists(route, distDir)) {
@@ -168,7 +170,11 @@ export function validateGeneratedLocaleRoutes({
 			const defaultHref = localeAlternates.get('x-default');
 			if (englishHref && !defaultHref) {
 				issues.push({ file, message: `route "${route}" is missing hreflang="x-default"` });
-			} else if (englishHref && defaultHref && hrefPathname(defaultHref) !== hrefPathname(englishHref)) {
+			} else if (
+				englishHref &&
+				defaultHref &&
+				hrefPathname(defaultHref) !== hrefPathname(englishHref)
+			) {
 				issues.push({
 					file,
 					message: `x-default must match the verified English target; received "${hrefPathname(defaultHref)}" and "${hrefPathname(englishHref)}"`,

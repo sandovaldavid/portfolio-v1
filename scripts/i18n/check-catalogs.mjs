@@ -49,24 +49,36 @@ function inspectCatalogFile(filePath, repositoryRoot, issues) {
 	function visit(node, prefix) {
 		if (ts.isStringLiteralLike(node)) {
 			if (node.text.trim().length === 0) {
-				issues.push({ file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`, message: `translation "${prefix}" is empty` });
+				issues.push({
+					file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`,
+					message: `translation "${prefix}" is empty`,
+				});
 			}
 			if (/<\/?[a-z][^>]*>/i.test(node.text)) {
-				issues.push({ file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`, message: `translation "${prefix}" contains HTML; catalogs must remain plain text` });
+				issues.push({
+					file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`,
+					message: `translation "${prefix}" contains HTML; catalogs must remain plain text`,
+				});
 			}
 			leafKeys.push(prefix);
 			return;
 		}
 
 		if (!ts.isObjectLiteralExpression(node)) {
-			issues.push({ file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`, message: `translation "${prefix}" must be a scalar string` });
+			issues.push({
+				file: `${file}:${lineAt(sourceText, node.getStart(sourceFile))}`,
+				message: `translation "${prefix}" must be a scalar string`,
+			});
 			return;
 		}
 
 		const names = new Map();
 		for (const property of node.properties) {
 			if (!ts.isPropertyAssignment(property)) {
-				issues.push({ file: `${file}:${lineAt(sourceText, property.getStart(sourceFile))}`, message: 'catalog entries must be JSON property assignments' });
+				issues.push({
+					file: `${file}:${lineAt(sourceText, property.getStart(sourceFile))}`,
+					message: 'catalog entries must be JSON property assignments',
+				});
 				continue;
 			}
 
@@ -75,7 +87,10 @@ function inspectCatalogFile(filePath, repositoryRoot, issues) {
 			const previousLine = names.get(name);
 			const currentLine = lineAt(sourceText, property.name.getStart(sourceFile));
 			if (previousLine) {
-				issues.push({ file: `${file}:${currentLine}`, message: `duplicate key "${key}"; first declared on line ${previousLine}` });
+				issues.push({
+					file: `${file}:${currentLine}`,
+					message: `duplicate key "${key}"; first declared on line ${previousLine}`,
+				});
 			} else {
 				names.set(name, currentLine);
 			}
@@ -97,7 +112,10 @@ export function validateCatalogs({ rootDir = REPOSITORY_ROOT } = {}) {
 	const issues = [];
 
 	if (!existsSync(localeRoot)) {
-		issues.push({ file: repositoryRelative(localeRoot, rootDir), message: 'locale catalog root does not exist' });
+		issues.push({
+			file: repositoryRelative(localeRoot, rootDir),
+			message: 'locale catalog root does not exist',
+		});
 		assertNoIssues('i18n:catalogs', issues);
 	}
 
@@ -107,12 +125,18 @@ export function validateCatalogs({ rootDir = REPOSITORY_ROOT } = {}) {
 		.sort();
 	for (const locale of localeDirectories) {
 		if (!SUPPORTED_LOCALES.includes(locale)) {
-			issues.push({ file: repositoryRelative(path.join(localeRoot, locale), rootDir), message: `unsupported locale directory "${locale}"; supported locales are ${SUPPORTED_LOCALES.join(', ')}` });
+			issues.push({
+				file: repositoryRelative(path.join(localeRoot, locale), rootDir),
+				message: `unsupported locale directory "${locale}"; supported locales are ${SUPPORTED_LOCALES.join(', ')}`,
+			});
 		}
 	}
 	for (const locale of SUPPORTED_LOCALES) {
 		if (!localeDirectories.includes(locale)) {
-			issues.push({ file: repositoryRelative(path.join(localeRoot, locale), rootDir), message: `required locale directory "${locale}" is missing` });
+			issues.push({
+				file: repositoryRelative(path.join(localeRoot, locale), rootDir),
+				message: `required locale directory "${locale}" is missing`,
+			});
 		}
 	}
 
@@ -131,7 +155,10 @@ export function validateCatalogs({ rootDir = REPOSITORY_ROOT } = {}) {
 	for (const modulePath of allModules) {
 		for (const locale of SUPPORTED_LOCALES) {
 			if (!(modulesByLocale[locale] ?? []).includes(modulePath)) {
-				issues.push({ file: normalizePath(`src/shared/config/i18n/locales/${locale}/${modulePath}`), message: `missing module mirrored from the other locale: "${modulePath}"` });
+				issues.push({
+					file: normalizePath(`src/shared/config/i18n/locales/${locale}/${modulePath}`),
+					message: `missing module mirrored from the other locale: "${modulePath}"`,
+				});
 			}
 		}
 	}
@@ -141,7 +168,10 @@ export function validateCatalogs({ rootDir = REPOSITORY_ROOT } = {}) {
 		const normalized = modulePath.toLocaleLowerCase('en-US');
 		const previous = normalizedModules.get(normalized);
 		if (previous && previous !== modulePath) {
-			issues.push({ file: normalizePath(`src/shared/config/i18n/locales/en/${modulePath}`), message: `module path collides case-insensitively with "${previous}"` });
+			issues.push({
+				file: normalizePath(`src/shared/config/i18n/locales/en/${modulePath}`),
+				message: `module path collides case-insensitively with "${previous}"`,
+			});
 		} else {
 			normalizedModules.set(normalized, modulePath);
 		}
@@ -162,23 +192,35 @@ export function validateCatalogs({ rootDir = REPOSITORY_ROOT } = {}) {
 		totalKeys += englishKeys.length;
 		for (const key of [...new Set([...englishKeys, ...spanishKeys])].sort()) {
 			if (!englishKeys.includes(key)) {
-				issues.push({ file: normalizePath(`src/shared/config/i18n/locales/en/${modulePath}`), message: `missing key "${key}" present in Spanish` });
+				issues.push({
+					file: normalizePath(`src/shared/config/i18n/locales/en/${modulePath}`),
+					message: `missing key "${key}" present in Spanish`,
+				});
 			}
 			if (!spanishKeys.includes(key)) {
-				issues.push({ file: normalizePath(`src/shared/config/i18n/locales/es/${modulePath}`), message: `missing key "${key}" present in English` });
+				issues.push({
+					file: normalizePath(`src/shared/config/i18n/locales/es/${modulePath}`),
+					message: `missing key "${key}" present in English`,
+				});
 			}
 		}
 	}
 
 	if (!existsSync(catalogSourcePath)) {
-		issues.push({ file: repositoryRelative(catalogSourcePath, rootDir), message: 'typed catalog registry is missing' });
+		issues.push({
+			file: repositoryRelative(catalogSourcePath, rootDir),
+			message: 'typed catalog registry is missing',
+		});
 	} else {
 		const catalogSource = readText(catalogSourcePath);
 		for (const modulePath of allModules) {
 			for (const locale of SUPPORTED_LOCALES) {
 				const importPath = `./locales/${locale}/${modulePath}`;
 				if (!catalogSource.includes(importPath)) {
-					issues.push({ file: repositoryRelative(catalogSourcePath, rootDir), message: `catalog module is not registered: "${importPath}"` });
+					issues.push({
+						file: repositoryRelative(catalogSourcePath, rootDir),
+						message: `catalog module is not registered: "${importPath}"`,
+					});
 				}
 			}
 		}

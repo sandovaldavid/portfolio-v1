@@ -54,13 +54,10 @@ describe('i18n repository enforcement', () => {
 				'{"profileId":"profile","locale":"en"}',
 			'src/content/portfolio-profile/es/profile.json':
 				'{"profileId":"profile","locale":"es"}',
-			'src/content/experience/en/role.json':
-				'{"experienceId":"role","locale":"en"}',
+			'src/content/experience/en/role.json': '{"experienceId":"role","locale":"en"}',
 			'src/content/experience/es/.gitkeep': '',
-			'src/content/projects/en/project.json':
-				'{"projectId":"project","locale":"en"}',
-			'src/content/projects/es/project.json':
-				'{"projectId":"project","locale":"es"}',
+			'src/content/projects/en/project.json': '{"projectId":"project","locale":"en"}',
+			'src/content/projects/es/project.json': '{"projectId":"project","locale":"es"}',
 			'src/content/blog/en/post.mdx': '---\ntranslationKey: post\n---\n',
 			'src/content/blog/es/post.mdx': '---\ntranslationKey: post\n---\n',
 			'src/content/devlog/en/entry.md': '---\ntranslationKey: entry\n---\n',
@@ -96,6 +93,8 @@ describe('i18n repository enforcement', () => {
 
 		expect(() =>
 			validateGeneratedLocaleRoutes({ rootDir: root, distDir: path.join(root, 'dist') })
-		).toThrowError(/Spanish generated page contains known English-only phrase "Skip to main content"/);
+		).toThrowError(
+			/Spanish generated page contains known English-only phrase "Skip to main content"/
+		);
 	});
 });

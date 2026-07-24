@@ -31,7 +31,10 @@ const EDITORIAL_COLLECTIONS = Object.freeze(['blog', 'devlog']);
  */
 function validateLocaleDirectories(collectionRoot, repositoryRoot, issues) {
 	if (!existsSync(collectionRoot)) {
-		issues.push({ file: repositoryRelative(collectionRoot, repositoryRoot), message: 'localized content collection does not exist' });
+		issues.push({
+			file: repositoryRelative(collectionRoot, repositoryRoot),
+			message: 'localized content collection does not exist',
+		});
 		return;
 	}
 
@@ -41,12 +44,18 @@ function validateLocaleDirectories(collectionRoot, repositoryRoot, issues) {
 		.sort();
 	for (const directory of directories) {
 		if (!SUPPORTED_LOCALES.includes(directory)) {
-			issues.push({ file: repositoryRelative(path.join(collectionRoot, directory), repositoryRoot), message: `unsupported locale directory "${directory}"; supported locales are ${SUPPORTED_LOCALES.join(', ')}` });
+			issues.push({
+				file: repositoryRelative(path.join(collectionRoot, directory), repositoryRoot),
+				message: `unsupported locale directory "${directory}"; supported locales are ${SUPPORTED_LOCALES.join(', ')}`,
+			});
 		}
 	}
 	for (const locale of SUPPORTED_LOCALES) {
 		if (!directories.includes(locale)) {
-			issues.push({ file: repositoryRelative(path.join(collectionRoot, locale), repositoryRoot), message: `required locale directory "${locale}" is missing` });
+			issues.push({
+				file: repositoryRelative(path.join(collectionRoot, locale), repositoryRoot),
+				message: `required locale directory "${locale}" is missing`,
+			});
 		}
 	}
 }
@@ -78,32 +87,49 @@ function validateStructuredCollection(collection, idField, repositoryRoot, issue
 			}
 			data = parsed;
 		} catch (error) {
-			issues.push({ file, message: `invalid JSON: ${error instanceof Error ? error.message : String(error)}` });
+			issues.push({
+				file,
+				message: `invalid JSON: ${error instanceof Error ? error.message : String(error)}`,
+			});
 			continue;
 		}
 
 		if (data.locale !== locale) {
-			issues.push({ file, message: `locale field must be "${locale}" to match its directory, received ${JSON.stringify(data.locale)}` });
+			issues.push({
+				file,
+				message: `locale field must be "${locale}" to match its directory, received ${JSON.stringify(data.locale)}`,
+			});
 		}
 		const stableId = data[idField];
 		if (typeof stableId !== 'string' || !STABLE_ID_PATTERN.test(stableId)) {
-			issues.push({ file, message: `${idField} must match ${STABLE_ID_PATTERN}, received ${JSON.stringify(stableId)}` });
+			issues.push({
+				file,
+				message: `${idField} must match ${STABLE_ID_PATTERN}, received ${JSON.stringify(stableId)}`,
+			});
 			continue;
 		}
 
 		const previousFile = idsByLocale[locale].get(stableId);
 		if (previousFile) {
-			issues.push({ file, message: `duplicate ${idField} "${stableId}" for locale "${locale}"; first declared in ${previousFile}` });
+			issues.push({
+				file,
+				message: `duplicate ${idField} "${stableId}" for locale "${locale}"; first declared in ${previousFile}`,
+			});
 		} else {
 			idsByLocale[locale].set(stableId, file);
 		}
 	}
 
-	const allIds = [...new Set(SUPPORTED_LOCALES.flatMap(locale => [...idsByLocale[locale].keys()]))].sort();
+	const allIds = [
+		...new Set(SUPPORTED_LOCALES.flatMap(locale => [...idsByLocale[locale].keys()])),
+	].sort();
 	for (const stableId of allIds) {
 		for (const locale of SUPPORTED_LOCALES) {
 			if (!idsByLocale[locale].has(stableId)) {
-				issues.push({ file: normalizePath(`src/content/${collection}/${locale}`), message: `missing ${locale} counterpart for ${idField} "${stableId}"` });
+				issues.push({
+					file: normalizePath(`src/content/${collection}/${locale}`),
+					message: `missing ${locale} counterpart for ${idField} "${stableId}"`,
+				});
 			}
 		}
 	}
@@ -120,7 +146,9 @@ function validateEditorialCollection(collection, repositoryRoot, issues) {
 	const collectionRoot = path.join(repositoryRoot, 'src/content', collection);
 	validateLocaleDirectories(collectionRoot, repositoryRoot, issues);
 	/** @type {Record<string, Map<string, { file: string; draft: boolean }>>} */
-	const entriesByLocale = Object.fromEntries(SUPPORTED_LOCALES.map(locale => [locale, new Map()]));
+	const entriesByLocale = Object.fromEntries(
+		SUPPORTED_LOCALES.map(locale => [locale, new Map()])
+	);
 
 	for (const filePath of listFiles(collectionRoot, EDITORIAL_EXTENSIONS)) {
 		const relative = normalizePath(path.relative(collectionRoot, filePath));
@@ -131,12 +159,18 @@ function validateEditorialCollection(collection, repositoryRoot, issues) {
 		const frontmatter = readFrontmatterScalars(filePath);
 		const translationKey = frontmatter.translationKey;
 		if (!translationKey || !STABLE_ID_PATTERN.test(translationKey)) {
-			issues.push({ file, message: `translationKey must match ${STABLE_ID_PATTERN}, received ${JSON.stringify(translationKey)}` });
+			issues.push({
+				file,
+				message: `translationKey must match ${STABLE_ID_PATTERN}, received ${JSON.stringify(translationKey)}`,
+			});
 			continue;
 		}
 		const previous = entriesByLocale[locale].get(translationKey);
 		if (previous) {
-			issues.push({ file, message: `duplicate translationKey "${translationKey}" for locale "${locale}"; first declared in ${previous.file}` });
+			issues.push({
+				file,
+				message: `duplicate translationKey "${translationKey}" for locale "${locale}"; first declared in ${previous.file}`,
+			});
 			continue;
 		}
 		entriesByLocale[locale].set(translationKey, {
@@ -146,25 +180,42 @@ function validateEditorialCollection(collection, repositoryRoot, issues) {
 	}
 
 	const allowlist = INTENTIONAL_SINGLE_LOCALE_EDITORIAL[collection] ?? {};
-	const allKeys = [...new Set(SUPPORTED_LOCALES.flatMap(locale => [...entriesByLocale[locale].keys()]))].sort();
+	const allKeys = [
+		...new Set(SUPPORTED_LOCALES.flatMap(locale => [...entriesByLocale[locale].keys()])),
+	].sort();
 	for (const translationKey of allKeys) {
-		const presentLocales = SUPPORTED_LOCALES.filter(locale => entriesByLocale[locale].has(translationKey));
+		const presentLocales = SUPPORTED_LOCALES.filter(locale =>
+			entriesByLocale[locale].has(translationKey)
+		);
 		if (presentLocales.length === SUPPORTED_LOCALES.length) {
 			if (Object.hasOwn(allowlist, translationKey)) {
-				issues.push({ file: `scripts/i18n/config.mjs`, message: `stale single-locale allowlist entry "${collection}:${translationKey}" now has all locale counterparts` });
+				issues.push({
+					file: `scripts/i18n/config.mjs`,
+					message: `stale single-locale allowlist entry "${collection}:${translationKey}" now has all locale counterparts`,
+				});
 			}
 			continue;
 		}
 		if (!Object.hasOwn(allowlist, translationKey)) {
-			const missingLocales = SUPPORTED_LOCALES.filter(locale => !presentLocales.includes(locale));
-			const sourceFile = entriesByLocale[presentLocales[0]]?.get(translationKey)?.file ?? `src/content/${collection}`;
-			issues.push({ file: sourceFile, message: `missing ${missingLocales.join(', ')} editorial counterpart for translationKey "${translationKey}"; document intentional single-language entries in scripts/i18n/config.mjs` });
+			const missingLocales = SUPPORTED_LOCALES.filter(
+				locale => !presentLocales.includes(locale)
+			);
+			const sourceFile =
+				entriesByLocale[presentLocales[0]]?.get(translationKey)?.file ??
+				`src/content/${collection}`;
+			issues.push({
+				file: sourceFile,
+				message: `missing ${missingLocales.join(', ')} editorial counterpart for translationKey "${translationKey}"; document intentional single-language entries in scripts/i18n/config.mjs`,
+			});
 		}
 	}
 
 	for (const translationKey of Object.keys(allowlist)) {
 		if (!allKeys.includes(translationKey)) {
-			issues.push({ file: 'scripts/i18n/config.mjs', message: `stale single-locale allowlist entry "${collection}:${translationKey}" does not match any editorial entry` });
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `stale single-locale allowlist entry "${collection}:${translationKey}" does not match any editorial entry`,
+			});
 		}
 	}
 
@@ -181,7 +232,8 @@ export function validateLocalizedContent({ rootDir = REPOSITORY_ROOT } = {}) {
 	let editorialIdentities = 0;
 
 	for (const [collection, idField] of Object.entries(STRUCTURED_COLLECTIONS)) {
-		structuredIdentities += validateStructuredCollection(collection, idField, rootDir, issues) ?? 0;
+		structuredIdentities +=
+			validateStructuredCollection(collection, idField, rootDir, issues) ?? 0;
 	}
 	for (const collection of EDITORIAL_COLLECTIONS) {
 		editorialIdentities += validateEditorialCollection(collection, rootDir, issues) ?? 0;

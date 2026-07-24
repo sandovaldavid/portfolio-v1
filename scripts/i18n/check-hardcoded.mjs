@@ -13,11 +13,7 @@ import {
 } from './shared.mjs';
 
 const PRODUCTION_EXTENSIONS = new Set(['.astro', '.ts', '.tsx']);
-const EXCLUDED_PREFIXES = [
-	'src/assets/',
-	'src/content/',
-	'src/shared/config/i18n/locales/',
-];
+const EXCLUDED_PREFIXES = ['src/assets/', 'src/content/', 'src/shared/config/i18n/locales/'];
 const USER_FACING_ATTRIBUTES = ['aria-label', 'aria-description', 'alt', 'title', 'placeholder'];
 
 /** @param {string} value */
@@ -115,7 +111,8 @@ function inspectBilingualPatterns(source, file, issues) {
 		}
 	}
 
-	const ternaryPattern = /\b(?:lang|locale|currentLocale)\s*===?\s*(?:Language\.ENGLISH|["']en["'])\s*\?\s*(["'`])([^"'`\n]+)\1\s*:\s*(["'`])([^"'`\n]+)\3/g;
+	const ternaryPattern =
+		/\b(?:lang|locale|currentLocale)\s*===?\s*(?:Language\.ENGLISH|["']en["'])\s*\?\s*(["'`])([^"'`\n]+)\1\s*:\s*(["'`])([^"'`\n]+)\3/g;
 	for (const match of source.matchAll(ternaryPattern)) {
 		const english = normalizeLiteral(match[2] ?? '');
 		const spanish = normalizeLiteral(match[4] ?? '');
@@ -133,7 +130,8 @@ function inspectBilingualPatterns(source, file, issues) {
  * @param {{ file: string; message: string }[]} issues
  */
 function inspectDomTextSinks(source, file, issues) {
-	const assignmentPattern = /\b(textContent|innerText|innerHTML|ariaLabel|title|placeholder)\s*=\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\2/gu;
+	const assignmentPattern =
+		/\b(textContent|innerText|innerHTML|ariaLabel|title|placeholder)\s*=\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\2/gu;
 	for (const match of source.matchAll(assignmentPattern)) {
 		const value = normalizeLiteral(match[3] ?? '');
 		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
@@ -143,7 +141,8 @@ function inspectDomTextSinks(source, file, issues) {
 		});
 	}
 
-	const setAttributePattern = /setAttribute\(\s*(["'])(aria-label|aria-description|alt|title|placeholder)\1\s*,\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\3\s*\)/gu;
+	const setAttributePattern =
+		/setAttribute\(\s*(["'])(aria-label|aria-description|alt|title|placeholder)\1\s*,\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\3\s*\)/gu;
 	for (const match of source.matchAll(setAttributePattern)) {
 		const value = normalizeLiteral(match[4] ?? '');
 		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
