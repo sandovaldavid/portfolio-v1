@@ -79,7 +79,7 @@ describe('localized project and case-study content', () => {
 		expect(config).toContain('imageAlt: nonEmptyString');
 		expect(config).toContain('evidence: projectEvidence.optional()');
 		expect(config).toContain(
-			'export const collections = { blog, devlog, portfolioProfile, experience, projects }'
+			'export const collections = { blog, devlog, portfolioProfile, experience, research, projects }'
 		);
 	});
 
@@ -165,15 +165,10 @@ describe('localized project and case-study content', () => {
 
 	it('removes dictionary-backed project records and obsolete data owners', () => {
 		for (const locale of locales) {
-			const legacy = readJson<Record<string, unknown>>(
-				`src/shared/config/i18n/locales/${locale}.json`
-			);
-			expect(legacy).not.toHaveProperty('projects');
+			expect(existsSync(`src/shared/config/i18n/locales/${locale}.json`)).toBe(false);
 		}
 
-		const dictionaries = readSource('src/shared/config/i18n/dictionaries/index.ts');
-		expect(dictionaries).not.toContain('locales/projects');
-		expect(dictionaries).not.toContain('yukidokeEnRaw');
+		expect(existsSync('src/shared/config/i18n/dictionaries/index.ts')).toBe(false);
 		expect(existsSync('src/entities/project/model/data.ts')).toBe(false);
 		expect(existsSync('src/shared/config/i18n/locales/projects/yukidoke.en.json')).toBe(false);
 		expect(existsSync('src/shared/config/i18n/locales/projects/yukidoke.es.json')).toBe(false);
