@@ -63,8 +63,6 @@ function attributes(tag) {
  */
 function tags(source, tagName) {
 	return [...source.matchAll(new RegExp(`<${tagName}\\b[^>]*>`, 'gi'))].map(match => ({
-		tag: match[0],
-		index: match.index ?? 0,
 		attributes: attributes(match[0]),
 	}));
 }
@@ -88,7 +86,10 @@ export function validateGeneratedLocaleRoutes({
 	/** @type {{ file: string; message: string }[]} */
 	const issues = [];
 	if (!existsSync(distDir)) {
-		issues.push({ file: repositoryRelative(distDir, rootDir), message: 'generated output is missing; run bun run build before check:i18n:routes' });
+		issues.push({
+			file: repositoryRelative(distDir, rootDir),
+			message: 'generated output is missing; run bun run build before check:i18n:routes',
+		});
 		assertNoIssues('i18n:routes', issues);
 	}
 
@@ -97,12 +98,18 @@ export function validateGeneratedLocaleRoutes({
 	for (const pair of REPRESENTATIVE_ROUTE_PAIRS) {
 		for (const route of [pair.english, pair.spanish]) {
 			if (!routeExists(route, distDir)) {
-				issues.push({ file: repositoryRelative(distDir, rootDir), message: `representative localized route was not generated: "${route}"` });
+				issues.push({
+					file: repositoryRelative(distDir, rootDir),
+					message: `representative localized route was not generated: "${route}"`,
+				});
 			}
 		}
 	}
 	if (!existsSync(path.join(distDir, '404.html'))) {
-		issues.push({ file: repositoryRelative(distDir, rootDir), message: '404.html was not generated' });
+		issues.push({
+			file: repositoryRelative(distDir, rootDir),
+			message: '404.html was not generated',
+		});
 	}
 
 	let alternateTargets = 0;
@@ -114,7 +121,10 @@ export function validateGeneratedLocaleRoutes({
 		const htmlTag = tags(source, 'html')[0];
 		const expectedLanguage = route === '/es' || route.startsWith('/es/') ? 'es' : 'en';
 		if (htmlTag?.attributes.lang !== expectedLanguage) {
-			issues.push({ file, message: `<html lang> must be "${expectedLanguage}" for route "${route}", received ${JSON.stringify(htmlTag?.attributes.lang)}` });
+			issues.push({
+				file,
+				message: `<html lang> must be "${expectedLanguage}" for route "${route}", received ${JSON.stringify(htmlTag?.attributes.lang)}`,
+			});
 		}
 
 		if (route !== '/404.html') {
@@ -123,7 +133,10 @@ export function validateGeneratedLocaleRoutes({
 			if (!canonical?.attributes.href) {
 				issues.push({ file, message: `route "${route}" is missing a canonical link` });
 			} else if (normalizeRoute(hrefPathname(canonical.attributes.href)) !== route) {
-				issues.push({ file, message: `canonical URL points to "${hrefPathname(canonical.attributes.href)}" instead of self-referential route "${route}"` });
+				issues.push({
+					file,
+					message: `canonical URL points to "${hrefPathname(canonical.attributes.href)}" instead of self-referential route "${route}"`,
+				});
 			}
 
 			const alternates = linkTags.filter(
@@ -136,22 +149,30 @@ export function validateGeneratedLocaleRoutes({
 			);
 			for (const locale of ['en', 'es']) {
 				const href = localeAlternates.get(locale);
-				if (!href) {
-					issues.push({ file, message: `route "${route}" is missing hreflang="${locale}"` });
-					continue;
-				}
+				if (!href) continue;
 				alternateTargets += 1;
 				const target = hrefPathname(href);
 				if (!routeExists(target, distDir)) {
-					issues.push({ file, message: `hreflang="${locale}" target does not exist in dist: "${target}"` });
+					issues.push({
+						file,
+						message: `hreflang="${locale}" target does not exist in dist: "${target}"`,
+					});
 				}
 			}
 			const englishHref = localeAlternates.get('en');
 			const defaultHref = localeAlternates.get('x-default');
-			if (!defaultHref) {
+			if (englishHref && !defaultHref) {
 				issues.push({ file, message: `route "${route}" is missing hreflang="x-default"` });
-			} else if (englishHref && hrefPathname(defaultHref) !== hrefPathname(englishHref)) {
-				issues.push({ file, message: `x-default must match the verified English target; received "${hrefPathname(defaultHref)}" and "${hrefPathname(englishHref)}"` });
+			} else if (englishHref && defaultHref && hrefPathname(defaultHref) !== hrefPathname(englishHref)) {
+				issues.push({
+					file,
+					message: `x-default must match the verified English target; received "${hrefPathname(defaultHref)}" and "${hrefPathname(englishHref)}"`,
+				});
+			} else if (!englishHref && defaultHref) {
+				issues.push({
+					file,
+					message: `x-default target "${hrefPathname(defaultHref)}" has no verified English alternate`,
+				});
 			}
 		}
 
@@ -159,20 +180,29 @@ export function validateGeneratedLocaleRoutes({
 			if (!Object.hasOwn(anchor.attributes, 'data-language-base-path')) continue;
 			const target = anchor.attributes['data-language-base-path'] || anchor.attributes.href;
 			if (!target) {
-				issues.push({ file, message: `language-picker link on route "${route}" has no target` });
+				issues.push({
+					file,
+					message: `language-picker link on route "${route}" has no target`,
+				});
 				continue;
 			}
 			languagePickerTargets += 1;
 			const pathname = hrefPathname(target);
 			if (!routeExists(pathname, distDir)) {
-				issues.push({ file, message: `language-picker target does not exist in dist: "${pathname}"` });
+				issues.push({
+					file,
+					message: `language-picker target does not exist in dist: "${pathname}"`,
+				});
 			}
 		}
 
 		if (expectedLanguage === 'es') {
 			for (const phrase of SPANISH_FORBIDDEN_PHRASES) {
 				if (source.includes(phrase)) {
-					issues.push({ file, message: `Spanish generated page contains known English-only phrase ${JSON.stringify(phrase)}` });
+					issues.push({
+						file,
+						message: `Spanish generated page contains known English-only phrase ${JSON.stringify(phrase)}`,
+					});
 				}
 			}
 		}
