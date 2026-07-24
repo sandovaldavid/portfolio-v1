@@ -36,7 +36,10 @@ const { Content } = await render(post);
 	title={`${post.data.title} | Devlog | David Sandoval`}
 	description={post.data.summary}
 	img_preview="/projects/portfolio.webp"
-	isHome={false}
+	imageAlt={post.data.title}
+	pageType="devlog"
+	publishedTime={post.data.pubDate}
+	breadcrumbLabel={post.data.title}
 	{localizedPaths}
 >
 	<div class="py-16 md:py-24">

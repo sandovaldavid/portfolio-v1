@@ -134,10 +134,18 @@ describe('editorial translation pairing', () => {
 		const spanishRss = readFileSync('src/pages/es/rss.xml.ts', 'utf8');
 		const blogQueries = readFileSync('src/entities/blog/model/queries.ts', 'utf8');
 
-		expect(englishRss).toContain('getBlogPosts(Language.ENGLISH)');
+		expect(englishRss).toContain('const lang = Language.ENGLISH');
+		expect(englishRss).toContain("createScopedUiTranslator(lang, 'metadata')");
+		expect(englishRss).toContain('getBlogPosts(lang)');
+		expect(englishRss).toContain("customData: '<language>en</language>'");
 		expect(englishRss).toContain('link: `/blog/${getBlogSlug(post)}/`');
-		expect(spanishRss).toContain('getBlogPosts(Language.SPANISH)');
+
+		expect(spanishRss).toContain('const lang = Language.SPANISH');
+		expect(spanishRss).toContain("createScopedUiTranslator(lang, 'metadata')");
+		expect(spanishRss).toContain('getBlogPosts(lang)');
+		expect(spanishRss).toContain("customData: '<language>es</language>'");
 		expect(spanishRss).toContain('link: `/es/blog/${getBlogSlug(post)}/`');
+
 		expect(blogQueries).toContain('isContentForLanguage(post.id, lang)');
 		expect(blogQueries).toContain('import.meta.env.PROD ? !post.data.draft : true');
 	});
