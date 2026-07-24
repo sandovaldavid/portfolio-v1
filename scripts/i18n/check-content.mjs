@@ -22,7 +22,9 @@ const STRUCTURED_COLLECTIONS = Object.freeze({
 	experience: 'experienceId',
 	projects: 'projectId',
 });
-const EDITORIAL_COLLECTIONS = Object.freeze(['blog', 'devlog']);
+const EDITORIAL_COLLECTIONS = /** @type {readonly ('blog' | 'devlog')[]} */ (
+	Object.freeze(['blog', 'devlog'])
+);
 
 /**
  * @param {string} collectionRoot
@@ -138,7 +140,7 @@ function validateStructuredCollection(collection, idField, repositoryRoot, issue
 }
 
 /**
- * @param {string} collection
+ * @param {'blog' | 'devlog'} collection
  * @param {string} repositoryRoot
  * @param {{ file: string; message: string }[]} issues
  */
