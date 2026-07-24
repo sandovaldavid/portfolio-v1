@@ -37,12 +37,27 @@ const localizedHomePaths = {
 						window.matchMedia('(prefers-color-scheme: dark)').matches)
 			);
 		</script>
-		<script define:vars={{ localizedErrors, localizedHomePaths }}>
+		<script
+			is:inline
+			data-localized-errors={JSON.stringify(localizedErrors)}
+			data-localized-home-paths={JSON.stringify(localizedHomePaths)}
+		>
+			const localizationScript = document.currentScript;
+			const localizedErrors = JSON.parse(
+				localizationScript?.getAttribute('data-localized-errors') ?? '{}'
+			);
+			const localizedHomePaths = JSON.parse(
+				localizationScript?.getAttribute('data-localized-home-paths') ?? '{}'
+			);
 			const locale =
 				window.location.pathname === '/es' || window.location.pathname.startsWith('/es/')
 					? 'es'
 					: 'en';
 			const localizedCopy = localizedErrors[locale];
+
+			if (!localizedCopy || !localizedHomePaths[locale]) {
+				throw new Error(`Missing static 404 localization data for locale: ${locale}`);
+			}
 
 			document.documentElement.lang = locale;
 			document.title = localizedCopy.notFoundPageTitle;
