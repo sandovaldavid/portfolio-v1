@@ -1,69 +1,98 @@
 # Branch, release and deployment policy
 
-The portfolio uses trunk-based development. `main` is the authoritative default branch, the production branch and the source used by scheduled audits.
+## Branch roles
 
-## Branch model
+The current repository model is:
 
-- Create short-lived `feat/`, `fix/`, `docs/`, `refactor/`, `perf/`, `test/`, `chore/`, `ci/`, `deps/` or `security/` branches from the current `main`.
-- Open every ordinary pull request into `main`.
-- Keep one coherent concern per pull request.
-- Use squash merge so the validated Conventional Commit PR title becomes the single integration commit.
-- Delete the source branch after merge.
-- Do not maintain a permanent `develop` branch. Pull-request previews provide the staging environment required by this static portfolio.
+- `develop`: integration branch and base for ordinary feature, fix, documentation and maintenance work;
+- `main`: default and production branch;
+- `resume-assets`: canonical English and Spanish CV artifacts consumed by deployment workflows.
 
-A long-lived staging branch may be reintroduced only through an ADR that identifies an actual environment, owner, promotion policy and rollback responsibility.
+This model is **Implemented** by the active branch history and recent pull requests. The previous main-only trunk policy is **Discarded** for current work.
+
+## Ordinary development
+
+1. Update `develop`.
+2. Create a short-lived `feat/`, `fix/`, `docs/`, `refactor/`, `perf/`, `test/`, `chore/`, `ci/`, `deps/`, `security/` or `agent/` branch from it.
+3. Open the pull request into `develop`.
+4. Keep one coherent concern per pull request.
+5. Run the canonical local gate and every change-specific validation.
+6. Use a Conventional Commit pull-request title and squash merge after review and explicit authorization.
+7. Delete the short-lived source branch after merge.
+
+Do not push directly to `develop` or `main`.
+
+## Promotion to main
+
+Promotion is a focused pull request from `develop` to `main`. Its purpose is to release the integrated state rather than mix additional implementation work into the promotion diff.
+
+Before promotion:
+
+- confirm that `develop` contains the intended integrated commits;
+- review open issues and pull requests for blockers;
+- run the strongest available local validation on the promoted head;
+- confirm that documentation and `docs/STATUS.md` describe the promoted state;
+- record any unavailable GitHub automation as **Blocked**, never as passed.
+
+When GitHub Actions are enabled, pull requests targeting `main` trigger the configured CI and Vercel preview workflows. See [CI.md](CI.md).
 
 ## Preview deployments
 
-`Deploy to Vercel Preview` runs only for pull requests targeting `main`.
+`Deploy to Vercel Preview` is configured only for pull requests targeting `main`.
 
 The workflow:
 
 1. checks out the exact pull-request head SHA;
-2. creates a transient GitHub `Preview` deployment for that SHA;
-3. pulls the Vercel preview environment;
-4. builds and deploys without production flags;
-5. updates one stable pull-request comment with the preview URL and source SHA.
+2. checks out canonical files from `resume-assets`;
+3. installs the pinned repository toolchain;
+4. pulls the Vercel preview environment;
+5. builds and deploys without production flags;
+6. updates one stable pull-request comment with the preview URL and source SHA.
 
-Pushes to branches do not create standalone preview deployments. Dependabot pull requests are skipped because repository secrets are not exposed to them.
+Ordinary pull requests into `develop` do not receive this workflow under the current configuration. Preview availability therefore must not be claimed for them unless an explicit deployment exists.
 
 ## Production deployments
 
 `main` is the only production source.
 
-A normal production deployment starts only after `Main Quality` completes successfully for a push to `main`. The deployment workflow checks out and verifies the exact validated SHA before running the Vercel production build and deployment.
+The normal production path starts after `Main Quality` completes successfully for a push to `main`. The deployment workflow checks out and verifies the exact validated SHA before building and deploying with the Vercel production environment.
 
-Two explicit exceptions rebuild the current tip of `main`:
+Two explicit dispatch paths rebuild the current `main` tip:
 
 - `resume-assets-updated`, which refreshes canonical CV files from `resume-assets`;
 - a maintainer-initiated `workflow_dispatch` recovery deployment.
 
-No pull-request, feature-branch or failed-quality SHA can enter the normal production path.
+The workflow verifies both canonical resume URLs after deployment.
+
+Workflow definitions are **Implemented**. Their current enablement, quota, secrets and environment protection are **Unconfirmed** until inspected in GitHub. An unavailable run is **Blocked**, not a successful production gate.
 
 ## Release policy
 
-This repository is a private package and a public website, not a published npm library. Automatic Release Please pull requests and recurring beta tags add maintenance noise without improving deployment safety.
+This repository is a private package and a public website, not a published npm library.
 
-- Production deploys are independent from GitHub Releases.
+- Production deployment is independent from GitHub Releases.
 - Create a Git tag and GitHub Release manually only for a meaningful public milestone.
-- Use stable semantic versions such as `v2.0.0`; do not create routine beta tags for ordinary portfolio updates.
-- Keep `CHANGELOG.md` as historical release context, but pull-request descriptions and Git history remain the operational change record.
-- Historical `porfolio-dev-*` and beta tags are immutable history and are not renamed.
+- Use stable semantic versions such as `v2.0.0` for those milestones.
+- Do not create routine beta tags or automated release pull requests for ordinary portfolio updates.
+- Keep `CHANGELOG.md` as public release history; pull requests and Git history remain the operational change record.
+- Historical `porfolio-dev-*` and beta tags are immutable **Historical** evidence and are not renamed.
 
 ## Repository settings contract
 
-After the migration pull request is merged, verify these GitHub settings:
+Verify these GitHub-hosted settings before relying on them:
 
-1. set `main` as the default branch;
-2. require pull requests and the checks documented in [CI.md](CI.md);
-3. require the branch to be up to date before merge;
-4. allow squash merge only;
-5. enable automatic branch deletion;
-6. disable direct pushes and force pushes to `main`;
-7. delete `develop` after confirming it has no unique commits or open pull requests.
+1. `main` is the default branch;
+2. ordinary work is based on and merged into `develop`;
+3. `main` requires a promotion pull request;
+4. required checks match [CI.md](CI.md) when Actions are available;
+5. squash merge is the permitted integration method;
+6. merged short-lived branches are deleted automatically;
+7. direct pushes and force pushes to long-lived branches are blocked.
 
-These settings live in GitHub rather than the repository tree. Record any intentional deviation in this document.
+These settings are **Unconfirmed** until inspected because they live outside the versioned tree. Record intentional deviations in this document and synchronize durable rationale to Cortex-L7.
 
 ## Rollback
 
-For a faulty integration, revert the squash commit on `main` through a pull request. The revert receives the same critical checks and preview deployment as any other change. Avoid rewriting branch history.
+For a faulty integration in `develop`, revert the squash commit through a pull request into `develop`.
+
+For a faulty production promotion, revert the relevant squash or promotion commit through a pull request into `main`, then reconcile `develop` so both long-lived branches retain a consistent history. Do not rewrite shared branch history.
