@@ -26,10 +26,14 @@ async function expectLocalizedRoute(
 	expect(normalizeRoute(canonical ?? '')).toBe(normalizeRoute(route));
 
 	const englishAlternate = await page
-		.locator('link[rel="alternate"][hreflang="en"]')
+		.locator(
+			'link[rel="alternate"][hreflang="en"]:not([type="application/rss+xml"])'
+		)
 		.getAttribute('href');
 	const spanishAlternate = await page
-		.locator('link[rel="alternate"][hreflang="es"]')
+		.locator(
+			'link[rel="alternate"][hreflang="es"]:not([type="application/rss+xml"])'
+		)
 		.getAttribute('href');
 	const defaultAlternate = await page
 		.locator('link[rel="alternate"][hreflang="x-default"]')
@@ -42,7 +46,9 @@ async function expectLocalizedRoute(
 	const languageTargets = await page
 		.locator('a[data-language-base-path]')
 		.evaluateAll(links =>
-			links.map(link => (link as HTMLAnchorElement).dataset.languageBasePath).filter(Boolean)
+			links
+				.map(link => (link as HTMLAnchorElement).dataset.languageBasePath)
+				.filter((target): target is string => Boolean(target))
 		);
 	expect(languageTargets.map(normalizeRoute)).toContain(normalizeRoute(expectedEnglishPath));
 	expect(languageTargets.map(normalizeRoute)).toContain(normalizeRoute(expectedSpanishPath));
