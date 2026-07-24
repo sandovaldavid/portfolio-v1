@@ -34,15 +34,18 @@ function looksLikeUserFacingText(value) {
 	return words.length >= 2;
 }
 
-/**
- * @param {string} source
- */
+/** @param {string} value */
+function maskPreservingLines(value) {
+	return value.replace(/[^\n]/g, ' ');
+}
+
+/** @param {string} source */
 function astroTemplate(source) {
 	return source
-		.replace(/^---\s*\n[\s\S]*?\n---\s*/m, '')
-		.replace(/<!--([\s\S]*?)-->/g, '')
-		.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-		.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+		.replace(/^---\s*\n[\s\S]*?\n---\s*/m, maskPreservingLines)
+		.replace(/<!--([\s\S]*?)-->/g, maskPreservingLines)
+		.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, maskPreservingLines)
+		.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, maskPreservingLines);
 }
 
 /**
@@ -57,50 +60,37 @@ function allowlistEntry(file, value) {
 }
 
 /**
- * @param {string} source
+ * @param {string} template
  * @param {string} file
  * @param {{ file: string; message: string }[]} issues
- * @param {Set<string>} usedAllowlistEntries
  */
-function inspectLiteralAttributes(source, file, issues, usedAllowlistEntries) {
+function inspectLiteralAttributes(template, file, issues) {
 	const attributePattern = new RegExp(
 		`\\b(${USER_FACING_ATTRIBUTES.join('|')})\\s*=\\s*(["'])([^"']*\\p{L}[^"']*)\\2`,
 		'gu'
 	);
-	for (const match of source.matchAll(attributePattern)) {
-		const attribute = match[1];
-		const value = normalizeLiteral(match[3]);
-		if (!looksLikeUserFacingText(value)) continue;
-		const allowed = allowlistEntry(file, value);
-		if (allowed) {
-			usedAllowlistEntries.add(`${allowed.file}\u0000${allowed.value}`);
-			continue;
-		}
+	for (const match of template.matchAll(attributePattern)) {
+		const attribute = match[1] ?? 'attribute';
+		const value = normalizeLiteral(match[3] ?? '');
+		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
 		issues.push({
-			file: `${file}:${lineAt(source, match.index ?? 0)}`,
+			file: `${file}:${lineAt(template, match.index ?? 0)}`,
 			message: `hardcoded user-facing ${attribute} value ${JSON.stringify(value)}; use the owning catalog or content source`,
 		});
 	}
 }
 
 /**
- * @param {string} source
+ * @param {string} template
  * @param {string} file
  * @param {{ file: string; message: string }[]} issues
- * @param {Set<string>} usedAllowlistEntries
  */
-function inspectTemplateText(source, file, issues, usedAllowlistEntries) {
-	const template = astroTemplate(source);
+function inspectTemplateText(template, file, issues) {
 	for (const match of template.matchAll(/>([^<{][^<]*?)</gs)) {
-		const value = normalizeLiteral(match[1]);
-		if (!looksLikeUserFacingText(value)) continue;
-		const allowed = allowlistEntry(file, value);
-		if (allowed) {
-			usedAllowlistEntries.add(`${allowed.file}\u0000${allowed.value}`);
-			continue;
-		}
+		const value = normalizeLiteral(match[1] ?? '');
+		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
 		issues.push({
-			file: `${file}:${lineAt(source, source.indexOf(match[0]))}`,
+			file: `${file}:${lineAt(template, match.index ?? 0)}`,
 			message: `hardcoded visible text ${JSON.stringify(value)}; use the owning catalog or content source`,
 		});
 	}
@@ -120,15 +110,15 @@ function inspectBilingualPatterns(source, file, issues) {
 		for (const match of source.matchAll(pattern)) {
 			issues.push({
 				file: `${file}:${lineAt(source, match.index ?? 0)}`,
-				message: `component-local bilingual map "${match[1]}" is prohibited; move copy to mirrored catalogs or localized content`,
+				message: `component-local bilingual map "${match[1] ?? '<anonymous>'}" is prohibited; move copy to mirrored catalogs or localized content`,
 			});
 		}
 	}
 
 	const ternaryPattern = /\b(?:lang|locale|currentLocale)\s*===?\s*(?:Language\.ENGLISH|["']en["'])\s*\?\s*(["'`])([^"'`\n]+)\1\s*:\s*(["'`])([^"'`\n]+)\3/g;
 	for (const match of source.matchAll(ternaryPattern)) {
-		const english = normalizeLiteral(match[2]);
-		const spanish = normalizeLiteral(match[4]);
+		const english = normalizeLiteral(match[2] ?? '');
+		const spanish = normalizeLiteral(match[4] ?? '');
 		if (!looksLikeUserFacingText(english) && !looksLikeUserFacingText(spanish)) continue;
 		issues.push({
 			file: `${file}:${lineAt(source, match.index ?? 0)}`,
@@ -141,36 +131,25 @@ function inspectBilingualPatterns(source, file, issues) {
  * @param {string} source
  * @param {string} file
  * @param {{ file: string; message: string }[]} issues
- * @param {Set<string>} usedAllowlistEntries
  */
-function inspectDomTextSinks(source, file, issues, usedAllowlistEntries) {
+function inspectDomTextSinks(source, file, issues) {
 	const assignmentPattern = /\b(textContent|innerText|innerHTML|ariaLabel|title|placeholder)\s*=\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\2/gu;
 	for (const match of source.matchAll(assignmentPattern)) {
-		const value = normalizeLiteral(match[3]);
-		if (!looksLikeUserFacingText(value)) continue;
-		const allowed = allowlistEntry(file, value);
-		if (allowed) {
-			usedAllowlistEntries.add(`${allowed.file}\u0000${allowed.value}`);
-			continue;
-		}
+		const value = normalizeLiteral(match[3] ?? '');
+		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
 		issues.push({
 			file: `${file}:${lineAt(source, match.index ?? 0)}`,
-			message: `hardcoded DOM ${match[1]} value ${JSON.stringify(value)}; pass localized copy into the runtime`,
+			message: `hardcoded DOM ${match[1] ?? 'text'} value ${JSON.stringify(value)}; pass localized copy into the runtime`,
 		});
 	}
 
 	const setAttributePattern = /setAttribute\(\s*(["'])(aria-label|aria-description|alt|title|placeholder)\1\s*,\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\3\s*\)/gu;
 	for (const match of source.matchAll(setAttributePattern)) {
-		const value = normalizeLiteral(match[4]);
-		if (!looksLikeUserFacingText(value)) continue;
-		const allowed = allowlistEntry(file, value);
-		if (allowed) {
-			usedAllowlistEntries.add(`${allowed.file}\u0000${allowed.value}`);
-			continue;
-		}
+		const value = normalizeLiteral(match[4] ?? '');
+		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
 		issues.push({
 			file: `${file}:${lineAt(source, match.index ?? 0)}`,
-			message: `hardcoded setAttribute(${JSON.stringify(match[2])}) value ${JSON.stringify(value)}; pass localized copy into the runtime`,
+			message: `hardcoded setAttribute(${JSON.stringify(match[2] ?? 'attribute')}) value ${JSON.stringify(value)}; pass localized copy into the runtime`,
 		});
 	}
 }
@@ -182,7 +161,6 @@ export function validateHardcodedCopy({ rootDir = REPOSITORY_ROOT } = {}) {
 	const sourceRoot = path.join(rootDir, 'src');
 	/** @type {{ file: string; message: string }[]} */
 	const issues = [];
-	const usedAllowlistEntries = new Set();
 	let inspectedFiles = 0;
 
 	for (const filePath of listFiles(sourceRoot, PRODUCTION_EXTENSIONS)) {
@@ -193,23 +171,28 @@ export function validateHardcodedCopy({ rootDir = REPOSITORY_ROOT } = {}) {
 		inspectedFiles += 1;
 		const source = readText(filePath);
 		inspectBilingualPatterns(source, file, issues);
-		inspectDomTextSinks(source, file, issues, usedAllowlistEntries);
+		inspectDomTextSinks(source, file, issues);
 		if (path.extname(filePath) === '.astro' || path.extname(filePath) === '.tsx') {
-			inspectLiteralAttributes(source, file, issues, usedAllowlistEntries);
-			inspectTemplateText(source, file, issues, usedAllowlistEntries);
+			const template = astroTemplate(source);
+			inspectLiteralAttributes(template, file, issues);
+			inspectTemplateText(template, file, issues);
 		}
 	}
 
 	for (const entry of HARD_CODED_TEXT_ALLOWLIST) {
-		const key = `${entry.file}\u0000${entry.value}`;
 		const target = path.join(rootDir, entry.file);
 		if (!existsSync(target) || !readText(target).includes(entry.value)) {
-			issues.push({ file: 'scripts/i18n/config.mjs', message: `stale hardcoded-copy allowlist entry for ${entry.file}: ${JSON.stringify(entry.value)}` });
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `stale hardcoded-copy allowlist entry for ${entry.file}: ${JSON.stringify(entry.value)}`,
+			});
 			continue;
 		}
-		usedAllowlistEntries.add(key);
 		if (!entry.reason.trim()) {
-			issues.push({ file: 'scripts/i18n/config.mjs', message: `allowlist entry for ${entry.file} must include a non-empty reason` });
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `allowlist entry for ${entry.file} must include a non-empty reason`,
+			});
 		}
 	}
 
