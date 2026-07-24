@@ -13,6 +13,7 @@ English is the primary repository documentation language. Spanish is maintained 
 | [I18N.md](I18N.md)                                                                                         | English/Spanish content ownership and localization rules   |
 | [I18N-CATALOGS.md](I18N-CATALOGS.md)                                                                       | Typed granular UI catalog API and migration compatibility  |
 | [I18N-METADATA.md](I18N-METADATA.md)                                                                       | SEO, social, RSS, JSON-LD and accessibility metadata       |
+| [I18N-ENFORCEMENT.md](I18N-ENFORCEMENT.md)                                                                 | Executable locale parity, copy and route quality gates     |
 | [adr/0001-granular-bilingual-content-architecture.md](adr/0001-granular-bilingual-content-architecture.md) | Accepted localization architecture decision and trade-offs |
 | [TESTING.md](TESTING.md)                                                                                   | Test strategy and local commands                           |
 | [CI.md](CI.md)                                                                                             | PR, main and scheduled pipeline behavior                   |
