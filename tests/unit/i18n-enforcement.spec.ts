@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -18,6 +19,10 @@ function createFixture(files: Record<string, string>): string {
 		writeFileSync(filePath, content);
 	}
 	return root;
+}
+
+function diagnosticDigest(messages: string[]): string {
+	return createHash('sha256').update([...messages].sort().join('\n')).digest('hex');
 }
 
 afterEach(() => {
@@ -80,6 +85,42 @@ describe('i18n repository enforcement', () => {
 		);
 		expect(() => validateHardcodedCopy({ rootDir: root })).toThrowError(
 			/hardcoded visible text "Download resume"/
+		);
+	});
+
+	it('ignores language-neutral locale codes and decorative single-token identifiers', () => {
+		const root = createFixture({
+			'src/app/metadata.ts':
+				"const ogLocale = lang === Language.ENGLISH ? 'en_US' : 'es_PE';\n",
+			'src/widgets/brand/ui/Brand.astro': '<span>&lt;sandovaldavid/&gt;</span>\n',
+		});
+
+		expect(() => validateHardcodedCopy({ rootDir: root })).not.toThrow();
+	});
+
+	it('freezes known migration debt exactly and rejects baseline drift', () => {
+		const message =
+			'hardcoded visible text "Legacy route copy"; use the owning catalog or content source';
+		const root = createFixture({
+			'src/pages/legacy.astro': '<p>Legacy route copy</p>\n',
+		});
+		const debtBaseline = [
+			{
+				file: 'src/pages/legacy.astro',
+				count: 1,
+				digest: diagnosticDigest([message]),
+				reason: 'Fixture debt used to verify exact-baseline behavior.',
+			},
+		];
+
+		expect(() => validateHardcodedCopy({ rootDir: root, debtBaseline })).not.toThrow();
+
+		writeFileSync(
+			path.join(root, 'src/pages/legacy.astro'),
+			'<p>Legacy route copy</p><p>New untranslated copy</p>\n'
+		);
+		expect(() => validateHardcodedCopy({ rootDir: root, debtBaseline })).toThrowError(
+			/hardcoded-copy debt baseline drift for src\/pages\/legacy\.astro/
 		);
 	});
 
