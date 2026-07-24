@@ -1,6 +1,7 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { HARD_CODED_TEXT_ALLOWLIST } from './config.mjs';
+import { HARD_CODED_COPY_DEBT_BASELINE, HARD_CODED_TEXT_ALLOWLIST } from './config.mjs';
 import {
 	assertNoIssues,
 	isDirectExecution,
@@ -25,6 +26,7 @@ function normalizeLiteral(value) {
 function looksLikeUserFacingText(value) {
 	const normalized = normalizeLiteral(value);
 	if (!normalized || normalized.includes('{') || normalized.includes('}')) return false;
+	if (!/\s/u.test(normalized)) return false;
 	if (/^(?:https?:|mailto:|tel:|\/|\.|#|[A-Za-z]+:)/.test(normalized)) return false;
 	const words = normalized.match(/\p{L}[\p{L}\p{M}'’-]*/gu) ?? [];
 	return words.length >= 2;
@@ -33,6 +35,21 @@ function looksLikeUserFacingText(value) {
 /** @param {string} value */
 function maskPreservingLines(value) {
 	return value.replace(/[^\n]/g, ' ');
+}
+
+/**
+ * @param {string} masked
+ * @param {string} source
+ * @param {RegExp} pattern
+ */
+function restoreMatches(masked, source, pattern) {
+	let result = masked;
+	for (const match of source.matchAll(pattern)) {
+		const index = match.index ?? 0;
+		const value = match[0];
+		result = `${result.slice(0, index)}${value}${result.slice(index + value.length)}`;
+	}
+	return result;
 }
 
 /** @param {string} source */
@@ -44,23 +61,43 @@ function astroTemplate(source) {
 		.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, maskPreservingLines);
 }
 
+/** @param {string} source */
+function astroRuntimeSource(source) {
+	let runtime = maskPreservingLines(source);
+	runtime = restoreMatches(runtime, source, /^---\s*\n[\s\S]*?\n---\s*/gm);
+	runtime = restoreMatches(runtime, source, /<script\b[^>]*>[\s\S]*?<\/script>/gi);
+	return runtime;
+}
+
 /**
+ * @param {readonly { file: string; value: string; reason: string }[]} allowlist
  * @param {string} file
  * @param {string} value
  */
-function allowlistEntry(file, value) {
+function allowlistEntry(allowlist, file, value) {
 	const normalized = normalizeLiteral(value);
-	return HARD_CODED_TEXT_ALLOWLIST.find(
+	return allowlist.find(
 		entry => entry.file === file && normalizeLiteral(entry.value) === normalized
 	);
 }
 
 /**
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
+ * @param {string} sourceFile
+ * @param {number} line
+ * @param {string} message
+ */
+function addFinding(findings, sourceFile, line, message) {
+	findings.push({ file: `${sourceFile}:${line}`, sourceFile, message });
+}
+
+/**
  * @param {string} template
  * @param {string} file
- * @param {{ file: string; message: string }[]} issues
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
+ * @param {readonly { file: string; value: string; reason: string }[]} allowlist
  */
-function inspectLiteralAttributes(template, file, issues) {
+function inspectLiteralAttributes(template, file, findings, allowlist) {
 	const attributePattern = new RegExp(
 		`\\b(${USER_FACING_ATTRIBUTES.join('|')})\\s*=\\s*(["'])([^"']*\\p{L}[^"']*)\\2`,
 		'gu'
@@ -68,46 +105,53 @@ function inspectLiteralAttributes(template, file, issues) {
 	for (const match of template.matchAll(attributePattern)) {
 		const attribute = match[1] ?? 'attribute';
 		const value = normalizeLiteral(match[3] ?? '');
-		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
-		issues.push({
-			file: `${file}:${lineAt(template, match.index ?? 0)}`,
-			message: `hardcoded user-facing ${attribute} value ${JSON.stringify(value)}; use the owning catalog or content source`,
-		});
+		if (!looksLikeUserFacingText(value) || allowlistEntry(allowlist, file, value)) continue;
+		addFinding(
+			findings,
+			file,
+			lineAt(template, match.index ?? 0),
+			`hardcoded user-facing ${attribute} value ${JSON.stringify(value)}; use the owning catalog or content source`
+		);
 	}
 }
 
 /**
  * @param {string} template
  * @param {string} file
- * @param {{ file: string; message: string }[]} issues
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
+ * @param {readonly { file: string; value: string; reason: string }[]} allowlist
  */
-function inspectTemplateText(template, file, issues) {
+function inspectTemplateText(template, file, findings, allowlist) {
 	for (const match of template.matchAll(/>([^<{][^<]*?)</gs)) {
 		const value = normalizeLiteral(match[1] ?? '');
-		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
-		issues.push({
-			file: `${file}:${lineAt(template, match.index ?? 0)}`,
-			message: `hardcoded visible text ${JSON.stringify(value)}; use the owning catalog or content source`,
-		});
+		if (!looksLikeUserFacingText(value) || allowlistEntry(allowlist, file, value)) continue;
+		addFinding(
+			findings,
+			file,
+			lineAt(template, match.index ?? 0),
+			`hardcoded visible text ${JSON.stringify(value)}; use the owning catalog or content source`
+		);
 	}
 }
 
 /**
  * @param {string} source
  * @param {string} file
- * @param {{ file: string; message: string }[]} issues
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
  */
-function inspectBilingualPatterns(source, file, issues) {
+function inspectBilingualPatterns(source, file, findings) {
 	const copyMapPatterns = [
 		/\b(?:const|let|var)\s+([A-Za-z0-9_]*(?:copy|labels|messages|translations)[A-Za-z0-9_]*)\s*=\s*\{[\s\S]{0,2000}?\ben\s*:[\s\S]{0,1000}?\bes\s*:/gi,
 		/\b(?:const|let|var)\s+([A-Za-z0-9_]*(?:copy|labels|messages|translations)[A-Za-z0-9_]*)\s*=\s*\{[\s\S]{0,2000}?\bes\s*:[\s\S]{0,1000}?\ben\s*:/gi,
 	];
 	for (const pattern of copyMapPatterns) {
 		for (const match of source.matchAll(pattern)) {
-			issues.push({
-				file: `${file}:${lineAt(source, match.index ?? 0)}`,
-				message: `component-local bilingual map "${match[1] ?? '<anonymous>'}" is prohibited; move copy to mirrored catalogs or localized content`,
-			});
+			addFinding(
+				findings,
+				file,
+				lineAt(source, match.index ?? 0),
+				`component-local bilingual map "${match[1] ?? '<anonymous>'}" is prohibited; move copy to mirrored catalogs or localized content`
+			);
 		}
 	}
 
@@ -117,49 +161,142 @@ function inspectBilingualPatterns(source, file, issues) {
 		const english = normalizeLiteral(match[2] ?? '');
 		const spanish = normalizeLiteral(match[4] ?? '');
 		if (!looksLikeUserFacingText(english) && !looksLikeUserFacingText(spanish)) continue;
-		issues.push({
-			file: `${file}:${lineAt(source, match.index ?? 0)}`,
-			message: `locale ternary selects complete messages (${JSON.stringify(english)} / ${JSON.stringify(spanish)}); use a typed translator`,
-		});
+		addFinding(
+			findings,
+			file,
+			lineAt(source, match.index ?? 0),
+			`locale ternary selects complete messages (${JSON.stringify(english)} / ${JSON.stringify(spanish)}); use a typed translator`
+		);
 	}
 }
 
 /**
  * @param {string} source
  * @param {string} file
- * @param {{ file: string; message: string }[]} issues
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
+ * @param {readonly { file: string; value: string; reason: string }[]} allowlist
  */
-function inspectDomTextSinks(source, file, issues) {
+function inspectDomTextSinks(source, file, findings, allowlist) {
 	const assignmentPattern =
 		/\b(textContent|innerText|innerHTML|ariaLabel|title|placeholder)\s*=\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\2/gu;
 	for (const match of source.matchAll(assignmentPattern)) {
 		const value = normalizeLiteral(match[3] ?? '');
-		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
-		issues.push({
-			file: `${file}:${lineAt(source, match.index ?? 0)}`,
-			message: `hardcoded DOM ${match[1] ?? 'text'} value ${JSON.stringify(value)}; pass localized copy into the runtime`,
-		});
+		if (!looksLikeUserFacingText(value) || allowlistEntry(allowlist, file, value)) continue;
+		addFinding(
+			findings,
+			file,
+			lineAt(source, match.index ?? 0),
+			`hardcoded DOM ${match[1] ?? 'text'} value ${JSON.stringify(value)}; pass localized copy into the runtime`
+		);
 	}
 
 	const setAttributePattern =
 		/setAttribute\(\s*(["'])(aria-label|aria-description|alt|title|placeholder)\1\s*,\s*(["'`])([^"'`\n]*\p{L}[^"'`\n]*)\3\s*\)/gu;
 	for (const match of source.matchAll(setAttributePattern)) {
 		const value = normalizeLiteral(match[4] ?? '');
-		if (!looksLikeUserFacingText(value) || allowlistEntry(file, value)) continue;
-		issues.push({
-			file: `${file}:${lineAt(source, match.index ?? 0)}`,
-			message: `hardcoded setAttribute(${JSON.stringify(match[2] ?? 'attribute')}) value ${JSON.stringify(value)}; pass localized copy into the runtime`,
-		});
+		if (!looksLikeUserFacingText(value) || allowlistEntry(allowlist, file, value)) continue;
+		addFinding(
+			findings,
+			file,
+			lineAt(source, match.index ?? 0),
+			`hardcoded setAttribute(${JSON.stringify(match[2] ?? 'attribute')}) value ${JSON.stringify(value)}; pass localized copy into the runtime`
+		);
 	}
 }
 
+/** @param {{ message: string }[]} findings */
+function findingsDigest(findings) {
+	return createHash('sha256')
+		.update(findings.map(finding => finding.message).sort().join('\n'))
+		.digest('hex');
+}
+
 /**
- * @param {{ rootDir?: string }} [options]
+ * @param {{ file: string; sourceFile: string; message: string }[]} findings
+ * @param {readonly { file: string; count: number; digest: string; reason: string }[]} debtBaseline
  */
-export function validateHardcodedCopy({ rootDir = REPOSITORY_ROOT } = {}) {
-	const sourceRoot = path.join(rootDir, 'src');
+function applyDebtBaseline(findings, debtBaseline) {
 	/** @type {{ file: string; message: string }[]} */
 	const issues = [];
+	const baselineByFile = new Map();
+	for (const entry of debtBaseline) {
+		if (baselineByFile.has(entry.file)) {
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `duplicate hardcoded-copy debt baseline entry for ${entry.file}`,
+			});
+			continue;
+		}
+		baselineByFile.set(entry.file, entry);
+		if (!entry.reason.trim()) {
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `hardcoded-copy debt baseline for ${entry.file} must include a non-empty reason`,
+			});
+		}
+		if (!Number.isInteger(entry.count) || entry.count < 1 || !/^[a-f0-9]{64}$/.test(entry.digest)) {
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `hardcoded-copy debt baseline for ${entry.file} has an invalid count or digest`,
+			});
+		}
+	}
+
+	const findingsByFile = new Map();
+	for (const finding of findings) {
+		const fileFindings = findingsByFile.get(finding.sourceFile) ?? [];
+		fileFindings.push(finding);
+		findingsByFile.set(finding.sourceFile, fileFindings);
+	}
+
+	let baselinedFindings = 0;
+	for (const [file, fileFindings] of findingsByFile) {
+		const baseline = baselineByFile.get(file);
+		if (!baseline) {
+			issues.push(...fileFindings);
+			continue;
+		}
+
+		const digest = findingsDigest(fileFindings);
+		if (fileFindings.length === baseline.count && digest === baseline.digest) {
+			baselinedFindings += fileFindings.length;
+			continue;
+		}
+
+		issues.push({
+			file: 'scripts/i18n/config.mjs',
+			message: `hardcoded-copy debt baseline drift for ${file}: expected ${baseline.count} finding(s) / ${baseline.digest}, received ${fileFindings.length} / ${digest}; remove migrated debt or review and update the exact baseline`,
+		});
+		issues.push(...fileFindings);
+	}
+
+	for (const entry of debtBaseline) {
+		if (!findingsByFile.has(entry.file)) {
+			issues.push({
+				file: 'scripts/i18n/config.mjs',
+				message: `stale hardcoded-copy debt baseline for ${entry.file}; remove the entry because the debt no longer exists`,
+			});
+		}
+	}
+
+	return { issues, baselinedFindings };
+}
+
+/**
+ * @param {{
+ *   rootDir?: string;
+ *   allowlist?: readonly { file: string; value: string; reason: string }[];
+ *   debtBaseline?: readonly { file: string; count: number; digest: string; reason: string }[];
+ * }} [options]
+ */
+export function validateHardcodedCopy({
+	rootDir = REPOSITORY_ROOT,
+	allowlist = rootDir === REPOSITORY_ROOT ? HARD_CODED_TEXT_ALLOWLIST : [],
+	debtBaseline = rootDir === REPOSITORY_ROOT ? HARD_CODED_COPY_DEBT_BASELINE : [],
+} = {}) {
+	const sourceRoot = path.join(rootDir, 'src');
+	/** @type {{ file: string; sourceFile: string; message: string }[]} */
+	const findings = [];
 	let inspectedFiles = 0;
 
 	for (const filePath of listFiles(sourceRoot, PRODUCTION_EXTENSIONS)) {
@@ -169,34 +306,41 @@ export function validateHardcodedCopy({ rootDir = REPOSITORY_ROOT } = {}) {
 		}
 		inspectedFiles += 1;
 		const source = readText(filePath);
-		inspectBilingualPatterns(source, file, issues);
-		inspectDomTextSinks(source, file, issues);
+		inspectBilingualPatterns(source, file, findings);
+		const runtimeSource = path.extname(filePath) === '.astro' ? astroRuntimeSource(source) : source;
+		inspectDomTextSinks(runtimeSource, file, findings, allowlist);
 		if (path.extname(filePath) === '.astro' || path.extname(filePath) === '.tsx') {
 			const template = astroTemplate(source);
-			inspectLiteralAttributes(template, file, issues);
-			inspectTemplateText(template, file, issues);
+			inspectLiteralAttributes(template, file, findings, allowlist);
+			inspectTemplateText(template, file, findings, allowlist);
 		}
 	}
 
-	for (const entry of HARD_CODED_TEXT_ALLOWLIST) {
+	/** @type {{ file: string; message: string }[]} */
+	const configurationIssues = [];
+	for (const entry of allowlist) {
 		const target = path.join(rootDir, entry.file);
 		if (!existsSync(target) || !readText(target).includes(entry.value)) {
-			issues.push({
+			configurationIssues.push({
 				file: 'scripts/i18n/config.mjs',
 				message: `stale hardcoded-copy allowlist entry for ${entry.file}: ${JSON.stringify(entry.value)}`,
 			});
 			continue;
 		}
 		if (!entry.reason.trim()) {
-			issues.push({
+			configurationIssues.push({
 				file: 'scripts/i18n/config.mjs',
 				message: `allowlist entry for ${entry.file} must include a non-empty reason`,
 			});
 		}
 	}
 
-	assertNoIssues('i18n:hardcoded', issues);
-	return `${inspectedFiles} production Astro/TypeScript file(s) checked for prohibited copy patterns.`;
+	const { issues: baselineIssues, baselinedFindings } = applyDebtBaseline(
+		findings,
+		debtBaseline
+	);
+	assertNoIssues('i18n:hardcoded', [...configurationIssues, ...baselineIssues]);
+	return `${inspectedFiles} production Astro/TypeScript file(s) checked; ${baselinedFindings} exact legacy finding(s) remain frozen for #143.`;
 }
 
 if (isDirectExecution(import.meta.url)) {
