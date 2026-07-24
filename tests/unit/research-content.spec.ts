@@ -47,9 +47,7 @@ describe('localized research content', () => {
 		);
 		expect(research.en.pipelineSteps).toHaveLength(research.es.pipelineSteps.length);
 		expect(research.en.architecture).toHaveLength(research.es.architecture.length);
-		expect(research.en.engineeredFeatures).toHaveLength(
-			research.es.engineeredFeatures.length
-		);
+		expect(research.en.engineeredFeatures).toHaveLength(research.es.engineeredFeatures.length);
 	});
 
 	it('contains meaningful localized records', () => {

@@ -140,13 +140,17 @@ test.describe('deduplicated legacy page pairs', () => {
 			forbiddenHeading: 'UI components showcase',
 		},
 	] as const) {
-		test(`${scenario.route} renders only its canonical localized presentation`, async ({ page }) => {
+		test(`${scenario.route} renders only its canonical localized presentation`, async ({
+			page,
+		}) => {
 			const response = await page.goto(scenario.route);
 			expect(response?.ok()).toBe(true);
 			await expect(page.locator('html')).toHaveAttribute('lang', scenario.locale);
 			await expect(page.locator('main')).toHaveCount(1);
 			await expect(page.getByRole('heading', { name: scenario.heading })).toBeVisible();
-			await expect(page.getByRole('heading', { name: scenario.forbiddenHeading })).toHaveCount(0);
+			await expect(
+				page.getByRole('heading', { name: scenario.forbiddenHeading })
+			).toHaveCount(0);
 		});
 	}
 });

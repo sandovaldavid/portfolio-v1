@@ -44,7 +44,9 @@ describe('legacy localization removal', () => {
 			expect(source, filePath).not.toContain('config/i18n/dictionaries');
 
 			if (filePath !== path.join('src', 'shared', 'config', 'i18n', 'catalog.ts')) {
-				expect(source, filePath).not.toMatch(/(?:@shared\/config\/i18n\/locales|\.\/locales\/)/);
+				expect(source, filePath).not.toMatch(
+					/(?:@shared\/config\/i18n\/locales|\.\/locales\/)/
+				);
 			}
 		}
 	});
