@@ -7,11 +7,7 @@ import QuoteRight from '@assets/icons/QuoteRight.astro';
 import '@app/styles/global.css';
 
 import { SectionContainer, LinkButton, Button } from '@shared/ui';
-import {
-	createScopedUiTranslator,
-	getUiCatalogNamespace,
-	Language,
-} from '@shared/config/i18n';
+import { createScopedUiTranslator, getUiCatalogNamespace, Language } from '@shared/config/i18n';
 
 const defaultLang = Language.ENGLISH;
 const tErrors = createScopedUiTranslator(defaultLang, 'errors');
@@ -153,7 +149,10 @@ const localizedHomePaths = {
 								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
 								aria-hidden="true"
 							/>
-							<p id="not-found-quote" class="text-base text-content italic leading-relaxed">
+							<p
+								id="not-found-quote"
+								class="text-base text-content italic leading-relaxed"
+							>
 								{tErrors('notFoundQuote')}
 							</p>
 							<QuoteRight
