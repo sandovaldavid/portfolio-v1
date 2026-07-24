@@ -22,7 +22,9 @@ function createFixture(files: Record<string, string>): string {
 }
 
 function diagnosticDigest(messages: string[]): string {
-	return createHash('sha256').update([...messages].sort().join('\n')).digest('hex');
+	return createHash('sha256')
+		.update([...messages].sort().join('\n'))
+		.digest('hex');
 }
 
 afterEach(() => {

@@ -207,7 +207,12 @@ function inspectDomTextSinks(source, file, findings, allowlist) {
 /** @param {{ message: string }[]} findings */
 function findingsDigest(findings) {
 	return createHash('sha256')
-		.update(findings.map(finding => finding.message).sort().join('\n'))
+		.update(
+			findings
+				.map(finding => finding.message)
+				.sort()
+				.join('\n')
+		)
 		.digest('hex');
 }
 
@@ -234,7 +239,11 @@ function applyDebtBaseline(findings, debtBaseline) {
 				message: `hardcoded-copy debt baseline for ${entry.file} must include a non-empty reason`,
 			});
 		}
-		if (!Number.isInteger(entry.count) || entry.count < 1 || !/^[a-f0-9]{64}$/.test(entry.digest)) {
+		if (
+			!Number.isInteger(entry.count) ||
+			entry.count < 1 ||
+			!/^[a-f0-9]{64}$/.test(entry.digest)
+		) {
 			issues.push({
 				file: 'scripts/i18n/config.mjs',
 				message: `hardcoded-copy debt baseline for ${entry.file} has an invalid count or digest`,
@@ -307,7 +316,8 @@ export function validateHardcodedCopy({
 		inspectedFiles += 1;
 		const source = readText(filePath);
 		inspectBilingualPatterns(source, file, findings);
-		const runtimeSource = path.extname(filePath) === '.astro' ? astroRuntimeSource(source) : source;
+		const runtimeSource =
+			path.extname(filePath) === '.astro' ? astroRuntimeSource(source) : source;
 		inspectDomTextSinks(runtimeSource, file, findings, allowlist);
 		if (path.extname(filePath) === '.astro' || path.extname(filePath) === '.tsx') {
 			const template = astroTemplate(source);
@@ -335,10 +345,7 @@ export function validateHardcodedCopy({
 		}
 	}
 
-	const { issues: baselineIssues, baselinedFindings } = applyDebtBaseline(
-		findings,
-		debtBaseline
-	);
+	const { issues: baselineIssues, baselinedFindings } = applyDebtBaseline(findings, debtBaseline);
 	assertNoIssues('i18n:hardcoded', [...configurationIssues, ...baselineIssues]);
 	return `${inspectedFiles} production Astro/TypeScript file(s) checked; ${baselinedFindings} exact legacy finding(s) remain frozen for #143.`;
 }
