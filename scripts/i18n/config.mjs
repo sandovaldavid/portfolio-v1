@@ -46,7 +46,10 @@ export const SPANISH_FORBIDDEN_PHRASES = Object.freeze([
 export const REPRESENTATIVE_ROUTE_PAIRS = Object.freeze([
 	Object.freeze({ english: '/', spanish: '/es/' }),
 	Object.freeze({ english: '/about', spanish: '/es/about' }),
+	Object.freeze({ english: '/atena', spanish: '/es/atena' }),
+	Object.freeze({ english: '/components', spanish: '/es/components' }),
 	Object.freeze({ english: '/research', spanish: '/es/research' }),
+	Object.freeze({ english: '/skills', spanish: '/es/skills' }),
 	Object.freeze({ english: '/projects', spanish: '/es/projects' }),
 	Object.freeze({ english: '/projects/yukidoke', spanish: '/es/projects/yukidoke' }),
 	Object.freeze({ english: '/blog', spanish: '/es/blog' }),
