@@ -2,10 +2,9 @@
 import { render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
-import { BlogDetail } from '@widgets/blog';
 import { getBlogLocalizedPaths, getBlogPost, getBlogPosts, getBlogSlug } from '@entities/blog';
-import { getLanguageFromLocale, Language } from '@shared/config/i18n';
-import { useTranslations } from '@shared/lib/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale, Language } from '@shared/config/i18n';
+import { BlogDetail } from '@widgets/blog';
 
 export async function getStaticPaths() {
 	const posts = await getBlogPosts(Language.ENGLISH);
@@ -16,7 +15,7 @@ export async function getStaticPaths() {
 
 const lang = getLanguageFromLocale(Astro.currentLocale);
 const slug = Astro.params.slug ?? '';
-const t = useTranslations(lang);
+const tBlog = createScopedUiTranslator(lang, 'pages.blog');
 const post = await getBlogPost(lang, slug);
 
 if (!post) {
@@ -42,11 +41,11 @@ const { Content } = await render(post);
 		<BlogDetail
 			{post}
 			{Content}
-			backText={t('blog.back')}
+			backText={tBlog('back')}
 			backLink={getRelativeLocaleUrl(lang, 'blog')}
-			publishedLabel={t('blog.published')}
-			updatedLabel={t('blog.updated')}
-			tagsLabel={t('blog.tags')}
+			publishedLabel={tBlog('published')}
+			updatedLabel={tBlog('updated')}
+			tagsLabel={tBlog('tags')}
 		/>
 	</div>
 </Layout>

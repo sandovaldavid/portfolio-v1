@@ -20,6 +20,7 @@ const STABLE_ID_PATTERN = /^[a-z0-9-]+$/;
 const STRUCTURED_COLLECTIONS = Object.freeze({
 	'portfolio-profile': 'profileId',
 	experience: 'experienceId',
+	research: 'researchId',
 	projects: 'projectId',
 });
 const EDITORIAL_COLLECTIONS = /** @type {readonly ('blog' | 'devlog')[]} */ (

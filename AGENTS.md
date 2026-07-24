@@ -4,19 +4,19 @@
 
 ## 1. Sources of truth
 
-| Concern | Canonical source |
-| --- | --- |
-| Product and repository overview | [README.md](README.md) |
-| Current implementation status | [docs/STATUS.md](docs/STATUS.md) |
-| Architecture boundaries | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
-| Localization and bilingual content | [docs/I18N.md](docs/I18N.md) |
-| Tool and dependency versions | [package.json](package.json) and `bun.lock` |
-| Testing | [docs/TESTING.md](docs/TESTING.md) |
-| CI behavior | [docs/CI.md](docs/CI.md) and `.github/workflows/` |
-| Branches, releases and deployment | [docs/DELIVERY.md](docs/DELIVERY.md) |
-| Performance budgets | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json` |
-| Documentation ownership | [docs/README.md](docs/README.md) |
-| Contribution flow | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Concern                            | Canonical source                                                             |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| Product and repository overview    | [README.md](README.md)                                                       |
+| Current implementation status      | [docs/STATUS.md](docs/STATUS.md)                                             |
+| Architecture boundaries            | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and `bun run lint:architecture` |
+| Localization and bilingual content | [docs/I18N.md](docs/I18N.md)                                                 |
+| Tool and dependency versions       | [package.json](package.json) and `bun.lock`                                  |
+| Testing                            | [docs/TESTING.md](docs/TESTING.md)                                           |
+| CI behavior                        | [docs/CI.md](docs/CI.md) and `.github/workflows/`                            |
+| Branches, releases and deployment  | [docs/DELIVERY.md](docs/DELIVERY.md)                                         |
+| Performance budgets                | [docs/PERFORMANCE.md](docs/PERFORMANCE.md) and `performance-budgets.json`    |
+| Documentation ownership            | [docs/README.md](docs/README.md)                                             |
+| Contribution flow                  | [CONTRIBUTING.md](CONTRIBUTING.md)                                           |
 
 Executable code and configuration override prose when they disagree. Do not copy versions, thresholds, command definitions or architecture rules into a second active document.
 
@@ -80,22 +80,22 @@ Required practices:
 - Classify text as UI copy, structured portfolio content, editorial content or language-neutral data and update only its canonical owner.
 - Update English and Spanish together, including visible copy, accessibility labels and localized metadata.
 - Do not add monolithic locale files, component-local bilingual copy maps, raw HTML translations or a parallel translation runtime.
-- Treat the legacy mixed-value translator and remaining legacy dictionaries as **Deprecated** compatibility code owned by issue #143; do not extend them.
+- Use only the typed granular scalar catalog API, schema-validated localized content collections and Astro-native locale helpers; missing translations are build defects and must fail loudly.
 - Preserve keyboard navigation, semantic HTML, reduced-motion behavior and light/dark themes.
 - Add browser coverage for interactions, navigation lifecycle or responsive behavior.
 - Do not add seniority, impact, coverage or performance claims without verifiable evidence.
 
 ## 6. Validation by change type
 
-| Change | Minimum validation |
-| --- | --- |
-| Documentation only | `bun run check:docs` and `bun run format:check` |
-| Pure logic | relevant unit tests plus `bun run test:unit:ci` |
-| Astro/UI behavior | relevant Playwright regression plus `bun run test:e2e:smoke` |
-| Architecture | `bun run lint:architecture` and affected tests |
-| Localization | focused `check:i18n:*`, build, generated-link validation and bilingual smoke coverage |
-| Performance/loading | `bun run build`, `bun run performance:check` and relevant browser test |
-| CI/tooling | `bun run check`, the changed command locally and workflow review |
+| Change              | Minimum validation                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| Documentation only  | `bun run check:docs` and `bun run format:check`                                       |
+| Pure logic          | relevant unit tests plus `bun run test:unit:ci`                                       |
+| Astro/UI behavior   | relevant Playwright regression plus `bun run test:e2e:smoke`                          |
+| Architecture        | `bun run lint:architecture` and affected tests                                        |
+| Localization        | focused `check:i18n:*`, build, generated-link validation and bilingual smoke coverage |
+| Performance/loading | `bun run build`, `bun run performance:check` and relevant browser test                |
+| CI/tooling          | `bun run check`, the changed command locally and workflow review                      |
 
 Coverage percentages apply only to the scope documented in [docs/testing/UNIT-COVERAGE.md](docs/testing/UNIT-COVERAGE.md).
 

@@ -8,12 +8,12 @@ A bilingual, static-first portfolio for presenting software-engineering experien
 
 ## Quick access
 
-| Resource | Link |
-| --- | --- |
-| Live site | [sandovaldavid.com](https://sandovaldavid.com) |
-| English CV | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf) |
-| Spanish CV | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
-| Spanish repository guide | [README.es.md](README.es.md) |
+| Resource                 | Link                                                                                          |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| Live site                | [sandovaldavid.com](https://sandovaldavid.com)                                                |
+| English CV               | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf)       |
+| Spanish CV               | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
+| Spanish repository guide | [README.es.md](README.es.md)                                                                  |
 
 ## Current implementation
 
@@ -28,15 +28,15 @@ The remaining legacy localization compatibility paths are tracked by issue #143 
 
 ## Quality gates
 
-| Area | Repository contract |
-| --- | --- |
-| Formatting, lint and types | `bun run check` |
-| Documentation links | `bun run check:docs` |
-| Unit behavior | `bun run test:unit:ci` and the scoped coverage command |
-| Production output | `bun run build` and `bun run check:links` |
+| Area                            | Repository contract                                     |
+| ------------------------------- | ------------------------------------------------------- |
+| Formatting, lint and types      | `bun run check`                                         |
+| Documentation links             | `bun run check:docs`                                    |
+| Unit behavior                   | `bun run test:unit:ci` and the scoped coverage command  |
+| Production output               | `bun run build` and `bun run check:links`               |
 | Browser and accessibility flows | Playwright smoke, desktop, extended and visual commands |
-| Performance | route budgets and Lighthouse commands |
-| Development environment | `bun run check:devcontainer` |
+| Performance                     | route budgets and Lighthouse commands                   |
+| Development environment         | `bun run check:devcontainer`                            |
 
 GitHub workflow definitions automate selected promotion, production and scheduled gates. A missing, disabled or quota-blocked workflow run is not validation evidence; pull requests must list the commands that actually ran.
 

@@ -100,3 +100,57 @@ test.describe('mandatory bilingual route matrix', () => {
 		});
 	}
 });
+
+test.describe('deduplicated legacy page pairs', () => {
+	for (const scenario of [
+		{
+			route: '/atena',
+			locale: 'en',
+			heading: 'Mission details: Atena',
+			forbiddenHeading: 'Detalles de misión: Atena',
+		},
+		{
+			route: '/es/atena',
+			locale: 'es',
+			heading: 'Detalles de misión: Atena',
+			forbiddenHeading: 'Mission details: Atena',
+		},
+		{
+			route: '/skills',
+			locale: 'en',
+			heading: 'Skills inventory',
+			forbiddenHeading: 'Inventario de habilidades',
+		},
+		{
+			route: '/es/skills',
+			locale: 'es',
+			heading: 'Inventario de habilidades',
+			forbiddenHeading: 'Skills inventory',
+		},
+		{
+			route: '/components',
+			locale: 'en',
+			heading: 'UI components showcase',
+			forbiddenHeading: 'Muestra de componentes UI',
+		},
+		{
+			route: '/es/components',
+			locale: 'es',
+			heading: 'Muestra de componentes UI',
+			forbiddenHeading: 'UI components showcase',
+		},
+	] as const) {
+		test(`${scenario.route} renders only its canonical localized presentation`, async ({
+			page,
+		}) => {
+			const response = await page.goto(scenario.route);
+			expect(response?.ok()).toBe(true);
+			await expect(page.locator('html')).toHaveAttribute('lang', scenario.locale);
+			await expect(page.locator('main')).toHaveCount(1);
+			await expect(page.getByRole('heading', { name: scenario.heading })).toBeVisible();
+			await expect(
+				page.getByRole('heading', { name: scenario.forbiddenHeading })
+			).toHaveCount(0);
+		});
+	}
+});

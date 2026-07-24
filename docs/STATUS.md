@@ -4,52 +4,45 @@ This document classifies repository-level statements as of **2026-07-24**. It is
 
 ## Status vocabulary
 
-| Status | Meaning |
-| --- | --- |
+| Status          | Meaning                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------- |
 | **Implemented** | Present in the current `develop` source or versioned configuration and directly verifiable. |
-| **In progress** | Partially implemented; an open issue identifies concrete remaining work. |
-| **Planned** | Approved future work with no current implementation. |
-| **Blocked** | Work or automation cannot proceed because of a named external constraint. |
-| **Deprecated** | Still present for compatibility but prohibited for new work. |
-| **Historical** | Point-in-time evidence or context that no longer defines current behavior. |
-| **Discarded** | Explicitly rejected or superseded. |
-| **Unconfirmed** | Not verified against the current branch, repository settings or an authoritative result. |
+| **In progress** | Partially implemented; an open issue identifies concrete remaining work.                    |
+| **Planned**     | Approved future work with no current implementation.                                        |
+| **Blocked**     | Work or automation cannot proceed because of a named external constraint.                   |
+| **Deprecated**  | Still present for compatibility but prohibited for new work.                                |
+| **Historical**  | Point-in-time evidence or context that no longer defines current behavior.                  |
+| **Discarded**   | Explicitly rejected or superseded.                                                          |
+| **Unconfirmed** | Not verified against the current branch, repository settings or an authoritative result.    |
 
 ## Implemented
 
-| Area | Verified repository evidence |
-| --- | --- |
-| Static site | Astro build scripts and static route implementation. |
-| Toolchain | Bun is pinned through `packageManager`; dependencies and scripts are defined in `package.json` and resolved by `bun.lock`. |
-| Architecture | Pragmatic Feature-Sliced Design with executable import-boundary checks. |
-| Localization foundation | English-default and `/es` routing, granular typed UI catalogs, localized profile/experience/project/editorial content and Astro-native route helpers. |
-| Localization enforcement | Source catalog/content/copy checks, generated-route checks and bilingual browser coverage. |
-| Testing | Vitest unit tests, Playwright browser suites, Axe accessibility gates and pinned-Docker visual comparison. |
-| Performance | Route-level budgets, bundle reporting and Lighthouse commands. |
-| Development environment | Versioned Dev Container with pinned Bun and Playwright, non-root user, Docker access and lifecycle validation. |
-| Workflow definitions | Pull-request CI/preview workflows for `main`, post-integration quality, scheduled quality, CodeQL and production deployment definitions. |
-| Branch roles | `develop` is the current integration base; `main` is the default and production branch; `resume-assets` supplies canonical CV artifacts. |
+| Area                      | Verified repository evidence                                                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static site               | Astro build scripts and static route implementation.                                                                                                           |
+| Toolchain                 | Bun is pinned through `packageManager`; dependencies and scripts are defined in `package.json` and resolved by `bun.lock`.                                     |
+| Architecture              | Pragmatic Feature-Sliced Design with executable import-boundary checks.                                                                                        |
+| Localization architecture | English-default and `/es` routing, granular typed UI catalogs, localized profile/experience/research/project/editorial content and Astro-native route helpers. |
+| Localization enforcement  | Source catalog/content/copy checks, generated-route checks, bilingual browser coverage and unit regressions that prohibit the removed legacy runtime.          |
+| Testing                   | Vitest unit tests, Playwright browser suites, Axe accessibility gates and pinned-Docker visual comparison.                                                     |
+| Performance               | Route-level budgets, bundle reporting and Lighthouse commands.                                                                                                 |
+| Development environment   | Versioned Dev Container with pinned Bun and Playwright, non-root user, Docker access and lifecycle validation.                                                 |
+| Workflow definitions      | Pull-request CI/preview workflows for `main`, post-integration quality, scheduled quality, CodeQL and production deployment definitions.                       |
+| Branch roles              | `develop` is the current integration base; `main` is the default and production branch; `resume-assets` supplies canonical CV artifacts.                       |
+
+The localization runtime no longer contains monolithic locale dictionaries, the flattened mixed-value translator, `useTranslations()`, `useTranslationsList()`, duplicated Atena/Skills/Components route implementations or the six-file hardcoded-copy debt baseline.
 
 ## In progress
 
-| Area | Remaining work |
-| --- | --- |
-| Legacy localization cleanup | Issue #143 must remove the remaining monolithic locale dictionaries, mixed-value translator, `useTranslationsList()` consumers, duplicated copy and the temporary six-file hardcoded-copy debt baseline. |
-| i18n roadmap closure | Issue #144 tracks the completed migration sequence and closes only after #143 is complete and the roadmap description reflects the final state. |
+| Area                 | Remaining work                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| i18n roadmap closure | Issue #144 must record completion of #143 and close after final validation and merge. |
 
 No other roadmap item is documented here as implemented functionality.
 
 ## Deprecated
 
-The following code may still exist on `develop` only as temporary compatibility for issue #143:
-
-- root monolithic `en.json` and `es.json` locale dictionaries;
-- the old flattening and mixed `string | string[]` translation API;
-- `useTranslationsList()`;
-- component-local bilingual copy in the six baselined legacy routes;
-- the exact hardcoded-copy debt entries protecting those routes.
-
-Do not add new consumers, keys or exceptions to these paths.
+No localization compatibility runtime remains. Reintroducing monolithic locale files, mixed scalar/array translators, manual locale-prefix helpers or direct locale imports is prohibited and covered by executable checks.
 
 ## Blocked
 

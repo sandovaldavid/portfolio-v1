@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
 	EXPERIENCE_METADATA,
@@ -40,7 +40,7 @@ describe('localized professional experience content', () => {
 		expect(config).toContain('experienceId: stableContentId');
 		expect(config).toContain('achievements: z.array(nonEmptyString).min(1)');
 		expect(config).toContain(
-			'export const collections = { blog, devlog, portfolioProfile, experience, projects }'
+			'export const collections = { blog, devlog, portfolioProfile, experience, research, projects }'
 		);
 	});
 
@@ -94,10 +94,9 @@ describe('localized professional experience content', () => {
 		}
 	});
 
-	it('loads experience through the entity and removes dictionary-backed records', () => {
+	it('loads experience and research through canonical entities only', () => {
 		const query = readSource('src/entities/experience/model/queries.ts');
 		const widget = readSource('src/widgets/experience/ui/Experience.astro');
-		const legacyTranslator = readSource('src/shared/lib/i18n/translations.ts');
 		const research = readSource('src/widgets/research-content/ui/ResearchContent.astro');
 
 		expect(query).toContain("getCollection('experience'");
@@ -106,17 +105,12 @@ describe('localized professional experience content', () => {
 		expect(widget).toContain('await getExperienceData(lang)');
 		expect(widget).not.toContain('useTranslationsList');
 		expect(widget).not.toMatch(/\bconst\s+tList\b/);
-
+		expect(research).toContain('getResearchContent');
+		expect(research).not.toContain('useTranslationsList');
+		expect(existsSync('src/shared/lib/i18n/translations.ts')).toBe(false);
 		for (const locale of locales) {
-			const legacy = readJson<Record<string, unknown>>(
-				`src/shared/config/i18n/locales/${locale}.json`
-			);
-			expect(legacy).not.toHaveProperty('experience');
+			expect(existsSync(`src/shared/config/i18n/locales/${locale}.json`)).toBe(false);
 		}
-
-		// Research remains the final transitional structured-list consumer until its roadmap migration.
-		expect(legacyTranslator).toContain('export function useTranslationsList');
-		expect(research).toContain('useTranslationsList');
 	});
 
 	it('uses stable IDs for the ARIA tab and panel relationship', () => {

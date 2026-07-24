@@ -2,15 +2,14 @@
 import { render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
-import { DevlogDetail } from '@widgets/devlog';
 import {
 	getDevlogLocalizedPaths,
 	getDevlogPost,
 	getDevlogPosts,
 	getDevlogSlug,
 } from '@entities/devlog';
-import { getLanguageFromLocale, Language } from '@shared/config/i18n';
-import { useTranslations } from '@shared/lib/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale, Language } from '@shared/config/i18n';
+import { DevlogDetail } from '@widgets/devlog';
 
 export async function getStaticPaths() {
 	const posts = await getDevlogPosts(Language.SPANISH);
@@ -21,7 +20,7 @@ export async function getStaticPaths() {
 
 const lang = getLanguageFromLocale(Astro.currentLocale);
 const slug = Astro.params.slug ?? '';
-const t = useTranslations(lang);
+const tDevlog = createScopedUiTranslator(lang, 'pages.devlog');
 const post = await getDevlogPost(lang, slug);
 
 if (!post) {
@@ -46,7 +45,7 @@ const { Content } = await render(post);
 		<DevlogDetail
 			{post}
 			{Content}
-			backText={t('devlog.back')}
+			backText={tDevlog('back')}
 			backLink={getRelativeLocaleUrl(lang, 'devlog')}
 		/>
 	</div>

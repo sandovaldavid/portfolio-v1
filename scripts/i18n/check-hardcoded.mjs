@@ -1,7 +1,6 @@
-import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { HARD_CODED_COPY_DEBT_BASELINE, HARD_CODED_TEXT_ALLOWLIST } from './config.mjs';
+import { HARD_CODED_TEXT_ALLOWLIST } from './config.mjs';
 import {
 	assertNoIssues,
 	isDirectExecution,
@@ -204,104 +203,15 @@ function inspectDomTextSinks(source, file, findings, allowlist) {
 	}
 }
 
-/** @param {{ message: string }[]} findings */
-function findingsDigest(findings) {
-	return createHash('sha256')
-		.update(
-			findings
-				.map(finding => finding.message)
-				.sort()
-				.join('\n')
-		)
-		.digest('hex');
-}
-
-/**
- * @param {{ file: string; sourceFile: string; message: string }[]} findings
- * @param {readonly { file: string; count: number; digest: string; reason: string }[]} debtBaseline
- */
-function applyDebtBaseline(findings, debtBaseline) {
-	/** @type {{ file: string; message: string }[]} */
-	const issues = [];
-	const baselineByFile = new Map();
-	for (const entry of debtBaseline) {
-		if (baselineByFile.has(entry.file)) {
-			issues.push({
-				file: 'scripts/i18n/config.mjs',
-				message: `duplicate hardcoded-copy debt baseline entry for ${entry.file}`,
-			});
-			continue;
-		}
-		baselineByFile.set(entry.file, entry);
-		if (!entry.reason.trim()) {
-			issues.push({
-				file: 'scripts/i18n/config.mjs',
-				message: `hardcoded-copy debt baseline for ${entry.file} must include a non-empty reason`,
-			});
-		}
-		if (
-			!Number.isInteger(entry.count) ||
-			entry.count < 1 ||
-			!/^[a-f0-9]{64}$/.test(entry.digest)
-		) {
-			issues.push({
-				file: 'scripts/i18n/config.mjs',
-				message: `hardcoded-copy debt baseline for ${entry.file} has an invalid count or digest`,
-			});
-		}
-	}
-
-	const findingsByFile = new Map();
-	for (const finding of findings) {
-		const fileFindings = findingsByFile.get(finding.sourceFile) ?? [];
-		fileFindings.push(finding);
-		findingsByFile.set(finding.sourceFile, fileFindings);
-	}
-
-	let baselinedFindings = 0;
-	for (const [file, fileFindings] of findingsByFile) {
-		const baseline = baselineByFile.get(file);
-		if (!baseline) {
-			issues.push(...fileFindings);
-			continue;
-		}
-
-		const digest = findingsDigest(fileFindings);
-		if (fileFindings.length === baseline.count && digest === baseline.digest) {
-			baselinedFindings += fileFindings.length;
-			continue;
-		}
-
-		issues.push({
-			file: 'scripts/i18n/config.mjs',
-			message: `hardcoded-copy debt baseline drift for ${file}: expected ${baseline.count} finding(s) / ${baseline.digest}, received ${fileFindings.length} / ${digest}; remove migrated debt or review and update the exact baseline`,
-		});
-		issues.push(...fileFindings);
-	}
-
-	for (const entry of debtBaseline) {
-		if (!findingsByFile.has(entry.file)) {
-			issues.push({
-				file: 'scripts/i18n/config.mjs',
-				message: `stale hardcoded-copy debt baseline for ${entry.file}; remove the entry because the debt no longer exists`,
-			});
-		}
-	}
-
-	return { issues, baselinedFindings };
-}
-
 /**
  * @param {{
  *   rootDir?: string;
  *   allowlist?: readonly { file: string; value: string; reason: string }[];
- *   debtBaseline?: readonly { file: string; count: number; digest: string; reason: string }[];
  * }} [options]
  */
 export function validateHardcodedCopy({
 	rootDir = REPOSITORY_ROOT,
 	allowlist = rootDir === REPOSITORY_ROOT ? HARD_CODED_TEXT_ALLOWLIST : [],
-	debtBaseline = rootDir === REPOSITORY_ROOT ? HARD_CODED_COPY_DEBT_BASELINE : [],
 } = {}) {
 	const sourceRoot = path.join(rootDir, 'src');
 	/** @type {{ file: string; sourceFile: string; message: string }[]} */
@@ -345,9 +255,8 @@ export function validateHardcodedCopy({
 		}
 	}
 
-	const { issues: baselineIssues, baselinedFindings } = applyDebtBaseline(findings, debtBaseline);
-	assertNoIssues('i18n:hardcoded', [...configurationIssues, ...baselineIssues]);
-	return `${inspectedFiles} production Astro/TypeScript file(s) checked; ${baselinedFindings} exact legacy finding(s) remain frozen for #143.`;
+	assertNoIssues('i18n:hardcoded', [...configurationIssues, ...findings]);
+	return `${inspectedFiles} production Astro/TypeScript file(s) checked; no hardcoded user-facing copy found.`;
 }
 
 if (isDirectExecution(import.meta.url)) {

@@ -1,5 +1,4 @@
-import { createHash } from 'node:crypto';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -19,12 +18,6 @@ function createFixture(files: Record<string, string>): string {
 		writeFileSync(filePath, content);
 	}
 	return root;
-}
-
-function diagnosticDigest(messages: string[]): string {
-	return createHash('sha256')
-		.update([...messages].sort().join('\n'))
-		.digest('hex');
 }
 
 afterEach(() => {
@@ -63,6 +56,8 @@ describe('i18n repository enforcement', () => {
 				'{"profileId":"profile","locale":"es"}',
 			'src/content/experience/en/role.json': '{"experienceId":"role","locale":"en"}',
 			'src/content/experience/es/.gitkeep': '',
+			'src/content/research/en/study.json': '{"researchId":"study","locale":"en"}',
+			'src/content/research/es/study.json': '{"researchId":"study","locale":"es"}',
 			'src/content/projects/en/project.json': '{"projectId":"project","locale":"en"}',
 			'src/content/projects/es/project.json': '{"projectId":"project","locale":"es"}',
 			'src/content/blog/en/post.mdx': '---\ntranslationKey: post\n---\n',
@@ -100,30 +95,14 @@ describe('i18n repository enforcement', () => {
 		expect(() => validateHardcodedCopy({ rootDir: root })).not.toThrow();
 	});
 
-	it('freezes known migration debt exactly and rejects baseline drift', () => {
-		const message =
-			'hardcoded visible text "Legacy route copy"; use the owning catalog or content source';
-		const root = createFixture({
-			'src/pages/legacy.astro': '<p>Legacy route copy</p>\n',
-		});
-		const debtBaseline = [
-			{
-				file: 'src/pages/legacy.astro',
-				count: 1,
-				digest: diagnosticDigest([message]),
-				reason: 'Fixture debt used to verify exact-baseline behavior.',
-			},
-		];
+	it('does not expose a migration-debt bypass', () => {
+		const config = readFileSync('scripts/i18n/config.mjs', 'utf8');
+		const checker = readFileSync('scripts/i18n/check-hardcoded.mjs', 'utf8');
 
-		expect(() => validateHardcodedCopy({ rootDir: root, debtBaseline })).not.toThrow();
-
-		writeFileSync(
-			path.join(root, 'src/pages/legacy.astro'),
-			'<p>Legacy route copy</p><p>New untranslated copy</p>\n'
-		);
-		expect(() => validateHardcodedCopy({ rootDir: root, debtBaseline })).toThrowError(
-			/hardcoded-copy debt baseline drift for src\/pages\/legacy\.astro/
-		);
+		expect(config).not.toContain('HARD_CODED_COPY_DEBT_BASELINE');
+		expect(checker).not.toContain('debtBaseline');
+		expect(checker).not.toContain('applyDebtBaseline');
+		expect(checker).not.toContain('findingsDigest');
 	});
 
 	it('reports broken generated alternates and English-only Spanish output', () => {
