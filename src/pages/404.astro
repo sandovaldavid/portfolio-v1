@@ -7,14 +7,26 @@ import QuoteRight from '@assets/icons/QuoteRight.astro';
 import '@app/styles/global.css';
 
 import { SectionContainer, LinkButton, Button } from '@shared/ui';
-import { createScopedUiTranslator, getLanguageFromLocale } from '@shared/config/i18n';
+import {
+	createScopedUiTranslator,
+	getUiCatalogNamespace,
+	Language,
+} from '@shared/config/i18n';
 
-const lang = getLanguageFromLocale(Astro.currentLocale);
-const tErrors = createScopedUiTranslator(lang, 'errors');
+const defaultLang = Language.ENGLISH;
+const tErrors = createScopedUiTranslator(defaultLang, 'errors');
+const localizedErrors = {
+	[Language.ENGLISH]: getUiCatalogNamespace(Language.ENGLISH, 'errors'),
+	[Language.SPANISH]: getUiCatalogNamespace(Language.SPANISH, 'errors'),
+};
+const localizedHomePaths = {
+	[Language.ENGLISH]: getRelativeLocaleUrl(Language.ENGLISH, ''),
+	[Language.SPANISH]: getRelativeLocaleUrl(Language.SPANISH, ''),
+};
 ---
 
 <!doctype html>
-<html {lang}>
+<html lang={defaultLang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -28,6 +40,42 @@ const tErrors = createScopedUiTranslator(lang, 'errors');
 					(!('theme' in localStorage) &&
 						window.matchMedia('(prefers-color-scheme: dark)').matches)
 			);
+		</script>
+		<script define:vars={{ localizedErrors, localizedHomePaths }}>
+			const locale = window.location.pathname === '/es' || window.location.pathname.startsWith('/es/')
+				? 'es'
+				: 'en';
+			const localizedCopy = localizedErrors[locale];
+
+			document.documentElement.lang = locale;
+			document.title = localizedCopy.notFoundPageTitle;
+			document
+				.querySelector('meta[name="description"]')
+				?.setAttribute('content', localizedCopy.notFoundDescription);
+
+			const applyLocalizedNotFoundCopy = () => {
+				const textById = {
+					'not-found-title': localizedCopy.notFoundTitle,
+					'not-found-message': localizedCopy.notFoundMessage,
+					'not-found-home-label': localizedCopy.homeButton,
+					'not-found-back-label': localizedCopy.backButton,
+					'not-found-quote': localizedCopy.notFoundQuote,
+				};
+
+				for (const [id, value] of Object.entries(textById)) {
+					const element = document.getElementById(id);
+					if (element) element.textContent = value;
+				}
+
+				const homeLink = document.querySelector('#not-found-home-link a');
+				homeLink?.setAttribute('href', localizedHomePaths[locale]);
+			};
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', applyLocalizedNotFoundCopy, { once: true });
+			} else {
+				applyLocalizedNotFoundCopy();
+			}
 		</script>
 	</head>
 
@@ -69,22 +117,30 @@ const tErrors = createScopedUiTranslator(lang, 'errors');
 					</div>
 
 					<div class="space-y-4">
-						<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-content-strong">
+						<h1
+							id="not-found-title"
+							class="text-3xl md:text-4xl lg:text-5xl font-bold text-content-strong"
+						>
 							{tErrors('notFoundTitle')}
 						</h1>
-						<p class="text-lg md:text-xl text-content max-w-2xl mx-auto">
+						<p
+							id="not-found-message"
+							class="text-lg md:text-xl text-content max-w-2xl mx-auto"
+						>
 							{tErrors('notFoundMessage')}
 						</p>
 					</div>
 
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-						<LinkButton href={getRelativeLocaleUrl(lang, '')} target="_self">
-							<Home class="size-5" aria-hidden="true" />
-							{tErrors('homeButton')}
-						</LinkButton>
+						<div id="not-found-home-link">
+							<LinkButton href={localizedHomePaths[defaultLang]} target="_self">
+								<Home class="size-5" aria-hidden="true" />
+								<span id="not-found-home-label">{tErrors('homeButton')}</span>
+							</LinkButton>
+						</div>
 						<Button variant="secondary" onclick="history.back()">
 							<ArrowLeft class="size-5" aria-hidden="true" />
-							{tErrors('backButton')}
+							<span id="not-found-back-label">{tErrors('backButton')}</span>
 						</Button>
 					</div>
 
@@ -94,11 +150,11 @@ const tErrors = createScopedUiTranslator(lang, 'errors');
 								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
 								aria-hidden="true"
 							/>
-							<p class="text-base text-content italic leading-relaxed">
+							<p id="not-found-quote" class="text-base text-content italic leading-relaxed">
 								{tErrors('notFoundQuote')}
 							</p>
 							<QuoteRight
-								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60 mt-0.5"
+								class="size-5 shrink-0 text-primary-500 dark:text-primary-400 opacity-60"
 								aria-hidden="true"
 							/>
 						</div>
