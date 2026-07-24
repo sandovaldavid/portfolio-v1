@@ -144,6 +144,7 @@ test.describe('deduplicated legacy page pairs', () => {
 			const response = await page.goto(scenario.route);
 			expect(response?.ok()).toBe(true);
 			await expect(page.locator('html')).toHaveAttribute('lang', scenario.locale);
+			await expect(page.locator('main')).toHaveCount(1);
 			await expect(page.getByRole('heading', { name: scenario.heading })).toBeVisible();
 			await expect(page.getByRole('heading', { name: scenario.forbiddenHeading })).toHaveCount(0);
 		});
