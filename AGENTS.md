@@ -80,7 +80,7 @@ Required practices:
 - Classify text as UI copy, structured portfolio content, editorial content or language-neutral data and update only its canonical owner.
 - Update English and Spanish together, including visible copy, accessibility labels and localized metadata.
 - Do not add monolithic locale files, component-local bilingual copy maps, raw HTML translations or a parallel translation runtime.
-- Treat the legacy mixed-value translator and remaining legacy dictionaries as **Deprecated** compatibility code owned by issue #143; do not extend them.
+- Use only the typed granular scalar catalog API, schema-validated localized content collections and Astro-native locale helpers; missing translations are build defects and must fail loudly.
 - Preserve keyboard navigation, semantic HTML, reduced-motion behavior and light/dark themes.
 - Add browser coverage for interactions, navigation lifecycle or responsive behavior.
 - Do not add seniority, impact, coverage or performance claims without verifiable evidence.
