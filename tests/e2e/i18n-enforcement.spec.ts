@@ -68,13 +68,35 @@ test.describe('mandatory bilingual route matrix', () => {
 	}
 
 	for (const scenario of [
-		{ route: '/missing-i18n-quality-route', locale: 'en' },
-		{ route: '/es/missing-i18n-quality-route', locale: 'es' },
+		{
+			route: '/missing-i18n-quality-route',
+			locale: 'en',
+			title: '404 - Page not found | David Sandoval',
+			heading: 'Page not found',
+			homeLabel: 'Go to home',
+			homePath: '/',
+		},
+		{
+			route: '/es/missing-i18n-quality-route',
+			locale: 'es',
+			title: '404 - Página no encontrada | David Sandoval',
+			heading: 'Página no encontrada',
+			homeLabel: 'Ir al inicio',
+			homePath: '/es/',
+		},
 	] as const) {
 		test(`${scenario.route} preserves localized 404 behavior`, async ({ page }) => {
 			const response = await page.goto(scenario.route);
 			expect(response?.status()).toBe(404);
 			await expect(page.locator('html')).toHaveAttribute('lang', scenario.locale);
+			await expect(page).toHaveTitle(scenario.title);
+			await expect(
+				page.getByRole('heading', { level: 1, name: scenario.heading })
+			).toBeVisible();
+			await expect(page.getByRole('link', { name: scenario.homeLabel })).toHaveAttribute(
+				'href',
+				scenario.homePath
+			);
 		});
 	}
 });
