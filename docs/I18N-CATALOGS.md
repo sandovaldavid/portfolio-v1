@@ -1,16 +1,17 @@
 # Granular UI catalog implementation
 
-This document describes the executable UI-catalog foundation introduced by issue #132, the shared-shell migration completed by issue #133, the home-section migration implemented by issue #134 and the structured profile, experience, project and editorial migrations completed by issues #135–#138. The architectural ownership rules remain in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
+This document describes the supported scalar UI catalog API. Ownership rules for all localized content remain in [I18N.md](I18N.md), and the architectural decision is recorded in [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
 
 ## Scope
 
-The catalog is for short, reusable UI strings and interactive shell messages. Profile, biography, experience records, projects and case studies live in schema-validated content collections. Blog posts and devlog entries remain localized editorial Content Collections paired through explicit stable identities; they do not move into the UI catalog.
+The catalog owns short reusable strings and page presentation labels. It does not own domain records or long-form narrative.
 
-The legacy monolithic dictionaries and `useTranslationsList()` remain temporarily for consumers that have not yet migrated. They are compatibility debt and must not receive new domains.
+- Profile, experience, research and projects use schema-validated localized Content Collections.
+- Blog and devlog bodies remain localized editorial collections paired by `translationKey`.
+- URLs, assets, ordering, feature flags and technology IDs remain language-neutral TypeScript data.
+- There is no monolithic dictionary or mixed `string | string[]` translator.
 
 ## Mirrored module layout
-
-English and Spanish modules live below:
 
 ```text
 src/shared/config/i18n/locales/{locale}/
@@ -20,154 +21,143 @@ src/shared/config/i18n/locales/{locale}/
 ├── common.json
 ├── errors.json
 ├── footer.json
+├── metadata.json
 ├── navigation.json
 ├── recruiter.json
 ├── splash.json
 ├── theme.json
+├── pages/
+│   ├── atena.json
+│   ├── blog.json
+│   ├── components.json
+│   ├── devlog.json
+│   ├── research.json
+│   └── skills.json
 └── sections/
-    ├── hero.json
     ├── about.json
     ├── badges.json
     ├── experience.json
+    ├── hero.json
     ├── projects.json
     ├── research.json
-    ├── vision.json
-    └── tech-stack.json
+    ├── tech-stack.json
+    └── vision.json
 ```
 
-Every module contains scalar strings only. The Spanish catalog is checked against the English shape at compile time, while runtime validation checks flattened-key parity, unique namespaces and non-empty values.
+English and Spanish must have identical module paths and key sets. Every leaf value is a non-empty plain string. The English catalog provides the inferred compile-time shape, and Spanish must satisfy that shape.
 
-## Catalog consumers
+## Production consumers
 
-The following production surfaces consume granular catalogs directly:
+Granular catalogs own presentation text for:
 
 - desktop and mobile navigation;
-- resume and menu controls;
-- language and theme pickers;
-- skip links, dialog labels and shared accessibility text;
-- breadcrumbs and portfolio preview alternative text;
-- footer and contact sidebar;
-- recruiter quick links;
-- optional retro splash screen;
-- 404 page;
-- experience-tab accessibility and action labels;
-- project-card actions, card types, case-study labels and project-catalog metadata;
-- CLI terminal, shortcuts and secret-mode messages;
-- home hero, About, Research, Vision, Tech Stack, badges and section headings.
+- language, theme, recruiter and resume controls;
+- accessibility labels, breadcrumbs and metadata;
+- footer, contact sidebar, splash screen and 404 page;
+- CLI terminal labels and runtime messages;
+- home sections;
+- project cards and case-study labels;
+- blog and devlog indexes/details;
+- Atena, Skills, Components and Research pages.
 
-Home-section copy has no duplicate entries in the legacy dictionaries. Those compatibility dictionaries retain only domains that are still awaiting later roadmap migrations. Each focused home module is owned by its corresponding widget or by the application layout when the copy labels a page section.
-
-The CLI uses `cli.json` for all visible and runtime-generated text. `CLITerminalCatalog.astro` passes one locale namespace to `model/runtime.ts`; the runtime owns behavior and interpolation but contains no parallel English/Spanish copy map. Repository-authored terminal markup is assembled in code around escaped scalar translations instead of storing HTML inside locale files.
-
-## Locale-aware catalog consumers
-
-Issue #139 makes Astro the source of truth for locale routing. Astro components read `Astro.currentLocale` and convert it through `getLanguageFromLocale()` only when the catalog API requires the typed `Language` enum.
-
-`Layout.astro` creates ordinary English and Spanish route paths with `astro:i18n` and passes the resolved map through `RecruiterHUD` to `LanguagePicker`. Editorial detail routes may replace that map with verified `translationKey` counterparts. The picker owns labels and unavailable-state presentation, but it does not parse locale prefixes or generate routes.
+Structured values are loaded separately through entity APIs. For example, `pages.research` owns headings and actions, while `@entities/research` owns the thesis narrative, metrics, pipeline and architecture records.
 
 ## Public API
 
 `src/shared/config/i18n/catalog.ts` exports:
 
-- `translateUi(locale, key)` for one strongly typed key;
-- `createUiTranslator(locale)` for a locale-bound translator;
-- `getUiCatalog(locale)` for the complete flattened catalog;
-- `getUiCatalogNamespace(locale, namespace)` for one module;
-- `createScopedUiTranslator(locale, namespace)` for namespace-relative keys;
-- `validateUiCatalogs()` for executable parity and value validation;
-- `UiCatalogKey`, `UiCatalogNamespace` and scoped key types inferred from the English catalog.
+- `translateUi(locale, key)`;
+- `createUiTranslator(locale)`;
+- `getUiCatalog(locale)`;
+- `getUiCatalogNamespace(locale, namespace)`;
+- `createScopedUiTranslator(locale, namespace)`;
+- `validateUiCatalogs()`;
+- inferred catalog and scoped-key types;
+- `MissingUiTranslationError`.
 
 Example:
 
 ```ts
 import { createScopedUiTranslator, Language } from '@shared/config/i18n';
 
-const tNavigation = createScopedUiTranslator(Language.SPANISH, 'navigation');
-const projectsLabel = tNavigation('projects');
+const tBlog = createScopedUiTranslator(Language.SPANISH, 'pages.blog');
+const heading = tBlog('heading');
 ```
 
-## Missing translations
-
-Missing and empty values are build defects. The new catalog never returns the key and never falls back from Spanish to English. `translateUi()` throws `MissingUiTranslationError` with the locale and key so development, tests and production builds fail visibly.
-
-The legacy `useTranslations()` key-returning behavior remains only until its consumers migrate and issue #143 removes it.
+Missing or empty values throw. The API never returns the requested key and never falls back from Spanish to English.
 
 ## Adding a module or key
 
-1. Choose one cohesive domain and a semantic camelCase key.
-2. Add the same module path and key to English and Spanish.
-3. Keep the value a complete scalar string without HTML.
-4. Register a new module path in `UI_CATALOG_MODULES` and in both catalog objects when adding a file.
-5. Export no component-specific parallel translator.
-6. Interpolate dynamic values in the consumer and escape them before generating trusted markup.
-7. Run the repository checks and unit tests.
+1. Choose one cohesive domain.
+2. Add the same module path and semantic camelCase key to `en` and `es`.
+3. Store a complete scalar string without HTML.
+4. Import both modules into `catalog.ts`.
+5. Register the namespace in `UI_CATALOG_MODULES`.
+6. Resolve dynamic values in the consumer with the shared interpolation helper when necessary.
+7. Run catalog, repository and browser gates.
 
 ```bash
+bun run check:i18n:catalogs
 bun run check
 bun run test:unit:ci
 bun run build
+bun run check:links
+bun run test:e2e:smoke
 ```
 
-Issue #141 will add repository-wide hardcoded-copy and counterpart enforcement after the migration issues have moved production consumers to this API.
+## Structured content boundaries
 
-## Structured profile content
-
-Issue #135 moves long-form profile and biography records out of UI catalogs and legacy dictionaries. The authoritative localized entries are:
+### Portfolio profile
 
 ```text
-src/content/portfolio-profile/
-├── en/profile.json
-└── es/profile.json
+src/content/portfolio-profile/{en,es}/profile.json
 ```
 
-The `portfolioProfile` collection validates stable identity, locale, SEO metadata, summary, biography paragraphs, focus areas, availability, location, work mode, research positioning and the current-role summary. Language-neutral identity and contact values remain in `siteConfig`.
+Loaded through `@entities/profile`. The catalog retains only headings, controls and accessibility text.
 
-Consumers load the entry through the public `@entities/profile` API. UI catalogs retain only headings, labels, actions and accessibility text; they do not own long biography records.
-
-The home About widget reuses the localized profile summary, while `/about` and `/es/about` use the corresponding biography, focus areas and SEO metadata from the same entry.
-
-## Structured experience content
-
-Issue #136 moves professional experience out of the mixed-value translator and into one validated entry per stable role and locale:
+### Experience
 
 ```text
-src/content/experience/
-├── en/
-│   ├── atena-software-engineer.json
-│   ├── chirasoft-fullstack-developer.json
-│   └── municipality-piura-software-developer.json
-└── es/
-    └── ... mirrored entries
+src/content/experience/{en,es}/<experience-id>.json
 ```
 
-Each entry owns localized company presentation, role title, date label and achievement bullets. `src/entities/experience/model/metadata.ts` owns language-neutral dates, ordering, featured status and technology IDs. The entity joins both sources by `experienceId`, rejects duplicates or missing locale counterparts and exposes deterministic records to the experience widget.
+Loaded through `@entities/experience` and joined to language-neutral metadata by `experienceId`. Atena detail pages reuse this same source instead of maintaining page-local achievements.
 
-Technical tags intentionally use stable language-neutral labels in both locales. The `sections.experience` UI module owns only reusable labels such as the section title and optional evidence-link action.
-
-## Structured project content
-
-Issue #137 moves project summaries and case studies into one validated entry per stable project and locale:
+### Research
 
 ```text
-src/content/projects/
-├── en/
-│   └── <project-id>.json
-└── es/
-    └── <project-id>.json
+src/content/research/{en,es}/<research-id>.json
 ```
 
-Each entry owns localized title, description, category, image alternative text, case-study narrative, duration, role and optional evidence copy. `src/entities/project/model/metadata.ts` owns slugs, repository and demo URLs, image imports, technology IDs, ordering, featured state and evidence-source URLs.
+Loaded through `@entities/research`. Entries own narrative, metrics, pipeline steps, architecture and engineered features. `pages.research` owns only page labels, metadata and actions.
 
-The project entity joins both sources by `projectId`, rejects duplicate or missing locale entries and rejects localized evidence sources without matching language-neutral URLs. Project lists and detail routes consume the public entity API asynchronously. The `sections.projects` UI module owns only reusable card, action, case-study and catalog labels.
+### Projects
 
-The previous project records in `en.json` and `es.json`, the dictionary-backed `model/data.ts` builder and the special Yukidoke dictionary merge have been removed.
+```text
+src/content/projects/{en,es}/<project-id>.json
+```
 
-## Editorial translation identities
+Loaded through `@entities/project` and joined to language-neutral metadata by `projectId`.
 
-Issue #138 adds an explicit `translationKey` to every blog and devlog entry. The identity is immutable and language-neutral; filenames and public slugs remain locale-owned and may differ.
+### Editorial entries
 
-The blog and devlog entity APIs validate duplicate keys per locale and resolve counterparts through `translationKey`. Detail routes pass only verified paths to the language picker. An intentionally absent translation, or a draft-only blog counterpart in production, is rendered as unavailable instead of receiving a mechanically generated link.
+```text
+src/content/blog/{en,es}/<article>.mdx
+src/content/devlog/{en,es}/<entry>.md
+```
 
-Editorial content remains outside the UI catalog. RSS continues to read published blog entries independently for English and Spanish.
+Bodies remain outside the UI catalog. Page chrome uses `pages.blog` and `pages.devlog`; translated counterparts are resolved through stable `translationKey` values.
 
-`useTranslationsList()` remains transitional only because the unmigrated research detail still consumes structured arrays. Experience and projects are no longer consumers, and the helper must not receive new domains before issue #143 removes the legacy runtime.
+## Prohibited compatibility patterns
+
+Do not add or restore:
+
+- `locales/en.json` or `locales/es.json`;
+- flattened dictionary exports;
+- `useTranslations()` or `useTranslationsList()`;
+- mixed scalar/array translation contracts;
+- direct locale JSON imports outside `catalog.ts`;
+- component-specific parallel translators;
+- local bilingual copy maps.
+
+The absence of these paths and symbols is protected by unit tests and the hardcoded-copy gate.
