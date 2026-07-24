@@ -52,7 +52,9 @@ function attributes(tag) {
 	/** @type {Record<string, string>} */
 	const values = {};
 	for (const match of tag.matchAll(/([:@A-Za-z][A-Za-z0-9:._-]*)\s*=\s*(["'])(.*?)\2/gs)) {
-		values[match[1].toLowerCase()] = match[3];
+		const name = match[1];
+		const value = match[3];
+		if (name && value !== undefined) values[name.toLowerCase()] = value;
 	}
 	return values;
 }
@@ -139,11 +141,14 @@ export function validateGeneratedLocaleRoutes({
 				});
 			}
 
-			const alternates = linkTags.filter(
-				link => link.attributes.rel === 'alternate' && link.attributes.hreflang
+			const pageAlternates = linkTags.filter(
+				link =>
+					link.attributes.rel === 'alternate' &&
+					link.attributes.hreflang &&
+					link.attributes.type !== 'application/rss+xml'
 			);
 			const localeAlternates = new Map(
-				alternates
+				pageAlternates
 					.filter(link => ['en', 'es', 'x-default'].includes(link.attributes.hreflang))
 					.map(link => [link.attributes.hreflang, link.attributes.href])
 			);
