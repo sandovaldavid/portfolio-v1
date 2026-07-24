@@ -31,7 +31,21 @@ bun run test:e2e:report
 
 ### Focused quality commands
 
-The `format:*`, `lint:*`, `typecheck:*`, `check:docs`, `check:devcontainer` and `check:links` scripts exist so a failing part of `check` can be reproduced independently. `format` and `lint:fix` modify files; their corresponding check commands do not.
+The `format:*`, `lint:*`, `typecheck:*`, `check:docs`, `check:devcontainer`, `check:i18n:*` and `check:links` scripts exist so a failing part of `check` can be reproduced independently. `format` and `lint:fix` modify files; their corresponding check commands do not.
+
+### Internationalization quality gates
+
+```bash
+bun run check:i18n:catalogs
+bun run check:i18n:content
+bun run check:i18n:hardcoded
+bun run check:i18n
+
+bun run build
+bun run check:i18n:routes
+```
+
+The source-level catalog, content and hardcoded-copy checks are mandatory parts of `bun run check`. Generated locale routes require fresh build output and therefore run through `bun run check:links` after the normal internal-link audit. The enforced contracts and exact allowlist policy are documented in [I18N-ENFORCEMENT.md](I18N-ENFORCEMENT.md).
 
 ### Browser test depth
 
@@ -58,7 +72,7 @@ Useful tasks are available through **Tasks: Run Task**, including quality checks
 bun run check
 ```
 
-`check` runs repository-wide Prettier validation, active-document link validation, Dev Container contract validation, ESLint, the Feature-Sliced Design boundary checker, Astro diagnostics and strict tooling type-checking.
+`check` runs repository-wide Prettier validation, active-document link validation, Dev Container contract validation, source-level i18n enforcement, ESLint, the Feature-Sliced Design boundary checker, Astro diagnostics and strict tooling type-checking.
 
 Documentation links can also be checked independently:
 
@@ -91,7 +105,7 @@ bun run test:ui
 bun run test:debug
 ```
 
-- `test:e2e:smoke` checks critical English and Spanish routes in Chromium and blocks serious or critical Axe violations.
+- `test:e2e:smoke` checks critical English and Spanish routes in Chromium, blocks serious or critical Axe violations and runs the mandatory bilingual route matrix.
 - `test:e2e:report` serves the latest local HTML report on forwarded `http://localhost:9323` from the rebuilt Dev Container.
 - `test:e2e:desktop` runs Chromium, Firefox and WebKit.
 - `test:e2e:extended` adds Mobile Chrome and Mobile Safari.
@@ -113,7 +127,7 @@ bun run build
 bun run check:links
 ```
 
-`check:links` validates internal `href` and `src` references emitted into `dist/**/*.html`. External URLs are excluded so branch protection does not depend on third-party availability.
+`check:links` validates internal `href` and `src` references emitted into `dist/**/*.html`, then verifies generated locale, canonical, alternate and language-picker targets. External URLs are excluded so branch protection does not depend on third-party availability.
 
 ## Lighthouse
 
