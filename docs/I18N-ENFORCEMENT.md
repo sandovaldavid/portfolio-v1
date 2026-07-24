@@ -1,6 +1,6 @@
 # Internationalization enforcement
 
-This document owns the executable quality gates for the localization architecture defined in [I18N.md](I18N.md) and [ADR-0001](adr/0001-granular-bilingual-content-architecture.md).
+This document owns the executable quality gates for the localization architecture defined in [I18N.md](I18N.md). It documents checks, exact exceptions and contributor diagnostics; it does not redefine content ownership.
 
 ## Commands
 
@@ -12,123 +12,122 @@ bun run check:i18n
 
 bun run build
 bun run check:i18n:routes
-bun run test:e2e:smoke
 ```
 
-`bun run check` includes the source-level catalog, content and hardcoded-copy gates. `bun run check:links` validates generated links and locale routes against fresh `dist` output after `bun run build`.
+`bun run check` includes the three source-level checks through `check:i18n`. `bun run check:links` runs generated-link validation and then `check:i18n:routes`, so route validation evaluates fresh `dist` output after `bun run build`.
 
 ## Catalog enforcement
 
-`scripts/i18n/check-catalogs.mjs` validates mirrored modules under `src/shared/config/i18n/locales/{locale}/`.
+`scripts/i18n/check-catalogs.mjs` validates mirrored modules below `src/shared/config/i18n/locales/{locale}/`.
 
 It rejects:
 
 - unsupported locale directories;
-- modules present in only one locale;
-- case-insensitive path collisions;
+- a module present in only one supported locale;
+- case-insensitive module-path collisions;
 - duplicate JSON keys;
-- missing English or Spanish keys;
+- missing English/Spanish keys;
 - empty values;
-- non-scalar leaf values;
+- arrays, records or other non-scalar leaves;
 - HTML inside catalog strings;
-- modules not registered by `catalog.ts`.
+- locale modules not registered by `catalog.ts`.
 
-Diagnostics include the locale module, key and source line when available.
+Diagnostics identify the locale module, key and source line when available.
 
 ## Structured and editorial content enforcement
 
-`scripts/i18n/check-content.mjs` complements Astro Content Collection schemas.
+`scripts/i18n/check-content.mjs` complements Astro Content Collection validation.
 
-For profile, experience, research and projects it verifies:
+For profile, experience and projects it verifies:
 
-- only `en` and `es` directories exist;
-- each entry's `locale` matches its directory;
-- stable IDs use lowercase kebab-case;
+- only supported locale directories exist;
+- each entry locale matches its directory;
+- stable IDs use the documented lowercase kebab-case contract;
 - identities are unique inside a locale;
-- every stable ID has English and Spanish counterparts.
+- every required stable ID has English and Spanish counterparts.
 
 For blog and devlog it verifies:
 
 - every entry has a valid `translationKey`;
-- identities are unique per locale;
-- missing counterparts are rejected unless explicitly documented as intentionally single-language.
+- translation identities are unique inside each locale;
+- missing counterparts are rejected unless the entry is explicitly documented as intentionally single-language.
 
-The only current editorial exception is the unpublished English `draft-rss-test` fixture. Exceptions require an exact collection/key and a concrete reason; stale entries fail.
+The current intentional content exception is the unpublished English `draft-rss-test` fixture. Exceptions live in `scripts/i18n/config.mjs` and require an exact collection/key plus a concrete reason. Stale exceptions fail validation.
 
 ## Hardcoded-copy enforcement
 
 `scripts/i18n/check-hardcoded.mjs` scans production `.astro`, `.ts` and `.tsx` files outside canonical locale catalogs, content entries and assets.
 
-It rejects:
+It rejects high-confidence user-facing patterns:
 
 - literal visible phrases;
-- literal user-facing accessibility attributes;
-- literal DOM text and accessibility sinks;
-- local bilingual `copy`, `labels`, `messages` or `translations` maps;
+- literal `aria-label`, `aria-description`, `alt`, `title` and `placeholder` values;
+- literal DOM text and accessibility sinks in TypeScript, Astro frontmatter and client scripts;
+- local `copy`, `labels`, `messages` or `translations` objects with both locale branches;
 - locale ternaries selecting complete messages.
 
-The scanner intentionally ignores URLs, locale metadata such as `en_US`, CSS classes, source-code commands and single-token technical identities.
+The scanner targets user-facing sinks instead of treating every TypeScript string as translatable. URLs, locale codes, identifiers, CSS classes, source-code commands and decorative single-token metadata remain outside this rule.
 
-### Exact intentional allowlist
+### Intentional allowlist
 
-`scripts/i18n/config.mjs` may allow only an exact `file` + `value` entry with a non-empty reason. It is reserved for proper names, official product/company names and genuinely decorative non-linguistic values.
+The intentional allowlist accepts only exact `file` + `value` entries with a non-empty reason. It is reserved for proper names, official product/company names and genuinely decorative non-linguistic copy.
 
-Broad directory exclusions, generic regular expressions and unexplained phrases are prohibited. Stale entries fail. Real UI copy must move to its catalog or Content Collection.
+Broad directory exclusions, generic regular expressions and unexplained phrases are prohibited. Stale allowlist entries fail the check. Prefer moving real UI copy to its canonical catalog or Content Collection.
 
-There is no migration-debt baseline. Every detected hardcoded phrase fails immediately.
+### Temporary migration-debt baseline
 
-## Legacy-runtime absence
+The source-level enforcement is **Implemented**. Issue #143 is **In progress** and owns removal of the remaining compatibility debt.
 
-`tests/unit/i18n/legacy-removal.spec.ts` protects the final architecture by asserting that production does not contain or expose:
+`HARD_CODED_COPY_DEBT_BASELINE` currently freezes the exact diagnostics for six known legacy route files:
 
-- monolithic `locales/en.json` or `locales/es.json` files;
-- flattened dictionary modules;
-- `useTranslations()` or `useTranslationsList()`;
-- mixed scalar/array translation contracts;
-- `getLangFromUrl()` or `getLocalizedPath()`;
-- direct locale JSON imports outside `catalog.ts`.
+- English and Spanish Atena routes;
+- English and Spanish component-showcase routes;
+- English and Spanish skills routes.
 
-Do not replace a removed compatibility path with another adapter.
+Each entry stores the exact file, diagnostic count, SHA-256 digest and reason. The digest is calculated from sorted diagnostics, so formatting-only line movement does not change it while added, removed or modified copy does.
+
+This is not a directory bypass:
+
+- unregistered files always fail;
+- a new finding changes the digest and fails;
+- removing migrated debt changes the digest and requires deleting the matching baseline entry;
+- duplicate, stale, unexplained or malformed entries fail;
+- no additional debt file may be added merely to make the gate pass.
+
+The baseline and underlying legacy copy are **Deprecated** and must be removed together by #143.
 
 ## Generated-route enforcement
 
-`scripts/i18n/check-routes.mjs` reads built HTML from `dist` and verifies:
+`scripts/i18n/check-routes.mjs` reads built HTML from `dist` and validates the deployed contract.
 
-- the representative bilingual route matrix exists;
+It verifies:
+
+- the representative English/Spanish route matrix exists;
 - `404.html` exists;
-- `<html lang>` matches each route;
+- `<html lang>` matches each emitted route;
 - canonical URLs are self-referential;
 - every emitted `hreflang` target exists;
-- `x-default` resolves to the verified English route;
+- `x-default` matches the verified English route when English is available;
 - every rendered language-picker target exists;
-- Spanish pages exclude the versioned English-only phrase policy.
+- Spanish output excludes known English-only accessibility and error phrases.
 
-The matrix includes home, About, Atena, Components, Research, Skills, projects, project detail, blog, blog detail, devlog and devlog detail. Missing editorial counterparts remain valid only when the UI renders them unavailable and omits fabricated alternates.
+Missing editorial counterparts remain valid: unavailable locales render disabled controls and do not emit fabricated alternate links.
 
 ## Browser regression matrix
 
-`tests/e2e/i18n-enforcement.spec.ts` runs through `bun run test:e2e:smoke` against the production preview.
+`tests/e2e/i18n-enforcement.spec.ts` runs inside `bun run test:e2e:smoke` against built output. It covers home, About, research, project index/detail, blog index/article, devlog index/entry and English/Spanish 404 behavior.
 
-It validates:
-
-- active locale and route response;
-- self-referential canonical URLs;
-- English, Spanish and `x-default` alternates;
-- language-picker targets;
-- known English-only phrases absent from Spanish output;
-- localized static 404 behavior;
-- localized headings and no cross-language presentation on the former Atena, Skills and Components legacy route pairs.
+Each paired route validates locale, canonical, `en`/`es`/`x-default` targets and the language-picker route map.
 
 ## Contributor workflow
 
 When changing localized content or routes:
 
 1. update the canonical English and Spanish owners together;
-2. run the focused source gate;
+2. run the focused source check for the changed category;
 3. run `bun run check` and `bun run test:unit:ci`;
-4. remove stale generated output and run `bun run build`;
-5. run `bun run check:links`;
-6. run `bun run test:e2e:smoke`;
-7. inspect the complete diff and generated route behavior.
+4. run `bun run build` and `bun run check:links`;
+5. run `bun run test:e2e:smoke`;
+6. inspect the diff and do not bypass failures with broad allowlists or unreviewed debt changes.
 
-Do not bypass a failure with a broad allowlist, fallback locale or replacement compatibility runtime. A useful diagnostic identifies the file and missing locale, namespace, key, stable ID, route or prohibited literal.
+A diagnostic is actionable when it names the affected file and missing locale, namespace, key, stable ID, route or prohibited literal. Missing translations are build defects and are not resolved through English fallback.
