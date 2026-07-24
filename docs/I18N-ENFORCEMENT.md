@@ -62,17 +62,37 @@ It rejects high-confidence user-facing patterns:
 
 - literal visible text nodes containing complete phrases;
 - literal `aria-label`, `aria-description`, `alt`, `title` and `placeholder` values;
-- literal DOM text and accessibility sinks;
+- literal DOM text and accessibility sinks inside TypeScript, Astro frontmatter and client scripts;
 - local `copy`, `labels`, `messages` or `translations` objects with both `en` and `es` branches;
 - locale ternaries that select complete English and Spanish messages.
 
-The scanner intentionally focuses on syntactic user-facing sinks instead of treating every TypeScript string as translatable. URLs, identifiers, CSS classes, source-code commands and language-neutral technical metadata remain outside this rule.
+The scanner intentionally focuses on syntactic user-facing sinks instead of treating every TypeScript string as translatable. URLs, locale codes such as `en_US`, identifiers, CSS classes, source-code commands and single-token decorative metadata remain outside this rule.
 
-### Allowlist policy
+### Intentional allowlist
 
-The allowlist in `scripts/i18n/config.mjs` accepts only exact `file` + `value` entries with a non-empty reason. Broad directory exclusions, generic regular expressions and unexplained phrases are prohibited. A stale entry fails the check so temporary exceptions cannot remain indefinitely.
+The intentional allowlist in `scripts/i18n/config.mjs` accepts only exact `file` + `value` entries with a non-empty reason. It is reserved for proper names, official product/company names and genuinely decorative non-linguistic copy. Broad directory exclusions, generic regular expressions and unexplained phrases are prohibited. A stale entry fails the check.
 
-Prefer moving real UI copy to the owning catalog or Content Collection over adding an exception.
+Prefer moving real UI copy to the owning catalog or Content Collection over adding an intentional exception.
+
+### Temporary migration-debt baseline
+
+Issue #141 must become active before #143 removes the remaining legacy localization paths. To avoid treating pre-existing debt as a new regression, `HARD_CODED_COPY_DEBT_BASELINE` freezes the exact current diagnostic set for the six known legacy route files:
+
+- English and Spanish Atena routes;
+- English and Spanish component-showcase routes;
+- English and Spanish skills routes.
+
+Each entry stores the exact file, diagnostic count, SHA-256 digest and reason. The digest is calculated from the sorted diagnostic messages, so formatting-only line movement does not change it, while any added, removed or modified hardcoded phrase does.
+
+This is not a directory bypass:
+
+- unregistered files always fail;
+- a new finding in a baselined file changes its digest and fails;
+- removing migrated debt changes the digest and requires deleting or deliberately updating the baseline;
+- duplicate, stale, unexplained or malformed baseline entries fail;
+- #143 owns removing these entries together with the underlying legacy copy.
+
+Do not add another debt file merely to make the gate pass. New production copy must use its canonical localized owner.
 
 ## Generated-route enforcement
 
@@ -114,6 +134,6 @@ When changing localized content or routes:
 3. run `bun run check` and `bun run test:unit:ci`;
 4. remove `dist`, run `bun run build`, then `bun run check:links`;
 5. run `bun run test:e2e:smoke`;
-6. inspect the full diff and do not bypass a failure with a broad allowlist.
+6. inspect the full diff and do not bypass a failure with a broad allowlist or unreviewed debt-baseline change.
 
 A diagnostic is actionable when it names the affected file and the missing locale, namespace, key, stable ID, route or prohibited literal. Missing translations are build defects and are not resolved through English fallback.
