@@ -93,7 +93,11 @@ const avatarSizes = ['xs', 'sm', 'md', 'lg'] as const;
 					{
 						avatarSizes.map(size => (
 							<div class="flex flex-col items-center gap-2">
-								<Avatar src="/profile/perfil.webp" alt={tPage('profileAlt')} {size} />
+								<Avatar
+									src="/profile/perfil.webp"
+									alt={tPage('profileAlt')}
+									{size}
+								/>
 								<span class="text-sm text-content-muted uppercase">{size}</span>
 							</div>
 						))

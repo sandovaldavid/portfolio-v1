@@ -12,23 +12,23 @@ src/shared/ui/avatar/Avatar.astro
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-|---|---|---:|:---:|---|
-| `src` | `string` | — | Yes | Local path or remote image URL |
-| `alt` | `string` | — | Yes | Accessible alternative text supplied by the consumer |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'responsive'` | `'md'` | No | Supported semantic size |
-| `class` | `string` | — | No | Additional utility classes |
+| Prop    | Type                                                   | Default | Required | Description                                          |
+| ------- | ------------------------------------------------------ | ------: | :------: | ---------------------------------------------------- |
+| `src`   | `string`                                               |       — |   Yes    | Local path or remote image URL                       |
+| `alt`   | `string`                                               |       — |   Yes    | Accessible alternative text supplied by the consumer |
+| `size`  | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'responsive'` |  `'md'` |    No    | Supported semantic size                              |
+| `class` | `string`                                               |       — |    No    | Additional utility classes                           |
 
 ## Size reference
 
-| Size | Base dimensions | Typical use |
-|---|---:|---|
-| `xs` | 32 × 32 px | Dense lists and compact controls |
-| `sm` | 48 × 48 px | Cards and secondary identity |
-| `md` | 96 × 96 px | Default profile presentation |
-| `lg` | 192 × 192 px | Prominent profile sections |
-| `xl` | 256 × 256 px | Large profile views |
-| `responsive` | Responsive | Layout-controlled profile presentation |
+| Size         | Base dimensions | Typical use                            |
+| ------------ | --------------: | -------------------------------------- |
+| `xs`         |      32 × 32 px | Dense lists and compact controls       |
+| `sm`         |      48 × 48 px | Cards and secondary identity           |
+| `md`         |      96 × 96 px | Default profile presentation           |
+| `lg`         |    192 × 192 px | Prominent profile sections             |
+| `xl`         |    256 × 256 px | Large profile views                    |
+| `responsive` |      Responsive | Layout-controlled profile presentation |
 
 ## Basic usage
 

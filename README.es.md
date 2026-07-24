@@ -8,12 +8,12 @@ Portafolio bilingüe y static-first para presentar experiencia profesional, evid
 
 ## Acceso rápido
 
-| Recurso | Enlace |
-| --- | --- |
-| Sitio publicado | [sandovaldavid.com](https://sandovaldavid.com) |
-| CV en inglés | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf) |
-| CV en español | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
-| Guía principal en inglés | [README.md](README.md) |
+| Recurso                  | Enlace                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| Sitio publicado          | [sandovaldavid.com](https://sandovaldavid.com)                                                |
+| CV en inglés             | [david-sandoval-resume.pdf](https://sandovaldavid.com/resume/david-sandoval-resume.pdf)       |
+| CV en español            | [david-sandoval-resume-es.pdf](https://sandovaldavid.com/resume/david-sandoval-resume-es.pdf) |
+| Guía principal en inglés | [README.md](README.md)                                                                        |
 
 ## Implementación actual
 
@@ -28,15 +28,15 @@ Los caminos legacy de localización que aún permanecen están rastreados por la
 
 ## Controles de calidad
 
-| Área | Contrato del repositorio |
-| --- | --- |
-| Formato, lint y tipos | `bun run check` |
-| Enlaces documentales | `bun run check:docs` |
-| Comportamiento unitario | `bun run test:unit:ci` y el comando de cobertura acotada |
-| Salida de producción | `bun run build` y `bun run check:links` |
+| Área                        | Contrato del repositorio                                 |
+| --------------------------- | -------------------------------------------------------- |
+| Formato, lint y tipos       | `bun run check`                                          |
+| Enlaces documentales        | `bun run check:docs`                                     |
+| Comportamiento unitario     | `bun run test:unit:ci` y el comando de cobertura acotada |
+| Salida de producción        | `bun run build` y `bun run check:links`                  |
 | Navegadores y accesibilidad | comandos smoke, desktop, extended y visual de Playwright |
-| Rendimiento | presupuestos por ruta y comandos de Lighthouse |
-| Entorno de desarrollo | `bun run check:devcontainer` |
+| Rendimiento                 | presupuestos por ruta y comandos de Lighthouse           |
+| Entorno de desarrollo       | `bun run check:devcontainer`                             |
 
 Los workflows de GitHub automatizan gates seleccionados de promoción, producción y auditoría programada. Un workflow ausente, deshabilitado o bloqueado por cuota no constituye evidencia de validación; cada PR debe indicar los comandos realmente ejecutados.
 

@@ -3,11 +3,7 @@ import { render } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Layout from '@app/layouts/Layout.astro';
 import { getBlogLocalizedPaths, getBlogPost, getBlogPosts, getBlogSlug } from '@entities/blog';
-import {
-	createScopedUiTranslator,
-	getLanguageFromLocale,
-	Language,
-} from '@shared/config/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale, Language } from '@shared/config/i18n';
 import { BlogDetail } from '@widgets/blog';
 
 export async function getStaticPaths() {

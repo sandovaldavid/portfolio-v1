@@ -8,11 +8,7 @@ import {
 	getDevlogPosts,
 	getDevlogSlug,
 } from '@entities/devlog';
-import {
-	createScopedUiTranslator,
-	getLanguageFromLocale,
-	Language,
-} from '@shared/config/i18n';
+import { createScopedUiTranslator, getLanguageFromLocale, Language } from '@shared/config/i18n';
 import { DevlogDetail } from '@widgets/devlog';
 
 export async function getStaticPaths() {

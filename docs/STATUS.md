@@ -4,38 +4,38 @@ This document classifies repository-level statements as of **2026-07-24**. It is
 
 ## Status vocabulary
 
-| Status | Meaning |
-| --- | --- |
+| Status          | Meaning                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------- |
 | **Implemented** | Present in the current `develop` source or versioned configuration and directly verifiable. |
-| **In progress** | Partially implemented; an open issue identifies concrete remaining work. |
-| **Planned** | Approved future work with no current implementation. |
-| **Blocked** | Work or automation cannot proceed because of a named external constraint. |
-| **Deprecated** | Still present for compatibility but prohibited for new work. |
-| **Historical** | Point-in-time evidence or context that no longer defines current behavior. |
-| **Discarded** | Explicitly rejected or superseded. |
-| **Unconfirmed** | Not verified against the current branch, repository settings or an authoritative result. |
+| **In progress** | Partially implemented; an open issue identifies concrete remaining work.                    |
+| **Planned**     | Approved future work with no current implementation.                                        |
+| **Blocked**     | Work or automation cannot proceed because of a named external constraint.                   |
+| **Deprecated**  | Still present for compatibility but prohibited for new work.                                |
+| **Historical**  | Point-in-time evidence or context that no longer defines current behavior.                  |
+| **Discarded**   | Explicitly rejected or superseded.                                                          |
+| **Unconfirmed** | Not verified against the current branch, repository settings or an authoritative result.    |
 
 ## Implemented
 
-| Area | Verified repository evidence |
-| --- | --- |
-| Static site | Astro build scripts and static route implementation. |
-| Toolchain | Bun is pinned through `packageManager`; dependencies and scripts are defined in `package.json` and resolved by `bun.lock`. |
-| Architecture | Pragmatic Feature-Sliced Design with executable import-boundary checks. |
+| Area                      | Verified repository evidence                                                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static site               | Astro build scripts and static route implementation.                                                                                                           |
+| Toolchain                 | Bun is pinned through `packageManager`; dependencies and scripts are defined in `package.json` and resolved by `bun.lock`.                                     |
+| Architecture              | Pragmatic Feature-Sliced Design with executable import-boundary checks.                                                                                        |
 | Localization architecture | English-default and `/es` routing, granular typed UI catalogs, localized profile/experience/research/project/editorial content and Astro-native route helpers. |
-| Localization enforcement | Source catalog/content/copy checks, generated-route checks, bilingual browser coverage and unit regressions that prohibit the removed legacy runtime. |
-| Testing | Vitest unit tests, Playwright browser suites, Axe accessibility gates and pinned-Docker visual comparison. |
-| Performance | Route-level budgets, bundle reporting and Lighthouse commands. |
-| Development environment | Versioned Dev Container with pinned Bun and Playwright, non-root user, Docker access and lifecycle validation. |
-| Workflow definitions | Pull-request CI/preview workflows for `main`, post-integration quality, scheduled quality, CodeQL and production deployment definitions. |
-| Branch roles | `develop` is the current integration base; `main` is the default and production branch; `resume-assets` supplies canonical CV artifacts. |
+| Localization enforcement  | Source catalog/content/copy checks, generated-route checks, bilingual browser coverage and unit regressions that prohibit the removed legacy runtime.          |
+| Testing                   | Vitest unit tests, Playwright browser suites, Axe accessibility gates and pinned-Docker visual comparison.                                                     |
+| Performance               | Route-level budgets, bundle reporting and Lighthouse commands.                                                                                                 |
+| Development environment   | Versioned Dev Container with pinned Bun and Playwright, non-root user, Docker access and lifecycle validation.                                                 |
+| Workflow definitions      | Pull-request CI/preview workflows for `main`, post-integration quality, scheduled quality, CodeQL and production deployment definitions.                       |
+| Branch roles              | `develop` is the current integration base; `main` is the default and production branch; `resume-assets` supplies canonical CV artifacts.                       |
 
 The localization runtime no longer contains monolithic locale dictionaries, the flattened mixed-value translator, `useTranslations()`, `useTranslationsList()`, duplicated Atena/Skills/Components route implementations or the six-file hardcoded-copy debt baseline.
 
 ## In progress
 
-| Area | Remaining work |
-| --- | --- |
+| Area                 | Remaining work                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------- |
 | i18n roadmap closure | Issue #144 must record completion of #143 and close after final validation and merge. |
 
 No other roadmap item is documented here as implemented functionality.

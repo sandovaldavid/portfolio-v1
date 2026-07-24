@@ -13,15 +13,15 @@ The existing pull-request CI and Vercel preview workflows are configured for pul
 
 ## Configured workflows
 
-| Trigger | Workflow | Implemented purpose |
-| --- | --- | --- |
-| Pull request to `main` | `Continuous Integration` | Repository checks, unit tests, production build, route budgets, Chromium smoke and Axe gates. |
-| Pull request to `main` | `Deploy to Vercel Preview` | Builds and deploys the exact pull-request head to a Vercel preview when credentials are available. |
-| Pull request or push to `main`; scheduled/manual | `CodeQL` | Security and code-quality analysis. |
-| Push to `main` or manual run | `Main Quality` | Repository checks, scoped coverage, build, generated-link validation, route budgets, full desktop browser suite and Lighthouse. |
-| Weekly or manual | `Scheduled Extended Quality` | Extended desktop/mobile, visual, coverage, generated-link and bundle audits. |
-| Dev Container changes or manual run | `Build Dev Container` | Validates the versioned development environment. |
-| Successful `Main Quality` push run; manual/resume dispatch | `Deploy to Vercel Production` | Deploys the validated `main` revision or the explicitly selected current `main` revision. |
+| Trigger                                                    | Workflow                      | Implemented purpose                                                                                                             |
+| ---------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Pull request to `main`                                     | `Continuous Integration`      | Repository checks, unit tests, production build, route budgets, Chromium smoke and Axe gates.                                   |
+| Pull request to `main`                                     | `Deploy to Vercel Preview`    | Builds and deploys the exact pull-request head to a Vercel preview when credentials are available.                              |
+| Pull request or push to `main`; scheduled/manual           | `CodeQL`                      | Security and code-quality analysis.                                                                                             |
+| Push to `main` or manual run                               | `Main Quality`                | Repository checks, scoped coverage, build, generated-link validation, route budgets, full desktop browser suite and Lighthouse. |
+| Weekly or manual                                           | `Scheduled Extended Quality`  | Extended desktop/mobile, visual, coverage, generated-link and bundle audits.                                                    |
+| Dev Container changes or manual run                        | `Build Dev Container`         | Validates the versioned development environment.                                                                                |
+| Successful `Main Quality` push run; manual/resume dispatch | `Deploy to Vercel Production` | Deploys the validated `main` revision or the explicitly selected current `main` revision.                                       |
 
 Workflow YAML is **Implemented** configuration. A workflow result is evidence only when a run exists for the exact commit and completes successfully.
 
