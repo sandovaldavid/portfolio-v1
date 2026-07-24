@@ -20,6 +20,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const tPage = createScopedUiTranslator(lang, 'pages.components');
+const avatarSizes = ['xs', 'sm', 'md', 'lg'] as const;
 ---
 
 <main class="px-4 py-16">
@@ -90,7 +91,7 @@ const tPage = createScopedUiTranslator(lang, 'pages.components');
 				<p class="text-content-muted mb-4">{tPage('avatarsDescription')}</p>
 				<div class="flex flex-wrap gap-8 items-end">
 					{
-						(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+						avatarSizes.map(size => (
 							<div class="flex flex-col items-center gap-2">
 								<Avatar src="/profile/perfil.webp" alt={tPage('profileAlt')} {size} />
 								<span class="text-sm text-content-muted uppercase">{size}</span>
